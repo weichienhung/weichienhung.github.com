@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: requirejs | Weichien Hung's studying note]]></title>
+  <link href="http://weichienhung.github.com/blog/categories/requirejs/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.com/"/>
+  <updated>2013-07-27T15:37:23+08:00</updated>
+  <id>http://weichienhung.github.com/</id>
+  <author>
+    <name><![CDATA[Weichien Hung]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[emberjs with requirejs]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/02/02/emberjs-and-requirejs/"/>
+    <updated>2013-02-02T13:17:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/02/02/emberjs-and-requirejs</id>
+    <content type="html"><![CDATA[<p>這幾天survey了requirejs順便讓它與emberjs跑在一起，有些心得所以在這裡紀錄一下。</p>
+
+<!--more-->
+
+
+<p>就如requirejs官方網站的介紹當使用requirejs來管理javascript module load後在index.html裡只要有一行script載入你最主要的javascript，在這裡是main.js
+``` javascript index.html</p>
+
+<pre><code>&lt;script data-main="scripts/main" src="scripts/require.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p><code>
+來看一下main.js
+</code> javascript main.js
+require.config({</p>
+
+<pre><code>baseURL: '/scripts/',
+'paths': {
+    'jquery': 'libs/jquery.min',
+    'handlebars':'libs/handlebars-1.0.rc.1',
+    'ember':'libs/ember_0114',
+    'text':'libs/text',
+    'T':'templates'
+},
+shim : {
+    'ember' : {
+        deps: ['handlebars', 'jquery'],
+        exports: 'Ember'
+    }
+}
+</code></pre>
+
+<p>});</p>
+
+<p>requirejs([</p>
+
+<pre><code>'ember',
+'app',
+'route'
+'T/application.template'
+</code></pre>
+
+<p>],
+function () {
+   console.log("all loaded done");
+});
+```
+require.config中baseURL是指javascript根目錄，我所有javascript都放在scripts/底下，
+scripts/libs/目錄底下則是放了third party js library，paths中可以命名短字串避免每次都要輸入很長的字串，
+shim是用來載入library如果不支援AMD使用，由於emberjs本身不支援AMD所以用shim載入。
+檔案底部是requireJS的module定義，[]裡面描述你的dependency，function(){}代表當所有dependency module載入後要執行的code。
+在這裡我載入ember,app,route以及T/application.template四個modules，在function()裡只是簡單地印一下log。</p>
+
+<p>``` javascript app.js
+// var App = Ember.Application.create({});
+define([</p>
+
+<pre><code>'ember'
+</code></pre>
+
+<p>], function(Ember) {</p>
+
+<pre><code>console.log("ember initial and callback");
+var App = window.App = Ember.Application.create({});
+return App;
+</code></pre>
+
+<p>});
+```
+app.js裡面寫當emberjs載入後建立我的App，這裡必須把App放進window.App不然在跑emberjs時會有錯誤。</p>
+
+<p>``` javascript application.template.js
+define([</p>
+
+<pre><code>'ember',
+'views/menubar.view'
+</code></pre>
+
+<p>], function(Ember) {</p>
+
+<pre><code>Ember.TEMPLATES['application'] = Ember.Handlebars.compile(
+'\
+    &lt;h1&gt;Hello Ember&lt;/h1&gt;\
+    &lt;div&gt;\
+        { {view App.MenuBarView}}\
+        &lt;hr/&gt;\
+        { {outlet}}\
+    &lt;/div&gt;\
+'
+);
+</code></pre>
+
+<p>});
+```
+application.template裡面有兩個dependency(ember和menubar.view)。function裡面是comiple ember template。
+在前面的app.js裡面如果沒有把App放進window.App話等程式run下去ember會報錯說找不到App.MenuBarView即使你的確有這個View存在。</p>
+
+<p>``` javascript menubar.view.js
+define([</p>
+
+<pre><code>'app',
+'text!T/menubar.template.html'
+</code></pre>
+
+<p>], function(App, template) {</p>
+
+<pre><code>App.MenuBarView = Ember.View.extend({
+    tagName:'div',
+    classNames:['menubar']
+});
+Ember.TEMPLATES['menubar'] = Ember.Handlebars.compile(template);    
+</code></pre>
+
+<p>});
+```
+menubar.view.js裡面我利用text這個requirejs plugin載入外部的html進來ember compile。那如何得到載入進來的html呢？很簡單就
+是只要在function裡面加入相對應的parameters，由於這個module有2個dependencies所以在function裡面有2個parameters。而template
+很自然就是對應到讀進來的html。</p>
+]]></content>
+  </entry>
+  
+</feed>

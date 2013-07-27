@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: css | Weichien Hung's studying note]]></title>
+  <link href="http://weichienhung.github.com/blog/categories/css/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.com/"/>
+  <updated>2013-07-27T15:37:23+08:00</updated>
+  <id>http://weichienhung.github.com/</id>
+  <author>
+    <name><![CDATA[Weichien Hung]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[write maintainable css]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css/"/>
+    <updated>2013-07-27T11:25:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css</id>
+    <content type="html"><![CDATA[<p>今天看了<a href="https://github.com/doggy8088/CSS-Guidelines">CSS guideline</a>描述在大型專案如何撰寫容易維護的CSS，我直接從翻譯過文章摘錄了其中覺得還不錯而且執行上也不會太困難的幾點記下來讓自己隨時能夠複習</p>
+
+<!-- more -->
+
+
+<h3>階層式CSS</h3>
+
+<p>``` css
+.widget{</p>
+
+<pre><code>padding:10px;
+border:1px solid #BADA55;
+background-color:#C0FFEE;
+-webkit-border-radius:4px;
+   -moz-border-radius:4px;
+        border-radius:4px;
+</code></pre>
+
+<p>}</p>
+
+<pre><code>.widget-heading{
+    font-size:1.5rem;
+    line-height:1;
+    font-weight:bold;
+    color:#BADA55;
+    margin-right:-10px;
+    margin-left: -10px;
+    padding:0.25em;
+}
+</code></pre>
+
+<p><code>``
+我們可以發現，</code>.widget-heading<code>是</code>.widget` 的子元素，因為前者比後者多縮排了一級，這使網頁開發人員在閱讀這些樣式時，可以迅速得知在 HTML 裡面的標籤結構大致為何。</p>
+
+<h3>JS hooks</h3>
+
+<p>千萬不要把 CSS 樣式當成 JS hooks 來用。我們在寫 jQuery 的時候，經常會自訂一些 class 樣式類別名稱，以方便我們透過 jQuery 的選取器選中這個元素。<br/>
+除此之外，有時候我們也會自訂一些 HTML 屬性，讓 HTML 擁有一些特殊的行為，這些都算是 JS hooks 的應用，如果你把 JS 的行為與樣式綁在一起時，代表我們套用的樣式與 JavaScript 行為無法區分開來，這對可維護性來說也蠻傷的。<br/>
+如果你要把 JS 行為與某些標籤綁定起來的話，寫一個 JS 專用的 class 類別名稱。簡單地說就是在名稱上增加一個前綴 .js- 的命名空間，例如 <code>.js-toggle</code>，<code>.js-drag-and-drop</code>，這意味著我們可以透過不同的 class 綁定不同的 JS 行為和 CSS 樣式，而不會為偶發的衝突帶來困擾，範例如下：
+<code>
+&lt;th class="is-sortable  js-is-sortable"&gt;
+&lt;/th&gt;
+</code>
+上面的這個 th 標籤有兩個 class，你可以用 <code>is-sortable</code> 這個類別來定義這個表格的樣式，而用另一個 <code>js-is-sortable</code> 來套用排序功能。</p>
+
+<h3>物件導向 CSS (OOCSS)</h3>
+
+<p>我都是以物件導向的方式撰寫 CSS，我把元件區分成結構（物件）與外觀（擴充）。正如以下想法（注意這個只是想法而非例子）：
+```
+.room{}</p>
+
+<p>.room--kitchen{}
+.room--bedroom{}
+.room--bathroom{}
+<code>``
+我們在屋子裡有許多房間，它們都有共同的特點：它們都包含地板、天花板、牆壁和門。這些共享的部分我們可以放到一個抽像的</code>.room{} class` 中。<br/>
+不過我們還有其它與眾不同的房間：一個廚房可能有地磚，臥室可能有地毯，洗手間可能沒有窗戶但是臥室會有，每個房間的牆壁顏色也許也會不一樣。<br/>
+物件導向 CSS 的思考方式，使我們把相同部分抽像出來，並組成結構部分，然後再用更具體的 class 來擴充這些外觀，並新增特殊的處理方法。</p>
+
+<h3>簡寫</h3>
+
+<p>使用簡寫的 CSS 語法應該要特別注意。
+或許你會嘗試撰寫像 <code>background:red;</code> 這樣的屬性，或許你這樣寫的背後真正意思是 <code>background-image:none; background-position:top left; background-repeat: repeat; background-color:red;</code> 這樣的語法，雖然這樣寫通常不會出什麼問題，但是哪怕只出一次問題就值得考慮要不要放棄簡寫了，在這個例子裡，你應該將其改寫為 <code>background-color:red;</code> 比較洽當。<br/>
+類似的，像 <code>margin:0;</code> 這樣的宣告迪缺清楚明瞭，但是還是應該 盡量寫清楚，如果你只是想修改底部的 margin，最好具體一點，寫成 <code>margin-bottom:0;</code> 會來的好很多。
+你必須把樣式定義的很清楚，不要因為習慣用簡寫，而不小心改到其他樣式的相關屬性。例如你只想改掉底部的 margin，那就不要用也會把其它邊距也歸零的 <code>margin:0</code> 語法。
+簡寫雖然是好東西，但是切忌濫用。</p>
+
+<h3>在 CSS 裡千萬不要用 ID</h3>
+
+<p>在 HTML 裡 ID 可以用於 JS 以及錨點定位(anchor)，但是在 CSS 裡建議只用 class 來設定樣式，你不會想看到在任何一個樣式表中看見使用 ID 的選取器 (#someid)。</p>
+
+<h3>選取器</h3>
+
+<p>請維持選取器簡短、有效率與可攜性。<br/>
+那些依賴頁面元素來定位的選取器有很多缺點。例如 <code>.sidebar h3 span{}</code> 這樣的選取器，就是太過依賴元素的相對位置，所以很難把 span 移到 h3 和 sidebar 外面並維持其樣式。<br/>
+結構複雜的選取器也會影響網頁顯示效能，選取器結構越複雜（如 <code>.sidebar h3 span</code> 為三層，<code>.content ul p a</code> 是四層），瀏覽器對於顯示網頁的負擔就越大。<br/>
+所以，盡量不要讓樣式依賴於其他元素的位置，也盡量讓選取器保持簡短而易懂。</p>
+
+<h3>!important</h3>
+
+<p>你只應該在一些輔助類別(helper classes)上使用 <code>!important</code> 修飾子。用 <code>!important</code> 提升優先級也可以，例如如果你要讓某條規則 一直 生效的話，可以用 <code>.error{ color:red!important; }</code>。<br/>
+避免主動使用 <code>!important</code> 修飾子。例如當你的 CSS 寫得很複雜的時候，不要因為想偷懶而使用 <code>!important</code> 來取巧，建議重寫你之前寫好的樣式，並重構選取系的使用方式。記得：維持選取器的簡短並且避免用 ID，將可有效幫助你寫好 CSS。</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ruby study - Weichien Hung's studying note</title>
+  <meta name="author" content="Weichien Hung">
+
+  
+  <meta name="description" content="最近都在看CSS沒什麼時間繼續看Ruby,今天上codecademy練習ruby。
+在這裡紀錄一下之前沒看過的語法。 Multiple comments 1
+2
+3
+4
+=begin
+this is comment,
+i am comment too.
+=end Get input from &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://weichienhung.github.com/blog/2013/03/01/ruby-study/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Weichien Hung's studying note" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<meta property="fb:app_id" content="116996781810928" />
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Weichien Hung's studying note</a></h1>
+  
+    <h2>Practice makes perfect</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:weichienhung.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Ruby Study</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-01T23:39:00+08:00" pubdate data-updated="true">Mar 1<span>st</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近都在看CSS沒什麼時間繼續看Ruby,今天上codecademy練習ruby。
+在這裡紀錄一下之前沒看過的語法。</p>
+
+<h3>Multiple comments</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="cm">=begin</span>
+</span><span class='line'><span class="cm">this is comment,</span>
+</span><span class='line'><span class="cm">i am comment too.</span>
+</span><span class='line'><span class="cm">=end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Get input from console</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">print</span> <span class="s2">&quot;Integer please: &quot;</span>
+</span><span class='line'><span class="n">user_num</span> <span class="o">=</span> <span class="nb">Integer</span><span class="p">(</span><span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<h3>Different between string.downcase and string.downcase!</h3>
+
+<p>With ! the user&#8217;s string is modified in-place; otherwise, Ruby will create a copy of user_input and modify that instead</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;Samuel&quot;</span>
+</span><span class='line'><span class="n">downcase_name</span> <span class="o">=</span> <span class="nb">name</span><span class="o">.</span><span class="n">downcase</span>
+</span><span class='line'><span class="nb">puts</span> <span class="nb">name</span>  <span class="c1"># &quot;Samuel&quot;</span>
+</span><span class='line'><span class="n">downcase_name</span> <span class="o">=</span> <span class="nb">name</span><span class="o">.</span><span class="n">downcase!</span>
+</span><span class='line'><span class="nb">puts</span> <span class="nb">name</span>  <span class="c1"># &quot;samuel&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Hash sort_by and Array sort!</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'><span class="n">h</span><span class="o">.</span><span class="n">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span> <span class="n">b</span> <span class="p">}</span>  <span class="c1"># we can sort by value</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">my_array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="o">]</span>
+</span><span class='line'><span class="n">my_array</span><span class="o">.</span><span class="n">sort!</span> <span class="c1"># [1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#descending order</span>
+</span><span class='line'><span class="n">my_array</span><span class="o">.</span><span class="n">sort!</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span> <span class="n">b</span> <span class="o">&lt;=&gt;</span> <span class="n">a</span><span class="p">}</span> <span class="c1"># [9, 8, 7, 6, 5, 4, 3, 2, 1]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>What&#8217;s Symbol? it&#8217;s not a string</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;string&quot;</span> <span class="o">==</span> <span class="ss">:string</span> <span class="c1"># false</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">object_id</span> <span class="o">==</span> <span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">object_id</span>  <span class="c1"># false</span>
+</span><span class='line'>
+</span><span class='line'><span class="ss">:symbol</span><span class="o">.</span><span class="n">object_id</span> <span class="o">==</span> <span class="ss">:symbol</span><span class="o">.</span><span class="n">object_id</span> <span class="c1"># true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">to_sym</span> <span class="o">==</span> <span class="ss">:string</span> <span class="c1"># true</span>
+</span><span class='line'><span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">intern</span> <span class="o">==</span> <span class="ss">:string</span> <span class="c1"># true, inter is the same as to_sym</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Why need symbol? 主要是用來當hash的key以及用來參考到method的名字</p>
+
+<ol>
+<li>They&#8217;re immutable, meaning they can&#8217;t be changed once they&#8217;re created</li>
+<li>Only one copy,節省記憶體</li>
+<li>Hashes that use symbols instead of strings as keys work faster</li>
+</ol>
+
+
+<p>來看一下怎麼使用</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">movies</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;star_war&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">:age</span> <span class="o">=&gt;</span> <span class="s2">&quot;1970&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#But since ruby 1.9 hash become more compact</span>
+</span><span class='line'><span class="n">movies</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">name</span><span class="p">:</span> <span class="s2">&quot;star_war&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">age</span><span class="p">:</span> <span class="s2">&quot;1970&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>switch conidition</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">case</span> <span class="n">language</span>
+</span><span class='line'><span class="k">when</span> <span class="s2">&quot;JS&quot;</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Websites!&quot;</span>
+</span><span class='line'><span class="k">when</span> <span class="s2">&quot;Python&quot;</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Science!&quot;</span>
+</span><span class='line'><span class="k">when</span> <span class="s2">&quot;Ruby&quot;</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Web apps!&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;I don&#39;t know!&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">case</span> <span class="n">language</span>
+</span><span class='line'>  <span class="k">when</span> <span class="s2">&quot;JS&quot;</span> <span class="k">then</span> <span class="nb">puts</span> <span class="s2">&quot;Websites!&quot;</span>
+</span><span class='line'>  <span class="k">when</span> <span class="s2">&quot;Python&quot;</span> <span class="k">then</span> <span class="nb">puts</span> <span class="s2">&quot;Science!&quot;</span>
+</span><span class='line'>  <span class="k">when</span> <span class="s2">&quot;Ruby&quot;</span> <span class="k">then</span> <span class="nb">puts</span> <span class="s2">&quot;Web apps!&quot;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="nb">puts</span> <span class="s2">&quot;I don&#39;t know!&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Ternary conditional expression</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="mi">3</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="o">?</span> <span class="s2">&quot;hello world&quot;</span>  <span class="p">:</span> <span class="s2">&quot;evil&quot;</span>  <span class="c1"># hello world</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Conditional assignment.</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">favorite_book</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">favorite_book</span>  <span class="c1"># won&#39;t output anything</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">favorite_book</span> <span class="o">||=</span> <span class="s2">&quot;Cat&#39;s Cradle&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">favorite_book</span>  <span class="c1"># Cat&#39;s Cradle</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>upto and downto</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">95</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">num</span><span class="o">|</span> <span class="nb">print</span> <span class="n">num</span> <span class="p">}</span> <span class="c1"># 95 96 97 98 99 100</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># also apply to alphabet</span>
+</span><span class='line'><span class="s2">&quot;L&quot;</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="nb">print</span> <span class="n">word</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Call and Response</h3>
+
+<p>Here we use symbol to reference a method name. For example, we want to check variable has next method or not.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">age</span> <span class="o">=</span> <span class="mi">30</span>
+</span><span class='line'><span class="n">age</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:next</span><span class="p">)</span> <span class="c1"># true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Weichien Hung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-01T23:39:00+08:00" pubdate data-updated="true">Mar 1<span>st</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.com/blog/2013/03/01/ruby-study/" data-via="" data-counturl="http://weichienhung.github.com/blog/2013/03/01/ruby-study/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/02/21/ruby-beginning/" title="Previous Post: ruby beginning">&laquo; ruby beginning</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/03/02/ruby-is-deligight/" title="Next Post: ruby is elegance">ruby is elegance &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="facebook_comments" aria-live="polite">
+      <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
+<div
+  class="fb-comments"
+  data-href="http://weichienhung.github.com/blog/2013/03/01/ruby-study/"
+  data-num-posts="2"
+  data-width="470"
+  data-colorscheme="light">
+</div>
+
+    </div>
+  </section>
+
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/blog/categories/apple'>apple (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (4)</a></li><li><a href='/blog/categories/linux'>linux (1)</a></li><li><a href='/blog/categories/octopress'>octopress (5)</a></li><li><a href='/blog/categories/other'>other (1)</a></li><li><a href='/blog/categories/requirejs'>requirejs (1)</a></li><li><a href='/blog/categories/ruby'>ruby (3)</a></li><li><a href='/blog/categories/sublime'>sublime (1)</a></li></ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/27/write-maintainable-css/">write maintainable css</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/10/linux-shellscript/">shell script on linux </a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/07/hello-again/">hello octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/02/ruby-is-deligight/">ruby is elegance</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/01/ruby-study/">ruby study</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Weichien Hung -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'weichienhung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.com/blog/2013/03/01/ruby-study/';
+        var disqus_url = 'http://weichienhung.github.com/blog/2013/03/01/ruby-study/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=116996781810928&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

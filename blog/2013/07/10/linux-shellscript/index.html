@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>shell script on linux  - Weichien Hung's studying note</title>
+  <meta name="author" content="Weichien Hung">
+
+  
+  <meta name="description" content="前陣子用linux shell script寫了module自動deploy機制。紀錄一下這之中遇到的問題及常用的指令。
+簡單的自動deploy不外乎就是將檔案傳送至遠端機器然後進行安裝動作，修改設定檔。 login to remote server 由於原生shell &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://weichienhung.github.com/blog/2013/07/10/linux-shellscript/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Weichien Hung's studying note" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<meta property="fb:app_id" content="116996781810928" />
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Weichien Hung's studying note</a></h1>
+  
+    <h2>Practice makes perfect</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:weichienhung.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Shell Script on Linux</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-10T22:15:00+08:00" pubdate data-updated="true">Jul 10<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>前陣子用linux shell script寫了module自動deploy機制。紀錄一下這之中遇到的問題及常用的指令。<br/>
+簡單的自動deploy不外乎就是將檔案傳送至遠端機器然後進行安裝動作，修改設定檔。</p>
+
+<ul>
+<li><h3>login to remote server</h3></li>
+</ul>
+
+
+<!-- more -->
+
+
+<p>由於原生shell script裡面無法自動輸入帳密進行登錄動作，基本上常用的方法有兩種。<br/>
+第一種方法就是建立ssh public key然後放在遠端機器上，這樣你ssh時就不需要再輸入密碼。
+第二種方法是安裝其它套件協助自動輸入密碼。在這裡我介紹的是使用<a href="http://sourceforge.net/projects/sshpass/">sshpass</a>。
+安裝完後要記得自己先手動登入一次遠端機器，不然它不會作用。接下來你要登入遠端機器的指令就如下</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> ssh root@<span class="o">{</span>remote ip<span class="o">}</span> <span class="s2">&quot;echo &#39;hello world&#39;&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣就可以登入遠端機器並輸出一個hello world。</p>
+
+<p>另外你也可以用scp來拷貝資料過去</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> scp data.zip root@<span class="o">{</span>remote ip<span class="o">}</span>:/home/root/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣就可以把data.zip丟到遠端/home/root/目錄</p>
+
+<ul>
+<li><h3>execute command on remote server</h3>
+
+<p>簡單地方法就是在sshpass之後帶入command</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> ssh root@<span class="o">{</span>remote ip<span class="o">}</span> <span class="s2">&quot;mkdir myFolder;rm myFile.txt&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣就可以在登入後執行mkdir及rm兩個指令。
+另一種方法就是把你要執行的指令寫成一個shell script，然後scp過去後執行。例如我把這兩行指令寫在myScript.sh裡</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'>mkdir myFolder
+</span><span class='line'>rm myFile.txt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然後執行底下指令</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> scp myScript.sh root@<span class="o">{</span>remote ip<span class="o">}</span>:/home/root/
+</span><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> ssh root@<span class="o">{</span>remote ip<span class="o">}</span> <span class="s2">&quot;/home/root/myScript.sh&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><h3>retrieve the specified string from a line</h3>
+
+<p>例如我有一個my.xml檔裡面紀錄了最新的版號如下</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;myxml&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;release&gt;</span>1.0.22<span class="nt">&lt;/release&gt;</span>
+</span><span class='line'><span class="nt">&lt;/myxml&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>用底下的指令來取出版號</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">latest</span><span class="o">=</span><span class="k">$(</span>cat my.xml | sed -n <span class="s1">&#39;s/.*&lt;release&gt;\(.*\)&lt;\/release&gt;/\1/p&#39;</span><span class="k">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>由於(, ), /是特殊字元,所以在re裡前面都要加上\<br/>
+後面的\1表示要取result的第一個group。<br/>
+整個用$()包覆是因為要把執行結果放進latest這個變數。</p>
+
+<ul>
+<li><h3>replace string in a config file</h3>
+
+<p>使用sed指令加上regular expression</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sed -i <span class="s1">&#39;s/.*MyTest.*/YourTest/&#39;</span> config.txt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣就可以把config.txt裡面所有字串裡中間有MyTest替換成YourTest</p>
+
+<ul>
+<li><h3>insert a new line in a config file</h3>
+
+<p>使用sed指令加上regular expression</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sed -i <span class="s1">&#39;s/.*MyTest.*/&amp;\nYourTest/g&#39;</span> config.txt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣就可以在config.txt裡面插入新的一行YourTest在每一行符合中間有MyTest的字串。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Weichien Hung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-10T22:15:00+08:00" pubdate data-updated="true">Jul 10<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.com/blog/2013/07/10/linux-shellscript/" data-via="" data-counturl="http://weichienhung.github.com/blog/2013/07/10/linux-shellscript/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/07/07/hello-again/" title="Previous Post: hello octopress">&laquo; hello octopress</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/07/27/write-maintainable-css/" title="Next Post: write maintainable css">write maintainable css &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="facebook_comments" aria-live="polite">
+      <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
+<div
+  class="fb-comments"
+  data-href="http://weichienhung.github.com/blog/2013/07/10/linux-shellscript/"
+  data-num-posts="2"
+  data-width="470"
+  data-colorscheme="light">
+</div>
+
+    </div>
+  </section>
+
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/blog/categories/apple'>apple (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (4)</a></li><li><a href='/blog/categories/linux'>linux (1)</a></li><li><a href='/blog/categories/octopress'>octopress (5)</a></li><li><a href='/blog/categories/other'>other (1)</a></li><li><a href='/blog/categories/requirejs'>requirejs (1)</a></li><li><a href='/blog/categories/ruby'>ruby (3)</a></li><li><a href='/blog/categories/sublime'>sublime (1)</a></li></ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/27/write-maintainable-css/">write maintainable css</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/10/linux-shellscript/">shell script on linux </a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/07/hello-again/">hello octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/02/ruby-is-deligight/">ruby is elegance</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/01/ruby-study/">ruby study</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Weichien Hung -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'weichienhung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.com/blog/2013/07/10/linux-shellscript/';
+        var disqus_url = 'http://weichienhung.github.com/blog/2013/07/10/linux-shellscript/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=116996781810928&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

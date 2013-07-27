@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: apple | Weichien Hung's studying note]]></title>
+  <link href="http://weichienhung.github.com/blog/categories/apple/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.com/"/>
+  <updated>2013-07-27T15:37:23+08:00</updated>
+  <id>http://weichienhung.github.com/</id>
+  <author>
+    <name><![CDATA[Weichien Hung]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[良好體驗在Apple App store]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/01/31/good-experience-on-itunes-purchase/"/>
+    <updated>2013-01-31T00:10:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/01/31/good-experience-on-itunes-purchase</id>
+    <content type="html"><![CDATA[<p>上週用line買了代幣，第一次購買沒成功系統報錯誤後我沒想太多就直接再買一次，後來成功。
+這週收到信用卡帳單時發現被刷了兩次扣款，以前也沒這種經驗只好在line App裡面申報錯誤
+以及上apple網站去回報錯誤。隔天line就回信說他們也沒報法處理必須要請apple的客服處理。</p>
+
+<!--more-->
+
+
+<p>過沒多久apple也回信了，信件內容大概如下</p>
+
+<blockquote><p>親愛的X先生：
+您好，感謝您聯絡 iTunes Store 支援團隊。我是 Y，很高興在此協助您。
+透過您的此次來信，我瞭解到您的帳號「 a@b.c 」出現重複扣款的問題，並且在扣款後沒有獲得所購買的應用程式「100 LINE Coins」內容，對此給您帶來的不便與困擾，我深表歉意。
+請您放心，我已為您撤銷了該筆費用。我們會在六至八個工作日內，將一筆數額為 NT$ 60.00 的款項，記入該次購買行為的收據上顯示的信用卡中。
+希望以上資訊能夠幫助到您。同時，我已為您的此次來信標注了旗標，如果您在與銀行確認退款時遇到任何問題，請隨時來信告知我，以便我為您提供進一步的協助，非常感謝您對此付出的耐心與理解！</p></blockquote>
+
+<p>心裡想想“喔，他們有處理了～很好"
+隔了幾天又收到一封信</p>
+
+<blockquote><p>Follow-Up: 1234567890
+親愛的X先生 :
+您好，我是 iTunes Store 支援團隊的 Y。
+本次來信只是想快速了解一下，請問您之前所遇到的 iTunes Store 問題，是否已獲得解決，或者，是否對其還有任何疑問？
+希望您成功收到了之前我寄送給您的電郵。
+如果您在此問題上依然無法獲得妥善的解決方案，或還有其他 iTunes Store 的問題，請回覆此電郵，並提供相關問題的詳細描述資訊, 或您收到的任何錯誤資訊文本、截屏，我將非常願意為您提供進一步的協助，謝謝！
+期待您的回信確認，很感謝您對 iTunes Store 的支持。</p></blockquote>
+
+<p>沒想到apple客服竟然還有在注意這件事，我就簡單地回了信說我會注意一下信用卡紀錄。過沒多久又收到信</p>
+
+<blockquote><p>親愛的X先生：
+您好，感激您在百忙之中回覆我的郵件。
+請您不要客氣，我也非常感謝能有這次機會為您提供服務，盡我一點綿薄之力。
+我目前已將相應退款的 iTunes Store 退款憑證，寄送至您的郵箱「a@b.c」，供您作為資訊參考以及官方憑證使用。
+如果您之後有任何需要我們協助的地方，請您隨時與我們聯絡，我們非常樂意為您提供服務!
+再次感謝您對此付出的耐心與理解，祝您生活愉快，笑口常開！</p></blockquote>
+
+<p>雖然信件整體是套了template然後換換關鍵字。但整個感覺還是很爽～～
+做一個直接面對end user的service真的是小細節也不能忽視才能獲得使用者喜愛。</p>
+]]></content>
+  </entry>
+  
+</feed>

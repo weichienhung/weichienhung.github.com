@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: linux | Weichien Hung's studying note]]></title>
+  <link href="http://weichienhung.github.com/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.com/"/>
+  <updated>2013-07-27T15:37:23+08:00</updated>
+  <id>http://weichienhung.github.com/</id>
+  <author>
+    <name><![CDATA[Weichien Hung]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[shell script on linux ]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/07/10/linux-shellscript/"/>
+    <updated>2013-07-10T22:15:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/07/10/linux-shellscript</id>
+    <content type="html"><![CDATA[<p>前陣子用linux shell script寫了module自動deploy機制。紀錄一下這之中遇到的問題及常用的指令。<br/>
+簡單的自動deploy不外乎就是將檔案傳送至遠端機器然後進行安裝動作，修改設定檔。</p>
+
+<ul>
+<li><h3>login to remote server</h3></li>
+</ul>
+
+
+<!-- more -->
+
+
+<p>由於原生shell script裡面無法自動輸入帳密進行登錄動作，基本上常用的方法有兩種。<br/>
+第一種方法就是建立ssh public key然後放在遠端機器上，這樣你ssh時就不需要再輸入密碼。
+第二種方法是安裝其它套件協助自動輸入密碼。在這裡我介紹的是使用<a href="http://sourceforge.net/projects/sshpass/">sshpass</a>。
+安裝完後要記得自己先手動登入一次遠端機器，不然它不會作用。接下來你要登入遠端機器的指令就如下
+<code>sh
+sshpass -p {your password} ssh root@{remote ip} "echo 'hello world'"
+</code>
+這樣就可以登入遠端機器並輸出一個hello world。</p>
+
+<p>另外你也可以用scp來拷貝資料過去
+<code>
+sshpass -p {your password} scp data.zip root@{remote ip}:/home/root/
+</code>
+這樣就可以把data.zip丟到遠端/home/root/目錄</p>
+
+<ul>
+<li><h3>execute command on remote server</h3>
+
+簡單地方法就是在sshpass之後帶入command
+<code>sh
+sshpass -p {your password} ssh root@{remote ip} "mkdir myFolder;rm myFile.txt"
+</code>
+這樣就可以在登入後執行mkdir及rm兩個指令。
+另一種方法就是把你要執行的指令寫成一個shell script，然後scp過去後執行。例如我把這兩行指令寫在myScript.sh裡
+``` sh
+
+<h1>!/bin/bash</h1>
+
+<p>mkdir myFolder
+rm myFile.txt
+<code>
+然後執行底下指令
+</code>
+sshpass -p {your password} scp myScript.sh root@{remote ip}:/home/root/
+sshpass -p {your password} ssh root@{remote ip} "/home/root/myScript.sh"
+```</p></li>
+<li><h3>retrieve the specified string from a line</h3>
+
+<p>例如我有一個my.xml檔裡面紀錄了最新的版號如下
+<code>xml
+&lt;myxml&gt;
+  &lt;release&gt;1.0.22&lt;/release&gt;
+&lt;/myxml&gt;
+</code>
+用底下的指令來取出版號
+<code>sh
+latest=$(cat my.xml | sed -n 's/.*&lt;release&gt;\(.*\)&lt;\/release&gt;/\1/p')
+</code>
+由於(, ), /是特殊字元,所以在re裡前面都要加上\<br/>
+後面的\1表示要取result的第一個group。<br/>
+整個用$()包覆是因為要把執行結果放進latest這個變數。</p></li>
+<li><h3>replace string in a config file</h3>
+
+<p>使用sed指令加上regular expression
+<code>sh
+sed -i 's/.*MyTest.*/YourTest/' config.txt
+</code>
+這樣就可以把config.txt裡面所有字串裡中間有MyTest替換成YourTest</p></li>
+<li><h3>insert a new line in a config file</h3>
+
+<p>使用sed指令加上regular expression
+<code>sh
+sed -i 's/.*MyTest.*/&amp;\nYourTest/g' config.txt
+</code>
+這樣就可以在config.txt裡面插入新的一行YourTest在每一行符合中間有MyTest的字串。</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: octopress | Weichien Hung's studying note]]></title>
+  <link href="http://weichienhung.github.com/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.com/"/>
+  <updated>2013-07-27T15:37:23+08:00</updated>
+  <id>http://weichienhung.github.com/</id>
+  <author>
+    <name><![CDATA[Weichien Hung]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[hello octopress]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/07/07/hello-again/"/>
+    <updated>2013-07-07T15:22:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/07/07/hello-again</id>
+    <content type="html"><![CDATA[<p>真的是好久沒寫blog了。看了一下最後一篇是在3月2日已經整整4個月沒寫了。</p>
+
+<p>markdown的語法也都快忘光了:(一開始執行rake new_post時還發生錯誤無法產生新文章，快速地google了一下原來是dependency太舊的關係，執行完bundle update就OK了真是好險啊。
+前陣子使用emberjs發現了一些之前沒注意到的細節。</p>
+
+<!--more-->
+
+
+<h3>使用transitionTo不會呼叫在route裡的model function</h3>
+
+<p>例如底下的程式碼，當使用transitionTo()到post route的時候. emberjs並不會幫你呼叫model(), 所以在toPost()裡面必須自己將所需要的model產生並當成
+參數一併帶在transitionTo()裡面。model()只有當你直接在URL進入post route才會被呼叫。
+setupController則是無論使用transitionTo()或是在browser直接打URL進去post route都會被呼叫。
+``` javascript example</p>
+
+<pre><code>application.PostRoute = Ember.Route.extend({
+    setupController: function(controller, model) {
+        controller.set('content', model);
+    },
+
+    model : function(params){
+        return application.Post.find(params.post_id);
+    }
+});
+
+
+toPost : function(target_post){
+        var model = application.Post.find(target_post);
+        this.transitionTo('post', model);
+},
+</code></pre>
+
+<p>```</p>
+
+<h3>nested route使用</h3>
+
+<p>一開始以為nest route的命名規則都是parent route name + child route name。
+其實不盡然，原來是要看你是使用this.route或是this.resource如果是this.route的話就要加上parent name(如底下的board and summary route)</p>
+
+<p>當要轉換到board這個route就要加上parent route name. (見底下的transitionTo())
+```
+MyApp.Router.map(function() {</p>
+
+<pre><code>this.route("landing", {path: "/landing"});
+this.resource("lobby", {path: "/lobby"}, function(){
+  this.route("board", {path: "/board"} );
+  this.resource("store", {path: "/store"}, function(){
+    this.route("summary", {path: "/summary/:game_id"} );
+  });
+});
+this.route("pageNotFound", {path: "*:"});
+</code></pre>
+
+<p>});</p>
+
+<p>//route naming
+MyApp.LandingRoute = Ember.Route.extend({});
+MyApp.LobbyRoute = Ember.Route.extend({});
+MyApp.LobbyBoardRoute = Ember.Route.extend({});
+MyApp.StoreRoute = Ember.Route.extend({});
+MyApp.StoreSummaryRoute = Ember.Route.extend({});</p>
+
+<p>toBoard : function(){</p>
+
+<pre><code>this.transitionTo('lobby.board');
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[使用漂亮的code blocks]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block/"/>
+    <updated>2013-01-31T23:48:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block</id>
+    <content type="html"><![CDATA[<p>前幾天在寫emberjs dynamic URL的範例時覺得為什麼預設的code block這麼不好看。
+上網google了一下找到這篇<a href="http://octopress.org/docs/blogging/code/">文章</a>
+介紹如何使用預設在octopress裡面更好看的code blocks。</p>
+
+<!--more-->
+
+
+<p>看底下這個code block，是不是一整個變的很精美。
+``` javascript Solarized Hightlight example http://www.google.com 點我到google
+define(['app'], function (App) {</p>
+
+<pre><code>console.log("hello world");
+</code></pre>
+
+<p>});
+<code>``
+使用時用三個</code>把程式碼區塊包起來，然後分別可以設定你所用的語言，標題，還有可以放URL連到原始碼</p>
+
+<p>語法如下：</p>
+
+<pre><code>``` [語言][標題][URL][URL顯示名稱]
+你的code snippet
+```
+</code></pre>
+
+<p>像我上面的範例就是</p>
+
+<pre><code>``` javascript TestJavaScript http://www.google.com 點我到google
+define(['app'], function (App) {
+    console.log("hello world");
+});
+```
+</code></pre>
+
+<p>引用Gist的部份先跳過，我目前還沒用到Gist</p>
+
+<p>從檔案系統引用code的話你可以把檔案放在source/downloads/code底下然後引用它。目錄可以在<code>_config.yml</code>裡修改。config名稱是<code>code_dir</code></p>
+
+<p>語法如下：</p>
+
+<pre><code>{ % include_code [標題] [lang:語言] 檔案路徑 %}
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (sample.js)</span> <a href='/downloads/code/sample.js'>download</a></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">App</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+上面的範例就是</p>
+
+<pre><code>{ % include_code sample.js %}
+</code></pre>
+
+<p>最後是inline code blocks</p>
+
+<p>語法如下：</p>
+
+<pre><code>{ % codeblock [標題][語言][URL][URL顯示名稱] %}
+{ % endcodeblock %}
+</code></pre>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>sample.js  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+上面的範例就是</p>
+
+<pre><code>{ % codeblock sample.js lang:javascript %}
+console.log('hello world');
+{ % endcodeblock %}
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[讓web site能夠被search engine找到]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/01/27/submit-sitemaps-dot-xml/"/>
+    <updated>2013-01-27T23:33:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/01/27/submit-sitemaps-dot-xml</id>
+    <content type="html"><![CDATA[<p>
+昨天在blog右上角的search打入關鍵字一直找不到東西。想說等到讓search engine發現自己web site似乎太被動了。
+上網查了一下octopress本身就會自動產生sitemap.xml檔。只要把這個檔案丟到google或是像bing這樣的搜尋引擎網站就好了，
+還真是相當方便。<br/>
+先登入到 <a href="https://www.google.com/webmasters/">Google網站管理工具</a>
+然後根據網站的步驟去做，主要是必須放一個驗證檔到你的github上然後驗證網站是你所屬。
+</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[幫你的Octopress加上FB comments]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/01/26/add-fb-comment-for-octopress/"/>
+    <updated>2013-01-26T22:49:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/01/26/add-fb-comment-for-octopress</id>
+    <content type="html"><![CDATA[<p>
+今天試著幫blog加上facebook comment的功能。上網google了一下果然就有強者教學～真棒.
+<!--more-->
+參考了這篇文章<a href="http://blog.grambo.me.uk/blog/2012/02/20/adding-facebook-comments-to-octopress/">Adding Facebook Comments to Octopress</a>
+不過根據教學一步一步完成後竟然看不到fb comment.後來把facebook like的功能打開後就連facebook comment都出現了.
+我想是因為facebook_like.html裡面會include facebook javascript所以連帶facebook commment功能都出現了。 <br/><br/>
+順便也查了一下怎麼只秀出部份文章在首頁上。只要在文章加入<code>&lt;!--more--&gt;</code>
+這個tag,後面的文章就不會出現在blog首頁. 如下
+</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[前人種樹後人乘涼]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/"/>
+    <updated>2013-01-25T21:57:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang</id>
+    <content type="html"><![CDATA[<p>
+剛安裝完octopress連 category, comment, about都沒有...XD</br>
+快速網上查找了一下發現了底下這幾篇文章教人怎麼設置，實在是太感謝~~</br>
+<ul>
+    <li><a href="http://gibuloto.com/blog/octopress-categories-tag-cloud/">category</a></li>
+    <li><a href="http://blog.rx836.tw/blog/octopress-notes-1/">comment</a></li>
+    <li><a href="http://gangmax.me/blog/2012/05/04/add-about-page-in-octopress/">about</a></li>
+</ul>
+剩下的功能就改天再研究吧
+</p>
+
+]]></content>
+  </entry>
+  
+</feed>

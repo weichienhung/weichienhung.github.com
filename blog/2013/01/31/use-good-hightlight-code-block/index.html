@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>使用漂亮的code blocks - Weichien Hung's studying note</title>
+  <meta name="author" content="Weichien Hung">
+
+  
+  <meta name="description" content="前幾天在寫emberjs dynamic URL的範例時覺得為什麼預設的code block這麼不好看。
+上網google了一下找到這篇文章
+介紹如何使用預設在octopress裡面更好看的code blocks。 看底下這個code block，是不是一整個變的很精美。 Solarized &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Weichien Hung's studying note" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<meta property="fb:app_id" content="116996781810928" />
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Weichien Hung's studying note</a></h1>
+  
+    <h2>Practice makes perfect</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:weichienhung.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">使用漂亮的code Blocks</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-31T23:48:00+08:00" pubdate data-updated="true">Jan 31<span>st</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>前幾天在寫emberjs dynamic URL的範例時覺得為什麼預設的code block這麼不好看。
+上網google了一下找到這篇<a href="http://octopress.org/docs/blogging/code/">文章</a>
+介紹如何使用預設在octopress裡面更好看的code blocks。</p>
+
+<!--more-->
+
+
+<p>看底下這個code block，是不是一整個變的很精美。</p>
+
+<figure class='code'><figcaption><span>Solarized Hightlight example</span><a href='http://www.google.com'>點我到google</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;app&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">App</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;hello world&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>使用時用三個`把程式碼區塊包起來，然後分別可以設定你所用的語言，標題，還有可以放URL連到原始碼</p>
+
+<p>語法如下：</p>
+
+<pre><code>``` [語言][標題][URL][URL顯示名稱]
+你的code snippet
+```
+</code></pre>
+
+<p>像我上面的範例就是</p>
+
+<pre><code>``` javascript TestJavaScript http://www.google.com 點我到google
+define(['app'], function (App) {
+    console.log("hello world");
+});
+```
+</code></pre>
+
+<p>引用Gist的部份先跳過，我目前還沒用到Gist</p>
+
+<p>從檔案系統引用code的話你可以把檔案放在source/downloads/code底下然後引用它。目錄可以在<code>_config.yml</code>裡修改。config名稱是<code>code_dir</code></p>
+
+<p>語法如下：</p>
+
+<pre><code>{ % include_code [標題] [lang:語言] 檔案路徑 %}
+</code></pre>
+
+<figure class='code'><figcaption><span> (sample.js)</span> <a href='/downloads/code/sample.js'>download</a></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">App</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的範例就是</p>
+
+<pre><code>{ % include_code sample.js %}
+</code></pre>
+
+<p>最後是inline code blocks</p>
+
+<p>語法如下：</p>
+
+<pre><code>{ % codeblock [標題][語言][URL][URL顯示名稱] %}
+{ % endcodeblock %}
+</code></pre>
+
+<figure class='code'><figcaption><span>sample.js  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的範例就是</p>
+
+<pre><code>{ % codeblock sample.js lang:javascript %}
+console.log('hello world');
+{ % endcodeblock %}
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Weichien Hung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-31T23:48:00+08:00" pubdate data-updated="true">Jan 31<span>st</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/octopress/'>octopress</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block/" data-via="" data-counturl="http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/31/good-experience-on-itunes-purchase/" title="Previous Post: 良好體驗在Apple App store">&laquo; 良好體驗在Apple App store</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/02/02/emberjs-and-requirejs/" title="Next Post: emberjs with requirejs">emberjs with requirejs &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="facebook_comments" aria-live="polite">
+      <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
+<div
+  class="fb-comments"
+  data-href="http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block/"
+  data-num-posts="2"
+  data-width="470"
+  data-colorscheme="light">
+</div>
+
+    </div>
+  </section>
+
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/blog/categories/apple'>apple (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (4)</a></li><li><a href='/blog/categories/linux'>linux (1)</a></li><li><a href='/blog/categories/octopress'>octopress (5)</a></li><li><a href='/blog/categories/other'>other (1)</a></li><li><a href='/blog/categories/requirejs'>requirejs (1)</a></li><li><a href='/blog/categories/ruby'>ruby (3)</a></li><li><a href='/blog/categories/sublime'>sublime (1)</a></li></ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/27/write-maintainable-css/">write maintainable css</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/10/linux-shellscript/">shell script on linux </a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/07/hello-again/">hello octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/02/ruby-is-deligight/">ruby is elegance</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/01/ruby-study/">ruby study</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Weichien Hung -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'weichienhung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block/';
+        var disqus_url = 'http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=116996781810928&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

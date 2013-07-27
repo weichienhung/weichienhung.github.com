@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>write maintainable css - Weichien Hung's studying note</title>
+  <meta name="author" content="Weichien Hung">
+
+  
+  <meta name="description" content="今天看了CSS guideline描述在大型專案如何撰寫容易維護的CSS，我直接從翻譯過文章摘錄了其中覺得還不錯而且執行上也不會太困難的幾點記下來讓自己隨時能夠複習 階層式CSS 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+.widget{ padding: &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Weichien Hung's studying note" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<meta property="fb:app_id" content="116996781810928" />
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Weichien Hung's studying note</a></h1>
+  
+    <h2>Practice makes perfect</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:weichienhung.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Write Maintainable Css</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-27T11:25:00+08:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>今天看了<a href="https://github.com/doggy8088/CSS-Guidelines">CSS guideline</a>描述在大型專案如何撰寫容易維護的CSS，我直接從翻譯過文章摘錄了其中覺得還不錯而且執行上也不會太困難的幾點記下來讓自己隨時能夠複習</p>
+
+<!-- more -->
+
+
+<h3>階層式CSS</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.widget</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">padding</span><span class="o">:</span><span class="m">10px</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">border</span><span class="o">:</span><span class="m">1px</span> <span class="k">solid</span> <span class="m">#BADA55</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">background-color</span><span class="o">:</span><span class="m">#C0FFEE</span><span class="p">;</span>
+</span><span class='line'>    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span><span class="m">4px</span><span class="p">;</span>
+</span><span class='line'>       <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span><span class="m">4px</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span><span class="m">4px</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>    <span class="nc">.widget-heading</span><span class="p">{</span>
+</span><span class='line'>        <span class="k">font-size</span><span class="o">:</span><span class="m">1</span><span class="o">.</span><span class="m">5</span><span class="n">rem</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">line-height</span><span class="o">:</span><span class="m">1</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">font-weight</span><span class="o">:</span><span class="k">bold</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">color</span><span class="o">:</span><span class="m">#BADA55</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">margin-right</span><span class="o">:-</span><span class="m">10px</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">margin-left</span><span class="o">:</span> <span class="m">-10px</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">padding</span><span class="o">:</span><span class="m">0.25em</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我們可以發現，<code>.widget-heading</code> 是 <code>.widget</code> 的子元素，因為前者比後者多縮排了一級，這使網頁開發人員在閱讀這些樣式時，可以迅速得知在 HTML 裡面的標籤結構大致為何。</p>
+
+<h3>JS hooks</h3>
+
+<p>千萬不要把 CSS 樣式當成 JS hooks 來用。我們在寫 jQuery 的時候，經常會自訂一些 class 樣式類別名稱，以方便我們透過 jQuery 的選取器選中這個元素。<br/>
+除此之外，有時候我們也會自訂一些 HTML 屬性，讓 HTML 擁有一些特殊的行為，這些都算是 JS hooks 的應用，如果你把 JS 的行為與樣式綁在一起時，代表我們套用的樣式與 JavaScript 行為無法區分開來，這對可維護性來說也蠻傷的。<br/>
+如果你要把 JS 行為與某些標籤綁定起來的話，寫一個 JS 專用的 class 類別名稱。簡單地說就是在名稱上增加一個前綴 .js- 的命名空間，例如 <code>.js-toggle</code>，<code>.js-drag-and-drop</code>，這意味著我們可以透過不同的 class 綁定不同的 JS 行為和 CSS 樣式，而不會為偶發的衝突帶來困擾，範例如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="o">&lt;</span><span class="nt">th</span> <span class="nt">class</span><span class="o">=</span><span class="s2">&quot;is-sortable  js-is-sortable&quot;</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nt">th</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的這個 th 標籤有兩個 class，你可以用 <code>is-sortable</code> 這個類別來定義這個表格的樣式，而用另一個 <code>js-is-sortable</code> 來套用排序功能。</p>
+
+<h3>物件導向 CSS (OOCSS)</h3>
+
+<p>我都是以物件導向的方式撰寫 CSS，我把元件區分成結構（物件）與外觀（擴充）。正如以下想法（注意這個只是想法而非例子）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.room</span><span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nc">.room--kitchen</span><span class="p">{}</span>
+</span><span class='line'><span class="nc">.room--bedroom</span><span class="p">{}</span>
+</span><span class='line'><span class="nc">.room--bathroom</span><span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我們在屋子裡有許多房間，它們都有共同的特點：它們都包含地板、天花板、牆壁和門。這些共享的部分我們可以放到一個抽像的 <code>.room{} class</code> 中。<br/>
+不過我們還有其它與眾不同的房間：一個廚房可能有地磚，臥室可能有地毯，洗手間可能沒有窗戶但是臥室會有，每個房間的牆壁顏色也許也會不一樣。<br/>
+物件導向 CSS 的思考方式，使我們把相同部分抽像出來，並組成結構部分，然後再用更具體的 class 來擴充這些外觀，並新增特殊的處理方法。</p>
+
+<h3>簡寫</h3>
+
+<p>使用簡寫的 CSS 語法應該要特別注意。
+或許你會嘗試撰寫像 <code>background:red;</code> 這樣的屬性，或許你這樣寫的背後真正意思是 <code>background-image:none; background-position:top left; background-repeat: repeat; background-color:red;</code> 這樣的語法，雖然這樣寫通常不會出什麼問題，但是哪怕只出一次問題就值得考慮要不要放棄簡寫了，在這個例子裡，你應該將其改寫為 <code>background-color:red;</code> 比較洽當。<br/>
+類似的，像 <code>margin:0;</code> 這樣的宣告迪缺清楚明瞭，但是還是應該 盡量寫清楚，如果你只是想修改底部的 margin，最好具體一點，寫成 <code>margin-bottom:0;</code> 會來的好很多。
+你必須把樣式定義的很清楚，不要因為習慣用簡寫，而不小心改到其他樣式的相關屬性。例如你只想改掉底部的 margin，那就不要用也會把其它邊距也歸零的 <code>margin:0</code> 語法。
+簡寫雖然是好東西，但是切忌濫用。</p>
+
+<h3>在 CSS 裡千萬不要用 ID</h3>
+
+<p>在 HTML 裡 ID 可以用於 JS 以及錨點定位(anchor)，但是在 CSS 裡建議只用 class 來設定樣式，你不會想看到在任何一個樣式表中看見使用 ID 的選取器 (#someid)。</p>
+
+<h3>選取器</h3>
+
+<p>請維持選取器簡短、有效率與可攜性。<br/>
+那些依賴頁面元素來定位的選取器有很多缺點。例如 <code>.sidebar h3 span{}</code> 這樣的選取器，就是太過依賴元素的相對位置，所以很難把 span 移到 h3 和 sidebar 外面並維持其樣式。<br/>
+結構複雜的選取器也會影響網頁顯示效能，選取器結構越複雜（如 <code>.sidebar h3 span</code> 為三層，<code>.content ul p a</code> 是四層），瀏覽器對於顯示網頁的負擔就越大。<br/>
+所以，盡量不要讓樣式依賴於其他元素的位置，也盡量讓選取器保持簡短而易懂。</p>
+
+<h3>!important</h3>
+
+<p>你只應該在一些輔助類別(helper classes)上使用 <code>!important</code> 修飾子。用 <code>!important</code> 提升優先級也可以，例如如果你要讓某條規則 一直 生效的話，可以用 <code>.error{ color:red!important; }</code>。<br/>
+避免主動使用 <code>!important</code> 修飾子。例如當你的 CSS 寫得很複雜的時候，不要因為想偷懶而使用 <code>!important</code> 來取巧，建議重寫你之前寫好的樣式，並重構選取系的使用方式。記得：維持選取器的簡短並且避免用 ID，將可有效幫助你寫好 CSS。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Weichien Hung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-27T11:25:00+08:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/css/'>css</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css/" data-via="" data-counturl="http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/07/10/linux-shellscript/" title="Previous Post: shell script on linux ">&laquo; shell script on linux </a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="facebook_comments" aria-live="polite">
+      <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
+<div
+  class="fb-comments"
+  data-href="http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css/"
+  data-num-posts="2"
+  data-width="470"
+  data-colorscheme="light">
+</div>
+
+    </div>
+  </section>
+
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/blog/categories/apple'>apple (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (4)</a></li><li><a href='/blog/categories/linux'>linux (1)</a></li><li><a href='/blog/categories/octopress'>octopress (5)</a></li><li><a href='/blog/categories/other'>other (1)</a></li><li><a href='/blog/categories/requirejs'>requirejs (1)</a></li><li><a href='/blog/categories/ruby'>ruby (3)</a></li><li><a href='/blog/categories/sublime'>sublime (1)</a></li></ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/27/write-maintainable-css/">write maintainable css</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/10/linux-shellscript/">shell script on linux </a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/07/hello-again/">hello octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/02/ruby-is-deligight/">ruby is elegance</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/01/ruby-study/">ruby study</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Weichien Hung -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'weichienhung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css/';
+        var disqus_url = 'http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=116996781810928&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

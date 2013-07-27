@@ -1,0 +1,1898 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Weichien Hung's studying note]]></title>
+  <link href="http://weichienhung.github.com/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.com/"/>
+  <updated>2013-07-27T15:37:23+08:00</updated>
+  <id>http://weichienhung.github.com/</id>
+  <author>
+    <name><![CDATA[Weichien Hung]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[write maintainable css]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css/"/>
+    <updated>2013-07-27T11:25:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css</id>
+    <content type="html"><![CDATA[<p>今天看了<a href="https://github.com/doggy8088/CSS-Guidelines">CSS guideline</a>描述在大型專案如何撰寫容易維護的CSS，我直接從翻譯過文章摘錄了其中覺得還不錯而且執行上也不會太困難的幾點記下來讓自己隨時能夠複習</p>
+
+<!-- more -->
+
+
+<h3>階層式CSS</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.widget</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">padding</span><span class="o">:</span><span class="m">10px</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">border</span><span class="o">:</span><span class="m">1px</span> <span class="k">solid</span> <span class="m">#BADA55</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">background-color</span><span class="o">:</span><span class="m">#C0FFEE</span><span class="p">;</span>
+</span><span class='line'>    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span><span class="m">4px</span><span class="p">;</span>
+</span><span class='line'>       <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span><span class="m">4px</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span><span class="m">4px</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>    <span class="nc">.widget-heading</span><span class="p">{</span>
+</span><span class='line'>        <span class="k">font-size</span><span class="o">:</span><span class="m">1</span><span class="o">.</span><span class="m">5</span><span class="n">rem</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">line-height</span><span class="o">:</span><span class="m">1</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">font-weight</span><span class="o">:</span><span class="k">bold</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">color</span><span class="o">:</span><span class="m">#BADA55</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">margin-right</span><span class="o">:-</span><span class="m">10px</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">margin-left</span><span class="o">:</span> <span class="m">-10px</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">padding</span><span class="o">:</span><span class="m">0.25em</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我們可以發現，<code>.widget-heading</code> 是 <code>.widget</code> 的子元素，因為前者比後者多縮排了一級，這使網頁開發人員在閱讀這些樣式時，可以迅速得知在 HTML 裡面的標籤結構大致為何。</p>
+
+<h3>JS hooks</h3>
+
+<p>千萬不要把 CSS 樣式當成 JS hooks 來用。我們在寫 jQuery 的時候，經常會自訂一些 class 樣式類別名稱，以方便我們透過 jQuery 的選取器選中這個元素。<br/>
+除此之外，有時候我們也會自訂一些 HTML 屬性，讓 HTML 擁有一些特殊的行為，這些都算是 JS hooks 的應用，如果你把 JS 的行為與樣式綁在一起時，代表我們套用的樣式與 JavaScript 行為無法區分開來，這對可維護性來說也蠻傷的。<br/>
+如果你要把 JS 行為與某些標籤綁定起來的話，寫一個 JS 專用的 class 類別名稱。簡單地說就是在名稱上增加一個前綴 .js- 的命名空間，例如 <code>.js-toggle</code>，<code>.js-drag-and-drop</code>，這意味著我們可以透過不同的 class 綁定不同的 JS 行為和 CSS 樣式，而不會為偶發的衝突帶來困擾，範例如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="o">&lt;</span><span class="nt">th</span> <span class="nt">class</span><span class="o">=</span><span class="s2">&quot;is-sortable  js-is-sortable&quot;</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nt">th</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的這個 th 標籤有兩個 class，你可以用 <code>is-sortable</code> 這個類別來定義這個表格的樣式，而用另一個 <code>js-is-sortable</code> 來套用排序功能。</p>
+
+<h3>物件導向 CSS (OOCSS)</h3>
+
+<p>我都是以物件導向的方式撰寫 CSS，我把元件區分成結構（物件）與外觀（擴充）。正如以下想法（注意這個只是想法而非例子）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.room</span><span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nc">.room--kitchen</span><span class="p">{}</span>
+</span><span class='line'><span class="nc">.room--bedroom</span><span class="p">{}</span>
+</span><span class='line'><span class="nc">.room--bathroom</span><span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我們在屋子裡有許多房間，它們都有共同的特點：它們都包含地板、天花板、牆壁和門。這些共享的部分我們可以放到一個抽像的 <code>.room{} class</code> 中。<br/>
+不過我們還有其它與眾不同的房間：一個廚房可能有地磚，臥室可能有地毯，洗手間可能沒有窗戶但是臥室會有，每個房間的牆壁顏色也許也會不一樣。<br/>
+物件導向 CSS 的思考方式，使我們把相同部分抽像出來，並組成結構部分，然後再用更具體的 class 來擴充這些外觀，並新增特殊的處理方法。</p>
+
+<h3>簡寫</h3>
+
+<p>使用簡寫的 CSS 語法應該要特別注意。
+或許你會嘗試撰寫像 <code>background:red;</code> 這樣的屬性，或許你這樣寫的背後真正意思是 <code>background-image:none; background-position:top left; background-repeat: repeat; background-color:red;</code> 這樣的語法，雖然這樣寫通常不會出什麼問題，但是哪怕只出一次問題就值得考慮要不要放棄簡寫了，在這個例子裡，你應該將其改寫為 <code>background-color:red;</code> 比較洽當。<br/>
+類似的，像 <code>margin:0;</code> 這樣的宣告迪缺清楚明瞭，但是還是應該 盡量寫清楚，如果你只是想修改底部的 margin，最好具體一點，寫成 <code>margin-bottom:0;</code> 會來的好很多。
+你必須把樣式定義的很清楚，不要因為習慣用簡寫，而不小心改到其他樣式的相關屬性。例如你只想改掉底部的 margin，那就不要用也會把其它邊距也歸零的 <code>margin:0</code> 語法。
+簡寫雖然是好東西，但是切忌濫用。</p>
+
+<h3>在 CSS 裡千萬不要用 ID</h3>
+
+<p>在 HTML 裡 ID 可以用於 JS 以及錨點定位(anchor)，但是在 CSS 裡建議只用 class 來設定樣式，你不會想看到在任何一個樣式表中看見使用 ID 的選取器 (#someid)。</p>
+
+<h3>選取器</h3>
+
+<p>請維持選取器簡短、有效率與可攜性。<br/>
+那些依賴頁面元素來定位的選取器有很多缺點。例如 <code>.sidebar h3 span{}</code> 這樣的選取器，就是太過依賴元素的相對位置，所以很難把 span 移到 h3 和 sidebar 外面並維持其樣式。<br/>
+結構複雜的選取器也會影響網頁顯示效能，選取器結構越複雜（如 <code>.sidebar h3 span</code> 為三層，<code>.content ul p a</code> 是四層），瀏覽器對於顯示網頁的負擔就越大。<br/>
+所以，盡量不要讓樣式依賴於其他元素的位置，也盡量讓選取器保持簡短而易懂。</p>
+
+<h3>!important</h3>
+
+<p>你只應該在一些輔助類別(helper classes)上使用 <code>!important</code> 修飾子。用 <code>!important</code> 提升優先級也可以，例如如果你要讓某條規則 一直 生效的話，可以用 <code>.error{ color:red!important; }</code>。<br/>
+避免主動使用 <code>!important</code> 修飾子。例如當你的 CSS 寫得很複雜的時候，不要因為想偷懶而使用 <code>!important</code> 來取巧，建議重寫你之前寫好的樣式，並重構選取系的使用方式。記得：維持選取器的簡短並且避免用 ID，將可有效幫助你寫好 CSS。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[shell script on linux ]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/07/10/linux-shellscript/"/>
+    <updated>2013-07-10T22:15:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/07/10/linux-shellscript</id>
+    <content type="html"><![CDATA[<p>前陣子用linux shell script寫了module自動deploy機制。紀錄一下這之中遇到的問題及常用的指令。<br/>
+簡單的自動deploy不外乎就是將檔案傳送至遠端機器然後進行安裝動作，修改設定檔。</p>
+
+<ul>
+<li><h3>login to remote server</h3></li>
+</ul>
+
+
+<!-- more -->
+
+
+<p>由於原生shell script裡面無法自動輸入帳密進行登錄動作，基本上常用的方法有兩種。<br/>
+第一種方法就是建立ssh public key然後放在遠端機器上，這樣你ssh時就不需要再輸入密碼。
+第二種方法是安裝其它套件協助自動輸入密碼。在這裡我介紹的是使用<a href="http://sourceforge.net/projects/sshpass/">sshpass</a>。
+安裝完後要記得自己先手動登入一次遠端機器，不然它不會作用。接下來你要登入遠端機器的指令就如下</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> ssh root@<span class="o">{</span>remote ip<span class="o">}</span> <span class="s2">&quot;echo &#39;hello world&#39;&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣就可以登入遠端機器並輸出一個hello world。</p>
+
+<p>另外你也可以用scp來拷貝資料過去</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> scp data.zip root@<span class="o">{</span>remote ip<span class="o">}</span>:/home/root/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣就可以把data.zip丟到遠端/home/root/目錄</p>
+
+<ul>
+<li><h3>execute command on remote server</h3>
+
+<p>簡單地方法就是在sshpass之後帶入command</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> ssh root@<span class="o">{</span>remote ip<span class="o">}</span> <span class="s2">&quot;mkdir myFolder;rm myFile.txt&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣就可以在登入後執行mkdir及rm兩個指令。
+另一種方法就是把你要執行的指令寫成一個shell script，然後scp過去後執行。例如我把這兩行指令寫在myScript.sh裡</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'>mkdir myFolder
+</span><span class='line'>rm myFile.txt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然後執行底下指令</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> scp myScript.sh root@<span class="o">{</span>remote ip<span class="o">}</span>:/home/root/
+</span><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> ssh root@<span class="o">{</span>remote ip<span class="o">}</span> <span class="s2">&quot;/home/root/myScript.sh&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><h3>retrieve the specified string from a line</h3>
+
+<p>例如我有一個my.xml檔裡面紀錄了最新的版號如下</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;myxml&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;release&gt;</span>1.0.22<span class="nt">&lt;/release&gt;</span>
+</span><span class='line'><span class="nt">&lt;/myxml&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>用底下的指令來取出版號</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">latest</span><span class="o">=</span><span class="k">$(</span>cat my.xml | sed -n <span class="s1">&#39;s/.*&lt;release&gt;\(.*\)&lt;\/release&gt;/\1/p&#39;</span><span class="k">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>由於(, ), /是特殊字元,所以在re裡前面都要加上\<br/>
+後面的\1表示要取result的第一個group。<br/>
+整個用$()包覆是因為要把執行結果放進latest這個變數。</p>
+
+<ul>
+<li><h3>replace string in a config file</h3>
+
+<p>使用sed指令加上regular expression</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sed -i <span class="s1">&#39;s/.*MyTest.*/YourTest/&#39;</span> config.txt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣就可以把config.txt裡面所有字串裡中間有MyTest替換成YourTest</p>
+
+<ul>
+<li><h3>insert a new line in a config file</h3>
+
+<p>使用sed指令加上regular expression</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sed -i <span class="s1">&#39;s/.*MyTest.*/&amp;\nYourTest/g&#39;</span> config.txt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣就可以在config.txt裡面插入新的一行YourTest在每一行符合中間有MyTest的字串。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[hello octopress]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/07/07/hello-again/"/>
+    <updated>2013-07-07T15:22:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/07/07/hello-again</id>
+    <content type="html"><![CDATA[<p>真的是好久沒寫blog了。看了一下最後一篇是在3月2日已經整整4個月沒寫了。</p>
+
+<p>markdown的語法也都快忘光了:(一開始執行rake new_post時還發生錯誤無法產生新文章，快速地google了一下原來是dependency太舊的關係，執行完bundle update就OK了真是好險啊。
+前陣子使用emberjs發現了一些之前沒注意到的細節。</p>
+
+<!--more-->
+
+
+<h3>使用transitionTo不會呼叫在route裡的model function</h3>
+
+<p>例如底下的程式碼，當使用transitionTo()到post route的時候. emberjs並不會幫你呼叫model(), 所以在toPost()裡面必須自己將所需要的model產生並當成
+參數一併帶在transitionTo()裡面。model()只有當你直接在URL進入post route才會被呼叫。
+setupController則是無論使用transitionTo()或是在browser直接打URL進去post route都會被呼叫。</p>
+
+<figure class='code'><figcaption><span>example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">application</span><span class="p">.</span><span class="nx">PostRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">setupController</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">controller</span><span class="p">,</span> <span class="nx">model</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="nx">model</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">model</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">params</span><span class="p">){</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">application</span><span class="p">.</span><span class="nx">Post</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">post_id</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nx">toPost</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">target_post</span><span class="p">){</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">model</span> <span class="o">=</span> <span class="nx">application</span><span class="p">.</span><span class="nx">Post</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">target_post</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="nx">model</span><span class="p">);</span>
+</span><span class='line'><span class="p">},</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>nested route使用</h3>
+
+<p>一開始以為nest route的命名規則都是parent route name + child route name。
+其實不盡然，原來是要看你是使用this.route或是this.resource如果是this.route的話就要加上parent name(如底下的board and summary route)</p>
+
+<p>當要轉換到board這個route就要加上parent route name. (見底下的transitionTo())</p>
+
+<figure class='code'><figcaption><span>example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s2">&quot;landing&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/landing&quot;</span><span class="p">});</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">resource</span><span class="p">(</span><span class="s2">&quot;lobby&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/lobby&quot;</span><span class="p">},</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s2">&quot;board&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/board&quot;</span><span class="p">}</span> <span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">resource</span><span class="p">(</span><span class="s2">&quot;store&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/store&quot;</span><span class="p">},</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/summary/:game_id&quot;</span><span class="p">}</span> <span class="p">);</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s2">&quot;pageNotFound&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;*:&quot;</span><span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//route naming</span>
+</span><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LandingRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
+</span><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LobbyRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
+</span><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LobbyBoardRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
+</span><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">StoreRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
+</span><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">StoreSummaryRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nx">toBoard</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="s1">&#39;lobby.board&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ruby is elegance]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/03/02/ruby-is-deligight/"/>
+    <updated>2013-03-02T14:08:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/03/02/ruby-is-deligight</id>
+    <content type="html"><![CDATA[<p>今天持續Ruby study,紀錄一下學習到的東西</p>
+
+<h3>Yield</h3>
+
+<p>讓自定義的method可以接受block, 在yield之後的code會等block內容跑完才接著跑</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">block_test</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;We&#39;re in the method!&quot;</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Yielding to the block...&quot;</span>
+</span><span class='line'>  <span class="k">yield</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;We&#39;re back in the method!&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">block_test</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;&gt;&gt;&gt; We&#39;re in the block!&quot;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#you can pass parameter too</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">yield_name</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;In the method! Let&#39;s yield.&quot;</span>
+</span><span class='line'>  <span class="k">yield</span> <span class="nb">name</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Block complete! Back in the method.&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">yield_name</span><span class="p">(</span><span class="s2">&quot;samuel&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;My name is </span><span class="si">#{</span><span class="n">a</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The output is</p>
+
+<pre><code>We're in the method!
+Yielding to the block...
+&gt;&gt;&gt; We're in the block!
+We're back in the method!
+
+In the method! Let's yield.
+My name is samuel.
+Block complete! Back in the method.
+</code></pre>
+
+<!--more-->
+
+
+<h3>Why Proc?</h3>
+
+<p>block can&#8217;t be saved to a variable and not a regular object. Proc keep your code reusable. With blocks you have to write your code out each time you need it.
+With proc, you write your code once. Proc is savable block.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">floats</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">.</span><span class="mi">45</span><span class="p">,</span> <span class="mi">0</span><span class="o">.</span><span class="mi">91</span><span class="p">,</span> <span class="mi">7</span><span class="o">.</span><span class="mi">727</span><span class="p">,</span> <span class="mi">11</span><span class="o">.</span><span class="mi">42</span><span class="p">,</span> <span class="mi">482</span><span class="o">.</span><span class="mi">911</span><span class="o">]</span>
+</span><span class='line'><span class="n">round_down</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="o">.</span><span class="n">floor</span> <span class="p">}</span>
+</span><span class='line'><span class="c1"># &amp; is used to convert round_down proc to block</span>
+</span><span class='line'><span class="n">ints</span> <span class="o">=</span> <span class="n">floats</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">round_down</span><span class="p">)</span>  <span class="c1"># [1, 3, 0, 7, 11, 482]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># you can call proc directly</span>
+</span><span class='line'><span class="n">round_down</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="mi">10</span><span class="o">.</span><span class="mi">45</span><span class="p">)</span> <span class="c1"># 10</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># convert Symbol to Proc by &amp;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">floats</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_s</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Lambdas</h3>
+
+<p>lambdas are objects and identical to procs</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">strings</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;leonardo&quot;</span><span class="p">,</span> <span class="s2">&quot;donatello&quot;</span><span class="p">,</span> <span class="s2">&quot;raphael&quot;</span><span class="p">,</span> <span class="s2">&quot;michaelangelo&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="n">symbolize</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="o">.</span><span class="n">to_sym</span> <span class="p">}</span>
+</span><span class='line'><span class="n">symbols</span> <span class="o">=</span> <span class="n">strings</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">symbolize</span><span class="p">)</span> <span class="c1"># [:leonardo, :donatello, :raphael, :michaelangelo]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Differences between Procs and Lambdas</h4>
+
+<ol>
+<li>Lambdas checks the number of arguments passed to it. Procs ignore it.</li>
+<li>When Lambdas returns, it passes control back to calling method. Procs doesn&#8217;t</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">batman_ironman_proc</span>
+</span><span class='line'>  <span class="n">victor</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">&quot;Batman will win!&quot;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">victor</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'>  <span class="s2">&quot;Iron Man will win!&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="n">batman_ironman_proc</span>  <span class="c1"># Batman will win!</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">batman_ironman_lambda</span>
+</span><span class='line'>  <span class="n">victor</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">&quot;Batman will win!&quot;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">victor</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'>  <span class="s2">&quot;Iron Man will win!&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="n">batman_ironman_lambda</span>  <span class="c1"># Iron Man will win!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Class</h3>
+
+<p>Object-Oriented language always has class.  def initialize就相當於constructor</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">matz</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Yukihiro&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>global ($), instance (@), class (@@) variable</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="vg">$type</span> <span class="o">=</span> <span class="s2">&quot;human&quot;</span>
+</span><span class='line'>  <span class="vc">@@other</span> <span class="o">=</span> <span class="s2">&quot;other info&quot;</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">getMe</span>
+</span><span class='line'>      <span class="vi">@name</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">getOther</span>
+</span><span class='line'>      <span class="vc">@@other</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">man</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;samuel&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">puts</span> <span class="vg">$type</span>  <span class="c1"># human</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">man</span><span class="o">.</span><span class="n">getMe</span>  <span class="c1"># samuel</span>
+</span><span class='line'><span class="nb">puts</span> <span class="no">Person</span><span class="o">.</span><span class="n">getOther</span>  <span class="c1"># other info</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Inheritance</h3>
+
+<p>Like Java, Ruby only allow one parent class</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Parent</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">isMankind?</span>
+</span><span class='line'>      <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Child</span> <span class="o">&lt;</span> <span class="no">Parent</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">child</span> <span class="o">=</span> <span class="no">Child</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">child</span><span class="o">.</span><span class="n">isMankind</span>  <span class="c1"># true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Public and Private method</h3>
+
+<p>It&#8217;s very simple, put method declaration under public or private</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">MyClass</span>
+</span><span class='line'>  <span class="kp">public</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">iampublic</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">iamprivate</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Method getter and setter</h3>
+
+<p>Incredible simple. attr_accessor means both writer and reader</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'><span class="kp">attr_reader</span> <span class="ss">:name</span>
+</span><span class='line'><span class="kp">attr_writer</span> <span class="ss">:job</span>
+</span><span class='line'><span class="kp">attr_accessor</span> <span class="ss">:age</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">job</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
+</span><span class='line'>    <span class="vi">@job</span> <span class="o">=</span> <span class="n">job</span>
+</span><span class='line'>    <span class="vi">@age</span> <span class="o">=</span> <span class="n">age</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;samuel&quot;</span><span class="p">,</span><span class="s2">&quot;engineer&quot;</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">age</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Module</h3>
+
+<p>module is like class but it can&#8217;t create instance and submodule</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">MyModule</span>
+</span><span class='line'>  <span class="c1">#constant variable</span>
+</span><span class='line'>  <span class="no">NAME</span> <span class="o">=</span> <span class="s2">&quot;samuel&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">#class method</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">showFull</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="no">NAME</span> <span class="o">+</span> <span class="s2">&quot; hung&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1"># user :: to access variable</span>
+</span><span class='line'><span class="nb">puts</span> <span class="ss">MyModule</span><span class="p">:</span><span class="ss">:NAME</span>  <span class="c1"># samuel</span>
+</span><span class='line'><span class="no">MyModule</span><span class="o">.</span><span class="n">showFull</span> <span class="c1"># samuel hung</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># you can use include to get module scope</span>
+</span><span class='line'><span class="kp">include</span> <span class="no">MyModule</span>
+</span><span class='line'><span class="nb">puts</span> <span class="no">NAME</span> <span class="c1"># samuel</span>
+</span><span class='line'><span class="n">showFull</span>  <span class="c1"># this line will cause error, you can&#39;t do this on method even you change the scope.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># load other module to use</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;date&#39;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="no">Date</span><span class="o">.</span><span class="n">today</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Module and Class</h3>
+
+<p>Easily put module in class</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">MyModule</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">showFull</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;samuel hung&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">MyModule</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">man</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">man</span><span class="o">.</span><span class="n">showFull</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ruby study]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/03/01/ruby-study/"/>
+    <updated>2013-03-01T23:39:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/03/01/ruby-study</id>
+    <content type="html"><![CDATA[<p>最近都在看CSS沒什麼時間繼續看Ruby,今天上codecademy練習ruby。
+在這裡紀錄一下之前沒看過的語法。</p>
+
+<h3>Multiple comments</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="cm">=begin</span>
+</span><span class='line'><span class="cm">this is comment,</span>
+</span><span class='line'><span class="cm">i am comment too.</span>
+</span><span class='line'><span class="cm">=end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Get input from console</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">print</span> <span class="s2">&quot;Integer please: &quot;</span>
+</span><span class='line'><span class="n">user_num</span> <span class="o">=</span> <span class="nb">Integer</span><span class="p">(</span><span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<h3>Different between string.downcase and string.downcase!</h3>
+
+<p>With ! the user&#8217;s string is modified in-place; otherwise, Ruby will create a copy of user_input and modify that instead</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;Samuel&quot;</span>
+</span><span class='line'><span class="n">downcase_name</span> <span class="o">=</span> <span class="nb">name</span><span class="o">.</span><span class="n">downcase</span>
+</span><span class='line'><span class="nb">puts</span> <span class="nb">name</span>  <span class="c1"># &quot;Samuel&quot;</span>
+</span><span class='line'><span class="n">downcase_name</span> <span class="o">=</span> <span class="nb">name</span><span class="o">.</span><span class="n">downcase!</span>
+</span><span class='line'><span class="nb">puts</span> <span class="nb">name</span>  <span class="c1"># &quot;samuel&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Hash sort_by and Array sort!</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'><span class="n">h</span><span class="o">.</span><span class="n">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span> <span class="n">b</span> <span class="p">}</span>  <span class="c1"># we can sort by value</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">my_array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="o">]</span>
+</span><span class='line'><span class="n">my_array</span><span class="o">.</span><span class="n">sort!</span> <span class="c1"># [1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#descending order</span>
+</span><span class='line'><span class="n">my_array</span><span class="o">.</span><span class="n">sort!</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span> <span class="n">b</span> <span class="o">&lt;=&gt;</span> <span class="n">a</span><span class="p">}</span> <span class="c1"># [9, 8, 7, 6, 5, 4, 3, 2, 1]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>What&#8217;s Symbol? it&#8217;s not a string</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;string&quot;</span> <span class="o">==</span> <span class="ss">:string</span> <span class="c1"># false</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">object_id</span> <span class="o">==</span> <span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">object_id</span>  <span class="c1"># false</span>
+</span><span class='line'>
+</span><span class='line'><span class="ss">:symbol</span><span class="o">.</span><span class="n">object_id</span> <span class="o">==</span> <span class="ss">:symbol</span><span class="o">.</span><span class="n">object_id</span> <span class="c1"># true</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">to_sym</span> <span class="o">==</span> <span class="ss">:string</span> <span class="c1"># true</span>
+</span><span class='line'><span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">intern</span> <span class="o">==</span> <span class="ss">:string</span> <span class="c1"># true, inter is the same as to_sym</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Why need symbol? 主要是用來當hash的key以及用來參考到method的名字</p>
+
+<ol>
+<li>They&#8217;re immutable, meaning they can&#8217;t be changed once they&#8217;re created</li>
+<li>Only one copy,節省記憶體</li>
+<li>Hashes that use symbols instead of strings as keys work faster</li>
+</ol>
+
+
+<p>來看一下怎麼使用</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">movies</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;star_war&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">:age</span> <span class="o">=&gt;</span> <span class="s2">&quot;1970&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#But since ruby 1.9 hash become more compact</span>
+</span><span class='line'><span class="n">movies</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">name</span><span class="p">:</span> <span class="s2">&quot;star_war&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="ss">age</span><span class="p">:</span> <span class="s2">&quot;1970&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>switch conidition</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">case</span> <span class="n">language</span>
+</span><span class='line'><span class="k">when</span> <span class="s2">&quot;JS&quot;</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Websites!&quot;</span>
+</span><span class='line'><span class="k">when</span> <span class="s2">&quot;Python&quot;</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Science!&quot;</span>
+</span><span class='line'><span class="k">when</span> <span class="s2">&quot;Ruby&quot;</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Web apps!&quot;</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;I don&#39;t know!&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">case</span> <span class="n">language</span>
+</span><span class='line'>  <span class="k">when</span> <span class="s2">&quot;JS&quot;</span> <span class="k">then</span> <span class="nb">puts</span> <span class="s2">&quot;Websites!&quot;</span>
+</span><span class='line'>  <span class="k">when</span> <span class="s2">&quot;Python&quot;</span> <span class="k">then</span> <span class="nb">puts</span> <span class="s2">&quot;Science!&quot;</span>
+</span><span class='line'>  <span class="k">when</span> <span class="s2">&quot;Ruby&quot;</span> <span class="k">then</span> <span class="nb">puts</span> <span class="s2">&quot;Web apps!&quot;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="nb">puts</span> <span class="s2">&quot;I don&#39;t know!&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Ternary conditional expression</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="mi">3</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="o">?</span> <span class="s2">&quot;hello world&quot;</span>  <span class="p">:</span> <span class="s2">&quot;evil&quot;</span>  <span class="c1"># hello world</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Conditional assignment.</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">favorite_book</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">favorite_book</span>  <span class="c1"># won&#39;t output anything</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">favorite_book</span> <span class="o">||=</span> <span class="s2">&quot;Cat&#39;s Cradle&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">favorite_book</span>  <span class="c1"># Cat&#39;s Cradle</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>upto and downto</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">95</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">num</span><span class="o">|</span> <span class="nb">print</span> <span class="n">num</span> <span class="p">}</span> <span class="c1"># 95 96 97 98 99 100</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># also apply to alphabet</span>
+</span><span class='line'><span class="s2">&quot;L&quot;</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="nb">print</span> <span class="n">word</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Call and Response</h3>
+
+<p>Here we use symbol to reference a method name. For example, we want to check variable has next method or not.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">age</span> <span class="o">=</span> <span class="mi">30</span>
+</span><span class='line'><span class="n">age</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:next</span><span class="p">)</span> <span class="c1"># true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ruby beginning]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/02/21/ruby-beginning/"/>
+    <updated>2013-02-21T22:31:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/02/21/ruby-beginning</id>
+    <content type="html"><![CDATA[<p>前幾天開始看Ruby起因是網路上很多分享的project都是Rails,為了能夠加速了解理面的內容就來學一下Rails,
+不過為了Rails必須要先打好Ruby的基礎。在這裡紀錄下學習過的語法避免自己忘光,光是昨天沒看語法我已經忘了不少XD。</p>
+
+<!--more-->
+
+
+<p>Everything is object,在Ruby裡每一個東西都是物件,像直接對1這個object呼叫next兩次就會得到3</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>呼叫methods得到一個array包含所有的methods</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">methods</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ruby裡蠻特殊的是會回傳布林值的method傳參數是用&#8217;?&#8217;,其它的用&#8217;()&#8217;或空格</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">between?</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span>  <span class="o">/*</span> <span class="kp">true</span> <span class="o">*/</span>
+</span><span class='line'><span class="s2">&quot;I am a Rubyist&quot;</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;R&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="s2">&quot;I am a Rubyist&quot;</span><span class="o">.</span><span class="n">index</span> <span class="s1">&#39;R&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>String operations</h2>
+
+<h4>search</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;[Luke:] I can’t believe it. [Yoda:] That is why you fail.&quot;</span><span class="o">.</span><span class="n">include?</span><span class="s1">&#39;Yoda&#39;</span>
+</span><span class='line'><span class="s2">&quot;Ruby is a beautiful language&quot;</span><span class="o">.</span><span class="n">start_with?</span><span class="s1">&#39;Ruby&#39;</span>
+</span><span class='line'><span class="s2">&quot;I can&#39;t work with any other language but Ruby&quot;</span><span class="o">.</span><span class="n">end_with?</span><span class="s1">&#39;Ruby&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>在字串裡可以輕易地使用#{}把值傳進去,puts就是console output</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'><span class="n">b</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;The number </span><span class="si">#{</span><span class="n">a</span><span class="si">}</span><span class="s2"> is less than </span><span class="si">#{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h4>case change</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s1">&#39;This is Mixed CASE&#39;</span><span class="o">.</span><span class="n">downcase</span>
+</span><span class='line'><span class="s1">&#39;This is Mixed CASE&#39;</span><span class="o">.</span><span class="n">upcase</span>
+</span><span class='line'><span class="s1">&#39;This is Mixed CASE&#39;</span><span class="o">.</span><span class="n">swapcase</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>split</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s1">&#39;Fear is the path to the dark side&#39;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>concatenat</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s1">&#39;Ruby&#39;</span><span class="o">+</span><span class="s1">&#39;Monk&#39;</span>
+</span><span class='line'><span class="s1">&#39;Ruby&#39;</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;Monk&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>replacing</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;I should look into your problem when I get time&quot;</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;I&#39;</span><span class="p">,</span><span class="s1">&#39;We&#39;</span><span class="p">)</span> <span class="sr">/* only replace first found */</span>
+</span><span class='line'><span class="s2">&quot;I should look into your problem when I get time&quot;</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="s1">&#39;I&#39;</span><span class="p">,</span><span class="s1">&#39;We&#39;</span><span class="p">)</span> <span class="sr">/* replace all */</span>
+</span><span class='line'><span class="s1">&#39;RubyMonk&#39;</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/[aeiou]/</span><span class="p">,</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>  <span class="sr">/* use RegEX, it must wrap it with /</span> <span class="o">/</span> <span class="o">*/</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Boolean operations</h2>
+
+<h4>Like Java, use ==,&amp;&amp;,||,>=,&lt;=</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;Bob&quot;</span>
+</span><span class='line'><span class="nb">name</span> <span class="o">==</span> <span class="s2">&quot;Bob&quot;</span> <span class="sr">/* true */</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conditional</h2>
+
+<h4>if..else</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">check_sign</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="s2">&quot;</span><span class="si">#{</span><span class="n">number</span><span class="si">}</span><span class="s2"> is positive&quot;</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">25</span>
+</span><span class='line'>    <span class="s2">&quot;</span><span class="si">#{</span><span class="n">number</span><span class="si">}</span><span class="s2"> is smaller than 25&quot;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="s2">&quot;</span><span class="si">#{</span><span class="n">number</span><span class="si">}</span><span class="s2"> is negative&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Loop</h2>
+
+<h4>remember to use &#8216;break&#8217; to break loop</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="kp">loop</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">monk</span><span class="o">.</span><span class="n">meditate</span>
+</span><span class='line'>  <span class="k">break</span> <span class="k">if</span> <span class="n">monk</span><span class="o">.</span><span class="n">nirvana?</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>run N times</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">n</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Hello&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Arrays</h2>
+
+<h4>access array</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">][</span><span class="mi">2</span><span class="o">]</span> <span class="sr">/* answer is 3 */</span>
+</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">][-</span><span class="mi">1</span><span class="o">]</span> <span class="sr">/* answer is 5 */</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>add array, you could put different type object in Ruby Array</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;6&#39;</span>
+</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">].</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;6&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>delete</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">].</span><span class="n">delete</span> <span class="mi">3</span> <span class="o">/*</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">]</span> <span class="o">*/</span>
+</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="o">].</span><span class="n">delete_if</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>filter elements of array</h4>
+
+<p>Ruby會有許多如底下的寫法, number代表存在於array裡面的object, 如果大於3會被挑出來</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">].</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>array iteration</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">]</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">array</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">i</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">]</span>
+</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">i</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Hashs</h2>
+
+<h4>create a hash</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">restaurant_menu</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s1">&#39;Ramen&#39;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;Dal Makhani&#39;</span> <span class="o">=&gt;</span> <span class="mi">4</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;Tea&#39;</span> <span class="o">=&gt;</span><span class="mi">2</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>fetch and modify value, like Array access</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">restaurant_menu</span><span class="o">[</span><span class="s1">&#39;Ramen&#39;</span><span class="o">]</span> <span class="sr">/* 3 */</span>
+</span><span class='line'><span class="n">restaurant_menu</span><span class="o">[</span><span class="s1">&#39;Dal Makhani&#39;</span><span class="o">]=</span><span class="mi">4</span><span class="o">.</span><span class="mi">5</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">restaurant_menu</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;Tea&#39;</span><span class="p">)</span> <span class="sr">/* delete it */</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>hash iteration</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">restaurant_menu</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Ramen&#39;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;Dal Makhani&#39;</span> <span class="o">=&gt;</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;Coffee&#39;</span> <span class="o">=&gt;</span> <span class="mi">2</span> <span class="p">}</span>
+</span><span class='line'><span class="n">restaurant_menu</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="p">,</span> <span class="n">price</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">restaurant_menu</span><span class="o">[</span><span class="n">item</span><span class="o">]</span> <span class="o">=</span> <span class="n">price</span> <span class="o">+</span> <span class="p">(</span><span class="n">price</span> <span class="o">*</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">restaurant_menu</span><span class="o">.</span><span class="n">each_key</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">item</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">restaurant_menu</span><span class="o">.</span><span class="n">each_value</span> <span class="k">do</span> <span class="o">|</span><span class="n">price</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">price</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Class和def Function就留到下次再來寫。在Ruby Function中Method叫做Behaviour,Variable叫做State。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[emberjs and i18n]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/02/10/ember-and-i18n/"/>
+    <updated>2013-02-10T10:18:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/02/10/ember-and-i18n</id>
+    <content type="html"><![CDATA[<p>這兩天試了emberjs的i18n方法，有了一點小心得在這裡紀錄一下。
+一開始google下去找到的就是<a href="https://github.com/jamesarosen/ember-i18n">jamesarosen</a>這個ember i18n library。
+library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</a>這個library，主要是處理不同語言間名詞數量的問題。
+當然你可以單獨使用i18n library，也可以搭配CLDR.js。
+請參考<a href="http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html">CLDR plural 規範</a></p>
+
+<!--more-->
+
+
+<p>使用ember i18n library很容易，首先就是載入i18n.js，要注意的是如果你要使用CLDR的話要比i18n.js更早載入</p>
+
+<pre><code>&lt;script src="js/vendor/plurals.js"&gt;&lt;/script&gt;
+&lt;script src="js/vendor/i18n.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>接著就是定義你的字典，假設我先定義三個語言分別是中文，英文和法文</p>
+
+<figure class='code'><figcaption><span>dictionary.en.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Em</span><span class="p">.</span><span class="nx">I18n</span><span class="p">.</span><span class="nx">translations</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s1">&#39;user.edit.title&#39;</span><span class="o">:</span> <span class="s1">&#39;Edit User&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;user.followers.title.one&#39;</span><span class="o">:</span> <span class="s1">&#39;One Follower&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;user.followers.title.other&#39;</span><span class="o">:</span> <span class="s1">&#39;All { {count}} Followers&#39;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>dictionary.zh.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Em</span><span class="p">.</span><span class="nx">I18n</span><span class="p">.</span><span class="nx">translations</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s1">&#39;user.edit.title&#39;</span><span class="o">:</span> <span class="s1">&#39;編輯使用者&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;user.followers.title.one&#39;</span><span class="o">:</span> <span class="s1">&#39;一個跟隨著&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;user.followers.title.other&#39;</span><span class="o">:</span> <span class="s1">&#39;全部{ {count}}個跟隨者&#39;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>dictionary.fr.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Em</span><span class="p">.</span><span class="nx">I18n</span><span class="p">.</span><span class="nx">translations</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s1">&#39;user.edit.title&#39;</span><span class="o">:</span> <span class="s1">&#39;Modifier l\&#39;utilisateur&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;user.followers.title.one&#39;</span><span class="o">:</span> <span class="s1">&#39;un suiveur&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;user.followers.title.other&#39;</span><span class="o">:</span> <span class="s1">&#39;{ {count}} disciples&#39;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在你程式開始地方宣告你目前使用的language，我是放在ember App建立之後，在我的html載入js時也是預設先載入英文字典檔。</p>
+
+<figure class='code'><figcaption><span>main.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">App</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">ready</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;my App is ready&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">CLDR</span><span class="p">.</span><span class="nx">defaultLanguage</span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>...
+&lt;script src="js/dictionary.en.js"&gt;&lt;/script&gt;
+&lt;script src="js/main.js"&gt;&lt;/script&gt;
+...
+</code></pre>
+
+<p>接著你就只要隨便在你的畫面上放按鈕切換語系，切換的方法也就是用ajax去載入其它的字典檔。
+我寫在controller裡面用一個method去讀我想要的字典檔回來，但我在寫的時候發現由於ajax async的方式所以字典檔載入後畫面不會有變動，
+變成必須先切到別的頁面才會生效，為了讓它立即生效我讓它transition到一個叫i18redirect的route然後在那個route裡面再回到原本的頁面。
+這樣的好處就是在畫面上按下切換語系會馬上生效。</p>
+
+<figure class='code'><figcaption><span>internationalization.controller.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">InternationalizationController</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">ObjectController</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">updateLanguage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">lang</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">_self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+</span><span class='line'>      <span class="c1">//ajax load js and redirect to make template rerender</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">.</span><span class="nx">getScript</span><span class="p">(</span><span class="s2">&quot;js/utils/dictionary.&quot;</span><span class="o">+</span><span class="nx">lang</span><span class="o">+</span><span class="s2">&quot;.js&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">CLDR</span><span class="p">.</span><span class="nx">defaultLanguage</span> <span class="o">=</span> <span class="nx">lang</span><span class="p">;</span>
+</span><span class='line'>          <span class="nx">_self</span><span class="p">.</span><span class="nx">transitionToRoute</span><span class="p">(</span><span class="s1">&#39;i18redirect&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>i18redirect.router.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">I18redirectRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">redirect</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="s1">&#39;internationalization&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>稍微解釋一下字典檔裡面xxx.one跟xxx.other的意思，你剛才看字典檔(dictionary.xx.js)會發現如下的寫法。</p>
+
+<pre><code>'user.followers.title.one': 'One Follower',
+'user.followers.title.other': 'All { {count}} Followers'
+</code></pre>
+
+<p>你必須去參考我一開始給的那<a href="http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html">網頁</a>裡面定義各國語言中什麼時候該用one或other</p>
+
+<p>以英文為例當數量為1的時候會使用xxx.one這個字，其它情況下就是用xxx.other。</p>
+
+<pre><code>one → n is 1;
+other → everything else
+</code></pre>
+
+<p>所以如果我在我的template裡面放進底下這些字</p>
+
+<pre><code>&lt;h2&gt;{ {t user.edit.title}}&lt;/h2&gt;\
+&lt;h2&gt;{ {t user.followers.title count="0"}}&lt;/h2&gt;\
+&lt;h2&gt;{ {t user.followers.title count="1"}}&lt;/h2&gt;\
+&lt;h2&gt;{ {t user.followers.title count="2"}}&lt;/h2&gt;\
+</code></pre>
+
+<p>在切換到各個語系看起來就是</p>
+
+<p>English</p>
+
+<pre><code>Edit User
+All 0 Followers
+One Follower
+All 2 Followers
+</code></pre>
+
+<p>Chinese</p>
+
+<pre><code>編輯使用者
+全部0個跟隨者
+全部1個跟隨者
+全部2個跟隨者
+</code></pre>
+
+<p>French</p>
+
+<pre><code>Modifier l'utilisateur
+un suiveur
+un suiveur
+2 disciples
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[sublime useful plugin]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/02/06/sublime-useful-plugin/"/>
+    <updated>2013-02-06T00:59:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/02/06/sublime-useful-plugin</id>
+    <content type="html"><![CDATA[<p>今天上班跟同事之間討論到共同開發module要不要限定什麼editor(因為寫javascript)，
+就聊到sublime，想想sublime也用了1～2個月但其實還沒有很深入研究它究竟有多少好用的功能，
+所以就特地上網查了一下sublime plugin，有發現一篇文章<a href="http://net.tutsplus.com/tutorials/tools-and-tips/essential-sublime-text-2-plugins-and-extensions/">原文</a>
+<a href="http://www.qianduan.net/essential-to-sublime-the-text-2-plugins.html">中文翻譯</a>。
+今天安裝了底下幾個plugin</p>
+
+<ul>
+<li>JS Format - 可以幫你按照javascript format來重新排版。</li>
+<li>Bracket Highlighter - 可以把一些大括號中括號等的用比較顯眼的顏色標記出來。</li>
+<li>Alignment - 雖然可以把code對齊但我覺得用JS Format出來的就OK了。</li>
+</ul>
+
+
+<p>過幾天再來試其它的plugin。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[emberjs with requirejs]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/02/02/emberjs-and-requirejs/"/>
+    <updated>2013-02-02T13:17:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/02/02/emberjs-and-requirejs</id>
+    <content type="html"><![CDATA[<p>這幾天survey了requirejs順便讓它與emberjs跑在一起，有些心得所以在這裡紀錄一下。</p>
+
+<!--more-->
+
+
+<p>就如requirejs官方網站的介紹當使用requirejs來管理javascript module load後在index.html裡只要有一行script載入你最主要的javascript，在這裡是main.js</p>
+
+<figure class='code'><figcaption><span>index.html</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">data</span><span class="o">-</span><span class="nx">main</span><span class="o">=</span><span class="s2">&quot;scripts/main&quot;</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&quot;scripts/require.js&quot;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>來看一下main.js</p>
+
+<figure class='code'><figcaption><span>main.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">require</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">baseURL</span><span class="o">:</span> <span class="s1">&#39;/scripts/&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;paths&#39;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s1">&#39;jquery&#39;</span><span class="o">:</span> <span class="s1">&#39;libs/jquery.min&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s1">&#39;handlebars&#39;</span><span class="o">:</span><span class="s1">&#39;libs/handlebars-1.0.rc.1&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s1">&#39;ember&#39;</span><span class="o">:</span><span class="s1">&#39;libs/ember_0114&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s1">&#39;text&#39;</span><span class="o">:</span><span class="s1">&#39;libs/text&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s1">&#39;T&#39;</span><span class="o">:</span><span class="s1">&#39;templates&#39;</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="nx">shim</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s1">&#39;ember&#39;</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">deps</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;handlebars&#39;</span><span class="p">,</span> <span class="s1">&#39;jquery&#39;</span><span class="p">],</span>
+</span><span class='line'>            <span class="nx">exports</span><span class="o">:</span> <span class="s1">&#39;Ember&#39;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">requirejs</span><span class="p">([</span>
+</span><span class='line'>    <span class="s1">&#39;ember&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;route&#39;</span>
+</span><span class='line'>    <span class="s1">&#39;T/application.template&#39;</span>
+</span><span class='line'><span class="p">],</span>
+</span><span class='line'><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;all loaded done&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>require.config中baseURL是指javascript根目錄，我所有javascript都放在scripts/底下，
+scripts/libs/目錄底下則是放了third party js library，paths中可以命名短字串避免每次都要輸入很長的字串，
+shim是用來載入library如果不支援AMD使用，由於emberjs本身不支援AMD所以用shim載入。
+檔案底部是requireJS的module定義，[]裡面描述你的dependency，function(){}代表當所有dependency module載入後要執行的code。
+在這裡我載入ember,app,route以及T/application.template四個modules，在function()裡只是簡單地印一下log。</p>
+
+<figure class='code'><figcaption><span>app.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// var App = Ember.Application.create({});</span>
+</span><span class='line'><span class="nx">define</span><span class="p">([</span>
+</span><span class='line'>    <span class="s1">&#39;ember&#39;</span>
+</span><span class='line'><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Ember</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;ember initial and callback&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">App</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">App</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({});</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">App</span><span class="p">;</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>app.js裡面寫當emberjs載入後建立我的App，這裡必須把App放進window.App不然在跑emberjs時會有錯誤。</p>
+
+<figure class='code'><figcaption><span>application.template.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">define</span><span class="p">([</span>
+</span><span class='line'>  <span class="s1">&#39;ember&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;views/menubar.view&#39;</span>
+</span><span class='line'><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Ember</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">Ember</span><span class="p">.</span><span class="nx">TEMPLATES</span><span class="p">[</span><span class="s1">&#39;application&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Handlebars</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;\</span>
+</span><span class='line'><span class="s1">     &lt;h1&gt;Hello Ember&lt;/h1&gt;\</span>
+</span><span class='line'><span class="s1">     &lt;div&gt;\</span>
+</span><span class='line'><span class="s1">         { {view App.MenuBarView}}\</span>
+</span><span class='line'><span class="s1">         &lt;hr/&gt;\</span>
+</span><span class='line'><span class="s1">         { {outlet}}\</span>
+</span><span class='line'><span class="s1">     &lt;/div&gt;\</span>
+</span><span class='line'><span class="s1"> &#39;</span>
+</span><span class='line'>  <span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>application.template裡面有兩個dependency(ember和menubar.view)。function裡面是comiple ember template。
+在前面的app.js裡面如果沒有把App放進window.App話等程式run下去ember會報錯說找不到App.MenuBarView即使你的確有這個View存在。</p>
+
+<figure class='code'><figcaption><span>menubar.view.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">define</span><span class="p">([</span>
+</span><span class='line'>  <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;text!T/menubar.template.html&#39;</span>
+</span><span class='line'><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">App</span><span class="p">,</span> <span class="nx">template</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">App</span><span class="p">.</span><span class="nx">MenuBarView</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">tagName</span><span class="o">:</span><span class="s1">&#39;div&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">classNames</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;menubar&#39;</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>  <span class="nx">Ember</span><span class="p">.</span><span class="nx">TEMPLATES</span><span class="p">[</span><span class="s1">&#39;menubar&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Handlebars</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">template</span><span class="p">);</span>    
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>menubar.view.js裡面我利用text這個requirejs plugin載入外部的html進來ember compile。那如何得到載入進來的html呢？很簡單就
+是只要在function裡面加入相對應的parameters，由於這個module有2個dependencies所以在function裡面有2個parameters。而template
+很自然就是對應到讀進來的html。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[使用漂亮的code blocks]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block/"/>
+    <updated>2013-01-31T23:48:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block</id>
+    <content type="html"><![CDATA[<p>前幾天在寫emberjs dynamic URL的範例時覺得為什麼預設的code block這麼不好看。
+上網google了一下找到這篇<a href="http://octopress.org/docs/blogging/code/">文章</a>
+介紹如何使用預設在octopress裡面更好看的code blocks。</p>
+
+<!--more-->
+
+
+<p>看底下這個code block，是不是一整個變的很精美。</p>
+
+<figure class='code'><figcaption><span>Solarized Hightlight example</span><a href='http://www.google.com'>點我到google</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;app&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">App</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;hello world&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>使用時用三個`把程式碼區塊包起來，然後分別可以設定你所用的語言，標題，還有可以放URL連到原始碼</p>
+
+<p>語法如下：</p>
+
+<pre><code>``` [語言][標題][URL][URL顯示名稱]
+你的code snippet
+```
+</code></pre>
+
+<p>像我上面的範例就是</p>
+
+<pre><code>``` javascript TestJavaScript http://www.google.com 點我到google
+define(['app'], function (App) {
+    console.log("hello world");
+});
+```
+</code></pre>
+
+<p>引用Gist的部份先跳過，我目前還沒用到Gist</p>
+
+<p>從檔案系統引用code的話你可以把檔案放在source/downloads/code底下然後引用它。目錄可以在<code>_config.yml</code>裡修改。config名稱是<code>code_dir</code></p>
+
+<p>語法如下：</p>
+
+<pre><code>{ % include_code [標題] [lang:語言] 檔案路徑 %}
+</code></pre>
+
+<figure class='code'><figcaption><span> (sample.js)</span> <a href='http://weichienhung.github.com/downloads/code/sample.js'>download</a></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">App</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的範例就是</p>
+
+<pre><code>{ % include_code sample.js %}
+</code></pre>
+
+<p>最後是inline code blocks</p>
+
+<p>語法如下：</p>
+
+<pre><code>{ % codeblock [標題][語言][URL][URL顯示名稱] %}
+{ % endcodeblock %}
+</code></pre>
+
+<figure class='code'><figcaption><span>sample.js  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的範例就是</p>
+
+<pre><code>{ % codeblock sample.js lang:javascript %}
+console.log('hello world');
+{ % endcodeblock %}
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[良好體驗在Apple App store]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/01/31/good-experience-on-itunes-purchase/"/>
+    <updated>2013-01-31T00:10:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/01/31/good-experience-on-itunes-purchase</id>
+    <content type="html"><![CDATA[<p>上週用line買了代幣，第一次購買沒成功系統報錯誤後我沒想太多就直接再買一次，後來成功。
+這週收到信用卡帳單時發現被刷了兩次扣款，以前也沒這種經驗只好在line App裡面申報錯誤
+以及上apple網站去回報錯誤。隔天line就回信說他們也沒報法處理必須要請apple的客服處理。</p>
+
+<!--more-->
+
+
+<p>過沒多久apple也回信了，信件內容大概如下</p>
+
+<blockquote><p>親愛的X先生：
+您好，感謝您聯絡 iTunes Store 支援團隊。我是 Y，很高興在此協助您。
+透過您的此次來信，我瞭解到您的帳號「 a@b.c 」出現重複扣款的問題，並且在扣款後沒有獲得所購買的應用程式「100 LINE Coins」內容，對此給您帶來的不便與困擾，我深表歉意。
+請您放心，我已為您撤銷了該筆費用。我們會在六至八個工作日內，將一筆數額為 NT$ 60.00 的款項，記入該次購買行為的收據上顯示的信用卡中。
+希望以上資訊能夠幫助到您。同時，我已為您的此次來信標注了旗標，如果您在與銀行確認退款時遇到任何問題，請隨時來信告知我，以便我為您提供進一步的協助，非常感謝您對此付出的耐心與理解！</p></blockquote>
+
+<p>心裡想想“喔，他們有處理了～很好&#8221;
+隔了幾天又收到一封信</p>
+
+<blockquote><p>Follow-Up: 1234567890
+親愛的X先生 :
+您好，我是 iTunes Store 支援團隊的 Y。
+本次來信只是想快速了解一下，請問您之前所遇到的 iTunes Store 問題，是否已獲得解決，或者，是否對其還有任何疑問？
+希望您成功收到了之前我寄送給您的電郵。
+如果您在此問題上依然無法獲得妥善的解決方案，或還有其他 iTunes Store 的問題，請回覆此電郵，並提供相關問題的詳細描述資訊, 或您收到的任何錯誤資訊文本、截屏，我將非常願意為您提供進一步的協助，謝謝！
+期待您的回信確認，很感謝您對 iTunes Store 的支持。</p></blockquote>
+
+<p>沒想到apple客服竟然還有在注意這件事，我就簡單地回了信說我會注意一下信用卡紀錄。過沒多久又收到信</p>
+
+<blockquote><p>親愛的X先生：
+您好，感激您在百忙之中回覆我的郵件。
+請您不要客氣，我也非常感謝能有這次機會為您提供服務，盡我一點綿薄之力。
+我目前已將相應退款的 iTunes Store 退款憑證，寄送至您的郵箱「a@b.c」，供您作為資訊參考以及官方憑證使用。
+如果您之後有任何需要我們協助的地方，請您隨時與我們聯絡，我們非常樂意為您提供服務!
+再次感謝您對此付出的耐心與理解，祝您生活愉快，笑口常開！</p></blockquote>
+
+<p>雖然信件整體是套了template然後換換關鍵字。但整個感覺還是很爽～～
+做一個直接面對end user的service真的是小細節也不能忽視才能獲得使用者喜愛。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[emberjs dynamic route URL取值]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/01/28/emberjs-dynamic-route/"/>
+    <updated>2013-01-28T22:34:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/01/28/emberjs-dynamic-route</id>
+    <content type="html"><![CDATA[<p>上週同事在試emberjs時發現extend原本的route然後去set model時會導致呼叫transitionToRoute失敗，造成URL會變成像http://x.x.x.x/post/<em>undefine</em>/edit
+只能使用Model覆寫find method的方式去做。
+今天晚上想說有空來試一下，結果一試之下用set model的方法也可以啊XD.</p>
+
+<!--more-->
+
+
+<ol>
+<li><p>先在route map裡加上route setting,例如我想要的URL像http://x.x.x.x/post/{dynamic value}/edit</p>
+
+<pre><code> App.Router.map(function(match) {
+     this.resource('post', { path: '/post/:post_id' }, function() {
+         this.route('edit');
+     });
+ }
+</code></pre></li>
+<li><p>extend route然後更改model return的值, 傳入參數params裡可以取得你在url裡輸入的dynamic value</p>
+
+<pre><code> App.PostRoute = Ember.Route.extend({
+     setupController: function(controller, model) {
+         controller.set('content', model);
+     },
+
+     model : function(params){   
+         var id = params.post_id;
+         post = new App.Post;
+         post.id = id;
+         var reg = /^[0-9]*$/;
+         if (reg.test(id)){
+             post.isNumber = true;
+             post.sqrt = id * id;
+         }
+         return post;    
+     }   
+ });
+</code></pre></li>
+<li><p>別忘記定義你的Post model</p>
+
+<pre><code> App.Post = Ember.Object.extend({
+     id: 0,
+     sqrt: 0,
+     isNumber: false
+ });
+</code></pre></li>
+<li><p>在Post controller加上一個function讓Post的template可以觸發導到sub route也就是{dynamic value}/edit</p>
+
+<pre><code> App.PostController = Ember.ObjectController.extend({
+     goEdit: function() {
+         this.transitionToRoute('post.edit');
+     }
+ });
+</code></pre></li>
+<li><p>最後只要在template裡面觸發goEdit function即可</p>
+
+<pre><code> Ember.TEMPLATES['post'] = Ember.Handlebars.compile(
+ "\
+     &lt;p&gt;post id : { {id}} &lt;/p&gt;\
+     &lt;p&gt;post isNumber : { {isNumber}} &lt;/p&gt;\
+     { {#if isNumber}}\
+         &lt;p&gt;square of id is : { {sqrt}} &lt;/p&gt;\
+     { {/if}}\
+     &lt;a href='' { { action goEdit}}&gt;GoEdit&lt;/a&gt;\
+ "
+ );
+</code></pre></li>
+</ol>
+
+
+<p>另一種方法就是不需要第2步，然後直接在第3步的model裡加上find function. 可以達成一樣的效果</p>
+
+<pre><code>App.Post = Ember.Object.extend({
+    id: 0,
+    sqrt: 0,
+    isNumber: false
+});
+
+App.Post.reopenClass({
+    find: function (id) {
+        var reg = /^[0-9]*$/;
+        post = new App.Post;
+        post.id = id;
+        if (reg.test(id)){
+            post.isNumber = true;
+            post.sqrt = id * id;
+        }
+        return post;
+    }
+});
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[讓web site能夠被search engine找到]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/01/27/submit-sitemaps-dot-xml/"/>
+    <updated>2013-01-27T23:33:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/01/27/submit-sitemaps-dot-xml</id>
+    <content type="html"><![CDATA[<p>
+昨天在blog右上角的search打入關鍵字一直找不到東西。想說等到讓search engine發現自己web site似乎太被動了。
+上網查了一下octopress本身就會自動產生sitemap.xml檔。只要把這個檔案丟到google或是像bing這樣的搜尋引擎網站就好了，
+還真是相當方便。<br/>
+先登入到 <a href="https://www.google.com/webmasters/">Google網站管理工具</a>
+然後根據網站的步驟去做，主要是必須放一個驗證檔到你的github上然後驗證網站是你所屬。
+</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[幫你的Octopress加上FB comments]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/01/26/add-fb-comment-for-octopress/"/>
+    <updated>2013-01-26T22:49:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/01/26/add-fb-comment-for-octopress</id>
+    <content type="html"><![CDATA[<p>
+今天試著幫blog加上facebook comment的功能。上網google了一下果然就有強者教學～真棒.
+<!--more-->
+參考了這篇文章<a href="http://blog.grambo.me.uk/blog/2012/02/20/adding-facebook-comments-to-octopress/">Adding Facebook Comments to Octopress</a>
+不過根據教學一步一步完成後竟然看不到fb comment.後來把facebook like的功能打開後就連facebook comment都出現了.
+我想是因為facebook_like.html裡面會include facebook javascript所以連帶facebook commment功能都出現了。 <br/><br/>
+順便也查了一下怎麼只秀出部份文章在首頁上。只要在文章加入<code>&lt;!--more--&gt;</code>
+這個tag,後面的文章就不會出現在blog首頁. 如下
+</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[前人種樹後人乘涼]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/"/>
+    <updated>2013-01-25T21:57:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang</id>
+    <content type="html"><![CDATA[<p>
+剛安裝完octopress連 category, comment, about都沒有&#8230;XD</br>
+快速網上查找了一下發現了底下這幾篇文章教人怎麼設置，實在是太感謝~~</br>
+<ul>
+    <li><a href="http://gibuloto.com/blog/octopress-categories-tag-cloud/">category</a></li>
+    <li><a href="http://blog.rx836.tw/blog/octopress-notes-1/">comment</a></li>
+    <li><a href="http://gangmax.me/blog/2012/05/04/add-about-page-in-octopress/">about</a></li>
+</ul>
+剩下的功能就改天再研究吧
+</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[first post]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/01/25/first/"/>
+    <updated>2013-01-25T20:42:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/01/25/first</id>
+    <content type="html"><![CDATA[<p>
+自從N年前Microsoft的Myspace掛點後就不再寫blog了<br/>
+今天忽然一時興趣就簡單找了一下快速弄blog的solution<br/>
+找到了github + octopress,使用起來實在是相當方便，快速，免費！<br/>
+以後就在上面寫點東西囉<br/>
+</p>
+
+
+
+]]></content>
+  </entry>
+  
+</feed>
