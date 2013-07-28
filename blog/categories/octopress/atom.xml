@@ -4,7 +4,7 @@
   <title><![CDATA[Category: octopress | Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-07-28T12:02:14+08:00</updated>
+  <updated>2013-07-28T13:19:48+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -186,7 +186,10 @@ define(['app'], function (App) {
 <pre><code>{ % include_code [標題] [lang:語言] 檔案路徑 %}
 </code></pre>
 
-<p>{% include_code sample.js %}
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (sample.js)</span> <a href='/downloads/code/sample.js'>download</a></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">App</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 上面的範例就是</p>
 
 <pre><code>{ % include_code sample.js %}
@@ -200,9 +203,10 @@ define(['app'], function (App) {
 { % endcodeblock %}
 </code></pre>
 
-<p>{% codeblock sample.js lang:javascript %}
-console.log('hello world');
-{% endcodeblock %}
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>sample.js  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 上面的範例就是</p>
 
 <pre><code>{ % codeblock sample.js lang:javascript %}
