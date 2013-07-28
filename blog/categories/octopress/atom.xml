@@ -4,7 +4,7 @@
   <title><![CDATA[Category: octopress | Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.com/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.com/"/>
-  <updated>2013-07-27T15:37:23+08:00</updated>
+  <updated>2013-07-28T11:39:13+08:00</updated>
   <id>http://weichienhung.github.com/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,53 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[octopress 設定問題]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti/"/>
+    <updated>2013-07-28T11:20:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti</id>
+    <content type="html"><![CDATA[<p>這兩天使用octopress時遇到了一些問題，有簡單google解決也有亂試之下解決</p>
+
+<ul>
+<li>想產生新的文章時出現
+<code>sh
+You have already activated rake 10.1.0, but your Gemfile requires rake 0.9.6. Using bundle exec
+</code></li>
+</ul>
+
+
+<!--more-->
+
+
+<p>google之下很單純，只要修改你的Gemfile<br/>
+本來是
+<code>
+gem 'rake', '~&gt; 10.0'
+</code>
+改成以下即可，不過老實說我自己的版本什麼時候吃到10.0我也沒印象
+<code>
+gem 'rake', '~&gt; 10.0'
+</code></p>
+
+<ul>
+<li>rake deploy時出現
+<code>
+src refspec master does not match any
+error src refspec master does not match any. error failed to push some refs to
+</code>
+一開始google時網路大部份的文章都是說你的project repo還沒有任何commit，只要加個README commit即可。
+但我怎麼試都不行而且明明我的project己經用了一陣子了後來終於發現原來是我的git沒有local master branch。
+原因是我之前手動把<code>_deploy</code>目錄砍過的樣子，理論上在你的<code>_deploy</code>目錄打<code>git branch</code>應該要出現<code>* master</code>
+在根目錄底下則是出現<code>* source</code><br/>
+後來的解決方法就是重設github page
+<code>
+rake setup_github_pages
+</code></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[hello octopress]]></title>
@@ -139,10 +186,7 @@ define(['app'], function (App) {
 <pre><code>{ % include_code [標題] [lang:語言] 檔案路徑 %}
 </code></pre>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (sample.js)</span> <a href='/downloads/code/sample.js'>download</a></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">App</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>{% include_code sample.js %}
 上面的範例就是</p>
 
 <pre><code>{ % include_code sample.js %}
@@ -156,10 +200,9 @@ define(['app'], function (App) {
 { % endcodeblock %}
 </code></pre>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>sample.js  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>{% codeblock sample.js lang:javascript %}
+console.log('hello world');
+{% endcodeblock %}
 上面的範例就是</p>
 
 <pre><code>{ % codeblock sample.js lang:javascript %}
@@ -198,25 +241,6 @@ console.log('hello world');
 我想是因為facebook_like.html裡面會include facebook javascript所以連帶facebook commment功能都出現了。 <br/><br/>
 順便也查了一下怎麼只秀出部份文章在首頁上。只要在文章加入<code>&lt;!--more--&gt;</code>
 這個tag,後面的文章就不會出現在blog首頁. 如下
-</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[前人種樹後人乘涼]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/"/>
-    <updated>2013-01-25T21:57:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang</id>
-    <content type="html"><![CDATA[<p>
-剛安裝完octopress連 category, comment, about都沒有...XD</br>
-快速網上查找了一下發現了底下這幾篇文章教人怎麼設置，實在是太感謝~~</br>
-<ul>
-    <li><a href="http://gibuloto.com/blog/octopress-categories-tag-cloud/">category</a></li>
-    <li><a href="http://blog.rx836.tw/blog/octopress-notes-1/">comment</a></li>
-    <li><a href="http://gangmax.me/blog/2012/05/04/add-about-page-in-octopress/">about</a></li>
-</ul>
-剩下的功能就改天再研究吧
 </p>
 
 ]]></content>

@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.com/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.com/"/>
-  <updated>2013-07-27T15:37:23+08:00</updated>
+  <updated>2013-07-28T11:39:10+08:00</updated>
   <id>http://weichienhung.github.com/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,66 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[octopress 設定問題]]></title>
+    <link href="http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti/"/>
+    <updated>2013-07-28T11:20:00+08:00</updated>
+    <id>http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti</id>
+    <content type="html"><![CDATA[<p>這兩天使用octopress時遇到了一些問題，有簡單google解決也有亂試之下解決</p>
+
+<ul>
+<li>想產生新的文章時出現</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>You have already activated rake 10.1.0, but your Gemfile requires rake 0.9.6. Using bundle <span class="nb">exec</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<p>google之下很單純，只要修改你的Gemfile<br/>
+本來是</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem <span class="s1">&#39;rake&#39;</span>, <span class="s1">&#39;~&gt; 10.0&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>改成以下即可，不過老實說我自己的版本什麼時候吃到10.0我也沒印象</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem <span class="s1">&#39;rake&#39;</span>, <span class="s1">&#39;~&gt; 10.0&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>rake deploy時出現</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>src refspec master does not match any
+</span><span class='line'>error src refspec master does not match any. error failed to push some refs to
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一開始google時網路大部份的文章都是說你的project repo還沒有任何commit，只要加個README commit即可。
+但我怎麼試都不行而且明明我的project己經用了一陣子了後來終於發現原來是我的git沒有local master branch。
+原因是我之前手動把<code>_deploy</code>目錄砍過的樣子，理論上在你的<code>_deploy</code>目錄打<code>git branch</code>應該要出現<code>* master</code>
+在根目錄底下則是出現<code>* source</code><br/>
+後來的解決方法就是重設github page</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake setup_github_pages
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[write maintainable css]]></title>

@@ -5,14 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>sublime useful plugin - Weichien Hung's studying note</title>
+  <title>octopress 設定問題 - Weichien Hung's studying note</title>
   <meta name="author" content="Weichien Hung">
 
   
-  <meta name="description" content="今天上班跟同事之間討論到共同開發module要不要限定什麼editor(因為寫javascript)，
-就聊到sublime，想想sublime也用了1～2個月但其實還沒有很深入研究它究竟有多少好用的功能，
-所以就特地上網查了一下sublime plugin，有發現一篇文章原文
-中文翻譯。 &hellip;">
+  <meta name="description" content="這兩天使用octopress時遇到了一些問題，有簡單google解決也有亂試之下解決 想產生新的文章時出現 1
+You have already activated rake 10.1.0, but your Gemfile requires rake 0.9.6. Using bundle &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://weichienhung.github.com/blog/2013/02/06/sublime-useful-plugin/">
+  <link rel="canonical" href="http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -73,7 +71,7 @@
   
   <header>
     
-      <h1 class="entry-title">Sublime Useful Plugin</h1>
+      <h1 class="entry-title">Octopress 設定問題</h1>
     
     
       <p class="meta">
@@ -89,7 +87,7 @@
   
 
 
-<time datetime="2013-02-06T00:59:00+08:00" pubdate data-updated="true">Feb 6<span>th</span>, 2013</time>
+<time datetime="2013-07-28T11:20:00+08:00" pubdate data-updated="true">Jul 28<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -98,20 +96,58 @@
   </header>
 
 
-<div class="entry-content"><p>今天上班跟同事之間討論到共同開發module要不要限定什麼editor(因為寫javascript)，
-就聊到sublime，想想sublime也用了1～2個月但其實還沒有很深入研究它究竟有多少好用的功能，
-所以就特地上網查了一下sublime plugin，有發現一篇文章<a href="http://net.tutsplus.com/tutorials/tools-and-tips/essential-sublime-text-2-plugins-and-extensions/">原文</a>
-<a href="http://www.qianduan.net/essential-to-sublime-the-text-2-plugins.html">中文翻譯</a>。
-今天安裝了底下幾個plugin</p>
+<div class="entry-content"><p>這兩天使用octopress時遇到了一些問題，有簡單google解決也有亂試之下解決</p>
 
 <ul>
-<li>JS Format - 可以幫你按照javascript format來重新排版。</li>
-<li>Bracket Highlighter - 可以把一些大括號中括號等的用比較顯眼的顏色標記出來。</li>
-<li>Alignment - 雖然可以把code對齊但我覺得用JS Format出來的就OK了。</li>
+<li>想產生新的文章時出現</li>
 </ul>
 
 
-<p>過幾天再來試其它的plugin。</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>You have already activated rake 10.1.0, but your Gemfile requires rake 0.9.6. Using bundle <span class="nb">exec</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<p>google之下很單純，只要修改你的Gemfile<br/>
+本來是</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem <span class="s1">&#39;rake&#39;</span>, <span class="s1">&#39;~&gt; 10.0&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>改成以下即可，不過老實說我自己的版本什麼時候吃到10.0我也沒印象</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem <span class="s1">&#39;rake&#39;</span>, <span class="s1">&#39;~&gt; 10.0&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>rake deploy時出現</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>src refspec master does not match any
+</span><span class='line'>error src refspec master does not match any. error failed to push some refs to
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一開始google時網路大部份的文章都是說你的project repo還沒有任何commit，只要加個README commit即可。
+但我怎麼試都不行而且明明我的project己經用了一陣子了後來終於發現原來是我的git沒有local master branch。
+原因是我之前手動把<code>_deploy</code>目錄砍過的樣子，理論上在你的<code>_deploy</code>目錄打<code>git branch</code>應該要出現<code>* master</code>
+在根目錄底下則是出現<code>* source</code><br/>
+後來的解決方法就是重設github page</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake setup_github_pages
+</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
@@ -134,12 +170,12 @@
   
 
 
-<time datetime="2013-02-06T00:59:00+08:00" pubdate data-updated="true">Feb 6<span>th</span>, 2013</time>
+<time datetime="2013-07-28T11:20:00+08:00" pubdate data-updated="true">Jul 28<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/sublime/'>sublime</a>
+    <a class='category' href='/blog/categories/octopress/'>octopress</a>
   
 </span>
 
@@ -148,7 +184,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.com/blog/2013/02/06/sublime-useful-plugin/" data-via="" data-counturl="http://weichienhung.github.com/blog/2013/02/06/sublime-useful-plugin/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti/" data-via="" data-counturl="http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti/" >Tweet</a>
   
   
   
@@ -159,10 +195,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/02/02/emberjs-and-requirejs/" title="Previous Post: emberjs with requirejs">&laquo; emberjs with requirejs</a>
+        <a class="basic-alignment left" href="/blog/2013/07/27/write-maintainable-css/" title="Previous Post: write maintainable css">&laquo; write maintainable css</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/02/10/ember-and-i18n/" title="Next Post: emberjs and i18n">emberjs and i18n &raquo;</a>
       
     </p>
   </footer>
@@ -174,7 +208,7 @@
       <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
 <div
   class="fb-comments"
-  data-href="http://weichienhung.github.com/blog/2013/02/06/sublime-useful-plugin/"
+  data-href="http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti/"
   data-num-posts="2"
   data-width="470"
   data-colorscheme="light">
@@ -249,8 +283,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://weichienhung.github.com/blog/2013/02/06/sublime-useful-plugin/';
-        var disqus_url = 'http://weichienhung.github.com/blog/2013/02/06/sublime-useful-plugin/';
+        var disqus_identifier = 'http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti/';
+        var disqus_url = 'http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti/';
         var disqus_script = 'embed.js';
       
     (function () {
