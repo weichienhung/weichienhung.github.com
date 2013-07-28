@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Weichien Hung's studying note]]></title>
-  <link href="http://weichienhung.github.com/atom.xml" rel="self"/>
-  <link href="http://weichienhung.github.com/"/>
-  <updated>2013-07-28T11:40:30+08:00</updated>
-  <id>http://weichienhung.github.com/</id>
+  <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.io/"/>
+  <updated>2013-07-28T12:02:12+08:00</updated>
+  <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[octopress 設定問題]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti/"/>
+    <link href="http://weichienhung.github.io/blog/2013/07/28/octopress-she-ding-wen-ti/"/>
     <updated>2013-07-28T11:20:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti</id>
+    <id>http://weichienhung.github.io/blog/2013/07/28/octopress-she-ding-wen-ti</id>
     <content type="html"><![CDATA[<p>這兩天使用octopress時遇到了一些問題，有簡單google解決也有亂試之下解決</p>
 
 <ul>
@@ -75,9 +75,9 @@
   
   <entry>
     <title type="html"><![CDATA[write maintainable css]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css/"/>
+    <link href="http://weichienhung.github.io/blog/2013/07/27/write-maintainable-css/"/>
     <updated>2013-07-27T11:25:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css</id>
+    <id>http://weichienhung.github.io/blog/2013/07/27/write-maintainable-css</id>
     <content type="html"><![CDATA[<p>今天看了<a href="https://github.com/doggy8088/CSS-Guidelines">CSS guideline</a>描述在大型專案如何撰寫容易維護的CSS，我直接從翻譯過文章摘錄了其中覺得還不錯而且執行上也不會太困難的幾點記下來讓自己隨時能夠複習</p>
 
 <!-- more -->
@@ -188,9 +188,9 @@
   
   <entry>
     <title type="html"><![CDATA[shell script on linux ]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/07/10/linux-shellscript/"/>
+    <link href="http://weichienhung.github.io/blog/2013/07/10/linux-shellscript/"/>
     <updated>2013-07-10T22:15:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/07/10/linux-shellscript</id>
+    <id>http://weichienhung.github.io/blog/2013/07/10/linux-shellscript</id>
     <content type="html"><![CDATA[<p>前陣子用linux shell script寫了module自動deploy機制。紀錄一下這之中遇到的問題及常用的指令。<br/>
 簡單的自動deploy不外乎就是將檔案傳送至遠端機器然後進行安裝動作，修改設定檔。</p>
 
@@ -315,9 +315,9 @@
   
   <entry>
     <title type="html"><![CDATA[hello octopress]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/07/07/hello-again/"/>
+    <link href="http://weichienhung.github.io/blog/2013/07/07/hello-again/"/>
     <updated>2013-07-07T15:22:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/07/07/hello-again</id>
+    <id>http://weichienhung.github.io/blog/2013/07/07/hello-again</id>
     <content type="html"><![CDATA[<p>真的是好久沒寫blog了。看了一下最後一篇是在3月2日已經整整4個月沒寫了。</p>
 
 <p>markdown的語法也都快忘光了:(一開始執行rake new_post時還發生錯誤無法產生新文章，快速地google了一下原來是dependency太舊的關係，執行完bundle update就OK了真是好險啊。
@@ -423,9 +423,9 @@ setupController則是無論使用transitionTo()或是在browser直接打URL進�
   
   <entry>
     <title type="html"><![CDATA[ruby is elegance]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/03/02/ruby-is-deligight/"/>
+    <link href="http://weichienhung.github.io/blog/2013/03/02/ruby-is-deligight/"/>
     <updated>2013-03-02T14:08:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/03/02/ruby-is-deligight</id>
+    <id>http://weichienhung.github.io/blog/2013/03/02/ruby-is-deligight</id>
     <content type="html"><![CDATA[<p>今天持續Ruby study,紀錄一下學習到的東西</p>
 
 <h3>Yield</h3>
@@ -797,9 +797,9 @@ With proc, you write your code once. Proc is savable block.</p>
   
   <entry>
     <title type="html"><![CDATA[ruby study]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/03/01/ruby-study/"/>
+    <link href="http://weichienhung.github.io/blog/2013/03/01/ruby-study/"/>
     <updated>2013-03-01T23:39:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/03/01/ruby-study</id>
+    <id>http://weichienhung.github.io/blog/2013/03/01/ruby-study</id>
     <content type="html"><![CDATA[<p>最近都在看CSS沒什麼時間繼續看Ruby,今天上codecademy練習ruby。
 在這裡紀錄一下之前沒看過的語法。</p>
 
@@ -1012,9 +1012,9 @@ With proc, you write your code once. Proc is savable block.</p>
   
   <entry>
     <title type="html"><![CDATA[ruby beginning]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/02/21/ruby-beginning/"/>
+    <link href="http://weichienhung.github.io/blog/2013/02/21/ruby-beginning/"/>
     <updated>2013-02-21T22:31:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/02/21/ruby-beginning</id>
+    <id>http://weichienhung.github.io/blog/2013/02/21/ruby-beginning</id>
     <content type="html"><![CDATA[<p>前幾天開始看Ruby起因是網路上很多分享的project都是Rails,為了能夠加速了解理面的內容就來學一下Rails,
 不過為了Rails必須要先打好Ruby的基礎。在這裡紀錄下學習過的語法避免自己忘光,光是昨天沒看語法我已經忘了不少XD。</p>
 
@@ -1298,9 +1298,9 @@ With proc, you write your code once. Proc is savable block.</p>
   
   <entry>
     <title type="html"><![CDATA[emberjs and i18n]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/02/10/ember-and-i18n/"/>
+    <link href="http://weichienhung.github.io/blog/2013/02/10/ember-and-i18n/"/>
     <updated>2013-02-10T10:18:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/02/10/ember-and-i18n</id>
+    <id>http://weichienhung.github.io/blog/2013/02/10/ember-and-i18n</id>
     <content type="html"><![CDATA[<p>這兩天試了emberjs的i18n方法，有了一點小心得在這裡紀錄一下。
 一開始google下去找到的就是<a href="https://github.com/jamesarosen/ember-i18n">jamesarosen</a>這個ember i18n library。
 library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</a>這個library，主要是處理不同語言間名詞數量的問題。
@@ -1473,9 +1473,9 @@ un suiveur
   
   <entry>
     <title type="html"><![CDATA[sublime useful plugin]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/02/06/sublime-useful-plugin/"/>
+    <link href="http://weichienhung.github.io/blog/2013/02/06/sublime-useful-plugin/"/>
     <updated>2013-02-06T00:59:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/02/06/sublime-useful-plugin</id>
+    <id>http://weichienhung.github.io/blog/2013/02/06/sublime-useful-plugin</id>
     <content type="html"><![CDATA[<p>今天上班跟同事之間討論到共同開發module要不要限定什麼editor(因為寫javascript)，
 就聊到sublime，想想sublime也用了1～2個月但其實還沒有很深入研究它究竟有多少好用的功能，
 所以就特地上網查了一下sublime plugin，有發現一篇文章<a href="http://net.tutsplus.com/tutorials/tools-and-tips/essential-sublime-text-2-plugins-and-extensions/">原文</a>
@@ -1495,9 +1495,9 @@ un suiveur
   
   <entry>
     <title type="html"><![CDATA[emberjs with requirejs]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/02/02/emberjs-and-requirejs/"/>
+    <link href="http://weichienhung.github.io/blog/2013/02/02/emberjs-and-requirejs/"/>
     <updated>2013-02-02T13:17:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/02/02/emberjs-and-requirejs</id>
+    <id>http://weichienhung.github.io/blog/2013/02/02/emberjs-and-requirejs</id>
     <content type="html"><![CDATA[<p>這幾天survey了requirejs順便讓它與emberjs跑在一起，有些心得所以在這裡紀錄一下。</p>
 
 <!--more-->
@@ -1661,9 +1661,9 @@ shim是用來載入library如果不支援AMD使用，由於emberjs本身不支�
   
   <entry>
     <title type="html"><![CDATA[使用漂亮的code blocks]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block/"/>
+    <link href="http://weichienhung.github.io/blog/2013/01/31/use-good-hightlight-code-block/"/>
     <updated>2013-01-31T23:48:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block</id>
+    <id>http://weichienhung.github.io/blog/2013/01/31/use-good-hightlight-code-block</id>
     <content type="html"><![CDATA[<p>前幾天在寫emberjs dynamic URL的範例時覺得為什麼預設的code block這麼不好看。
 上網google了一下找到這篇<a href="http://octopress.org/docs/blogging/code/">文章</a>
 介紹如何使用預設在octopress裡面更好看的code blocks。</p>
@@ -1709,7 +1709,7 @@ define(['app'], function (App) {
 <pre><code>{ % include_code [標題] [lang:語言] 檔案路徑 %}
 </code></pre>
 
-<figure class='code'><figcaption><span> (sample.js)</span> <a href='http://weichienhung.github.com/downloads/code/sample.js'>download</a></figcaption>
+<figure class='code'><figcaption><span> (sample.js)</span> <a href='http://weichienhung.github.io/downloads/code/sample.js'>download</a></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">App</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({});</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -1745,9 +1745,9 @@ console.log('hello world');
   
   <entry>
     <title type="html"><![CDATA[良好體驗在Apple App store]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/31/good-experience-on-itunes-purchase/"/>
+    <link href="http://weichienhung.github.io/blog/2013/01/31/good-experience-on-itunes-purchase/"/>
     <updated>2013-01-31T00:10:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/31/good-experience-on-itunes-purchase</id>
+    <id>http://weichienhung.github.io/blog/2013/01/31/good-experience-on-itunes-purchase</id>
     <content type="html"><![CDATA[<p>上週用line買了代幣，第一次購買沒成功系統報錯誤後我沒想太多就直接再買一次，後來成功。
 這週收到信用卡帳單時發現被刷了兩次扣款，以前也沒這種經驗只好在line App裡面申報錯誤
 以及上apple網站去回報錯誤。隔天line就回信說他們也沒報法處理必須要請apple的客服處理。</p>
@@ -1790,9 +1790,9 @@ console.log('hello world');
   
   <entry>
     <title type="html"><![CDATA[emberjs dynamic route URL取值]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/28/emberjs-dynamic-route/"/>
+    <link href="http://weichienhung.github.io/blog/2013/01/28/emberjs-dynamic-route/"/>
     <updated>2013-01-28T22:34:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/28/emberjs-dynamic-route</id>
+    <id>http://weichienhung.github.io/blog/2013/01/28/emberjs-dynamic-route</id>
     <content type="html"><![CDATA[<p>上週同事在試emberjs時發現extend原本的route然後去set model時會導致呼叫transitionToRoute失敗，造成URL會變成像http://x.x.x.x/post/<em>undefine</em>/edit
 只能使用Model覆寫find method的方式去做。
 今天晚上想說有空來試一下，結果一試之下用set model的方法也可以啊XD.</p>
@@ -1887,9 +1887,9 @@ App.Post.reopenClass({
   
   <entry>
     <title type="html"><![CDATA[讓web site能夠被search engine找到]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/27/submit-sitemaps-dot-xml/"/>
+    <link href="http://weichienhung.github.io/blog/2013/01/27/submit-sitemaps-dot-xml/"/>
     <updated>2013-01-27T23:33:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/27/submit-sitemaps-dot-xml</id>
+    <id>http://weichienhung.github.io/blog/2013/01/27/submit-sitemaps-dot-xml</id>
     <content type="html"><![CDATA[<p>
 昨天在blog右上角的search打入關鍵字一直找不到東西。想說等到讓search engine發現自己web site似乎太被動了。
 上網查了一下octopress本身就會自動產生sitemap.xml檔。只要把這個檔案丟到google或是像bing這樣的搜尋引擎網站就好了，
@@ -1903,9 +1903,9 @@ App.Post.reopenClass({
   
   <entry>
     <title type="html"><![CDATA[幫你的Octopress加上FB comments]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/26/add-fb-comment-for-octopress/"/>
+    <link href="http://weichienhung.github.io/blog/2013/01/26/add-fb-comment-for-octopress/"/>
     <updated>2013-01-26T22:49:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/26/add-fb-comment-for-octopress</id>
+    <id>http://weichienhung.github.io/blog/2013/01/26/add-fb-comment-for-octopress</id>
     <content type="html"><![CDATA[<p>
 今天試著幫blog加上facebook comment的功能。上網google了一下果然就有強者教學～真棒.
 <!--more-->
@@ -1921,9 +1921,9 @@ App.Post.reopenClass({
   
   <entry>
     <title type="html"><![CDATA[前人種樹後人乘涼]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/"/>
+    <link href="http://weichienhung.github.io/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/"/>
     <updated>2013-01-25T21:57:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang</id>
+    <id>http://weichienhung.github.io/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang</id>
     <content type="html"><![CDATA[<p>
 剛安裝完octopress連 category, comment, about都沒有&#8230;XD</br>
 快速網上查找了一下發現了底下這幾篇文章教人怎麼設置，實在是太感謝~~</br>
@@ -1940,9 +1940,9 @@ App.Post.reopenClass({
   
   <entry>
     <title type="html"><![CDATA[first post]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/25/first/"/>
+    <link href="http://weichienhung.github.io/blog/2013/01/25/first/"/>
     <updated>2013-01-25T20:42:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/25/first</id>
+    <id>http://weichienhung.github.io/blog/2013/01/25/first</id>
     <content type="html"><![CDATA[<p>
 自從N年前Microsoft的Myspace掛點後就不再寫blog了<br/>
 今天忽然一時興趣就簡單找了一下快速弄blog的solution<br/>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: octopress | Weichien Hung's studying note]]></title>
-  <link href="http://weichienhung.github.com/blog/categories/octopress/atom.xml" rel="self"/>
-  <link href="http://weichienhung.github.com/"/>
-  <updated>2013-07-28T11:40:30+08:00</updated>
-  <id>http://weichienhung.github.com/</id>
+  <link href="http://weichienhung.github.io/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.io/"/>
+  <updated>2013-07-28T12:02:14+08:00</updated>
+  <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[octopress 設定問題]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti/"/>
+    <link href="http://weichienhung.github.io/blog/2013/07/28/octopress-she-ding-wen-ti/"/>
     <updated>2013-07-28T11:20:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/07/28/octopress-she-ding-wen-ti</id>
+    <id>http://weichienhung.github.io/blog/2013/07/28/octopress-she-ding-wen-ti</id>
     <content type="html"><![CDATA[<p>這兩天使用octopress時遇到了一些問題，有簡單google解決也有亂試之下解決</p>
 
 <ul>
@@ -62,9 +62,9 @@ rake setup_github_pages
   
   <entry>
     <title type="html"><![CDATA[hello octopress]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/07/07/hello-again/"/>
+    <link href="http://weichienhung.github.io/blog/2013/07/07/hello-again/"/>
     <updated>2013-07-07T15:22:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/07/07/hello-again</id>
+    <id>http://weichienhung.github.io/blog/2013/07/07/hello-again</id>
     <content type="html"><![CDATA[<p>真的是好久沒寫blog了。看了一下最後一篇是在3月2日已經整整4個月沒寫了。</p>
 
 <p>markdown的語法也都快忘光了:(一開始執行rake new_post時還發生錯誤無法產生新文章，快速地google了一下原來是dependency太舊的關係，執行完bundle update就OK了真是好險啊。
@@ -140,9 +140,9 @@ MyApp.StoreSummaryRoute = Ember.Route.extend({});</p>
   
   <entry>
     <title type="html"><![CDATA[使用漂亮的code blocks]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block/"/>
+    <link href="http://weichienhung.github.io/blog/2013/01/31/use-good-hightlight-code-block/"/>
     <updated>2013-01-31T23:48:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/31/use-good-hightlight-code-block</id>
+    <id>http://weichienhung.github.io/blog/2013/01/31/use-good-hightlight-code-block</id>
     <content type="html"><![CDATA[<p>前幾天在寫emberjs dynamic URL的範例時覺得為什麼預設的code block這麼不好看。
 上網google了一下找到這篇<a href="http://octopress.org/docs/blogging/code/">文章</a>
 介紹如何使用預設在octopress裡面更好看的code blocks。</p>
@@ -186,10 +186,7 @@ define(['app'], function (App) {
 <pre><code>{ % include_code [標題] [lang:語言] 檔案路徑 %}
 </code></pre>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (sample.js)</span> <a href='/downloads/code/sample.js'>download</a></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">App</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>{% include_code sample.js %}
 上面的範例就是</p>
 
 <pre><code>{ % include_code sample.js %}
@@ -203,10 +200,9 @@ define(['app'], function (App) {
 { % endcodeblock %}
 </code></pre>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>sample.js  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>{% codeblock sample.js lang:javascript %}
+console.log('hello world');
+{% endcodeblock %}
 上面的範例就是</p>
 
 <pre><code>{ % codeblock sample.js lang:javascript %}
@@ -218,9 +214,9 @@ console.log('hello world');
   
   <entry>
     <title type="html"><![CDATA[讓web site能夠被search engine找到]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/27/submit-sitemaps-dot-xml/"/>
+    <link href="http://weichienhung.github.io/blog/2013/01/27/submit-sitemaps-dot-xml/"/>
     <updated>2013-01-27T23:33:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/27/submit-sitemaps-dot-xml</id>
+    <id>http://weichienhung.github.io/blog/2013/01/27/submit-sitemaps-dot-xml</id>
     <content type="html"><![CDATA[<p>
 昨天在blog右上角的search打入關鍵字一直找不到東西。想說等到讓search engine發現自己web site似乎太被動了。
 上網查了一下octopress本身就會自動產生sitemap.xml檔。只要把這個檔案丟到google或是像bing這樣的搜尋引擎網站就好了，
@@ -234,9 +230,9 @@ console.log('hello world');
   
   <entry>
     <title type="html"><![CDATA[幫你的Octopress加上FB comments]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/26/add-fb-comment-for-octopress/"/>
+    <link href="http://weichienhung.github.io/blog/2013/01/26/add-fb-comment-for-octopress/"/>
     <updated>2013-01-26T22:49:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/26/add-fb-comment-for-octopress</id>
+    <id>http://weichienhung.github.io/blog/2013/01/26/add-fb-comment-for-octopress</id>
     <content type="html"><![CDATA[<p>
 今天試著幫blog加上facebook comment的功能。上網google了一下果然就有強者教學～真棒.
 <!--more-->

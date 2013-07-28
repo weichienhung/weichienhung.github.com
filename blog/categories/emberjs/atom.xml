@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: emberjs | Weichien Hung's studying note]]></title>
-  <link href="http://weichienhung.github.com/blog/categories/emberjs/atom.xml" rel="self"/>
-  <link href="http://weichienhung.github.com/"/>
-  <updated>2013-07-28T11:40:30+08:00</updated>
-  <id>http://weichienhung.github.com/</id>
+  <link href="http://weichienhung.github.io/blog/categories/emberjs/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.io/"/>
+  <updated>2013-07-28T12:02:14+08:00</updated>
+  <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[hello octopress]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/07/07/hello-again/"/>
+    <link href="http://weichienhung.github.io/blog/2013/07/07/hello-again/"/>
     <updated>2013-07-07T15:22:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/07/07/hello-again</id>
+    <id>http://weichienhung.github.io/blog/2013/07/07/hello-again</id>
     <content type="html"><![CDATA[<p>真的是好久沒寫blog了。看了一下最後一篇是在3月2日已經整整4個月沒寫了。</p>
 
 <p>markdown的語法也都快忘光了:(一開始執行rake new_post時還發生錯誤無法產生新文章，快速地google了一下原來是dependency太舊的關係，執行完bundle update就OK了真是好險啊。
@@ -93,9 +93,9 @@ MyApp.StoreSummaryRoute = Ember.Route.extend({});</p>
   
   <entry>
     <title type="html"><![CDATA[emberjs and i18n]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/02/10/ember-and-i18n/"/>
+    <link href="http://weichienhung.github.io/blog/2013/02/10/ember-and-i18n/"/>
     <updated>2013-02-10T10:18:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/02/10/ember-and-i18n</id>
+    <id>http://weichienhung.github.io/blog/2013/02/10/ember-and-i18n</id>
     <content type="html"><![CDATA[<p>這兩天試了emberjs的i18n方法，有了一點小心得在這裡紀錄一下。
 一開始google下去找到的就是<a href="https://github.com/jamesarosen/ember-i18n">jamesarosen</a>這個ember i18n library。
 library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</a>這個library，主要是處理不同語言間名詞數量的問題。
@@ -234,9 +234,9 @@ un suiveur
   
   <entry>
     <title type="html"><![CDATA[emberjs with requirejs]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/02/02/emberjs-and-requirejs/"/>
+    <link href="http://weichienhung.github.io/blog/2013/02/02/emberjs-and-requirejs/"/>
     <updated>2013-02-02T13:17:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/02/02/emberjs-and-requirejs</id>
+    <id>http://weichienhung.github.io/blog/2013/02/02/emberjs-and-requirejs</id>
     <content type="html"><![CDATA[<p>這幾天survey了requirejs順便讓它與emberjs跑在一起，有些心得所以在這裡紀錄一下。</p>
 
 <!--more-->
@@ -360,9 +360,9 @@ menubar.view.js裡面我利用text這個requirejs plugin載入外部的html進�
   
   <entry>
     <title type="html"><![CDATA[emberjs dynamic route URL取值]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/28/emberjs-dynamic-route/"/>
+    <link href="http://weichienhung.github.io/blog/2013/01/28/emberjs-dynamic-route/"/>
     <updated>2013-01-28T22:34:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/28/emberjs-dynamic-route</id>
+    <id>http://weichienhung.github.io/blog/2013/01/28/emberjs-dynamic-route</id>
     <content type="html"><![CDATA[<p>上週同事在試emberjs時發現extend原本的route然後去set model時會導致呼叫transitionToRoute失敗，造成URL會變成像http://x.x.x.x/post/<em>undefine</em>/edit
 只能使用Model覆寫find method的方式去做。
 今天晚上想說有空來試一下，結果一試之下用set model的方法也可以啊XD.</p>

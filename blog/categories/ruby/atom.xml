@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ruby | Weichien Hung's studying note]]></title>
-  <link href="http://weichienhung.github.com/blog/categories/ruby/atom.xml" rel="self"/>
-  <link href="http://weichienhung.github.com/"/>
-  <updated>2013-07-28T11:40:30+08:00</updated>
-  <id>http://weichienhung.github.com/</id>
+  <link href="http://weichienhung.github.io/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.io/"/>
+  <updated>2013-07-28T12:02:14+08:00</updated>
+  <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ruby is elegance]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/03/02/ruby-is-deligight/"/>
+    <link href="http://weichienhung.github.io/blog/2013/03/02/ruby-is-deligight/"/>
     <updated>2013-03-02T14:08:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/03/02/ruby-is-deligight</id>
+    <id>http://weichienhung.github.io/blog/2013/03/02/ruby-is-deligight</id>
     <content type="html"><![CDATA[<p>今天持續Ruby study,紀錄一下學習到的東西</p>
 
 <h3>Yield</h3>
@@ -276,9 +276,9 @@ man.showFull
   
   <entry>
     <title type="html"><![CDATA[ruby study]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/03/01/ruby-study/"/>
+    <link href="http://weichienhung.github.io/blog/2013/03/01/ruby-study/"/>
     <updated>2013-03-01T23:39:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/03/01/ruby-study</id>
+    <id>http://weichienhung.github.io/blog/2013/03/01/ruby-study</id>
     <content type="html"><![CDATA[<p>最近都在看CSS沒什麼時間繼續看Ruby,今天上codecademy練習ruby。
 在這裡紀錄一下之前沒看過的語法。</p>
 
@@ -428,9 +428,9 @@ age.respond_to?(:next) # true
   
   <entry>
     <title type="html"><![CDATA[ruby beginning]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/02/21/ruby-beginning/"/>
+    <link href="http://weichienhung.github.io/blog/2013/02/21/ruby-beginning/"/>
     <updated>2013-02-21T22:31:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/02/21/ruby-beginning</id>
+    <id>http://weichienhung.github.io/blog/2013/02/21/ruby-beginning</id>
     <content type="html"><![CDATA[<p>前幾天開始看Ruby起因是網路上很多分享的project都是Rails,為了能夠加速了解理面的內容就來學一下Rails,
 不過為了Rails必須要先打好Ruby的基礎。在這裡紀錄下學習過的語法避免自己忘光,光是昨天沒看語法我已經忘了不少XD。</p>
 

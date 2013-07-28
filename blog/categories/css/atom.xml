@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: css | Weichien Hung's studying note]]></title>
-  <link href="http://weichienhung.github.com/blog/categories/css/atom.xml" rel="self"/>
-  <link href="http://weichienhung.github.com/"/>
-  <updated>2013-07-28T11:40:30+08:00</updated>
-  <id>http://weichienhung.github.com/</id>
+  <link href="http://weichienhung.github.io/blog/categories/css/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.io/"/>
+  <updated>2013-07-28T12:02:14+08:00</updated>
+  <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[write maintainable css]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css/"/>
+    <link href="http://weichienhung.github.io/blog/2013/07/27/write-maintainable-css/"/>
     <updated>2013-07-27T11:25:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/07/27/write-maintainable-css</id>
+    <id>http://weichienhung.github.io/blog/2013/07/27/write-maintainable-css</id>
     <content type="html"><![CDATA[<p>今天看了<a href="https://github.com/doggy8088/CSS-Guidelines">CSS guideline</a>描述在大型專案如何撰寫容易維護的CSS，我直接從翻譯過文章摘錄了其中覺得還不錯而且執行上也不會太困難的幾點記下來讓自己隨時能夠複習</p>
 
 <!-- more -->

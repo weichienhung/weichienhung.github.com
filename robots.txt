@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://weichienhung.github.com/sitemap.xml 
+Sitemap: http://weichienhung.github.io/sitemap.xml 

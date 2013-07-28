@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: linux | Weichien Hung's studying note]]></title>
-  <link href="http://weichienhung.github.com/blog/categories/linux/atom.xml" rel="self"/>
-  <link href="http://weichienhung.github.com/"/>
-  <updated>2013-07-28T11:40:30+08:00</updated>
-  <id>http://weichienhung.github.com/</id>
+  <link href="http://weichienhung.github.io/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.io/"/>
+  <updated>2013-07-28T12:02:14+08:00</updated>
+  <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[shell script on linux ]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/07/10/linux-shellscript/"/>
+    <link href="http://weichienhung.github.io/blog/2013/07/10/linux-shellscript/"/>
     <updated>2013-07-10T22:15:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/07/10/linux-shellscript</id>
+    <id>http://weichienhung.github.io/blog/2013/07/10/linux-shellscript</id>
     <content type="html"><![CDATA[<p>前陣子用linux shell script寫了module自動deploy機制。紀錄一下這之中遇到的問題及常用的指令。<br/>
 簡單的自動deploy不外乎就是將檔案傳送至遠端機器然後進行安裝動作，修改設定檔。</p>
 

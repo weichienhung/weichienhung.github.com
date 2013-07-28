@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: apple | Weichien Hung's studying note]]></title>
-  <link href="http://weichienhung.github.com/blog/categories/apple/atom.xml" rel="self"/>
-  <link href="http://weichienhung.github.com/"/>
-  <updated>2013-07-28T11:40:30+08:00</updated>
-  <id>http://weichienhung.github.com/</id>
+  <link href="http://weichienhung.github.io/blog/categories/apple/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.io/"/>
+  <updated>2013-07-28T12:02:14+08:00</updated>
+  <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[良好體驗在Apple App store]]></title>
-    <link href="http://weichienhung.github.com/blog/2013/01/31/good-experience-on-itunes-purchase/"/>
+    <link href="http://weichienhung.github.io/blog/2013/01/31/good-experience-on-itunes-purchase/"/>
     <updated>2013-01-31T00:10:00+08:00</updated>
-    <id>http://weichienhung.github.com/blog/2013/01/31/good-experience-on-itunes-purchase</id>
+    <id>http://weichienhung.github.io/blog/2013/01/31/good-experience-on-itunes-purchase</id>
     <content type="html"><![CDATA[<p>上週用line買了代幣，第一次購買沒成功系統報錯誤後我沒想太多就直接再買一次，後來成功。
 這週收到信用卡帳單時發現被刷了兩次扣款，以前也沒這種經驗只好在line App裡面申報錯誤
 以及上apple網站去回報錯誤。隔天line就回信說他們也沒報法處理必須要請apple的客服處理。</p>
