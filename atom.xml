@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-07-28T13:59:44+08:00</updated>
+  <updated>2013-08-06T23:24:57+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,19 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[write english blog]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/08/06/write-english-blog/"/>
+    <updated>2013-08-06T23:12:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/08/06/write-english-blog</id>
+    <content type="html"><![CDATA[<p>I receive a email from a stranger today. He writes English email to me and ask an emberjs question.
+He saw my old post but can&#8217;t understand what i said because the post was writen by Chinese.
+I reply the email and he gets the answer finally.
+Although my blog is put on Internet but I never thought someone will get help from here :)
+After this I decide to write the post in English from now.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[octopress 設定問題]]></title>
