@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-08-07T22:08:25+08:00</updated>
+  <updated>2013-08-07T22:10:15+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -18,9 +18,9 @@
     <link href="http://weichienhung.github.io/blog/2013/08/07/memcached-study/"/>
     <updated>2013-08-07T21:27:00+08:00</updated>
     <id>http://weichienhung.github.io/blog/2013/08/07/memcached-study</id>
-    <content type="html"><![CDATA[<p>I study the memcached since yesterday. It's a good cache implementation used by Twitter,Facebook..etc.
-Because the offical site doesn't provide the rpm for download and can't get the latest version from yum.
-I study how to build it from source and also try the <a href="http://repcached.lab.klab.org/">repached</a>(for memcached replication but not official)</p>
+    <content type="html"><![CDATA[<p>I studied the memcached since yesterday. It's a good cache implementation used by Twitter,Facebook..etc.
+Because the official site doesn't provide the rpm for download and i can't get the latest version from yum.
+I learn how to build it from source and also try the <a href="http://repcached.lab.klab.org/">repached</a>(for memcached replication but not official)</p>
 
 <!-- more -->
 
