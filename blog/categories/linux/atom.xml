@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-08-06T23:24:57+08:00</updated>
+  <updated>2013-08-07T22:08:25+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,117 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[memcached study]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/08/07/memcached-study/"/>
+    <updated>2013-08-07T21:27:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/08/07/memcached-study</id>
+    <content type="html"><![CDATA[<p>I study the memcached since yesterday. It's a good cache implementation used by Twitter,Facebook..etc.
+Because the offical site doesn't provide the rpm for download and can't get the latest version from yum.
+I study how to build it from source and also try the <a href="http://repcached.lab.klab.org/">repached</a>(for memcached replication but not official)</p>
+
+<!-- more -->
+
+
+<h2>how to install memcached from source</h2>
+
+<p>You can refer to <a href="https://code.google.com/p/memcached/wiki/NewInstallFromSource">link</a>(i didn't find this post until i solve the installation XD)</p>
+
+<h3>install libevent dependency</h3>
+
+<p>I try download the libevent source from website and build it. But i found <code>yum</code> is the easiest. Don't worry if your libevent version is 1.4.x not 2.0.x.
+memcached-1.4.15 can be build with libevent-1.4.x
+<code>sh
+yum install libevent-devel
+</code></p>
+
+<h3>download the memcached-1.x.x.tar from <a href="http://memcached.org/">memcached.org</a> and untar</h3>
+
+<p><code>
+tar zxvf memcached-1.x.x.tar
+</code></p>
+
+<h3>make it</h3>
+
+<p>```sh
+./configure --prefix=/usr/local/memcached-1.4.x/</p>
+
+<p>make</p>
+
+<p>make install
+<code>``
+you may fail in</code>configure<code>and show no libevent dependency. you should add</code>--with-libevent=/usr/local/libevent/`(your libevent library folder) in configure</p>
+
+<h2>start memcached</h2>
+
+<p>```
+cd /usr/local/memcached-1.4.x/bin/</p>
+
+<p>./memcached -u nobody -p 11211 -P /usr/local/memcached-1.4.x/bin/mem.pid -d -v
+```</p>
+
+<h2>stop memcached</h2>
+
+<p>find the process id from /usr/local/memcached-1.4.x/bin/mem.pid and kill it</p>
+
+<h2>how to make memcached cluster</h2>
+
+<p>Each memcached node is configured independently in the cluster. They don't communicate or exchange data. It's the client's job to decide which
+server  from the cluster. Clients may use the consistent-hash to choose a memcached node and write/read data.<br/>
+Memcached make your application performance better but your application have to work correctly even the memcached servers crash.
+Memcached is not the storage solution.</p>
+
+<h2>install memcached with repcache</h2>
+
+<p>I upload the related repache patch and memcached-1.4.4 source to Dropbox. You can download from it.
+<code>
+wget --no-check-certificate https://dl.dropboxusercontent.com/u/60216960/memcached-1.4.4.zip
+</code></p>
+
+<h3>patch source before configure</h3>
+
+<p><code>
+patch -p1 -i repcached-2.2-1.4.4.patch
+</code></p>
+
+<h3>make it</h3>
+
+<p>```
+./configure --enable-replication --prefix=/usr/local/memcached-1.4.4-rep/</p>
+
+<p>make</p>
+
+<p>make install
+```</p>
+
+<h2>start memcached with repcache</h2>
+
+<p>For example, we have two servers: server 1(192.168.0.103) and server 2(192.168.0.101)<br/>
+In server 1
+<code>
+./memcached -u nobody -v -p 11211 -X 11212
+</code>
+In server 2
+<code>
+./memcached -u nobody -v -p 11211 -x 192.168.0.103 -X 11212
+</code></p>
+
+<h3>test the replication</h3>
+
+<p>add key in server 1
+<code>
+telnet 192.168.0.103 11211
+add hello 0 0 2
+99
+</code>
+read in server 2
+<code>
+telnet 192.168.0.101 11211
+get hello
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[shell script on linux ]]></title>

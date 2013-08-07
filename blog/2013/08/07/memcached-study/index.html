@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>shell script on linux  - Weichien Hung's studying note</title>
+  <title>memcached study - Weichien Hung's studying note</title>
   <meta name="author" content="Weichien Hung">
 
   
-  <meta name="description" content="前陣子用linux shell script寫了module自動deploy機制。紀錄一下這之中遇到的問題及常用的指令。
-簡單的自動deploy不外乎就是將檔案傳送至遠端機器然後進行安裝動作，修改設定檔。 login to remote server 由於原生shell &hellip;">
+  <meta name="description" content="I study the memcached since yesterday. It&#8217;s a good cache implementation used by Twitter,Facebook..etc.
+Because the offical site doesn&#8217;t &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/07/10/linux-shellscript/">
+  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/08/07/memcached-study/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -74,7 +74,7 @@
   
   <header>
     
-      <h1 class="entry-title">Shell Script on Linux</h1>
+      <h1 class="entry-title">Memcached Study</h1>
     
     
       <p class="meta">
@@ -90,7 +90,7 @@
   
 
 
-<time datetime="2013-07-10T22:15:00+08:00" pubdate data-updated="true">Jul 10<span>th</span>, 2013</time>
+<time datetime="2013-08-07T21:27:00+08:00" pubdate data-updated="true">Aug 7<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -99,125 +99,142 @@
   </header>
 
 
-<div class="entry-content"><p>前陣子用linux shell script寫了module自動deploy機制。紀錄一下這之中遇到的問題及常用的指令。<br/>
-簡單的自動deploy不外乎就是將檔案傳送至遠端機器然後進行安裝動作，修改設定檔。</p>
-
-<ul>
-<li><h3>login to remote server</h3></li>
-</ul>
-
+<div class="entry-content"><p>I study the memcached since yesterday. It&#8217;s a good cache implementation used by Twitter,Facebook..etc.
+Because the offical site doesn&#8217;t provide the rpm for download and can&#8217;t get the latest version from yum.
+I study how to build it from source and also try the <a href="http://repcached.lab.klab.org/">repached</a>(for memcached replication but not official)</p>
 
 <!-- more -->
 
 
-<p>由於原生shell script裡面無法自動輸入帳密進行登錄動作，基本上常用的方法有兩種。<br/>
-第一種方法就是建立ssh public key然後放在遠端機器上，這樣你ssh時就不需要再輸入密碼。
-第二種方法是安裝其它套件協助自動輸入密碼。在這裡我介紹的是使用<a href="http://sourceforge.net/projects/sshpass/">sshpass</a>。
-安裝完後要記得自己先手動登入一次遠端機器，不然它不會作用。接下來你要登入遠端機器的指令就如下</p>
+<h2>how to install memcached from source</h2>
+
+<p>You can refer to <a href="https://code.google.com/p/memcached/wiki/NewInstallFromSource">link</a>(i didn&#8217;t find this post until i solve the installation XD)</p>
+
+<h3>install libevent dependency</h3>
+
+<p>I try download the libevent source from website and build it. But i found <code>yum</code> is the easiest. Don&#8217;t worry if your libevent version is 1.4.x not 2.0.x.
+memcached-1.4.15 can be build with libevent-1.4.x</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> ssh root@<span class="o">{</span>remote ip<span class="o">}</span> <span class="s2">&quot;echo &#39;hello world&#39;&quot;</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>yum install libevent-devel
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>這樣就可以登入遠端機器並輸出一個hello world。</p>
-
-<p>另外你也可以用scp來拷貝資料過去</p>
+<h3>download the memcached-1.x.x.tar from <a href="http://memcached.org/">memcached.org</a> and untar</h3>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> scp data.zip root@<span class="o">{</span>remote ip<span class="o">}</span>:/home/root/
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>tar zxvf memcached-1.x.x.tar
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>這樣就可以把data.zip丟到遠端/home/root/目錄</p>
-
-<ul>
-<li><h3>execute command on remote server</h3>
-
-<p>簡單地方法就是在sshpass之後帶入command</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> ssh root@<span class="o">{</span>remote ip<span class="o">}</span> <span class="s2">&quot;mkdir myFolder;rm myFile.txt&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>這樣就可以在登入後執行mkdir及rm兩個指令。
-另一種方法就是把你要執行的指令寫成一個shell script，然後scp過去後執行。例如我把這兩行指令寫在myScript.sh裡</p>
+<h3>make it</h3>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>mkdir myFolder
-</span><span class='line'>rm myFile.txt
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>./configure --prefix<span class="o">=</span>/usr/local/memcached-1.4.x/
+</span><span class='line'>
+</span><span class='line'>make
+</span><span class='line'>
+</span><span class='line'>make install
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>然後執行底下指令</p>
+<p>you may fail in <code>configure</code> and show no libevent dependency. you should add <code>--with-libevent=/usr/local/libevent/</code>(your libevent library folder) in configure</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> scp myScript.sh root@<span class="o">{</span>remote ip<span class="o">}</span>:/home/root/
-</span><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> ssh root@<span class="o">{</span>remote ip<span class="o">}</span> <span class="s2">&quot;/home/root/myScript.sh&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><h3>retrieve the specified string from a line</h3>
-
-<p>例如我有一個my.xml檔裡面紀錄了最新的版號如下</p></li>
-</ul>
-
+<h2>start memcached</h2>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;myxml&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;release&gt;</span>1.0.22<span class="nt">&lt;/release&gt;</span>
-</span><span class='line'><span class="nt">&lt;/myxml&gt;</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> /usr/local/memcached-1.4.x/bin/
+</span><span class='line'>
+</span><span class='line'>./memcached -u nobody -p 11211 -P /usr/local/memcached-1.4.x/bin/mem.pid -d -v
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>用底下的指令來取出版號</p>
+<h2>stop memcached</h2>
+
+<p>find the process id from /usr/local/memcached-1.4.x/bin/mem.pid and kill it</p>
+
+<h2>how to make memcached cluster</h2>
+
+<p>Each memcached node is configured independently in the cluster. They don&#8217;t communicate or exchange data. It&#8217;s the client&#8217;s job to decide which
+server  from the cluster. Clients may use the consistent-hash to choose a memcached node and write/read data.<br/>
+Memcached make your application performance better but your application have to work correctly even the memcached servers crash.
+Memcached is not the storage solution.</p>
+
+<h2>install memcached with repcache</h2>
+
+<p>I upload the related repache patch and memcached-1.4.4 source to Dropbox. You can download from it.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">latest</span><span class="o">=</span><span class="k">$(</span>cat my.xml | sed -n <span class="s1">&#39;s/.*&lt;release&gt;\(.*\)&lt;\/release&gt;/\1/p&#39;</span><span class="k">)</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget --no-check-certificate https://dl.dropboxusercontent.com/u/60216960/memcached-1.4.4.zip
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>由於(, ), /是特殊字元,所以在re裡前面都要加上\<br/>
-後面的\1表示要取result的第一個group。<br/>
-整個用$()包覆是因為要把執行結果放進latest這個變數。</p>
-
-<ul>
-<li><h3>replace string in a config file</h3>
-
-<p>使用sed指令加上regular expression</p></li>
-</ul>
-
+<h3>patch source before configure</h3>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sed -i <span class="s1">&#39;s/.*MyTest.*/YourTest/&#39;</span> config.txt
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>patch -p1 -i repcached-2.2-1.4.4.patch
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>這樣就可以把config.txt裡面所有字串裡中間有MyTest替換成YourTest</p>
-
-<ul>
-<li><h3>insert a new line in a config file</h3>
-
-<p>使用sed指令加上regular expression</p></li>
-</ul>
-
+<h3>make it</h3>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sed -i <span class="s1">&#39;s/.*MyTest.*/&amp;\nYourTest/g&#39;</span> config.txt
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>./configure --enable-replication --prefix<span class="o">=</span>/usr/local/memcached-1.4.4-rep/
+</span><span class='line'>
+</span><span class='line'>make
+</span><span class='line'>
+</span><span class='line'>make install
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>這樣就可以在config.txt裡面插入新的一行YourTest在每一行符合中間有MyTest的字串。</p>
+<h2>start memcached with repcache</h2>
+
+<p>For example, we have two servers: server 1(192.168.0.103) and server 2(192.168.0.101)<br/>
+In server 1</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>./memcached -u nobody -v -p 11211 -X 11212
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In server 2</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>./memcached -u nobody -v -p 11211 -x 192.168.0.103 -X 11212
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>test the replication</h3>
+
+<p>add key in server 1</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>telnet 192.168.0.103 11211
+</span><span class='line'>add hello 0 0 2
+</span><span class='line'>99
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>read in server 2</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>telnet 192.168.0.101 11211
+</span><span class='line'>get hello
+</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
@@ -240,7 +257,7 @@
   
 
 
-<time datetime="2013-07-10T22:15:00+08:00" pubdate data-updated="true">Jul 10<span>th</span>, 2013</time>
+<time datetime="2013-08-07T21:27:00+08:00" pubdate data-updated="true">Aug 7<span>th</span>, 2013</time>
       
 
 <span class="categories">
@@ -254,7 +271,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/07/10/linux-shellscript/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/07/10/linux-shellscript/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/08/07/memcached-study/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/08/07/memcached-study/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -267,10 +284,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/07/07/hello-again/" title="Previous Post: hello octopress">&laquo; hello octopress</a>
+        <a class="basic-alignment left" href="/blog/2013/08/06/write-english-blog/" title="Previous Post: write english blog">&laquo; write english blog</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/07/27/write-maintainable-css/" title="Next Post: write maintainable css">write maintainable css &raquo;</a>
       
     </p>
   </footer>
@@ -282,7 +297,7 @@
       <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
 <div
   class="fb-comments"
-  data-href="http://weichienhung.github.io/blog/2013/07/10/linux-shellscript/"
+  data-href="http://weichienhung.github.io/blog/2013/08/07/memcached-study/"
   data-num-posts="2"
   data-width="470"
   data-colorscheme="light">
@@ -371,8 +386,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/07/10/linux-shellscript/';
-        var disqus_url = 'http://weichienhung.github.io/blog/2013/07/10/linux-shellscript/';
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/08/07/memcached-study/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2013/08/07/memcached-study/';
         var disqus_script = 'embed.js';
       
     (function () {
