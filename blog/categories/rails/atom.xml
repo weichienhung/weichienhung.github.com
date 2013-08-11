@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: rails | Weichien Hung's studying note]]></title>
+  <link href="http://weichienhung.github.io/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.io/"/>
+  <updated>2013-08-11T13:15:58+08:00</updated>
+  <id>http://weichienhung.github.io/</id>
+  <author>
+    <name><![CDATA[Weichien Hung]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[rails practice]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/08/11/rails-practice/"/>
+    <updated>2013-08-11T12:36:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/08/11/rails-practice</id>
+    <content type="html"><![CDATA[<p>I push my first rails project <a href="https://github.com/weichienhung/bookmarks-rails">bookmarks-rails</a> to github today. It's a very small project for practicing rails framework.
+The web provide user a very simple interface to create a bookmark and basic authentication. I take free time after work to finish this project.
+Thanks to ihower's <a href="http://ihower.tw/rails3/index.html">Ruby on Rails實戰聖經</a>,Yangtheman's <a href="http://blog.yangtheman.com/2012/02/09/facebook-connect-with-rails-omniauth-devise/">post</a> and <a href="https://www.codeschool.com/">Code school</a>, it helps me a lot.<br/>
+I try skills in this projects<br/>
+1. Twitter Bootstrap 3.0.0.rc1<br/>
+2. devise account system<br/>
+3. omniauth with facebook login<br/>
+4. rails REST<br/>
+5. RSpec<br/>
+6. Capybara</p>
+]]></content>
+  </entry>
+  
+</feed>

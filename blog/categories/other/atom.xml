@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: other | Weichien Hung's studying note]]></title>
+  <link href="http://weichienhung.github.io/blog/categories/other/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.io/"/>
+  <updated>2013-08-11T13:15:58+08:00</updated>
+  <id>http://weichienhung.github.io/</id>
+  <author>
+    <name><![CDATA[Weichien Hung]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[write english blog]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/08/06/write-english-blog/"/>
+    <updated>2013-08-06T23:12:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/08/06/write-english-blog</id>
+    <content type="html"><![CDATA[<p>I receive a email from a stranger today. He writes English email to me and ask an emberjs question.
+He saw my old post but can't understand what i said because the post was writen by Chinese.
+I reply the email and he gets the answer finally.
+Although my blog is put on Internet but I never thought someone will get help from here :)
+After this I decide to write the post in English from now.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[sublime useful plugin]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/02/06/sublime-useful-plugin/"/>
+    <updated>2013-02-06T00:59:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/02/06/sublime-useful-plugin</id>
+    <content type="html"><![CDATA[<p>今天上班跟同事之間討論到共同開發module要不要限定什麼editor(因為寫javascript)，
+就聊到sublime，想想sublime也用了1～2個月但其實還沒有很深入研究它究竟有多少好用的功能，
+所以就特地上網查了一下sublime plugin，有發現一篇文章<a href="http://net.tutsplus.com/tutorials/tools-and-tips/essential-sublime-text-2-plugins-and-extensions/">原文</a>
+<a href="http://www.qianduan.net/essential-to-sublime-the-text-2-plugins.html">中文翻譯</a>。
+今天安裝了底下幾個plugin</p>
+
+<ul>
+<li>JS Format - 可以幫你按照javascript format來重新排版。</li>
+<li>Bracket Highlighter - 可以把一些大括號中括號等的用比較顯眼的顏色標記出來。</li>
+<li>Alignment - 雖然可以把code對齊但我覺得用JS Format出來的就OK了。</li>
+</ul>
+
+
+<p>過幾天再來試其它的plugin。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[first post]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/01/25/first/"/>
+    <updated>2013-01-25T20:42:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/01/25/first</id>
+    <content type="html"><![CDATA[<p>
+自從N年前Microsoft的Myspace掛點後就不再寫blog了<br/>
+今天忽然一時興趣就簡單找了一下快速弄blog的solution<br/>
+找到了github + octopress,使用起來實在是相當方便，快速，免費！<br/>
+以後就在上面寫點東西囉<br/>
+</p>
+
+
+
+]]></content>
+  </entry>
+  
+</feed>

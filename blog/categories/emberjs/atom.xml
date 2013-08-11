@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: emberjs | Weichien Hung's studying note]]></title>
+  <link href="http://weichienhung.github.io/blog/categories/emberjs/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.io/"/>
+  <updated>2013-08-11T13:15:58+08:00</updated>
+  <id>http://weichienhung.github.io/</id>
+  <author>
+    <name><![CDATA[Weichien Hung]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[hello octopress]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/07/07/hello-again/"/>
+    <updated>2013-07-07T15:22:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/07/07/hello-again</id>
+    <content type="html"><![CDATA[<p>真的是好久沒寫blog了。看了一下最後一篇是在3月2日已經整整4個月沒寫了。</p>
+
+<p>markdown的語法也都快忘光了:(一開始執行rake new_post時還發生錯誤無法產生新文章，快速地google了一下原來是dependency太舊的關係，執行完bundle update就OK了真是好險啊。
+前陣子使用emberjs發現了一些之前沒注意到的細節。</p>
+
+<!--more-->
+
+
+<h3>使用transitionTo不會呼叫在route裡的model function</h3>
+
+<p>例如底下的程式碼，當使用transitionTo()到post route的時候. emberjs並不會幫你呼叫model(), 所以在toPost()裡面必須自己將所需要的model產生並當成
+參數一併帶在transitionTo()裡面。model()只有當你直接在URL進入post route才會被呼叫。
+setupController則是無論使用transitionTo()或是在browser直接打URL進去post route都會被呼叫。
+``` javascript example</p>
+
+<pre><code>application.PostRoute = Ember.Route.extend({
+    setupController: function(controller, model) {
+        controller.set('content', model);
+    },
+
+    model : function(params){
+        return application.Post.find(params.post_id);
+    }
+});
+
+
+toPost : function(target_post){
+        var model = application.Post.find(target_post);
+        this.transitionTo('post', model);
+},
+</code></pre>
+
+<p>```</p>
+
+<h3>nested route使用</h3>
+
+<p>一開始以為nest route的命名規則都是parent route name + child route name。
+其實不盡然，原來是要看你是使用this.route或是this.resource如果是this.route的話就要加上parent name(如底下的board and summary route)</p>
+
+<p>當要轉換到board這個route就要加上parent route name. (見底下的transitionTo())
+```
+MyApp.Router.map(function() {</p>
+
+<pre><code>this.route("landing", {path: "/landing"});
+this.resource("lobby", {path: "/lobby"}, function(){
+  this.route("board", {path: "/board"} );
+  this.resource("store", {path: "/store"}, function(){
+    this.route("summary", {path: "/summary/:game_id"} );
+  });
+});
+this.route("pageNotFound", {path: "*:"});
+</code></pre>
+
+<p>});</p>
+
+<p>//route naming
+MyApp.LandingRoute = Ember.Route.extend({});
+MyApp.LobbyRoute = Ember.Route.extend({});
+MyApp.LobbyBoardRoute = Ember.Route.extend({});
+MyApp.StoreRoute = Ember.Route.extend({});
+MyApp.StoreSummaryRoute = Ember.Route.extend({});</p>
+
+<p>toBoard : function(){</p>
+
+<pre><code>this.transitionTo('lobby.board');
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[emberjs and i18n]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/02/10/ember-and-i18n/"/>
+    <updated>2013-02-10T10:18:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/02/10/ember-and-i18n</id>
+    <content type="html"><![CDATA[<p>這兩天試了emberjs的i18n方法，有了一點小心得在這裡紀錄一下。
+一開始google下去找到的就是<a href="https://github.com/jamesarosen/ember-i18n">jamesarosen</a>這個ember i18n library。
+library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</a>這個library，主要是處理不同語言間名詞數量的問題。
+當然你可以單獨使用i18n library，也可以搭配CLDR.js。
+請參考<a href="http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html">CLDR plural 規範</a></p>
+
+<!--more-->
+
+
+<p>使用ember i18n library很容易，首先就是載入i18n.js，要注意的是如果你要使用CLDR的話要比i18n.js更早載入</p>
+
+<pre><code>&lt;script src="js/vendor/plurals.js"&gt;&lt;/script&gt;
+&lt;script src="js/vendor/i18n.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>接著就是定義你的字典，假設我先定義三個語言分別是中文，英文和法文
+<code>javascript dictionary.en.js
+Em.I18n.translations = {
+  'user.edit.title': 'Edit User',
+  'user.followers.title.one': 'One Follower',
+  'user.followers.title.other': 'All { {count}} Followers'
+};
+</code>
+<code>javascript dictionary.zh.js
+Em.I18n.translations = {
+  'user.edit.title': '編輯使用者',
+  'user.followers.title.one': '一個跟隨著',
+  'user.followers.title.other': '全部{ {count}}個跟隨者'
+};
+</code>
+<code>javascript dictionary.fr.js
+Em.I18n.translations = {
+  'user.edit.title': 'Modifier l\'utilisateur',
+  'user.followers.title.one': 'un suiveur',
+  'user.followers.title.other': '{ {count}} disciples'
+};
+</code></p>
+
+<p>在你程式開始地方宣告你目前使用的language，我是放在ember App建立之後，在我的html載入js時也是預設先載入英文字典檔。
+``` javascript main.js
+var App = Ember.Application.create({</p>
+
+<pre><code>ready: function() {
+    console.log('my App is ready');
+    CLDR.defaultLanguage = 'en';
+}
+</code></pre>
+
+<p>});
+```</p>
+
+<pre><code>...
+&lt;script src="js/dictionary.en.js"&gt;&lt;/script&gt;
+&lt;script src="js/main.js"&gt;&lt;/script&gt;
+...
+</code></pre>
+
+<p>接著你就只要隨便在你的畫面上放按鈕切換語系，切換的方法也就是用ajax去載入其它的字典檔。
+我寫在controller裡面用一個method去讀我想要的字典檔回來，但我在寫的時候發現由於ajax async的方式所以字典檔載入後畫面不會有變動，
+變成必須先切到別的頁面才會生效，為了讓它立即生效我讓它transition到一個叫i18redirect的route然後在那個route裡面再回到原本的頁面。
+這樣的好處就是在畫面上按下切換語系會馬上生效。
+``` javascript internationalization.controller.js
+App.InternationalizationController = Ember.ObjectController.extend({</p>
+
+<pre><code>updateLanguage: function(lang) {
+    var _self = this;
+    //ajax load js and redirect to make template rerender
+    $.getScript("js/utils/dictionary."+lang+".js", function() {
+        CLDR.defaultLanguage = lang;
+        _self.transitionToRoute('i18redirect');
+    });
+},
+</code></pre>
+
+<p>});
+<code>
+</code> javascript i18redirect.router.js
+App.I18redirectRoute = Ember.Route.extend({</p>
+
+<pre><code>redirect: function() {
+    this.transitionTo('internationalization');
+}
+</code></pre>
+
+<p>});
+```
+稍微解釋一下字典檔裡面xxx.one跟xxx.other的意思，你剛才看字典檔(dictionary.xx.js)會發現如下的寫法。</p>
+
+<pre><code>'user.followers.title.one': 'One Follower',
+'user.followers.title.other': 'All { {count}} Followers'
+</code></pre>
+
+<p>你必須去參考我一開始給的那<a href="http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html">網頁</a>裡面定義各國語言中什麼時候該用one或other</p>
+
+<p>以英文為例當數量為1的時候會使用xxx.one這個字，其它情況下就是用xxx.other。</p>
+
+<pre><code>one → n is 1;
+other → everything else
+</code></pre>
+
+<p>所以如果我在我的template裡面放進底下這些字</p>
+
+<pre><code>&lt;h2&gt;{ {t user.edit.title}}&lt;/h2&gt;\
+&lt;h2&gt;{ {t user.followers.title count="0"}}&lt;/h2&gt;\
+&lt;h2&gt;{ {t user.followers.title count="1"}}&lt;/h2&gt;\
+&lt;h2&gt;{ {t user.followers.title count="2"}}&lt;/h2&gt;\
+</code></pre>
+
+<p>在切換到各個語系看起來就是</p>
+
+<p>English</p>
+
+<pre><code>Edit User
+All 0 Followers
+One Follower
+All 2 Followers
+</code></pre>
+
+<p>Chinese</p>
+
+<pre><code>編輯使用者
+全部0個跟隨者
+全部1個跟隨者
+全部2個跟隨者
+</code></pre>
+
+<p>French</p>
+
+<pre><code>Modifier l'utilisateur
+un suiveur
+un suiveur
+2 disciples
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[emberjs with requirejs]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/02/02/emberjs-and-requirejs/"/>
+    <updated>2013-02-02T13:17:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/02/02/emberjs-and-requirejs</id>
+    <content type="html"><![CDATA[<p>這幾天survey了requirejs順便讓它與emberjs跑在一起，有些心得所以在這裡紀錄一下。</p>
+
+<!--more-->
+
+
+<p>就如requirejs官方網站的介紹當使用requirejs來管理javascript module load後在index.html裡只要有一行script載入你最主要的javascript，在這裡是main.js
+``` javascript index.html</p>
+
+<pre><code>&lt;script data-main="scripts/main" src="scripts/require.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p><code>
+來看一下main.js
+</code> javascript main.js
+require.config({</p>
+
+<pre><code>baseURL: '/scripts/',
+'paths': {
+    'jquery': 'libs/jquery.min',
+    'handlebars':'libs/handlebars-1.0.rc.1',
+    'ember':'libs/ember_0114',
+    'text':'libs/text',
+    'T':'templates'
+},
+shim : {
+    'ember' : {
+        deps: ['handlebars', 'jquery'],
+        exports: 'Ember'
+    }
+}
+</code></pre>
+
+<p>});</p>
+
+<p>requirejs([</p>
+
+<pre><code>'ember',
+'app',
+'route'
+'T/application.template'
+</code></pre>
+
+<p>],
+function () {
+   console.log("all loaded done");
+});
+```
+require.config中baseURL是指javascript根目錄，我所有javascript都放在scripts/底下，
+scripts/libs/目錄底下則是放了third party js library，paths中可以命名短字串避免每次都要輸入很長的字串，
+shim是用來載入library如果不支援AMD使用，由於emberjs本身不支援AMD所以用shim載入。
+檔案底部是requireJS的module定義，[]裡面描述你的dependency，function(){}代表當所有dependency module載入後要執行的code。
+在這裡我載入ember,app,route以及T/application.template四個modules，在function()裡只是簡單地印一下log。</p>
+
+<p>``` javascript app.js
+// var App = Ember.Application.create({});
+define([</p>
+
+<pre><code>'ember'
+</code></pre>
+
+<p>], function(Ember) {</p>
+
+<pre><code>console.log("ember initial and callback");
+var App = window.App = Ember.Application.create({});
+return App;
+</code></pre>
+
+<p>});
+```
+app.js裡面寫當emberjs載入後建立我的App，這裡必須把App放進window.App不然在跑emberjs時會有錯誤。</p>
+
+<p>``` javascript application.template.js
+define([</p>
+
+<pre><code>'ember',
+'views/menubar.view'
+</code></pre>
+
+<p>], function(Ember) {</p>
+
+<pre><code>Ember.TEMPLATES['application'] = Ember.Handlebars.compile(
+'\
+    &lt;h1&gt;Hello Ember&lt;/h1&gt;\
+    &lt;div&gt;\
+        { {view App.MenuBarView}}\
+        &lt;hr/&gt;\
+        { {outlet}}\
+    &lt;/div&gt;\
+'
+);
+</code></pre>
+
+<p>});
+```
+application.template裡面有兩個dependency(ember和menubar.view)。function裡面是comiple ember template。
+在前面的app.js裡面如果沒有把App放進window.App話等程式run下去ember會報錯說找不到App.MenuBarView即使你的確有這個View存在。</p>
+
+<p>``` javascript menubar.view.js
+define([</p>
+
+<pre><code>'app',
+'text!T/menubar.template.html'
+</code></pre>
+
+<p>], function(App, template) {</p>
+
+<pre><code>App.MenuBarView = Ember.View.extend({
+    tagName:'div',
+    classNames:['menubar']
+});
+Ember.TEMPLATES['menubar'] = Ember.Handlebars.compile(template);    
+</code></pre>
+
+<p>});
+```
+menubar.view.js裡面我利用text這個requirejs plugin載入外部的html進來ember compile。那如何得到載入進來的html呢？很簡單就
+是只要在function裡面加入相對應的parameters，由於這個module有2個dependencies所以在function裡面有2個parameters。而template
+很自然就是對應到讀進來的html。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[emberjs dynamic route URL取值]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/01/28/emberjs-dynamic-route/"/>
+    <updated>2013-01-28T22:34:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/01/28/emberjs-dynamic-route</id>
+    <content type="html"><![CDATA[<p>上週同事在試emberjs時發現extend原本的route然後去set model時會導致呼叫transitionToRoute失敗，造成URL會變成像http://x.x.x.x/post/<em>undefine</em>/edit
+只能使用Model覆寫find method的方式去做。
+今天晚上想說有空來試一下，結果一試之下用set model的方法也可以啊XD.</p>
+
+<!--more-->
+
+
+<ol>
+<li><p>先在route map裡加上route setting,例如我想要的URL像http://x.x.x.x/post/{dynamic value}/edit</p>
+
+<pre><code> App.Router.map(function(match) {
+     this.resource('post', { path: '/post/:post_id' }, function() {
+         this.route('edit');
+     });
+ }
+</code></pre></li>
+<li><p>extend route然後更改model return的值, 傳入參數params裡可以取得你在url裡輸入的dynamic value</p>
+
+<pre><code> App.PostRoute = Ember.Route.extend({
+     setupController: function(controller, model) {
+         controller.set('content', model);
+     },
+
+     model : function(params){   
+         var id = params.post_id;
+         post = new App.Post;
+         post.id = id;
+         var reg = /^[0-9]*$/;
+         if (reg.test(id)){
+             post.isNumber = true;
+             post.sqrt = id * id;
+         }
+         return post;    
+     }   
+ });
+</code></pre></li>
+<li><p>別忘記定義你的Post model</p>
+
+<pre><code> App.Post = Ember.Object.extend({
+     id: 0,
+     sqrt: 0,
+     isNumber: false
+ });
+</code></pre></li>
+<li><p>在Post controller加上一個function讓Post的template可以觸發導到sub route也就是{dynamic value}/edit</p>
+
+<pre><code> App.PostController = Ember.ObjectController.extend({
+     goEdit: function() {
+         this.transitionToRoute('post.edit');
+     }
+ });
+</code></pre></li>
+<li><p>最後只要在template裡面觸發goEdit function即可</p>
+
+<pre><code> Ember.TEMPLATES['post'] = Ember.Handlebars.compile(
+ "\
+     &lt;p&gt;post id : { {id}} &lt;/p&gt;\
+     &lt;p&gt;post isNumber : { {isNumber}} &lt;/p&gt;\
+     { {#if isNumber}}\
+         &lt;p&gt;square of id is : { {sqrt}} &lt;/p&gt;\
+     { {/if}}\
+     &lt;a href='' { { action goEdit}}&gt;GoEdit&lt;/a&gt;\
+ "
+ );
+</code></pre></li>
+</ol>
+
+
+<p>另一種方法就是不需要第2步，然後直接在第3步的model裡加上find function. 可以達成一樣的效果</p>
+
+<pre><code>App.Post = Ember.Object.extend({
+    id: 0,
+    sqrt: 0,
+    isNumber: false
+});
+
+App.Post.reopenClass({
+    find: function (id) {
+        var reg = /^[0-9]*$/;
+        post = new App.Post;
+        post.id = id;
+        if (reg.test(id)){
+            post.isNumber = true;
+            post.sqrt = id * id;
+        }
+        return post;
+    }
+});
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
