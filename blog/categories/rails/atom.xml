@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-08-11T13:15:58+08:00</updated>
+  <updated>2013-08-15T14:10:56+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,73 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[rails on heroku]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/"/>
+    <updated>2013-08-15T10:39:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku</id>
+    <content type="html"><![CDATA[<p>I pushed <a href="https://github.com/weichienhung/bookmarks-rails">bookmarks-rails</a> project to <a href="https://www.heroku.com/">Heroku</a> yesterday.
+Thanks to <a href="http://railsapps.github.io/rails-heroku-tutorial.html">tutorial</a> i don't have too many troblem during upload to Heroku.
+Some parts of doc are out of dated and here i write down the steps for reference myself in the future.</p>
+
+<!--more-->
+
+
+<ol>
+<li>install heroku toolbelt from <a href="https://toolbelt.heroku.com">heroku</a></li>
+<li>heroku doesn't support sqllite3, modify sqllite3 to postgres sql
+<code>ruby
+gem 'sqllite3'
+</code>
+to
+<code>
+group :development, :test do
+gem 'sqlite3'
+end
+group :production do
+gem 'pg'
+end
+</code>
+3.use <code>thin</code> as production webserver
+<code>
+group :production do
+gem 'thin'
+end
+</code></li>
+<li>run <code>bundle install --without production</code></li>
+<li>precompile your assets file, you have to add <code>config.assets.initialize_on_precompile=false</code> to your <code>config/application.rb</code></li>
+<li>run <code>rake assets:precompile</code></li>
+<li>run <code>git commit -a -m "your commit message"</code> because only commited source code will be pushed to heroku.</li>
+<li>run <code>heroku create appname</code> to create your app on heroku. It requires you input your account,password and your ssh public key(id_rsa).</li>
+<li>run <code>heroku rake db:migrate</code> to create db on heroku</li>
+<li>run <code>git push heroku master</code>. You will see your app running on http://appname.herokuapp.com.
+Heroku will modify your production datbase connection in database.yml when push to heroku. You don't need to put the production setting your database.yml.</li>
+</ol>
+
+
+<h2>trouble shooting</h2>
+
+<p>If you use Twitter Bootstrap, you have to comment out favicon related codes in your application.html.erb.  Or you will fail to push to heroku.
+```</p>
+
+<!--
+  <%= favicon_link_tag 'apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png' %>
+
+  <%= favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' %>
+-->
+
+
+<p>```</p>
+
+<p>If you modify the app name on Heroku web site, you should remove your remote branch and re-add.
+```
+git remote rm oldname</p>
+
+<p>git remote add newname git@herokuapp.com:yourapp.git
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[rails practice]]></title>

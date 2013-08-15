@@ -5,15 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>first post - Weichien Hung's studying note</title>
+  <title>rails on heroku - Weichien Hung's studying note</title>
   <meta name="author" content="Weichien Hung">
 
   
-  <meta name="description" content="
-自從N年前Microsoft的Myspace掛點後就不再寫blog了
-今天忽然一時興趣就簡單找了一下快速弄blog的solution
-找到了github + octopress,使用起來實在是相當方便，快速，免費！
-以後就在上面寫點東西囉 ">
+  <meta name="description" content="I pushed bookmarks-rails project to Heroku yesterday.
+Thanks to tutorial i don&#8217;t have too many troblem during upload to Heroku.
+Some parts of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -22,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/01/25/first/">
+  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -77,7 +75,7 @@
   
   <header>
     
-      <h1 class="entry-title">First Post</h1>
+      <h1 class="entry-title">Rails on Heroku</h1>
     
     
       <p class="meta">
@@ -93,7 +91,7 @@
   
 
 
-<time datetime="2013-01-25T20:42:00+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
+<time datetime="2013-08-15T10:39:00+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -102,14 +100,88 @@
   </header>
 
 
-<div class="entry-content"><p>
-自從N年前Microsoft的Myspace掛點後就不再寫blog了<br/>
-今天忽然一時興趣就簡單找了一下快速弄blog的solution<br/>
-找到了github + octopress,使用起來實在是相當方便，快速，免費！<br/>
-以後就在上面寫點東西囉<br/>
-</p>
+<div class="entry-content"><p>I pushed <a href="https://github.com/weichienhung/bookmarks-rails">bookmarks-rails</a> project to <a href="https://www.heroku.com/">Heroku</a> yesterday.
+Thanks to <a href="http://railsapps.github.io/rails-heroku-tutorial.html">tutorial</a> i don&#8217;t have too many troblem during upload to Heroku.
+Some parts of doc are out of dated and here i write down the steps for reference myself in the future.</p>
+
+<!--more-->
 
 
+<ol>
+<li>install heroku toolbelt from <a href="https://toolbelt.heroku.com">heroku</a></li>
+<li>heroku doesn&#8217;t support sqllite3, modify sqllite3 to postgres sql</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;sqllite3&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>to</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:development</span><span class="p">,</span> <span class="ss">:test</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;sqlite3&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;pg&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3.use <code>thin</code> as production webserver</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;thin&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+4. run <code>bundle install --without production</code> <br/>
+5. precompile your assets file, you have to add <code>config.assets.initialize_on_precompile=false</code> to your <code>config/application.rb</code><br/>
+6. run <code>rake assets:precompile</code><br/>
+7. run <code>git commit -a -m "your commit message"</code> because only commited source code will be pushed to heroku.<br/>
+8. run <code>heroku create appname</code> to create your app on heroku. It requires you input your account,password and your ssh public key(id_rsa).<br/>
+9. run <code>heroku rake db:migrate</code> to create db on heroku<br/>
+10. run <code>git push heroku master</code>. You will see your app running on http://appname.herokuapp.com.
+Heroku will modify your production datbase connection in database.yml when push to heroku. You don&#8217;t need to put the production setting your database.yml.</p>
+
+<h2>trouble shooting</h2>
+
+<p>If you use Twitter Bootstrap, you have to comment out favicon related codes in your application.html.erb.  Or you will fail to push to heroku.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;!--</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= favicon_link_tag &#39;apple-touch-icon-precomposed.png&#39;, :rel =</span><span class="o">&gt;</span> <span class="s1">&#39;apple-touch-icon-precomposed&#39;</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="s1">&#39;image/png&#39;</span> <span class="sx">%&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">  &lt;%= favicon_link_tag &#39;favicon.ico&#39;, :rel =&gt;</span> <span class="s1">&#39;shortcut icon&#39;</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">--&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you modify the app name on Heroku web site, you should remove your remote branch and re-add.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="n">remote</span> <span class="n">rm</span> <span class="n">oldname</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">newname</span> <span class="n">git</span><span class="vi">@herokuapp</span><span class="o">.</span><span class="n">com</span><span class="ss">:yourapp</span><span class="o">.</span><span class="n">git</span>
+</span></code></pre></td></tr></table></div></figure>
 
 </div>
 
@@ -133,12 +205,12 @@
   
 
 
-<time datetime="2013-01-25T20:42:00+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
+<time datetime="2013-08-15T10:39:00+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/other/'>other</a>
+    <a class='category' href='/blog/categories/rails/'>rails</a>
   
 </span>
 
@@ -147,7 +219,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/01/25/first/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/01/25/first/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -160,8 +232,8 @@
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2013/08/11/rails-practice/" title="Previous Post: rails practice">&laquo; rails practice</a>
       
-        <a class="basic-alignment right" href="/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/" title="Next Post: 前人種樹後人乘涼">前人種樹後人乘涼 &raquo;</a>
       
     </p>
   </footer>
@@ -173,7 +245,7 @@
       <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
 <div
   class="fb-comments"
-  data-href="http://weichienhung.github.io/blog/2013/01/25/first/"
+  data-href="http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/"
   data-num-posts="2"
   data-width="470"
   data-colorscheme="light">
@@ -262,8 +334,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/01/25/first/';
-        var disqus_url = 'http://weichienhung.github.io/blog/2013/01/25/first/';
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/';
         var disqus_script = 'embed.js';
       
     (function () {
