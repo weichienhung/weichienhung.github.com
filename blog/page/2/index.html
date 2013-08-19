@@ -9,8 +9,15 @@
   <meta name="author" content="Weichien Hung">
 
   
-  <meta name="description" content="前幾天開始看Ruby起因是網路上很多分享的project都是Rails,為了能夠加速了解理面的內容就來學一下Rails,
-不過為了Rails必須要先打好Ruby的基礎。在這裡紀錄下學習過的語法避免自己忘光,光是昨天沒看語法我已經忘了不少XD。 ">
+  <meta name="description" content="最近都在看CSS沒什麼時間繼續看Ruby,今天上codecademy練習ruby。
+在這裡紀錄一下之前沒看過的語法。 Multiple comments 1
+2
+3
+4
+=begin
+this is comment,
+i am comment too.
+=end Get input from &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +78,72 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/01/ruby-study/">Ruby Study</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-01T23:39:00+08:00" pubdate data-updated="true">Mar 1<span>st</span>, 2013</time>
+        
+         | <a href="/blog/2013/03/01/ruby-study/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近都在看CSS沒什麼時間繼續看Ruby,今天上codecademy練習ruby。
+在這裡紀錄一下之前沒看過的語法。</p>
+
+<h3>Multiple comments</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="cm">=begin</span>
+</span><span class='line'><span class="cm">this is comment,</span>
+</span><span class='line'><span class="cm">i am comment too.</span>
+</span><span class='line'><span class="cm">=end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Get input from console</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">print</span> <span class="s2">&quot;Integer please: &quot;</span>
+</span><span class='line'><span class="n">user_num</span> <span class="o">=</span> <span class="nb">Integer</span><span class="p">(</span><span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/03/01/ruby-study/">Continue reading &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -480,54 +553,6 @@ library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/">前人種樹後人乘涼</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-25T21:57:00+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-剛安裝完octopress連 category, comment, about都沒有&#8230;XD</br>
-快速網上查找了一下發現了底下這幾篇文章教人怎麼設置，實在是太感謝~~</br>
-<ul>
-    <li><a href="http://gibuloto.com/blog/octopress-categories-tag-cloud/">category</a></li>
-    <li><a href="http://blog.rx836.tw/blog/octopress-notes-1/">comment</a></li>
-    <li><a href="http://gangmax.me/blog/2012/05/04/add-about-page-in-octopress/">about</a></li>
-</ul>
-剩下的功能就改天再研究吧
-</p>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -542,11 +567,15 @@ library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</
   
     <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/apple'>apple (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (4)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (3)</a></li><li><a href='/blog/categories/rails'>rails (2)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/apple'>apple (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (4)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (4)</a></li><li><a href='/blog/categories/rails'>rails (2)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/08/19/improve-sublime/">Improve sublime</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/08/15/rails-on-heroku/">rails on heroku</a>
@@ -562,10 +591,6 @@ library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</
     
       <li class="post">
         <a href="/blog/2013/08/06/write-english-blog/">write english blog</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/07/28/octopress-she-ding-wen-ti/">octopress 設定問題</a>
       </li>
     
   </ul>

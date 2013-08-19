@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-08-15T14:10:56+08:00</updated>
+  <updated>2013-08-19T23:37:53+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Improve sublime]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/08/19/improve-sublime/"/>
+    <updated>2013-08-19T23:16:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/08/19/improve-sublime</id>
+    <content type="html"><![CDATA[<p>I install new Color Schemes,Theme,package to sublime and make it&#8217;s look and feel better. Here is the list i have added.</p>
+
+<h3>1.indent Guide</h3>
+
+<p>Make your current indent with different color. Open <code>Preferences</code> > <code>Settings - Default</code> and add <code>draw_active</code> to <code>indent_guide_options</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;indent_guide&quot;</span><span class="err">:</span> <span class="p">[</span><span class="s2">&quot;draw_normal&quot;</span><span class="p">,</span><span class="s2">&quot;draw_active&quot;</span><span class="p">]</span><span class="err">,</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!-- more -->
+
+
+<h3>2.Soda-theme</h3>
+
+<p>Folow <a href="https://github.com/buymeasoda/soda-theme/">soda-theme</a> to install. After installation done, you have to enable it in <code>Preferences</code> > <code>Settings - User</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'> <span class="s2">&quot;theme&quot;</span><span class="err">:</span><span class="s2">&quot;Soda Light.sublime-theme&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3.KeymapManager</h3>
+
+<p>The easy way to show all your shortcut key. Good for me. You can use <code>Package Control</code> > <code>Install Package</code> > <code>KeymapManager</code> to install it.</p>
+
+<h3>4.Tomorrow Theme</h3>
+
+<p>The most beautiful color scheme. Use <code>Package Control</code> > <code>Install Package</code> > <code>Tomorrow - Theme</code> to install</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[rails on heroku]]></title>
@@ -2180,25 +2218,6 @@ App.Post.reopenClass({
 我想是因為facebook_like.html裡面會include facebook javascript所以連帶facebook commment功能都出現了。 <br/><br/>
 順便也查了一下怎麼只秀出部份文章在首頁上。只要在文章加入<code>&lt;!--more--&gt;</code>
 這個tag,後面的文章就不會出現在blog首頁. 如下
-</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[前人種樹後人乘涼]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/"/>
-    <updated>2013-01-25T21:57:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang</id>
-    <content type="html"><![CDATA[<p>
-剛安裝完octopress連 category, comment, about都沒有&#8230;XD</br>
-快速網上查找了一下發現了底下這幾篇文章教人怎麼設置，實在是太感謝~~</br>
-<ul>
-    <li><a href="http://gibuloto.com/blog/octopress-categories-tag-cloud/">category</a></li>
-    <li><a href="http://blog.rx836.tw/blog/octopress-notes-1/">comment</a></li>
-    <li><a href="http://gangmax.me/blog/2012/05/04/add-about-page-in-octopress/">about</a></li>
-</ul>
-剩下的功能就改天再研究吧
 </p>
 
 ]]></content>
