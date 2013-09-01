@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: coffeescript | Weichien Hung's studying note]]></title>
+  <link href="http://weichienhung.github.io/blog/categories/coffeescript/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.io/"/>
+  <updated>2013-09-01T21:01:14+08:00</updated>
+  <id>http://weichienhung.github.io/</id>
+  <author>
+    <name><![CDATA[Weichien Hung]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Coffee script memo]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/"/>
+    <updated>2013-09-01T16:35:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo</id>
+    <content type="html"><![CDATA[<p>From last week i tried the Ember-Rails and studied the coffee script btw. Because more and more people use coffee script and i want to understand their codes!
+In the beginning the coffee script syntax confuses me a lot and cost a lot of time to google it.
+I decide to keep it on post for reference in the future.</p>
+
+<!--more-->
+
+
+<p>The indent is the most important to coffeescript. Wrong indent cause compile fail.
+For example: define a method to call ajax. You can insert variable into string using <code>"#{}"</code>. <code>@successHandle</code> invoke the another method inside ajax scope
+``` coffeescript
+getData: ->
+  $.ajax '/api/post/',</p>
+
+<pre><code>type: 'GET'
+dataType: 'json'
+success: (data, textStatus, jqXHR) -&gt;
+  @successHandle data
+
+successHandle: (data) -&gt;
+  console.log "success #{data}"
+</code></pre>
+
+<p><code>
+Pass a string and function. For example: listen a click event
+</code>
+button.addListener 'click',() ->
+  console.log 'btn click'
+<code>
+Iterate a hash object
+</code>
+hashobject =
+  name: 'ben'
+  address: 'xxxxx'</p>
+
+<p>for key, value of hashobject
+  console.log key
+  console.log value
+```</p>
+
+<p>All variable definition will be scoped in function. If you want to def a variable in each loop, you should use <code>do () -&gt;</code>
+```
+check = () ->
+  for person in people</p>
+
+<pre><code>post = new Post()
+person.setPost post
+</code></pre>
+
+<h1>every person has the same post reference</h1>
+
+<p>check = () ->
+  for person in people</p>
+
+<pre><code>do (person) -&gt;
+  post = new Post()
+  person.setPost post
+</code></pre>
+
+<h1>every person has his post</h1>
+
+<p><code>
+Timeout syntax
+</code>
+setTimeout (->
+  console.log "hello world"
+), 100
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

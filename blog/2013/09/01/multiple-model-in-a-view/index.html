@@ -5,15 +5,22 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>first post - Weichien Hung's studying note</title>
+  <title>Multiple models in a view - Weichien Hung's studying note</title>
   <meta name="author" content="Weichien Hung">
 
   
-  <meta name="description" content="
-自從N年前Microsoft的Myspace掛點後就不再寫blog了
-今天忽然一時興趣就簡單找了一下快速弄blog的solution
-找到了github + octopress,使用起來實在是相當方便，快速，免費！
-以後就在上面寫點東西囉 ">
+  <meta name="description" content="How to use multiple models in a view?
+Retrieve another data and set to controller in Route&#8217;s setupController method. 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+model &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -22,7 +29,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/01/25/first/">
+  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/09/01/multiple-model-in-a-view/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -77,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">First Post</h1>
+      <h1 class="entry-title">Multiple Models in a View</h1>
     
     
       <p class="meta">
@@ -93,7 +100,7 @@
   
 
 
-<time datetime="2013-01-25T20:42:00+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
+<time datetime="2013-09-01T20:29:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -102,12 +109,71 @@
   </header>
 
 
-<div class="entry-content"><p>
-自從N年前Microsoft的Myspace掛點後就不再寫blog了<br/>
-今天忽然一時興趣就簡單找了一下快速弄blog的solution<br/>
-找到了github + octopress,使用起來實在是相當方便，快速，免費！<br/>
-以後就在上面寫點東西囉<br/>
-</p>
+<div class="entry-content"><p>How to use multiple models in a view?
+Retrieve another data and set to controller in Route&#8217;s setupController method.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">model: </span><span class="nf">-&gt;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">Place</span><span class="p">.</span><span class="nx">places</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">setupController: </span><span class="nf">(controller, model) -&gt;</span>
+</span><span class='line'>  <span class="c1">#model is the result of Place.places()</span>
+</span><span class='line'>  <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;content&#39;</span><span class="p">,</span> <span class="nx">model</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">#another data</span>
+</span><span class='line'>  <span class="nv">categorys = </span><span class="nx">Category</span><span class="p">.</span><span class="nx">categorys</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;categorys&#39;</span><span class="p">,</span> <span class="nx">categorys</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I create CategoryView and bind data to it in template</p>
+
+<pre>
+&#123;{#each category in categorys}}
+  &#123;{#view CategoryView contentBinding="category"}}
+    &#123;{category.name}}
+  &#123;{/view}}
+&#123;{/each}}
+
+&#123;{#each place in content}}
+  &#123;{place.name}}
+&#123;{/each}}
+</pre>
+
+
+<p>CategoryView code:
+I use classNameBinding to auto update class when status is changed.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">CategoryView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">classNameBindings: </span><span class="p">[</span><span class="s">&#39;getClass&#39;</span><span class="p">]</span>
+</span><span class='line'>  <span class="nv">status: </span><span class="kc">true</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">getClass: </span><span class="p">(</span> <span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="s">&quot;btn-info&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="k">return</span> <span class="s">&quot;btn-default&quot;</span>
+</span><span class='line'>  <span class="p">).</span><span class="nx">property</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 
@@ -133,12 +199,12 @@
   
 
 
-<time datetime="2013-01-25T20:42:00+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
+<time datetime="2013-09-01T20:29:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/other/'>other</a>
+    <a class='category' href='/blog/categories/emberjs/'>emberjs</a>
   
 </span>
 
@@ -147,7 +213,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/01/25/first/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/01/25/first/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/09/01/multiple-model-in-a-view/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/09/01/multiple-model-in-a-view/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -160,8 +226,8 @@
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2013/09/01/coffee-script-memo/" title="Previous Post: Coffee script memo">&laquo; Coffee script memo</a>
       
-        <a class="basic-alignment right" href="/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/" title="Next Post: 前人種樹後人乘涼">前人種樹後人乘涼 &raquo;</a>
       
     </p>
   </footer>
@@ -173,7 +239,7 @@
       <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
 <div
   class="fb-comments"
-  data-href="http://weichienhung.github.io/blog/2013/01/25/first/"
+  data-href="http://weichienhung.github.io/blog/2013/09/01/multiple-model-in-a-view/"
   data-num-posts="2"
   data-width="470"
   data-colorscheme="light">
@@ -262,8 +328,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/01/25/first/';
-        var disqus_url = 'http://weichienhung.github.io/blog/2013/01/25/first/';
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/09/01/multiple-model-in-a-view/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2013/09/01/multiple-model-in-a-view/';
         var disqus_script = 'embed.js';
       
     (function () {

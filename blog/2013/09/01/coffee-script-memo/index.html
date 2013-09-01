@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>memcached study - Weichien Hung's studying note</title>
+  <title>Coffee script memo - Weichien Hung's studying note</title>
   <meta name="author" content="Weichien Hung">
 
   
-  <meta name="description" content="I studied the memcached since yesterday. It&#8217;s a good cache implementation used by Twitter,Facebook..etc.
-Because the official site doesn&#8217; &hellip;">
+  <meta name="description" content="From last week i tried the Ember-Rails and studied the coffee script btw. Because more and more people use coffee script and i want to understand &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ Because the official site doesn&#8217; &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/08/07/memcached-study/">
+  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -74,7 +73,7 @@ Because the official site doesn&#8217; &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Memcached Study</h1>
+      <h1 class="entry-title">Coffee Script Memo</h1>
     
     
       <p class="meta">
@@ -90,7 +89,7 @@ Because the official site doesn&#8217; &hellip;">
   
 
 
-<time datetime="2013-08-07T21:27:00+08:00" pubdate data-updated="true">Aug 7<span>th</span>, 2013</time>
+<time datetime="2013-09-01T16:35:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -99,140 +98,102 @@ Because the official site doesn&#8217; &hellip;">
   </header>
 
 
-<div class="entry-content"><p>I studied the memcached since yesterday. It&#8217;s a good cache implementation used by Twitter,Facebook..etc.
-Because the official site doesn&#8217;t provide the rpm for download and i can&#8217;t get the latest version from yum.
-I learn how to build it from source and also try the <a href="http://repcached.lab.klab.org/">repached</a>(for memcached replication but not official)</p>
+<div class="entry-content"><p>From last week i tried the Ember-Rails and studied the coffee script btw. Because more and more people use coffee script and i want to understand their codes!
+In the beginning the coffee script syntax confuses me a lot and cost a lot of time to google it.
+I decide to keep it on post for reference in the future.</p>
 
-<!-- more -->
-
-
-<h2>how to install memcached from source</h2>
-
-<p>You can refer to <a href="https://code.google.com/p/memcached/wiki/NewInstallFromSource">link</a>(i didn&#8217;t find this post until i solve the installation XD)</p>
-
-<h3>install libevent dependency</h3>
-
-<p>I try download the libevent source from website and build it. But i found <code>yum</code> is the easiest. Don&#8217;t worry if your libevent version is 1.4.x not 2.0.x.
-memcached-1.4.15 can be build with libevent-1.4.x</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>yum install libevent-devel
-</span></code></pre></td></tr></table></div></figure>
+<!--more-->
 
 
-<h3>download the memcached-1.x.x.tar from <a href="http://memcached.org/">memcached.org</a> and untar</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>tar zxvf memcached-1.x.x.tar
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>make it</h3>
+<p>The indent is the most important to coffeescript. Wrong indent cause compile fail.
+For example: define a method to call ajax. You can insert variable into string using <code>"#{}"</code>. <code>@successHandle</code> invoke the another method inside ajax scope</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>./configure --prefix<span class="o">=</span>/usr/local/memcached-1.4.x/
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">getData: </span><span class="nf">-&gt;</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span> <span class="s">&#39;/api/post/&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">type: </span><span class="s">&#39;GET&#39;</span>
+</span><span class='line'>    <span class="nv">dataType: </span><span class="s">&#39;json&#39;</span>
+</span><span class='line'>    <span class="nv">success: </span><span class="nf">(data, textStatus, jqXHR) -&gt;</span>
+</span><span class='line'>      <span class="nx">@successHandle</span> <span class="nx">data</span>
 </span><span class='line'>
-</span><span class='line'>make
-</span><span class='line'>
-</span><span class='line'>make install
+</span><span class='line'>    <span class="nv">successHandle: </span><span class="nf">(data) -&gt;</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;success </span><span class="si">#{</span><span class="nx">data</span><span class="si">}</span><span class="s">&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>you may fail in <code>configure</code> and show no libevent dependency. you should add <code>--with-libevent=/usr/local/libevent/</code>(your libevent library folder) in configure</p>
-
-<h2>start memcached</h2>
+<p>Pass a string and function. For example: listen a click event</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> /usr/local/memcached-1.4.x/bin/
-</span><span class='line'>
-</span><span class='line'>./memcached -u nobody -p 11211 -P /usr/local/memcached-1.4.x/bin/mem.pid -d -v
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">button</span><span class="p">.</span><span class="nx">addListener</span> <span class="s">&#39;click&#39;</span><span class="p">,()</span> <span class="nf">-&gt;</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;btn click&#39;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>stop memcached</h2>
-
-<p>find the process id from /usr/local/memcached-1.4.x/bin/mem.pid and kill it</p>
-
-<h2>how to make memcached cluster</h2>
-
-<p>Each memcached node is configured independently in the cluster. They don&#8217;t communicate or exchange data. It&#8217;s the client&#8217;s job to decide which
-server  from the cluster. Clients may use the consistent-hash to choose a memcached node and write/read data.<br/>
-Memcached make your application performance better but your application have to work correctly even the memcached servers crash.
-Memcached is not the storage solution.</p>
-
-<h2>install memcached with repcache</h2>
-
-<p>I upload the related repache patch and memcached-1.4.4 source to Dropbox. You can download from it.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget --no-check-certificate https://dl.dropboxusercontent.com/u/60216960/memcached-1.4.4.zip
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>patch source before configure</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>patch -p1 -i repcached-2.2-1.4.4.patch
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>make it</h3>
+<p>Iterate a hash object</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>./configure --enable-replication --prefix<span class="o">=</span>/usr/local/memcached-1.4.4-rep/
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">hashobject =</span>
+</span><span class='line'>  <span class="nv">name: </span><span class="s">&#39;ben&#39;</span>
+</span><span class='line'>  <span class="nv">address: </span><span class="s">&#39;xxxxx&#39;</span>
 </span><span class='line'>
-</span><span class='line'>make
-</span><span class='line'>
-</span><span class='line'>make install
+</span><span class='line'><span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">hashobject</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">key</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">value</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>start memcached with repcache</h2>
-
-<p>For example, we have two servers: server 1(192.168.0.103) and server 2(192.168.0.101)<br/>
-In server 1</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>./memcached -u nobody -v -p 11211 -X 11212
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In server 2</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>./memcached -u nobody -v -p 11211 -x 192.168.0.103 -X 11212
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>test the replication</h3>
-
-<p>add key in server 1</p>
+<p>All variable definition will be scoped in function. If you want to def a variable in each loop, you should use <code>do () -&gt;</code></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>telnet 192.168.0.103 11211
-</span><span class='line'>add hello 0 0 2
-</span><span class='line'>99
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">check = </span><span class="p">()</span> <span class="nf">-&gt;</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">person</span> <span class="k">in</span> <span class="nx">people</span>
+</span><span class='line'>    <span class="nv">post = </span><span class="k">new</span> <span class="nx">Post</span><span class="p">()</span>
+</span><span class='line'>    <span class="nx">person</span><span class="p">.</span><span class="nx">setPost</span> <span class="nx">post</span>
+</span><span class='line'><span class="c1">#every person has the same post reference</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">check = </span><span class="p">()</span> <span class="nf">-&gt;</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">person</span> <span class="k">in</span> <span class="nx">people</span>
+</span><span class='line'>    <span class="nx">do</span> <span class="nf">(person) -&gt;</span>
+</span><span class='line'>      <span class="nv">post = </span><span class="k">new</span> <span class="nx">Post</span><span class="p">()</span>
+</span><span class='line'>      <span class="nx">person</span><span class="p">.</span><span class="nx">setPost</span> <span class="nx">post</span>
+</span><span class='line'><span class="c1">#every person has his post</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>read in server 2</p>
+<p>Timeout syntax</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>telnet 192.168.0.101 11211
-</span><span class='line'>get hello
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">setTimeout</span> <span class="p">(</span><span class="nf">-&gt;</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;hello world&quot;</span>
+</span><span class='line'><span class="p">),</span> <span class="mi">100</span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>
@@ -257,12 +218,12 @@ In server 1</p>
   
 
 
-<time datetime="2013-08-07T21:27:00+08:00" pubdate data-updated="true">Aug 7<span>th</span>, 2013</time>
+<time datetime="2013-09-01T16:35:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/linux/'>linux</a>
+    <a class='category' href='/blog/categories/coffeescript/'>coffeescript</a>
   
 </span>
 
@@ -271,7 +232,7 @@ In server 1</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/08/07/memcached-study/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/08/07/memcached-study/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -284,10 +245,10 @@ In server 1</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/08/06/write-english-blog/" title="Previous Post: write english blog">&laquo; write english blog</a>
+        <a class="basic-alignment left" href="/blog/2013/08/25/rails-and-ember-study/" title="Previous Post: rails and ember study">&laquo; rails and ember study</a>
       
       
-        <a class="basic-alignment right" href="/blog/2013/08/11/rails-practice/" title="Next Post: rails practice">rails practice &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2013/09/01/multiple-model-in-a-view/" title="Next Post: Multiple models in a view">Multiple models in a view &raquo;</a>
       
     </p>
   </footer>
@@ -299,7 +260,7 @@ In server 1</p>
       <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
 <div
   class="fb-comments"
-  data-href="http://weichienhung.github.io/blog/2013/08/07/memcached-study/"
+  data-href="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/"
   data-num-posts="2"
   data-width="470"
   data-colorscheme="light">
@@ -388,8 +349,8 @@ In server 1</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/08/07/memcached-study/';
-        var disqus_url = 'http://weichienhung.github.io/blog/2013/08/07/memcached-study/';
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/';
         var disqus_script = 'embed.js';
       
     (function () {

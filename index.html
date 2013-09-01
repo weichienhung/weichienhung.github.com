@@ -9,8 +9,18 @@
   <meta name="author" content="Weichien Hung">
 
   
-  <meta name="description" content="I pushed two project(rails101-groupme,project101)to github yesterday.
-I bought the ebook rails101 and make rails101-groupme project by follow &hellip;">
+  <meta name="description" content="How to use multiple models in a view?
+Retrieve another data and set to controller in Route&#8217;s setupController method. 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+model &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +81,156 @@ I bought the ebook rails101 and make rails101-groupme project by follow &hellip;
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/01/multiple-model-in-a-view/">Multiple Models in a View</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-01T20:29:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time>
+        
+         | <a href="/blog/2013/09/01/multiple-model-in-a-view/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>How to use multiple models in a view?
+Retrieve another data and set to controller in Route&#8217;s setupController method.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">model: </span><span class="nf">-&gt;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">Place</span><span class="p">.</span><span class="nx">places</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">setupController: </span><span class="nf">(controller, model) -&gt;</span>
+</span><span class='line'>  <span class="c1">#model is the result of Place.places()</span>
+</span><span class='line'>  <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;content&#39;</span><span class="p">,</span> <span class="nx">model</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">#another data</span>
+</span><span class='line'>  <span class="nv">categorys = </span><span class="nx">Category</span><span class="p">.</span><span class="nx">categorys</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;categorys&#39;</span><span class="p">,</span> <span class="nx">categorys</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I create CategoryView and bind data to it in template</p>
+
+<pre>
+&#123;{#each category in categorys}}
+  &#123;{#view CategoryView contentBinding="category"}}
+    &#123;{category.name}}
+  &#123;{/view}}
+&#123;{/each}}
+
+&#123;{#each place in content}}
+  &#123;{place.name}}
+&#123;{/each}}
+</pre>
+
+
+<p>CategoryView code:
+I use classNameBinding to auto update class when status is changed.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">CategoryView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">classNameBindings: </span><span class="p">[</span><span class="s">&#39;getClass&#39;</span><span class="p">]</span>
+</span><span class='line'>  <span class="nv">status: </span><span class="kc">true</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">getClass: </span><span class="p">(</span> <span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="s">&quot;btn-info&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="k">return</span> <span class="s">&quot;btn-default&quot;</span>
+</span><span class='line'>  <span class="p">).</span><span class="nx">property</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/01/coffee-script-memo/">Coffee Script Memo</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-01T16:35:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time>
+        
+         | <a href="/blog/2013/09/01/coffee-script-memo/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>From last week i tried the Ember-Rails and studied the coffee script btw. Because more and more people use coffee script and i want to understand their codes!
+In the beginning the coffee script syntax confuses me a lot and cost a lot of time to google it.
+I decide to keep it on post for reference in the future.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/09/01/coffee-script-memo/">Continue reading &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -447,101 +607,6 @@ After this I decide to write the post in English from now.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/10/linux-shellscript/">Shell Script on Linux</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-10T22:15:00+08:00" pubdate data-updated="true">Jul 10<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/07/10/linux-shellscript/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>前陣子用linux shell script寫了module自動deploy機制。紀錄一下這之中遇到的問題及常用的指令。<br/>
-簡單的自動deploy不外乎就是將檔案傳送至遠端機器然後進行安裝動作，修改設定檔。</p>
-
-<ul>
-<li><h3>login to remote server</h3></li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/07/10/linux-shellscript/">Continue reading &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/07/hello-again/">Hello Octopress</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-07T15:22:00+08:00" pubdate data-updated="true">Jul 7<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/07/07/hello-again/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>真的是好久沒寫blog了。看了一下最後一篇是在3月2日已經整整4個月沒寫了。</p>
-
-<p>markdown的語法也都快忘光了:(一開始執行rake new_post時還發生錯誤無法產生新文章，快速地google了一下原來是dependency太舊的關係，執行完bundle update就OK了真是好險啊。
-前陣子使用emberjs發現了一些之前沒注意到的細節。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/07/07/hello-again/">Continue reading &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -554,11 +619,19 @@ After this I decide to write the post in English from now.</p>
   
     <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/apple'>apple (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (5)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (4)</a></li><li><a href='/blog/categories/rails'>rails (3)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/apple'>apple (1)</a></li><li><a href='/blog/categories/coffeescript'>coffeescript (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (6)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (4)</a></li><li><a href='/blog/categories/rails'>rails (3)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/01/multiple-model-in-a-view/">Multiple models in a view</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/01/coffee-script-memo/">Coffee script memo</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/08/25/rails-and-ember-study/">rails and ember study</a>
@@ -570,14 +643,6 @@ After this I decide to write the post in English from now.</p>
     
       <li class="post">
         <a href="/blog/2013/08/15/rails-on-heroku/">rails on heroku</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/11/rails-practice/">rails practice</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/07/memcached-study/">memcached study</a>
       </li>
     
   </ul>

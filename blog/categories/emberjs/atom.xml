@@ -4,7 +4,7 @@
   <title><![CDATA[Category: emberjs | Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/emberjs/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-08-25T07:43:31+08:00</updated>
+  <updated>2013-09-01T21:01:14+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,60 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Multiple models in a view]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/01/multiple-model-in-a-view/"/>
+    <updated>2013-09-01T20:29:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/01/multiple-model-in-a-view</id>
+    <content type="html"><![CDATA[<p>How to use multiple models in a view?
+Retrieve another data and set to controller in Route's setupController method.
+``` coffeescript
+model: ->
+  return Place.places()</p>
+
+<p>setupController: (controller, model) ->
+  #model is the result of Place.places()
+  controller.set 'content', model</p>
+
+<p>  #another data
+  categorys = Category.categorys()
+  controller.set 'categorys', categorys
+```
+I create CategoryView and bind data to it in template</p>
+
+<pre>
+&#123;{#each category in categorys}}
+  &#123;{#view CategoryView contentBinding="category"}}
+    &#123;{category.name}}
+  &#123;{/view}}
+&#123;{/each}}
+
+&#123;{#each place in content}}
+  &#123;{place.name}}
+&#123;{/each}}
+</pre>
+
+
+<p>CategoryView code:
+I use classNameBinding to auto update class when status is changed.
+```
+CategoryView = Ember.View.extend
+  classNameBindings: ['getClass']
+  status: true</p>
+
+<p>  getClass: ( -></p>
+
+<pre><code>if this.get('status')
+  return "btn-info"
+else
+  return "btn-default"
+</code></pre>
+
+<p>  ).property('status')
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[rails and ember study]]></title>
@@ -374,103 +428,6 @@ Ember.TEMPLATES['menubar'] = Ember.Handlebars.compile(template);
 menubar.view.js裡面我利用text這個requirejs plugin載入外部的html進來ember compile。那如何得到載入進來的html呢？很簡單就
 是只要在function裡面加入相對應的parameters，由於這個module有2個dependencies所以在function裡面有2個parameters。而template
 很自然就是對應到讀進來的html。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[emberjs dynamic route URL取值]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/01/28/emberjs-dynamic-route/"/>
-    <updated>2013-01-28T22:34:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/01/28/emberjs-dynamic-route</id>
-    <content type="html"><![CDATA[<p>上週同事在試emberjs時發現extend原本的route然後去set model時會導致呼叫transitionToRoute失敗，造成URL會變成像http://x.x.x.x/post/<em>undefine</em>/edit
-只能使用Model覆寫find method的方式去做。
-今天晚上想說有空來試一下，結果一試之下用set model的方法也可以啊XD.</p>
-
-<!--more-->
-
-
-<ol>
-<li><p>先在route map裡加上route setting,例如我想要的URL像http://x.x.x.x/post/{dynamic value}/edit</p>
-
-<pre><code> App.Router.map(function(match) {
-     this.resource('post', { path: '/post/:post_id' }, function() {
-         this.route('edit');
-     });
- }
-</code></pre></li>
-<li><p>extend route然後更改model return的值, 傳入參數params裡可以取得你在url裡輸入的dynamic value</p>
-
-<pre><code> App.PostRoute = Ember.Route.extend({
-     setupController: function(controller, model) {
-         controller.set('content', model);
-     },
-
-     model : function(params){   
-         var id = params.post_id;
-         post = new App.Post;
-         post.id = id;
-         var reg = /^[0-9]*$/;
-         if (reg.test(id)){
-             post.isNumber = true;
-             post.sqrt = id * id;
-         }
-         return post;    
-     }   
- });
-</code></pre></li>
-<li><p>別忘記定義你的Post model</p>
-
-<pre><code> App.Post = Ember.Object.extend({
-     id: 0,
-     sqrt: 0,
-     isNumber: false
- });
-</code></pre></li>
-<li><p>在Post controller加上一個function讓Post的template可以觸發導到sub route也就是{dynamic value}/edit</p>
-
-<pre><code> App.PostController = Ember.ObjectController.extend({
-     goEdit: function() {
-         this.transitionToRoute('post.edit');
-     }
- });
-</code></pre></li>
-<li><p>最後只要在template裡面觸發goEdit function即可</p>
-
-<pre><code> Ember.TEMPLATES['post'] = Ember.Handlebars.compile(
- "\
-     &lt;p&gt;post id : { {id}} &lt;/p&gt;\
-     &lt;p&gt;post isNumber : { {isNumber}} &lt;/p&gt;\
-     { {#if isNumber}}\
-         &lt;p&gt;square of id is : { {sqrt}} &lt;/p&gt;\
-     { {/if}}\
-     &lt;a href='' { { action goEdit}}&gt;GoEdit&lt;/a&gt;\
- "
- );
-</code></pre></li>
-</ol>
-
-
-<p>另一種方法就是不需要第2步，然後直接在第3步的model裡加上find function. 可以達成一樣的效果</p>
-
-<pre><code>App.Post = Ember.Object.extend({
-    id: 0,
-    sqrt: 0,
-    isNumber: false
-});
-
-App.Post.reopenClass({
-    find: function (id) {
-        var reg = /^[0-9]*$/;
-        post = new App.Post;
-        post.id = id;
-        if (reg.test(id)){
-            post.isNumber = true;
-            post.sqrt = id * id;
-        }
-        return post;
-    }
-});
-</code></pre>
 ]]></content>
   </entry>
   

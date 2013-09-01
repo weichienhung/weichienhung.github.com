@@ -9,24 +9,8 @@
   <meta name="author" content="Weichien Hung">
 
   
-  <meta name="description" content="今天持續Ruby study,紀錄一下學習到的東西 Yield 讓自定義的method可以接受block, 在yield之後的code會等block內容跑完才接著跑 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-def block_test puts & &hellip;">
+  <meta name="description" content="前陣子用linux shell script寫了module自動deploy機制。紀錄一下這之中遇到的問題及常用的指令。
+簡單的自動deploy不外乎就是將檔案傳送至遠端機器然後進行安裝動作，修改設定檔。 login to remote server ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +71,101 @@ def block_test puts & &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/10/linux-shellscript/">Shell Script on Linux</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-10T22:15:00+08:00" pubdate data-updated="true">Jul 10<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/07/10/linux-shellscript/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>前陣子用linux shell script寫了module自動deploy機制。紀錄一下這之中遇到的問題及常用的指令。<br/>
+簡單的自動deploy不外乎就是將檔案傳送至遠端機器然後進行安裝動作，修改設定檔。</p>
+
+<ul>
+<li><h3>login to remote server</h3></li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/07/10/linux-shellscript/">Continue reading &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/07/hello-again/">Hello Octopress</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-07T15:22:00+08:00" pubdate data-updated="true">Jul 7<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/07/07/hello-again/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>真的是好久沒寫blog了。看了一下最後一篇是在3月2日已經整整4個月沒寫了。</p>
+
+<p>markdown的語法也都快忘光了:(一開始執行rake new_post時還發生錯誤無法產生新文章，快速地google了一下原來是dependency太舊的關係，執行完bundle update就OK了真是好險啊。
+前陣子使用emberjs發現了一些之前沒注意到的細節。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/07/07/hello-again/">Continue reading &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -525,96 +604,6 @@ library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/28/emberjs-dynamic-route/">Emberjs Dynamic Route URL取值</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-28T22:34:00+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/01/28/emberjs-dynamic-route/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>上週同事在試emberjs時發現extend原本的route然後去set model時會導致呼叫transitionToRoute失敗，造成URL會變成像http://x.x.x.x/post/<em>undefine</em>/edit
-只能使用Model覆寫find method的方式去做。
-今天晚上想說有空來試一下，結果一試之下用set model的方法也可以啊XD.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/28/emberjs-dynamic-route/">Continue reading &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/27/submit-sitemaps-dot-xml/">讓web Site能夠被search Engine找到</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-27T23:33:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/01/27/submit-sitemaps-dot-xml/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-昨天在blog右上角的search打入關鍵字一直找不到東西。想說等到讓search engine發現自己web site似乎太被動了。
-上網查了一下octopress本身就會自動產生sitemap.xml檔。只要把這個檔案丟到google或是像bing這樣的搜尋引擎網站就好了，
-還真是相當方便。<br/>
-先登入到 <a href="https://www.google.com/webmasters/">Google網站管理工具</a>
-然後根據網站的步驟去做，主要是必須放一個驗證檔到你的github上然後驗證網站是你所屬。
-</p>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -629,11 +618,19 @@ library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</
   
     <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/apple'>apple (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (5)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (4)</a></li><li><a href='/blog/categories/rails'>rails (3)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/apple'>apple (1)</a></li><li><a href='/blog/categories/coffeescript'>coffeescript (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (6)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (4)</a></li><li><a href='/blog/categories/rails'>rails (3)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/01/multiple-model-in-a-view/">Multiple models in a view</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/01/coffee-script-memo/">Coffee script memo</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/08/25/rails-and-ember-study/">rails and ember study</a>
@@ -645,14 +642,6 @@ library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</
     
       <li class="post">
         <a href="/blog/2013/08/15/rails-on-heroku/">rails on heroku</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/11/rails-practice/">rails practice</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/07/memcached-study/">memcached study</a>
       </li>
     
   </ul>
