@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-01T21:01:14+08:00</updated>
+  <updated>2013-09-04T00:14:46+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,18 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[First ember_rails project]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/03/first-ember-rails-project/"/>
+    <updated>2013-09-03T23:57:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/03/first-ember-rails-project</id>
+    <content type="html"><![CDATA[<p>Last time i said i want to make an ember-rails project(<a href="http://127.0.0.1:4000/blog/2013/08/25/rails-and-ember-study/">post</a>).
+Today I push my first Ember-Rails(food-ntpc) project to <a href="https://github.com/weichienhung/food-ntpc">github</a> and <a href="http://food-ntpc.herokuapp.com/">heroku</a>.
+It takes me more time to finish it because i am not familiar with coffee script. I also create a new <a href="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/">post</a> for coffee script memo.
+During practicing i use Emberjs 1.0.0.rc7. But Emberjs 1.0.0 was released few days ago and i upgrade it to 1.0.0.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[rails and ember study]]></title>
@@ -68,11 +80,11 @@ end
 <li>run <code>bundle install --without production</code></li>
 <li>precompile your assets file, you have to add <code>config.assets.initialize_on_precompile=false</code> to your <code>config/application.rb</code></li>
 <li>run <code>rake assets:precompile</code></li>
-<li>run <code>git commit -a -m "your commit message"</code> because only commited source code will be pushed to heroku.</li>
+<li>run <code>git commit -am "your commit message"</code> because only commited source code will be pushed to heroku.</li>
 <li>run <code>heroku create appname</code> to create your app on heroku. It requires you input your account,password and your ssh public key(id_rsa).</li>
-<li>run <code>heroku rake db:migrate</code> to create db on heroku</li>
 <li>run <code>git push heroku master</code>. You will see your app running on http://appname.herokuapp.com.
 Heroku will modify your production datbase connection in database.yml when push to heroku. You don't need to put the production setting your database.yml.</li>
+<li>run <code>heroku run rake db:migrate</code> to create db on heroku</li>
 </ol>
 
 
