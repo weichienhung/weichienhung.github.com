@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-04T00:14:46+08:00</updated>
+  <updated>2013-09-09T23:00:49+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails and heroku]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku/"/>
+    <updated>2013-09-09T22:32:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku</id>
+    <content type="html"><![CDATA[<p>I push <a href="https://github.com/weichienhung/rails101_groupme">rails101_groupme</a> to <a href="http://weichien-groupme.herokuapp.com/">heroku</a> today.
+The project doesn't have access control and i18n. I use cancan gem to do access authorization and default i18n mechanism.
+Besides, i also upgrade twitter bootstrap to 3.0.0.</p>
+
+<!-- more -->
+
+
+<p>When i push to heroku, i get stuck in ckeditor's rails 4 compatibility and git issue. After googling i solve it finally.</p>
+
+<h3>Fail to fetch gem from git</h3>
+
+<p>Error message like this
+<code>
+Fetching git@github.com:Compass/compass-rails.git
+Host key verification failed.
+fatal: The remote end hung up unexpectedly
+Git error: command `git clone 'git@github.com:Compass/compass-rails.git' "/tmp/build_1xa9
+</code>
+Because git@github.com use SSH to communication, it requires authentication.
+Your gemfile may contain some gems like
+<code>ruby Old
+gem "compass-rails", :git =&gt; "git@github.com:Compass/compass-rails.git", :branch =&gt; "rails4"
+</code>
+Change to
+<code>ruby New
+gem "compass-rails", :github =&gt; "Compass/compass-rails", :branch =&gt; "rails4"
+</code></p>
+
+<h3>Miss assets in rails 4</h3>
+
+<p>Very helpful <a href="http://theotherzach.com/writes/2013/3/13/rails-4-and-heroku-missing-assets">link</a>. Put below in your production.rb
+<code>ruby production.rb
+...
+config.serve_static_assets = true
+...
+</code></p>
+
+<h3>Ckeditor doesn't show correctly</h3>
+
+<p>Reference to <a href="http://www.cnblogs.com/lmei/p/3306643.html">link</a> and <a href="http://dev.mensfeld.pl/2013/07/upgrading-to-rails-4-0-from-rails-3-2-test-case-part-ii-assets-models/">link2</a>.
+Because ckeditor will read the assets file without digest postfix. My solution is<br/>
+Add a rake file to create nondigest file of all ckeditor assets.
+``` ruby ckeditor.rake
+require 'fileutils'
+desc "Create nondigest versions of all ckeditor digest assets"
+task ckeditor: :environment do
+  fingerprint = /-[0-9a-f]{32}./
+  for file in Dir["public/assets/ckeditor/<em>*/</em>"]</p>
+
+<pre><code>next unless file =~ fingerprint
+nondigest = file.sub fingerprint, '.'
+FileUtils.cp file, nondigest, verbose: true
+</code></pre>
+
+<p>  end
+end
+<code>
+Execute `rake ckeditor` after `rake assets:precompile`
+</code> sh
+rake assets:precompile
+rake ckeditor
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[First ember_rails project]]></title>
@@ -78,7 +148,7 @@ gem 'thin'
 end
 </code></li>
 <li>run <code>bundle install --without production</code></li>
-<li>precompile your assets file, you have to add <code>config.assets.initialize_on_precompile=false</code> to your <code>config/application.rb</code></li>
+<li>In Rails 3.x precompile your assets file, you have to add <code>config.assets.initialize_on_precompile=false</code> to your <code>config/application.rb</code>. Rails 4 ignore this.</li>
 <li>run <code>rake assets:precompile</code></li>
 <li>run <code>git commit -am "your commit message"</code> because only commited source code will be pushed to heroku.</li>
 <li>run <code>heroku create appname</code> to create your app on heroku. It requires you input your account,password and your ssh public key(id_rsa).</li>

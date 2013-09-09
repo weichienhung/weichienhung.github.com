@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-04T00:14:46+08:00</updated>
+  <updated>2013-09-09T23:00:49+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,104 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails and heroku]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku/"/>
+    <updated>2013-09-09T22:32:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku</id>
+    <content type="html"><![CDATA[<p>I push <a href="https://github.com/weichienhung/rails101_groupme">rails101_groupme</a> to <a href="http://weichien-groupme.herokuapp.com/">heroku</a> today.
+The project doesn&#8217;t have access control and i18n. I use cancan gem to do access authorization and default i18n mechanism.
+Besides, i also upgrade twitter bootstrap to 3.0.0.</p>
+
+<!-- more -->
+
+
+<p>When i push to heroku, i get stuck in ckeditor&#8217;s rails 4 compatibility and git issue. After googling i solve it finally.</p>
+
+<h3>Fail to fetch gem from git</h3>
+
+<p>Error message like this</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Fetching git@github.com:Compass/compass-rails.git
+</span><span class='line'>Host key verification failed.
+</span><span class='line'>fatal: The remote end hung up unexpectedly
+</span><span class='line'>Git error: command `git clone 'git@github.com:Compass/compass-rails.git' "/tmp/build_1xa9</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Because git@github.com use SSH to communication, it requires authentication.
+Your gemfile may contain some gems like</p>
+
+<figure class='code'><figcaption><span>Old</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s2">&quot;compass-rails&quot;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s2">&quot;git@github.com:Compass/compass-rails.git&quot;</span><span class="p">,</span> <span class="ss">:branch</span> <span class="o">=&gt;</span> <span class="s2">&quot;rails4&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Change to</p>
+
+<figure class='code'><figcaption><span>New</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s2">&quot;compass-rails&quot;</span><span class="p">,</span> <span class="ss">:github</span> <span class="o">=&gt;</span> <span class="s2">&quot;Compass/compass-rails&quot;</span><span class="p">,</span> <span class="ss">:branch</span> <span class="o">=&gt;</span> <span class="s2">&quot;rails4&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Miss assets in rails 4</h3>
+
+<p>Very helpful <a href="http://theotherzach.com/writes/2013/3/13/rails-4-and-heroku-missing-assets">link</a>. Put below in your production.rb</p>
+
+<figure class='code'><figcaption><span>production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">serve_static_assets</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Ckeditor doesn&#8217;t show correctly</h3>
+
+<p>Reference to <a href="http://www.cnblogs.com/lmei/p/3306643.html">link</a> and <a href="http://dev.mensfeld.pl/2013/07/upgrading-to-rails-4-0-from-rails-3-2-test-case-part-ii-assets-models/">link2</a>.
+Because ckeditor will read the assets file without digest postfix. My solution is<br/>
+Add a rake file to create nondigest file of all ckeditor assets.</p>
+
+<figure class='code'><figcaption><span>ckeditor.rake</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;fileutils&#39;</span>
+</span><span class='line'><span class="n">desc</span> <span class="s2">&quot;Create nondigest versions of all ckeditor digest assets&quot;</span>
+</span><span class='line'><span class="n">task</span> <span class="ss">ckeditor</span><span class="p">:</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">fingerprint</span> <span class="o">=</span> <span class="sr">/\-[0-9a-f]{32}\./</span>
+</span><span class='line'>  <span class="k">for</span> <span class="n">file</span> <span class="k">in</span> <span class="no">Dir</span><span class="o">[</span><span class="s2">&quot;public/assets/ckeditor/**/*&quot;</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">next</span> <span class="k">unless</span> <span class="n">file</span> <span class="o">=~</span> <span class="n">fingerprint</span>
+</span><span class='line'>    <span class="n">nondigest</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">sub</span> <span class="n">fingerprint</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span>
+</span><span class='line'>    <span class="no">FileUtils</span><span class="o">.</span><span class="n">cp</span> <span class="n">file</span><span class="p">,</span> <span class="n">nondigest</span><span class="p">,</span> <span class="ss">verbose</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Execute <code>rake ckeditor</code> after <code>rake assets:precompile</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake assets:precompile
+</span><span class='line'>rake ckeditor
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[First ember_rails project]]></title>
@@ -317,7 +415,7 @@ Some parts of doc are out of dated and here i write down the steps for reference
 
 <ol>
 <li>run <code>bundle install --without production</code></li>
-<li>precompile your assets file, you have to add <code>config.assets.initialize_on_precompile=false</code> to your <code>config/application.rb</code></li>
+<li>In Rails 3.x precompile your assets file, you have to add <code>config.assets.initialize_on_precompile=false</code> to your <code>config/application.rb</code>. Rails 4 ignore this.</li>
 <li>run <code>rake assets:precompile</code></li>
 <li>run <code>git commit -am "your commit message"</code> because only commited source code will be pushed to heroku.</li>
 <li>run <code>heroku create appname</code> to create your app on heroku. It requires you input your account,password and your ssh public key(id_rsa).</li>
@@ -2175,90 +2273,6 @@ shim是用來載入library如果不支援AMD使用，由於emberjs本身不支�
 <p>menubar.view.js裡面我利用text這個requirejs plugin載入外部的html進來ember compile。那如何得到載入進來的html呢？很簡單就
 是只要在function裡面加入相對應的parameters，由於這個module有2個dependencies所以在function裡面有2個parameters。而template
 很自然就是對應到讀進來的html。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[使用漂亮的code blocks]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/01/31/use-good-hightlight-code-block/"/>
-    <updated>2013-01-31T23:48:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/01/31/use-good-hightlight-code-block</id>
-    <content type="html"><![CDATA[<p>前幾天在寫emberjs dynamic URL的範例時覺得為什麼預設的code block這麼不好看。
-上網google了一下找到這篇<a href="http://octopress.org/docs/blogging/code/">文章</a>
-介紹如何使用預設在octopress裡面更好看的code blocks。</p>
-
-<!--more-->
-
-
-<p>看底下這個code block，是不是一整個變的很精美。</p>
-
-<figure class='code'><figcaption><span>Solarized Hightlight example</span><a href='http://www.google.com'>點我到google</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;app&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">App</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;hello world&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>使用時用三個`把程式碼區塊包起來，然後分別可以設定你所用的語言，標題，還有可以放URL連到原始碼</p>
-
-<p>語法如下：</p>
-
-<pre><code>``` [語言][標題][URL][URL顯示名稱]
-你的code snippet
-```
-</code></pre>
-
-<p>像我上面的範例就是</p>
-
-<pre><code>``` javascript TestJavaScript http://www.google.com 點我到google
-define(['app'], function (App) {
-    console.log("hello world");
-});
-```
-</code></pre>
-
-<p>引用Gist的部份先跳過，我目前還沒用到Gist</p>
-
-<p>從檔案系統引用code的話你可以把檔案放在source/downloads/code底下然後引用它。目錄可以在<code>_config.yml</code>裡修改。config名稱是<code>code_dir</code></p>
-
-<p>語法如下：</p>
-
-<pre><code>{ % include_code [標題] [lang:語言] 檔案路徑 %}
-</code></pre>
-
-<figure class='code'><figcaption><span> (sample.js)</span> <a href='http://weichienhung.github.io/downloads/code/sample.js'>download</a></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">App</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>上面的範例就是</p>
-
-<pre><code>{ % include_code sample.js %}
-</code></pre>
-
-<p>最後是inline code blocks</p>
-
-<p>語法如下：</p>
-
-<pre><code>{ % codeblock [標題][語言][URL][URL顯示名稱] %}
-{ % endcodeblock %}
-</code></pre>
-
-<figure class='code'><figcaption><span>sample.js  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>上面的範例就是</p>
-
-<pre><code>{ % codeblock sample.js lang:javascript %}
-console.log('hello world');
-{ % endcodeblock %}
-</code></pre>
 ]]></content>
   </entry>
   

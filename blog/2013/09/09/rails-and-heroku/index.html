@@ -5,13 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>rails on heroku - Weichien Hung's studying note</title>
+  <title>Rails and heroku - Weichien Hung's studying note</title>
   <meta name="author" content="Weichien Hung">
 
   
-  <meta name="description" content="I pushed bookmarks-rails project to Heroku yesterday.
-Thanks to tutorial i don&#8217;t have too many troblem during upload to Heroku.
-Some parts of &hellip;">
+  <meta name="description" content="I push rails101_groupme to heroku today.
+The project doesn&#8217;t have access control and i18n. I use cancan gem to do access authorization and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +19,7 @@ Some parts of &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/">
+  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -75,7 +74,7 @@ Some parts of &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Rails on Heroku</h1>
+      <h1 class="entry-title">Rails and Heroku</h1>
     
     
       <p class="meta">
@@ -91,7 +90,7 @@ Some parts of &hellip;">
   
 
 
-<time datetime="2013-08-15T10:39:00+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time>
+<time datetime="2013-09-09T22:32:00+08:00" pubdate data-updated="true">Sep 9<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -100,90 +99,95 @@ Some parts of &hellip;">
   </header>
 
 
-<div class="entry-content"><p>I pushed <a href="https://github.com/weichienhung/bookmarks-rails">bookmarks-rails</a> project to <a href="https://www.heroku.com/">Heroku</a> yesterday.
-Thanks to <a href="http://railsapps.github.io/rails-heroku-tutorial.html">tutorial</a> i don&#8217;t have too many troblem during upload to Heroku.
-Some parts of doc are out of dated and here i write down the steps for reference myself in the future.</p>
+<div class="entry-content"><p>I push <a href="https://github.com/weichienhung/rails101_groupme">rails101_groupme</a> to <a href="http://weichien-groupme.herokuapp.com/">heroku</a> today.
+The project doesn&#8217;t have access control and i18n. I use cancan gem to do access authorization and default i18n mechanism.
+Besides, i also upgrade twitter bootstrap to 3.0.0.</p>
 
-<!--more-->
-
-
-<ol>
-<li>install heroku toolbelt from <a href="https://toolbelt.heroku.com">heroku</a></li>
-<li>heroku doesn&#8217;t support sqllite3, modify sqllite3 to postgres sql</li>
-</ol>
+<!-- more -->
 
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;sqllite3&#39;</span>
+<p>When i push to heroku, i get stuck in ckeditor&#8217;s rails 4 compatibility and git issue. After googling i solve it finally.</p>
+
+<h3>Fail to fetch gem from git</h3>
+
+<p>Error message like this</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Fetching git@github.com:Compass/compass-rails.git
+</span><span class='line'>Host key verification failed.
+</span><span class='line'>fatal: The remote end hung up unexpectedly
+</span><span class='line'>Git error: command `git clone 'git@github.com:Compass/compass-rails.git' "/tmp/build_1xa9</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Because git@github.com use SSH to communication, it requires authentication.
+Your gemfile may contain some gems like</p>
+
+<figure class='code'><figcaption><span>Old</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s2">&quot;compass-rails&quot;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s2">&quot;git@github.com:Compass/compass-rails.git&quot;</span><span class="p">,</span> <span class="ss">:branch</span> <span class="o">=&gt;</span> <span class="s2">&quot;rails4&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>to</p>
+<p>Change to</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>New</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s2">&quot;compass-rails&quot;</span><span class="p">,</span> <span class="ss">:github</span> <span class="o">=&gt;</span> <span class="s2">&quot;Compass/compass-rails&quot;</span><span class="p">,</span> <span class="ss">:branch</span> <span class="o">=&gt;</span> <span class="s2">&quot;rails4&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Miss assets in rails 4</h3>
+
+<p>Very helpful <a href="http://theotherzach.com/writes/2013/3/13/rails-4-and-heroku-missing-assets">link</a>. Put below in your production.rb</p>
+
+<figure class='code'><figcaption><span>production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">serve_static_assets</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Ckeditor doesn&#8217;t show correctly</h3>
+
+<p>Reference to <a href="http://www.cnblogs.com/lmei/p/3306643.html">link</a> and <a href="http://dev.mensfeld.pl/2013/07/upgrading-to-rails-4-0-from-rails-3-2-test-case-part-ii-assets-models/">link2</a>.
+Because ckeditor will read the assets file without digest postfix. My solution is<br/>
+Add a rake file to create nondigest file of all ckeditor assets.</p>
+
+<figure class='code'><figcaption><span>ckeditor.rake</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:development</span><span class="p">,</span> <span class="ss">:test</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;sqlite3&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;pg&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>3.use <code>thin</code> as production webserver</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;thin&#39;</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;fileutils&#39;</span>
+</span><span class='line'><span class="n">desc</span> <span class="s2">&quot;Create nondigest versions of all ckeditor digest assets&quot;</span>
+</span><span class='line'><span class="n">task</span> <span class="ss">ckeditor</span><span class="p">:</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">fingerprint</span> <span class="o">=</span> <span class="sr">/\-[0-9a-f]{32}\./</span>
+</span><span class='line'>  <span class="k">for</span> <span class="n">file</span> <span class="k">in</span> <span class="no">Dir</span><span class="o">[</span><span class="s2">&quot;public/assets/ckeditor/**/*&quot;</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">next</span> <span class="k">unless</span> <span class="n">file</span> <span class="o">=~</span> <span class="n">fingerprint</span>
+</span><span class='line'>    <span class="n">nondigest</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">sub</span> <span class="n">fingerprint</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span>
+</span><span class='line'>    <span class="no">FileUtils</span><span class="o">.</span><span class="n">cp</span> <span class="n">file</span><span class="p">,</span> <span class="n">nondigest</span><span class="p">,</span> <span class="ss">verbose</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<ol>
-<li>run <code>bundle install --without production</code></li>
-<li>In Rails 3.x precompile your assets file, you have to add <code>config.assets.initialize_on_precompile=false</code> to your <code>config/application.rb</code>. Rails 4 ignore this.</li>
-<li>run <code>rake assets:precompile</code></li>
-<li>run <code>git commit -am "your commit message"</code> because only commited source code will be pushed to heroku.</li>
-<li>run <code>heroku create appname</code> to create your app on heroku. It requires you input your account,password and your ssh public key(id_rsa).</li>
-<li>run <code>git push heroku master</code>. You will see your app running on http://appname.herokuapp.com.
-Heroku will modify your production datbase connection in database.yml when push to heroku. You don&#8217;t need to put the production setting your database.yml.</li>
-<li>run <code>heroku run rake db:migrate</code> to create db on heroku</li>
-</ol>
-
-
-<h2>trouble shooting</h2>
-
-<p>If you use Twitter Bootstrap, you have to comment out favicon related codes in your application.html.erb.  Or you will fail to push to heroku.</p>
+<p>Execute <code>rake ckeditor</code> after <code>rake assets:precompile</code></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;!--</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= favicon_link_tag &#39;apple-touch-icon-precomposed.png&#39;, :rel =</span><span class="o">&gt;</span> <span class="s1">&#39;apple-touch-icon-precomposed&#39;</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="s1">&#39;image/png&#39;</span> <span class="sx">%&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sx">  &lt;%= favicon_link_tag &#39;favicon.ico&#39;, :rel =&gt;</span> <span class="s1">&#39;shortcut icon&#39;</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">--&gt;</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake assets:precompile
+</span><span class='line'>rake ckeditor
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>If you modify the app name on Heroku web site, you should remove your remote branch and re-add.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="n">remote</span> <span class="n">rm</span> <span class="n">oldname</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">newname</span> <span class="n">git</span><span class="vi">@herokuapp</span><span class="o">.</span><span class="n">com</span><span class="ss">:yourapp</span><span class="o">.</span><span class="n">git</span>
-</span></code></pre></td></tr></table></div></figure>
 
 </div>
 
@@ -207,7 +211,7 @@ Heroku will modify your production datbase connection in database.yml when push 
   
 
 
-<time datetime="2013-08-15T10:39:00+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time>
+<time datetime="2013-09-09T22:32:00+08:00" pubdate data-updated="true">Sep 9<span>th</span>, 2013</time>
       
 
 <span class="categories">
@@ -221,7 +225,7 @@ Heroku will modify your production datbase connection in database.yml when push 
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -234,10 +238,8 @@ Heroku will modify your production datbase connection in database.yml when push 
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/08/11/rails-practice/" title="Previous Post: rails practice">&laquo; rails practice</a>
+        <a class="basic-alignment left" href="/blog/2013/09/03/first-ember-rails-project/" title="Previous Post: First ember_rails project">&laquo; First ember_rails project</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/08/19/improve-sublime/" title="Next Post: Improve sublime">Improve sublime &raquo;</a>
       
     </p>
   </footer>
@@ -249,7 +251,7 @@ Heroku will modify your production datbase connection in database.yml when push 
       <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
 <div
   class="fb-comments"
-  data-href="http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/"
+  data-href="http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku/"
   data-num-posts="2"
   data-width="470"
   data-colorscheme="light">
@@ -338,8 +340,8 @@ Heroku will modify your production datbase connection in database.yml when push 
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/';
-        var disqus_url = 'http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/';
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku/';
         var disqus_script = 'embed.js';
       
     (function () {
