@@ -1,0 +1,649 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ActionSupport in Rails4 part1 - Weichien Hung's studying note</title>
+  <meta name="author" content="Weichien Hung">
+
+  
+  <meta name="description" content="Recently i study documents in ruby edgeguides.
+There are a lot of methods in ActionSupport chapter. I record something useful here and for reference &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Weichien Hung's studying note" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<meta property="fb:app_id" content="116996781810928" />
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup class="myheader">
+  <img class="myheader-avatar" src="/images/samuel.jpg"/>
+  <div>
+	  <h1><a href="/">Weichien Hung's studying note</a></h1>
+	  
+	    <h2>Practice makes perfect</h2>
+	  
+  </div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:weichienhung.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">ActionSupport in Rails4 Part1</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-12T17:23:00+08:00" pubdate data-updated="true">Sep 12<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Recently i study documents in <a href="http://edgeguides.rubyonrails.org/">ruby edgeguides</a>.
+There are a lot of methods in ActionSupport chapter. I record something useful here and for reference in the future.</p>
+
+<h3>Extensions to All Objects</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/blank.rb.</p>
+
+<h4>blank?</h4>
+
+<p>Following vlaues are considered to be blank.<br/>
+* nil and false<br/>
+* strings composed only of whitespace (see note below)<br/>
+* empty arrays and hashes<br/>
+In particular, 0 and 0.0 are not blank.</p>
+
+<!-- more-->
+
+
+<h4>present?</h4>
+
+<p>The method <code>present?</code> is equivalent to <code>!blank?</code></p>
+
+<h4>presence</h4>
+
+<p>Returns itself if present?, and nil otherwise. Useful</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">host</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="ss">:host</span><span class="o">].</span><span class="n">presence</span> <span class="o">||</span> <span class="s1">&#39;localhost&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/duplicable.rb.</p>
+
+<h4>duplicable?</h4>
+
+<p>By definition all objects are duplicable? except nil, false, true, symbols, numbers, class, and module objects.</p>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/duplicable.rb.</p>
+
+<h4>deep_dup</h4>
+
+<p>Deep duplicate. Normally, <code>dup</code> an object that contains other objects, Ruby only creates a shallow copy of the object.</p>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/try.rb.</p>
+
+<h4>try</h4>
+
+<p>Try to call a method only if it is not nil</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># without try</span>
+</span><span class='line'><span class="k">unless</span> <span class="vi">@number</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>  <span class="vi">@number</span><span class="o">.</span><span class="n">next</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># with try</span>
+</span><span class='line'><span class="vi">@number</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:next</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>try can also be called without arguments but a block</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">try</span> <span class="p">{</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/with_options.rb.</p>
+
+<h4>with_options</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Account</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:customers</span><span class="p">,</span> <span class="ss">dependent</span><span class="p">:</span> <span class="ss">:destroy</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:products</span><span class="p">,</span>  <span class="ss">dependent</span><span class="p">:</span> <span class="ss">:destroy</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:invoices</span><span class="p">,</span>  <span class="ss">dependent</span><span class="p">:</span> <span class="ss">:destroy</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:expenses</span><span class="p">,</span>  <span class="ss">dependent</span><span class="p">:</span> <span class="ss">:destroy</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># with options way</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Account</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">with_options</span> <span class="ss">dependent</span><span class="p">:</span> <span class="ss">:destroy</span> <span class="k">do</span> <span class="o">|</span><span class="n">assoc</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">assoc</span><span class="o">.</span><span class="n">has_many</span> <span class="ss">:customers</span>
+</span><span class='line'>    <span class="n">assoc</span><span class="o">.</span><span class="n">has_many</span> <span class="ss">:products</span>
+</span><span class='line'>    <span class="n">assoc</span><span class="o">.</span><span class="n">has_many</span> <span class="ss">:invoices</span>
+</span><span class='line'>    <span class="n">assoc</span><span class="o">.</span><span class="n">has_many</span> <span class="ss">:expenses</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/instance_variables.rb.</p>
+
+<h4>instance_values</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">C</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@x</span><span class="p">,</span> <span class="vi">@y</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">C</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">instance_values</span> <span class="c1"># =&gt; {&quot;x&quot; =&gt; 0, &quot;y&quot; =&gt; 1}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>instance_variable_names</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">C</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@x</span><span class="p">,</span> <span class="vi">@y</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">C</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">instance_variable_names</span> <span class="c1"># =&gt; [&quot;@x&quot;, &quot;@y&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/inclusion.rb.</p>
+
+<h4>in?</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">in?</span><span class="p">(</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>        <span class="c1"># =&gt; true</span>
+</span><span class='line'><span class="s2">&quot;lo&quot;</span><span class="o">.</span><span class="n">in?</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>   <span class="c1"># =&gt; true</span>
+</span><span class='line'><span class="mi">25</span><span class="o">.</span><span class="n">in?</span><span class="p">(</span><span class="mi">30</span><span class="o">.</span><span class="n">.</span><span class="mi">50</span><span class="p">)</span>      <span class="c1"># =&gt; false</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">in?</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>            <span class="c1"># =&gt; ArgumentError because argument passed does not respond to include?.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Extensions to Module</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/module/attr_internal.rb.</p>
+
+<h4>Internal Attributes</h4>
+
+<p>Active Support defines the macros attr_internal_reader, attr_internal_writer, and attr_internal_accessor
+The macro attr_internal is a synonym for attr_internal_accessor:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># library</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">ThirdPartyLibrary</span><span class="o">::</span><span class="no">Crawler</span>
+</span><span class='line'>  <span class="n">attr_internal</span> <span class="ss">:log_level</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># client code</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">MyCrawler</span> <span class="o">&lt;</span> <span class="ss">ThirdPartyLibrary</span><span class="p">:</span><span class="ss">:Crawler</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:log_level</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Extensions to String</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/string/filters.rb.</p>
+
+<h4>remove</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Hello</span> <span class="no">World</span><span class="s2">&quot;.remove(/Hello /) =&gt; &quot;</span><span class="no">World</span><span class="s2">&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>squish</h4>
+
+<p>The method squish strips leading and trailing whitespace, and substitutes runs of whitespace with a single space each:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot; </span><span class="se">\n</span><span class="s2">  foo</span><span class="se">\n\r</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> bar </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">squish</span> <span class="c1"># =&gt; &quot;foo bar&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>truncate</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;Oh dear! Oh dear! I shall be late!&quot;</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># =&gt; &quot;Oh dear! Oh dear!...&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ellipsis can be customized with the :omission option</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;Oh dear! Oh dear! I shall be late!&quot;</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="ss">omission</span><span class="p">:</span> <span class="s1">&#39;&amp;hellip;&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># =&gt; &quot;Oh dear! Oh &amp;hellip;&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note in particular that truncation takes into account the length of the omission string.
+Pass a :separator to truncate the string at a natural break:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;Oh dear! Oh dear! I shall be late!&quot;</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># =&gt; &quot;Oh dear! Oh dea...&quot;</span>
+</span><span class='line'><span class="s2">&quot;Oh dear! Oh dear! I shall be late!&quot;</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="ss">separator</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># =&gt; &quot;Oh dear! Oh...&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/string/starts_ends_with.rb.</p>
+
+<h4>starts_with? and ends_with?</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;foo&quot;</span><span class="o">.</span><span class="n">starts_with?</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+</span><span class='line'><span class="s2">&quot;foo&quot;</span><span class="o">.</span><span class="n">ends_with?</span><span class="p">(</span><span class="s2">&quot;o&quot;</span><span class="p">)</span>   <span class="c1"># =&gt; true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/string/access.rb.</p>
+
+<h4>at(position)</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># =&gt; &quot;h&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># =&gt; &quot;o&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># =&gt; &quot;o&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># =&gt; nil</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>from(position)</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># =&gt; &quot;hello&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># =&gt; &quot;llo&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; &quot;lo&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># =&gt; &quot;&quot; if &lt; 1.9, nil in 1.9</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>to(position)</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># =&gt; &quot;h&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># =&gt; &quot;hel&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; &quot;hell&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># =&gt; &quot;hello&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/string/conversions.rb.</p>
+
+<h4>to_date, to_time, to_datetime</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;2010-07-27&quot;</span><span class="o">.</span><span class="n">to_date</span>              <span class="c1"># =&gt; Tue, 27 Jul 2010</span>
+</span><span class='line'><span class="s2">&quot;2010-07-27 23:37:00&quot;</span><span class="o">.</span><span class="n">to_time</span>     <span class="c1"># =&gt; Tue Jul 27 23:37:00 UTC 2010</span>
+</span><span class='line'><span class="s2">&quot;2010-07-27 23:37:00&quot;</span><span class="o">.</span><span class="n">to_datetime</span> <span class="c1"># =&gt; Tue, 27 Jul 2010 23:37:00 +0000</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&quot;2010-07-27 23:42:00&quot;</span><span class="o">.</span><span class="n">to_time</span><span class="p">(</span><span class="ss">:utc</span><span class="p">)</span>   <span class="c1"># =&gt; Tue Jul 27 23:42:00 UTC 2010</span>
+</span><span class='line'><span class="s2">&quot;2010-07-27 23:42:00&quot;</span><span class="o">.</span><span class="n">to_time</span><span class="p">(</span><span class="ss">:local</span><span class="p">)</span> <span class="c1"># =&gt; Tue Jul 27 23:42:00 +0200 2010</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Weichien Hung</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-12T17:23:00+08:00" pubdate data-updated="true">Sep 12<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>rails</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/09/09/rails-and-heroku/" title="Previous Post: Rails and heroku">&laquo; Rails and heroku</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/09/13/actionsupport-in-rails4-part2/" title="Next Post: ActionSupport in Rails4 part2">ActionSupport in Rails4 part2 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="facebook_comments" aria-live="polite">
+      <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
+<div
+  class="fb-comments"
+  data-href="http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4/"
+  data-num-posts="2"
+  data-width="470"
+  data-colorscheme="light">
+</div>
+
+    </div>
+  </section>
+
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/blog/categories/coffeescript'>coffeescript (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (7)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (5)</a></li><li><a href='/blog/categories/rails'>rails (7)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/13/actionsupport-in-rails4-part2/">ActionSupport in Rails4 part2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/12/actionsupport-methods-in-rails4/">ActionSupport in Rails4 part1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/09/rails-and-heroku/">Rails and heroku</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/03/first-ember-rails-project/">First ember_rails project</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/01/multiple-model-in-a-view/">Multiple models in a view</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <p><a class="twitter-timeline" href="https://twitter.com/HungWeichien" data-widget-id="350533954492837888" data-tweet-limit="5" data-chrome="nofooter">Tweets by @HungWeichien</a></p>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/113676445086645352045?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Weichien Hung -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'weichienhung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=116996781810928&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

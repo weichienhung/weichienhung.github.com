@@ -90,7 +90,7 @@
     </url>
     <url>
         <loc>http://weichienhung.github.io/blog/2013/08/19/improve-sublime/</loc>
-        <lastmod>2013-08-19T23:37:38+08:00</lastmod>
+        <lastmod>2013-09-12T15:23:02+08:00</lastmod>
     </url>
     <url>
         <loc>http://weichienhung.github.io/blog/2013/08/25/rails-and-ember-study/</loc>
@@ -113,16 +113,24 @@
         <lastmod>2013-09-09T23:00:26+08:00</lastmod>
     </url>
     <url>
+        <loc>http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4/</loc>
+        <lastmod>2013-09-14T23:01:36+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://weichienhung.github.io/blog/2013/09/13/actionsupport-in-rails4-part2/</loc>
+        <lastmod>2013-09-14T23:01:51+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://weichienhung.github.io/about/</loc>
         <lastmod>2013-08-06T23:23:37+08:00</lastmod>
     </url>
     <url>
         <loc>http://weichienhung.github.io/blog/archives/</loc>
-        <lastmod>2013-09-09T23:00:26+08:00</lastmod>
+        <lastmod>2013-09-14T23:01:51+08:00</lastmod>
     </url>
     <url>
         <loc>http://weichienhung.github.io/</loc>
-        <lastmod>2013-09-09T23:00:26+08:00</lastmod>
+        <lastmod>2013-09-14T23:01:51+08:00</lastmod>
     </url>
     <url>
         <loc>http://weichienhung.github.io/robots.txt</loc>

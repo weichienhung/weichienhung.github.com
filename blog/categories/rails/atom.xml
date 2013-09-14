@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-09T23:00:49+08:00</updated>
+  <updated>2013-09-14T23:02:34+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,421 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ActionSupport in Rails4 part2]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/13/actionsupport-in-rails4-part2/"/>
+    <updated>2013-09-13T21:42:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/13/actionsupport-in-rails4-part2</id>
+    <content type="html"><![CDATA[<p>Continue ActionSupport useful record</p>
+
+<h3>Extensions to Numeric</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/numeric/bytes.rb.</p>
+
+<h4>Bytes</h4>
+
+<p>All number respond to these methods
+<code>ruby
+2.kilobytes   # =&gt; 2048
+3.megabytes   # =&gt; 3145728
+3.5.gigabytes # =&gt; 3758096384
+-4.exabytes   # =&gt; -4611686018427387904
+</code></p>
+
+<!-- more-->
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/numeric/time.rb.</p>
+
+<h4>Time</h4>
+
+<p>```</p>
+
+<h1>equivalent to Time.current.advance(months: 1)</h1>
+
+<p>1.month.from_now</p>
+
+<h1>equivalent to Time.current.advance(years: 2)</h1>
+
+<p>2.years.from_now</p>
+
+<h1>equivalent to Time.current.advance(months: 4, years: 5)</h1>
+
+<p>(4.months + 5.years).from_now
+```</p>
+
+<h3>Extensions to Integer</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/integer/multiple.rb.</p>
+
+<h4>multiple_of</h4>
+
+<p><code>
+2.multiple_of?(1) # =&gt; true
+1.multiple_of?(2) # =&gt; false
+</code></p>
+
+<h3>Extensions to Enumerable</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/enumerable.rb.</p>
+
+<h4>sum</h4>
+
+<p><code>
+[1, 2, 3].sum # =&gt; 6
+(1..100).sum  # =&gt; 5050
+</code>
+If a block is given, sum becomes an iterator that yields the elements of the collection and sums the returned values:
+<code>
+(1..5).sum {|n| n * 2 } # =&gt; 30
+[2, 4, 6, 8, 10].sum    # =&gt; 30
+</code></p>
+
+<h4>many?</h4>
+
+<p>The method many? is shorthand for collection.size > 1:
+<code>
+&lt;% if pages.many? %&gt;
+  &lt;%= pagination_links %&gt;
+&lt;% end %&gt;
+</code></p>
+
+<h3>Extensions to Array</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/array/access.rb.
+<code>
+%w(a b c d).to(2) # =&gt; %w(a b c)
+[].to(7)          # =&gt; []
+%w(a b c d).from(2)  # =&gt; %w(c d)
+%w(a b c d).from(10) # =&gt; []
+</code></p>
+
+<hr />
+
+<p>Defined in active_support/core_ext/array/prepend_and_append.rb.</p>
+
+<h4>prepend and append</h4>
+
+<p><code>
+%w(a b c d).prepend('e')  # =&gt; %w(e a b c d)
+[].prepend(10)            # =&gt; [10]
+%w(a b c d).append('e')  # =&gt; %w(a b c d e)
+[].append([1,2])         # =&gt; [[1,2]]
+</code></p>
+
+<hr />
+
+<p>Defined in active_support/core_ext/array/grouping.rb</p>
+
+<h4>in_groups_of(number, fill_with = nil)</h4>
+
+<p>The method in_groups_of splits an array into consecutive groups of a certain size.
+<code>
+[1, 2, 3].in_groups_of(2) # =&gt; [[1, 2], [3, nil]]
+[1, 2, 3].in_groups_of(2, false) # =&gt; [[1, 2], [3]]
+[1, 2, 3].in_groups_of(2, 0) # =&gt; [[1, 2], [3, 0]]
+</code></p>
+
+<h4>in_groups(number, fill_with = nil)</h4>
+
+<p>The method in_groups splits an array into a certain number of groups.
+```
+%w(1 2 3 4 5 6 7).in_groups(3)</p>
+
+<h1>=> [["1", "2", "3"], ["4", "5", nil], ["6", "7", nil]]</h1>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ActionSupport in Rails4 part1]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4/"/>
+    <updated>2013-09-12T17:23:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4</id>
+    <content type="html"><![CDATA[<p>Recently i study documents in <a href="http://edgeguides.rubyonrails.org/">ruby edgeguides</a>.
+There are a lot of methods in ActionSupport chapter. I record something useful here and for reference in the future.</p>
+
+<h3>Extensions to All Objects</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/blank.rb.</p>
+
+<h4>blank?</h4>
+
+<p>Following vlaues are considered to be blank.<br/>
+* nil and false<br/>
+* strings composed only of whitespace (see note below)<br/>
+* empty arrays and hashes<br/>
+In particular, 0 and 0.0 are not blank.</p>
+
+<!-- more-->
+
+
+<h4>present?</h4>
+
+<p>The method <code>present?</code> is equivalent to <code>!blank?</code></p>
+
+<h4>presence</h4>
+
+<p>Returns itself if present?, and nil otherwise. Useful
+``` ruby
+host = config[:host].presence || 'localhost'</p>
+
+<h2>```</h2>
+
+<p>Defined in active_support/core_ext/object/duplicable.rb.</p>
+
+<h4>duplicable?</h4>
+
+<p>By definition all objects are duplicable? except nil, false, true, symbols, numbers, class, and module objects.</p>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/duplicable.rb.</p>
+
+<h4>deep_dup</h4>
+
+<p>Deep duplicate. Normally, <code>dup</code> an object that contains other objects, Ruby only creates a shallow copy of the object.</p>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/try.rb.</p>
+
+<h4>try</h4>
+
+<p>Try to call a method only if it is not nil
+```</p>
+
+<h1>without try</h1>
+
+<p>unless @number.nil?
+  @number.next
+end</p>
+
+<h1>with try</h1>
+
+<p>@number.try(:next)
+<code>
+try can also be called without arguments but a block
+</code>
+@person.try { |person| "#{person.first_name} #{person.last_name}" }
+```</p>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/with_options.rb.</p>
+
+<h4>with_options</h4>
+
+<p>```
+class Account &lt; ActiveRecord::Base
+  has_many :customers, dependent: :destroy
+  has_many :products,  dependent: :destroy
+  has_many :invoices,  dependent: :destroy
+  has_many :expenses,  dependent: :destroy
+end</p>
+
+<h1>with options way</h1>
+
+<p>class Account &lt; ActiveRecord::Base
+  with_options dependent: :destroy do |assoc|</p>
+
+<pre><code>assoc.has_many :customers
+assoc.has_many :products
+assoc.has_many :invoices
+assoc.has_many :expenses
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/instance_variables.rb.</p>
+
+<h4>instance_values</h4>
+
+<p>```
+class C
+  def initialize(x, y)</p>
+
+<pre><code>@x, @y = x, y
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>C.new(0, 1).instance_values # => {"x" => 0, "y" => 1}
+```</p>
+
+<h4>instance_variable_names</h4>
+
+<p>```
+class C
+  def initialize(x, y)</p>
+
+<pre><code>@x, @y = x, y
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>C.new(0, 1).instance_variable_names # => ["@x", "@y"]
+```</p>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/inclusion.rb.</p>
+
+<h4>in?</h4>
+
+<p><code>
+1.in?([1,2])        # =&gt; true
+"lo".in?("hello")   # =&gt; true
+25.in?(30..50)      # =&gt; false
+1.in?(1)            # =&gt; ArgumentError because argument passed does not respond to include?.
+</code></p>
+
+<h3>Extensions to Module</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/module/attr_internal.rb.</p>
+
+<h4>Internal Attributes</h4>
+
+<p>Active Support defines the macros attr_internal_reader, attr_internal_writer, and attr_internal_accessor
+The macro attr_internal is a synonym for attr_internal_accessor:
+``` ruby</p>
+
+<h1>library</h1>
+
+<p>class ThirdPartyLibrary::Crawler
+  attr_internal :log_level
+end</p>
+
+<h1>client code</h1>
+
+<p>class MyCrawler &lt; ThirdPartyLibrary::Crawler
+  attr_accessor :log_level
+end
+```</p>
+
+<h3>Extensions to String</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/string/filters.rb.</p>
+
+<h4>remove</h4>
+
+<p><code>
+Hello World".remove(/Hello /) =&gt; "World"
+</code></p>
+
+<h4>squish</h4>
+
+<p>The method squish strips leading and trailing whitespace, and substitutes runs of whitespace with a single space each:
+<code>
+" \n  foo\n\r \t bar \n".squish # =&gt; "foo bar"
+</code></p>
+
+<h4>truncate</h4>
+
+<p>```
+"Oh dear! Oh dear! I shall be late!".truncate(20)</p>
+
+<h1>=> "Oh dear! Oh dear!..."</h1>
+
+<p><code>
+Ellipsis can be customized with the :omission option
+</code>
+"Oh dear! Oh dear! I shall be late!".truncate(20, omission: '&hellip;')</p>
+
+<h1>=> "Oh dear! Oh &hellip;"</h1>
+
+<p><code>
+Note in particular that truncation takes into account the length of the omission string.
+Pass a :separator to truncate the string at a natural break:
+</code>
+"Oh dear! Oh dear! I shall be late!".truncate(18)</p>
+
+<h1>=> "Oh dear! Oh dea..."</h1>
+
+<p>"Oh dear! Oh dear! I shall be late!".truncate(18, separator: ' ')</p>
+
+<h1>=> "Oh dear! Oh..."</h1>
+
+<h2>```</h2>
+
+<p>Defined in active_support/core_ext/string/starts_ends_with.rb.</p>
+
+<h4>starts_with? and ends_with?</h4>
+
+<p>```
+"foo".starts_with?("f") # => true
+"foo".ends_with?("o")   # => true</p>
+
+<h2>```</h2>
+
+<p>Defined in active_support/core_ext/string/access.rb.</p>
+
+<h4>at(position)</h4>
+
+<p><code>
+"hello".at(0)  # =&gt; "h"
+"hello".at(4)  # =&gt; "o"
+"hello".at(-1) # =&gt; "o"
+"hello".at(10) # =&gt; nil
+</code></p>
+
+<h4>from(position)</h4>
+
+<p><code>
+"hello".from(0)  # =&gt; "hello"
+"hello".from(2)  # =&gt; "llo"
+"hello".from(-2) # =&gt; "lo"
+"hello".from(10) # =&gt; "" if &lt; 1.9, nil in 1.9
+</code></p>
+
+<h4>to(position)</h4>
+
+<p>```
+"hello".to(0)  # => "h"
+"hello".to(2)  # => "hel"
+"hello".to(-2) # => "hell"
+"hello".to(10) # => "hello"</p>
+
+<h2>```</h2>
+
+<p>Defined in active_support/core_ext/string/conversions.rb.</p>
+
+<h4>to_date, to_time, to_datetime</h4>
+
+<p>```
+"2010-07-27".to_date              # => Tue, 27 Jul 2010
+"2010-07-27 23:37:00".to_time     # => Tue Jul 27 23:37:00 UTC 2010
+"2010-07-27 23:37:00".to_datetime # => Tue, 27 Jul 2010 23:37:00 +0000</p>
+
+<p>"2010-07-27 23:42:00".to_time(:utc)   # => Tue Jul 27 23:42:00 UTC 2010
+"2010-07-27 23:42:00".to_time(:local) # => Tue Jul 27 23:42:00 +0200 2010
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails and heroku]]></title>
@@ -111,91 +526,6 @@ This project was made because inspired by yunglinho's <a href="http://blog.yungl
 Most of locations could be show on google map. Somes are not because can't be geocode to <a href="https://developers.google.com/maps/documentation/javascript/reference#LatLng">LatLng</a>.
 There's a disadvantage here. Geocode needs to send requests to google but google will block it if you use API frequently. Implement it on clide side is not a good idea.
 I am planing to have a new project that use Rails and Emberjs. I could add my json API and store LatLng in database to prevent too many requests to google.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[rails on heroku]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku/"/>
-    <updated>2013-08-15T10:39:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/08/15/rails-on-heroku</id>
-    <content type="html"><![CDATA[<p>I pushed <a href="https://github.com/weichienhung/bookmarks-rails">bookmarks-rails</a> project to <a href="https://www.heroku.com/">Heroku</a> yesterday.
-Thanks to <a href="http://railsapps.github.io/rails-heroku-tutorial.html">tutorial</a> i don't have too many troblem during upload to Heroku.
-Some parts of doc are out of dated and here i write down the steps for reference myself in the future.</p>
-
-<!--more-->
-
-
-<ol>
-<li>install heroku toolbelt from <a href="https://toolbelt.heroku.com">heroku</a></li>
-<li>heroku doesn't support sqllite3, modify sqllite3 to postgres sql
-<code>ruby
-gem 'sqllite3'
-</code>
-to
-<code>
-group :development, :test do
-gem 'sqlite3'
-end
-group :production do
-gem 'pg'
-end
-</code>
-3.use <code>thin</code> as production webserver
-<code>
-group :production do
-gem 'thin'
-end
-</code></li>
-<li>run <code>bundle install --without production</code></li>
-<li>In Rails 3.x precompile your assets file, you have to add <code>config.assets.initialize_on_precompile=false</code> to your <code>config/application.rb</code>. Rails 4 ignore this.</li>
-<li>run <code>rake assets:precompile</code></li>
-<li>run <code>git commit -am "your commit message"</code> because only commited source code will be pushed to heroku.</li>
-<li>run <code>heroku create appname</code> to create your app on heroku. It requires you input your account,password and your ssh public key(id_rsa).</li>
-<li>run <code>git push heroku master</code>. You will see your app running on http://appname.herokuapp.com.
-Heroku will modify your production datbase connection in database.yml when push to heroku. You don't need to put the production setting your database.yml.</li>
-<li>run <code>heroku run rake db:migrate</code> to create db on heroku</li>
-</ol>
-
-
-<h2>trouble shooting</h2>
-
-<p>If you use Twitter Bootstrap, you have to comment out favicon related codes in your application.html.erb.  Or you will fail to push to heroku.
-```</p>
-
-<!--
-  <%= favicon_link_tag 'apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png' %>
-
-  <%= favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' %>
--->
-
-
-<p>```</p>
-
-<p>If you modify the app name on Heroku web site, you should remove your remote branch and re-add.
-```
-git remote rm oldname</p>
-
-<p>git remote add newname git@herokuapp.com:yourapp.git
-```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[rails practice]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/08/11/rails-practice/"/>
-    <updated>2013-08-11T12:36:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/08/11/rails-practice</id>
-    <content type="html"><![CDATA[<p>I push my first rails project <a href="https://github.com/weichienhung/bookmarks-rails">bookmarks-rails</a> to github today. It's a very small project for practicing rails framework.
-The web provide user a very simple interface to create a bookmark and basic authentication. I take free time after work to finish this project.
-Thanks to ihower's <a href="http://ihower.tw/rails3/index.html">Ruby on Rails實戰聖經</a>,Yangtheman's <a href="http://blog.yangtheman.com/2012/02/09/facebook-connect-with-rails-omniauth-devise/">post</a> and <a href="https://www.codeschool.com/">Code school</a>, it helps me a lot.<br/>
-I try skills in this projects<br/>
-1. Twitter Bootstrap 3.0.0.rc1<br/>
-2. devise account system<br/>
-3. omniauth with facebook login<br/>
-4. rails REST<br/>
-5. RSpec<br/>
-6. Capybara</p>
 ]]></content>
   </entry>
   

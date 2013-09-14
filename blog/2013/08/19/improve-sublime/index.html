@@ -105,7 +105,35 @@
 <p>Make your current indent with different color. Open <code>Preferences</code> > <code>Settings - Default</code> and add <code>draw_active</code> to <code>indent_guide_options</code></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;indent_guide&quot;</span><span class="err">:</span> <span class="p">[</span><span class="s2">&quot;draw_normal&quot;</span><span class="p">,</span><span class="s2">&quot;draw_active&quot;</span><span class="p">]</span><span class="err">,</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">...</span>
+</span><span class='line'><span class="s2">&quot;indent_guide_options&quot;</span><span class="err">:</span> <span class="p">[</span><span class="s2">&quot;draw_normal&quot;</span><span class="p">,</span><span class="s2">&quot;draw_active&quot;</span><span class="p">]</span><span class="err">,</span>
+</span><span class='line'><span class="err">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You could change the color of draw_active. Open your current color scheme setting file.
+Add</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;key&gt;</span>settings<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>    ...
+</span><span class='line'>    ...
+</span><span class='line'>    <span class="nt">&lt;key&gt;</span>activeGuide<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string&gt;</span>#CED418<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dict&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dict&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -117,7 +145,7 @@
 <p>Folow <a href="https://github.com/buymeasoda/soda-theme/">soda-theme</a> to install. After installation done, you have to enable it in <code>Preferences</code> > <code>Settings - User</code>.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'> <span class="s2">&quot;theme&quot;</span><span class="err">:</span><span class="s2">&quot;Soda Light.sublime-theme&quot;</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'> &quot;theme&quot;:&quot;Soda Light.sublime-theme&quot;
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -127,7 +155,34 @@
 
 <h3>4.Tomorrow Theme</h3>
 
-<p>The most beautiful color scheme. Use <code>Package Control</code> > <code>Install Package</code> > <code>Tomorrow - Theme</code> to install</p>
+<p>The most beautiful color scheme. Use <code>Package Control</code> > <code>Install Package</code> > <code>Tomorrow - Theme</code> to install.
+I prefer the Tomorrow-Night-Eighties theme</p>
+
+<h3>5. All autocomplete</h3>
+
+<p>Auto complete in every opening tab.
+Use <code>Package Control</code> > <code>Install Package</code> > <code>All Autocomplete</code></p>
+
+<h3>6. Default setting update</h3>
+
+<p><code>Preferences</code> > <code>Settings -&gt; Default</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">...</span>
+</span><span class='line'><span class="err">//Change</span> <span class="err">tab</span> <span class="err">to</span> <span class="err">spaces</span>
+</span><span class='line'><span class="s2">&quot;translate_tabs_to_spaces&quot;</span><span class="err">:</span> <span class="kc">true</span><span class="err">,</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">//Highlight</span> <span class="err">the</span> <span class="err">current</span> <span class="err">line</span>
+</span><span class='line'><span class="s2">&quot;highlight_line&quot;</span><span class="err">:</span> <span class="kc">true</span><span class="err">,</span>
+</span><span class='line'><span class="err">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
@@ -214,11 +269,19 @@
   
     <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/coffeescript'>coffeescript (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (7)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (5)</a></li><li><a href='/blog/categories/rails'>rails (5)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/coffeescript'>coffeescript (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (7)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (5)</a></li><li><a href='/blog/categories/rails'>rails (7)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/13/actionsupport-in-rails4-part2/">ActionSupport in Rails4 part2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/12/actionsupport-methods-in-rails4/">ActionSupport in Rails4 part1</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/09/09/rails-and-heroku/">Rails and heroku</a>
@@ -230,14 +293,6 @@
     
       <li class="post">
         <a href="/blog/2013/09/01/multiple-model-in-a-view/">Multiple models in a view</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/01/coffee-script-memo/">Coffee script memo</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/25/rails-and-ember-study/">rails and ember study</a>
       </li>
     
   </ul>

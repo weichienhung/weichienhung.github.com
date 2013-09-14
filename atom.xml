@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-09T23:00:49+08:00</updated>
+  <updated>2013-09-14T23:02:34+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,535 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ActionSupport in Rails4 part2]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/13/actionsupport-in-rails4-part2/"/>
+    <updated>2013-09-13T21:42:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/13/actionsupport-in-rails4-part2</id>
+    <content type="html"><![CDATA[<p>Continue ActionSupport useful record</p>
+
+<h3>Extensions to Numeric</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/numeric/bytes.rb.</p>
+
+<h4>Bytes</h4>
+
+<p>All number respond to these methods</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">kilobytes</span>   <span class="c1"># =&gt; 2048</span>
+</span><span class='line'><span class="mi">3</span><span class="o">.</span><span class="n">megabytes</span>   <span class="c1"># =&gt; 3145728</span>
+</span><span class='line'><span class="mi">3</span><span class="o">.</span><span class="mi">5</span><span class="o">.</span><span class="n">gigabytes</span> <span class="c1"># =&gt; 3758096384</span>
+</span><span class='line'><span class="o">-</span><span class="mi">4</span><span class="o">.</span><span class="n">exabytes</span>   <span class="c1"># =&gt; -4611686018427387904</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more-->
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/numeric/time.rb.</p>
+
+<h4>Time</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># equivalent to Time.current.advance(months: 1)</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">from_now</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># equivalent to Time.current.advance(years: 2)</span>
+</span><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">from_now</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># equivalent to Time.current.advance(months: 4, years: 5)</span>
+</span><span class='line'><span class="p">(</span><span class="mi">4</span><span class="o">.</span><span class="n">months</span> <span class="o">+</span> <span class="mi">5</span><span class="o">.</span><span class="n">years</span><span class="p">)</span><span class="o">.</span><span class="n">from_now</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Extensions to Integer</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/integer/multiple.rb.</p>
+
+<h4>multiple_of</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">multiple_of?</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">multiple_of?</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Extensions to Enumerable</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/enumerable.rb.</p>
+
+<h4>sum</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">].</span><span class="n">sum</span> <span class="c1"># =&gt; 6</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span>  <span class="c1"># =&gt; 5050</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If a block is given, sum becomes an iterator that yields the elements of the collection and sums the returned values:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span> <span class="p">{</span><span class="o">|</span><span class="n">n</span><span class="o">|</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">}</span> <span class="c1"># =&gt; 30</span>
+</span><span class='line'><span class="o">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="o">].</span><span class="n">sum</span>    <span class="c1"># =&gt; 30</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>many?</h4>
+
+<p>The method many? is shorthand for collection.size > 1:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% if </span><span class="n">pages</span><span class="o">.</span><span class="n">many?</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%= pagination_links %&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Extensions to Array</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/array/access.rb.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w(a b c d)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; %w(a b c)</span>
+</span><span class='line'><span class="o">[].</span><span class="n">to</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>          <span class="c1"># =&gt; []</span>
+</span><span class='line'><span class="sx">%w(a b c d)</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># =&gt; %w(c d)</span>
+</span><span class='line'><span class="sx">%w(a b c d)</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># =&gt; []</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/array/prepend_and_append.rb.</p>
+
+<h4>prepend and append</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w(a b c d)</span><span class="o">.</span><span class="n">prepend</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>  <span class="c1"># =&gt; %w(e a b c d)</span>
+</span><span class='line'><span class="o">[].</span><span class="n">prepend</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>            <span class="c1"># =&gt; [10]</span>
+</span><span class='line'><span class="sx">%w(a b c d)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>  <span class="c1"># =&gt; %w(a b c d e)</span>
+</span><span class='line'><span class="o">[].</span><span class="n">append</span><span class="p">(</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>         <span class="c1"># =&gt; [[1,2]]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/array/grouping.rb</p>
+
+<h4>in_groups_of(number, fill_with = nil)</h4>
+
+<p>The method in_groups_of splits an array into consecutive groups of a certain size.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">].</span><span class="n">in_groups_of</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; [[1, 2], [3, nil]]</span>
+</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">].</span><span class="n">in_groups_of</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kp">false</span><span class="p">)</span> <span class="c1"># =&gt; [[1, 2], [3]]</span>
+</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">].</span><span class="n">in_groups_of</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># =&gt; [[1, 2], [3, 0]]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>in_groups(number, fill_with = nil)</h4>
+
+<p>The method in_groups splits an array into a certain number of groups.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w(1 2 3 4 5 6 7)</span><span class="o">.</span><span class="n">in_groups</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># =&gt; [[&quot;1&quot;, &quot;2&quot;, &quot;3&quot;], [&quot;4&quot;, &quot;5&quot;, nil], [&quot;6&quot;, &quot;7&quot;, nil]]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ActionSupport in Rails4 part1]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4/"/>
+    <updated>2013-09-12T17:23:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4</id>
+    <content type="html"><![CDATA[<p>Recently i study documents in <a href="http://edgeguides.rubyonrails.org/">ruby edgeguides</a>.
+There are a lot of methods in ActionSupport chapter. I record something useful here and for reference in the future.</p>
+
+<h3>Extensions to All Objects</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/blank.rb.</p>
+
+<h4>blank?</h4>
+
+<p>Following vlaues are considered to be blank.<br/>
+* nil and false<br/>
+* strings composed only of whitespace (see note below)<br/>
+* empty arrays and hashes<br/>
+In particular, 0 and 0.0 are not blank.</p>
+
+<!-- more-->
+
+
+<h4>present?</h4>
+
+<p>The method <code>present?</code> is equivalent to <code>!blank?</code></p>
+
+<h4>presence</h4>
+
+<p>Returns itself if present?, and nil otherwise. Useful</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">host</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="ss">:host</span><span class="o">].</span><span class="n">presence</span> <span class="o">||</span> <span class="s1">&#39;localhost&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/duplicable.rb.</p>
+
+<h4>duplicable?</h4>
+
+<p>By definition all objects are duplicable? except nil, false, true, symbols, numbers, class, and module objects.</p>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/duplicable.rb.</p>
+
+<h4>deep_dup</h4>
+
+<p>Deep duplicate. Normally, <code>dup</code> an object that contains other objects, Ruby only creates a shallow copy of the object.</p>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/try.rb.</p>
+
+<h4>try</h4>
+
+<p>Try to call a method only if it is not nil</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># without try</span>
+</span><span class='line'><span class="k">unless</span> <span class="vi">@number</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>  <span class="vi">@number</span><span class="o">.</span><span class="n">next</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># with try</span>
+</span><span class='line'><span class="vi">@number</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:next</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>try can also be called without arguments but a block</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">try</span> <span class="p">{</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/with_options.rb.</p>
+
+<h4>with_options</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Account</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:customers</span><span class="p">,</span> <span class="ss">dependent</span><span class="p">:</span> <span class="ss">:destroy</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:products</span><span class="p">,</span>  <span class="ss">dependent</span><span class="p">:</span> <span class="ss">:destroy</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:invoices</span><span class="p">,</span>  <span class="ss">dependent</span><span class="p">:</span> <span class="ss">:destroy</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:expenses</span><span class="p">,</span>  <span class="ss">dependent</span><span class="p">:</span> <span class="ss">:destroy</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># with options way</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Account</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">with_options</span> <span class="ss">dependent</span><span class="p">:</span> <span class="ss">:destroy</span> <span class="k">do</span> <span class="o">|</span><span class="n">assoc</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">assoc</span><span class="o">.</span><span class="n">has_many</span> <span class="ss">:customers</span>
+</span><span class='line'>    <span class="n">assoc</span><span class="o">.</span><span class="n">has_many</span> <span class="ss">:products</span>
+</span><span class='line'>    <span class="n">assoc</span><span class="o">.</span><span class="n">has_many</span> <span class="ss">:invoices</span>
+</span><span class='line'>    <span class="n">assoc</span><span class="o">.</span><span class="n">has_many</span> <span class="ss">:expenses</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/instance_variables.rb.</p>
+
+<h4>instance_values</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">C</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@x</span><span class="p">,</span> <span class="vi">@y</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">C</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">instance_values</span> <span class="c1"># =&gt; {&quot;x&quot; =&gt; 0, &quot;y&quot; =&gt; 1}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>instance_variable_names</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">C</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@x</span><span class="p">,</span> <span class="vi">@y</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">C</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">instance_variable_names</span> <span class="c1"># =&gt; [&quot;@x&quot;, &quot;@y&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/inclusion.rb.</p>
+
+<h4>in?</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">in?</span><span class="p">(</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>        <span class="c1"># =&gt; true</span>
+</span><span class='line'><span class="s2">&quot;lo&quot;</span><span class="o">.</span><span class="n">in?</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>   <span class="c1"># =&gt; true</span>
+</span><span class='line'><span class="mi">25</span><span class="o">.</span><span class="n">in?</span><span class="p">(</span><span class="mi">30</span><span class="o">.</span><span class="n">.</span><span class="mi">50</span><span class="p">)</span>      <span class="c1"># =&gt; false</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">in?</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>            <span class="c1"># =&gt; ArgumentError because argument passed does not respond to include?.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Extensions to Module</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/module/attr_internal.rb.</p>
+
+<h4>Internal Attributes</h4>
+
+<p>Active Support defines the macros attr_internal_reader, attr_internal_writer, and attr_internal_accessor
+The macro attr_internal is a synonym for attr_internal_accessor:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># library</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">ThirdPartyLibrary</span><span class="o">::</span><span class="no">Crawler</span>
+</span><span class='line'>  <span class="n">attr_internal</span> <span class="ss">:log_level</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># client code</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">MyCrawler</span> <span class="o">&lt;</span> <span class="ss">ThirdPartyLibrary</span><span class="p">:</span><span class="ss">:Crawler</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:log_level</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Extensions to String</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/string/filters.rb.</p>
+
+<h4>remove</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Hello</span> <span class="no">World</span><span class="s2">&quot;.remove(/Hello /) =&gt; &quot;</span><span class="no">World</span><span class="s2">&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>squish</h4>
+
+<p>The method squish strips leading and trailing whitespace, and substitutes runs of whitespace with a single space each:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot; </span><span class="se">\n</span><span class="s2">  foo</span><span class="se">\n\r</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> bar </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">squish</span> <span class="c1"># =&gt; &quot;foo bar&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>truncate</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;Oh dear! Oh dear! I shall be late!&quot;</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># =&gt; &quot;Oh dear! Oh dear!...&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ellipsis can be customized with the :omission option</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;Oh dear! Oh dear! I shall be late!&quot;</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="ss">omission</span><span class="p">:</span> <span class="s1">&#39;&amp;hellip;&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># =&gt; &quot;Oh dear! Oh &amp;hellip;&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note in particular that truncation takes into account the length of the omission string.
+Pass a :separator to truncate the string at a natural break:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;Oh dear! Oh dear! I shall be late!&quot;</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># =&gt; &quot;Oh dear! Oh dea...&quot;</span>
+</span><span class='line'><span class="s2">&quot;Oh dear! Oh dear! I shall be late!&quot;</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="ss">separator</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># =&gt; &quot;Oh dear! Oh...&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/string/starts_ends_with.rb.</p>
+
+<h4>starts_with? and ends_with?</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;foo&quot;</span><span class="o">.</span><span class="n">starts_with?</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+</span><span class='line'><span class="s2">&quot;foo&quot;</span><span class="o">.</span><span class="n">ends_with?</span><span class="p">(</span><span class="s2">&quot;o&quot;</span><span class="p">)</span>   <span class="c1"># =&gt; true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/string/access.rb.</p>
+
+<h4>at(position)</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># =&gt; &quot;h&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># =&gt; &quot;o&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># =&gt; &quot;o&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># =&gt; nil</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>from(position)</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># =&gt; &quot;hello&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># =&gt; &quot;llo&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; &quot;lo&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># =&gt; &quot;&quot; if &lt; 1.9, nil in 1.9</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>to(position)</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># =&gt; &quot;h&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># =&gt; &quot;hel&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; &quot;hell&quot;</span>
+</span><span class='line'><span class="s2">&quot;hello&quot;</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># =&gt; &quot;hello&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>Defined in active_support/core_ext/string/conversions.rb.</p>
+
+<h4>to_date, to_time, to_datetime</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;2010-07-27&quot;</span><span class="o">.</span><span class="n">to_date</span>              <span class="c1"># =&gt; Tue, 27 Jul 2010</span>
+</span><span class='line'><span class="s2">&quot;2010-07-27 23:37:00&quot;</span><span class="o">.</span><span class="n">to_time</span>     <span class="c1"># =&gt; Tue Jul 27 23:37:00 UTC 2010</span>
+</span><span class='line'><span class="s2">&quot;2010-07-27 23:37:00&quot;</span><span class="o">.</span><span class="n">to_datetime</span> <span class="c1"># =&gt; Tue, 27 Jul 2010 23:37:00 +0000</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&quot;2010-07-27 23:42:00&quot;</span><span class="o">.</span><span class="n">to_time</span><span class="p">(</span><span class="ss">:utc</span><span class="p">)</span>   <span class="c1"># =&gt; Tue Jul 27 23:42:00 UTC 2010</span>
+</span><span class='line'><span class="s2">&quot;2010-07-27 23:42:00&quot;</span><span class="o">.</span><span class="n">to_time</span><span class="p">(</span><span class="ss">:local</span><span class="p">)</span> <span class="c1"># =&gt; Tue Jul 27 23:42:00 +0200 2010</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails and heroku]]></title>
@@ -336,7 +865,35 @@ I am planing to have a new project that use Rails and Emberjs. I could add my js
 <p>Make your current indent with different color. Open <code>Preferences</code> > <code>Settings - Default</code> and add <code>draw_active</code> to <code>indent_guide_options</code></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;indent_guide&quot;</span><span class="err">:</span> <span class="p">[</span><span class="s2">&quot;draw_normal&quot;</span><span class="p">,</span><span class="s2">&quot;draw_active&quot;</span><span class="p">]</span><span class="err">,</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">...</span>
+</span><span class='line'><span class="s2">&quot;indent_guide_options&quot;</span><span class="err">:</span> <span class="p">[</span><span class="s2">&quot;draw_normal&quot;</span><span class="p">,</span><span class="s2">&quot;draw_active&quot;</span><span class="p">]</span><span class="err">,</span>
+</span><span class='line'><span class="err">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You could change the color of draw_active. Open your current color scheme setting file.
+Add</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;key&gt;</span>settings<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>    ...
+</span><span class='line'>    ...
+</span><span class='line'>    <span class="nt">&lt;key&gt;</span>activeGuide<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string&gt;</span>#CED418<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dict&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dict&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -348,7 +905,7 @@ I am planing to have a new project that use Rails and Emberjs. I could add my js
 <p>Folow <a href="https://github.com/buymeasoda/soda-theme/">soda-theme</a> to install. After installation done, you have to enable it in <code>Preferences</code> > <code>Settings - User</code>.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'> <span class="s2">&quot;theme&quot;</span><span class="err">:</span><span class="s2">&quot;Soda Light.sublime-theme&quot;</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'> &quot;theme&quot;:&quot;Soda Light.sublime-theme&quot;
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -358,7 +915,34 @@ I am planing to have a new project that use Rails and Emberjs. I could add my js
 
 <h3>4.Tomorrow Theme</h3>
 
-<p>The most beautiful color scheme. Use <code>Package Control</code> > <code>Install Package</code> > <code>Tomorrow - Theme</code> to install</p>
+<p>The most beautiful color scheme. Use <code>Package Control</code> > <code>Install Package</code> > <code>Tomorrow - Theme</code> to install.
+I prefer the Tomorrow-Night-Eighties theme</p>
+
+<h3>5. All autocomplete</h3>
+
+<p>Auto complete in every opening tab.
+Use <code>Package Control</code> > <code>Install Package</code> > <code>All Autocomplete</code></p>
+
+<h3>6. Default setting update</h3>
+
+<p><code>Preferences</code> > <code>Settings -&gt; Default</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">...</span>
+</span><span class='line'><span class="err">//Change</span> <span class="err">tab</span> <span class="err">to</span> <span class="err">spaces</span>
+</span><span class='line'><span class="s2">&quot;translate_tabs_to_spaces&quot;</span><span class="err">:</span> <span class="kc">true</span><span class="err">,</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">//Highlight</span> <span class="err">the</span> <span class="err">current</span> <span class="err">line</span>
+</span><span class='line'><span class="s2">&quot;highlight_line&quot;</span><span class="err">:</span> <span class="kc">true</span><span class="err">,</span>
+</span><span class='line'><span class="err">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
 ]]></content>
   </entry>
   
@@ -2085,194 +2669,6 @@ un suiveur
 un suiveur
 2 disciples
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[sublime useful plugin]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/02/06/sublime-useful-plugin/"/>
-    <updated>2013-02-06T00:59:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/02/06/sublime-useful-plugin</id>
-    <content type="html"><![CDATA[<p>今天上班跟同事之間討論到共同開發module要不要限定什麼editor(因為寫javascript)，
-就聊到sublime，想想sublime也用了1～2個月但其實還沒有很深入研究它究竟有多少好用的功能，
-所以就特地上網查了一下sublime plugin，有發現一篇文章<a href="http://net.tutsplus.com/tutorials/tools-and-tips/essential-sublime-text-2-plugins-and-extensions/">原文</a>
-<a href="http://www.qianduan.net/essential-to-sublime-the-text-2-plugins.html">中文翻譯</a>。
-今天安裝了底下幾個plugin</p>
-
-<ul>
-<li>JS Format - 可以幫你按照javascript format來重新排版。</li>
-<li>Bracket Highlighter - 可以把一些大括號中括號等的用比較顯眼的顏色標記出來。</li>
-<li>Alignment - 雖然可以把code對齊但我覺得用JS Format出來的就OK了。</li>
-</ul>
-
-
-<p>過幾天再來試其它的plugin。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[emberjs with requirejs]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/02/02/emberjs-and-requirejs/"/>
-    <updated>2013-02-02T13:17:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/02/02/emberjs-and-requirejs</id>
-    <content type="html"><![CDATA[<p>這幾天survey了requirejs順便讓它與emberjs跑在一起，有些心得所以在這裡紀錄一下。</p>
-
-<!--more-->
-
-
-<p>就如requirejs官方網站的介紹當使用requirejs來管理javascript module load後在index.html裡只要有一行script載入你最主要的javascript，在這裡是main.js</p>
-
-<figure class='code'><figcaption><span>index.html</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">data</span><span class="o">-</span><span class="nx">main</span><span class="o">=</span><span class="s2">&quot;scripts/main&quot;</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&quot;scripts/require.js&quot;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>來看一下main.js</p>
-
-<figure class='code'><figcaption><span>main.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">require</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">baseURL</span><span class="o">:</span> <span class="s1">&#39;/scripts/&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;paths&#39;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="s1">&#39;jquery&#39;</span><span class="o">:</span> <span class="s1">&#39;libs/jquery.min&#39;</span><span class="p">,</span>
-</span><span class='line'>        <span class="s1">&#39;handlebars&#39;</span><span class="o">:</span><span class="s1">&#39;libs/handlebars-1.0.rc.1&#39;</span><span class="p">,</span>
-</span><span class='line'>        <span class="s1">&#39;ember&#39;</span><span class="o">:</span><span class="s1">&#39;libs/ember_0114&#39;</span><span class="p">,</span>
-</span><span class='line'>        <span class="s1">&#39;text&#39;</span><span class="o">:</span><span class="s1">&#39;libs/text&#39;</span><span class="p">,</span>
-</span><span class='line'>        <span class="s1">&#39;T&#39;</span><span class="o">:</span><span class="s1">&#39;templates&#39;</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>    <span class="nx">shim</span> <span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="s1">&#39;ember&#39;</span> <span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">deps</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;handlebars&#39;</span><span class="p">,</span> <span class="s1">&#39;jquery&#39;</span><span class="p">],</span>
-</span><span class='line'>            <span class="nx">exports</span><span class="o">:</span> <span class="s1">&#39;Ember&#39;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">requirejs</span><span class="p">([</span>
-</span><span class='line'>    <span class="s1">&#39;ember&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;app&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;route&#39;</span>
-</span><span class='line'>    <span class="s1">&#39;T/application.template&#39;</span>
-</span><span class='line'><span class="p">],</span>
-</span><span class='line'><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;all loaded done&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>require.config中baseURL是指javascript根目錄，我所有javascript都放在scripts/底下，
-scripts/libs/目錄底下則是放了third party js library，paths中可以命名短字串避免每次都要輸入很長的字串，
-shim是用來載入library如果不支援AMD使用，由於emberjs本身不支援AMD所以用shim載入。
-檔案底部是requireJS的module定義，[]裡面描述你的dependency，function(){}代表當所有dependency module載入後要執行的code。
-在這裡我載入ember,app,route以及T/application.template四個modules，在function()裡只是簡單地印一下log。</p>
-
-<figure class='code'><figcaption><span>app.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// var App = Ember.Application.create({});</span>
-</span><span class='line'><span class="nx">define</span><span class="p">([</span>
-</span><span class='line'>    <span class="s1">&#39;ember&#39;</span>
-</span><span class='line'><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Ember</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;ember initial and callback&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">App</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">App</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({});</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">App</span><span class="p">;</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>app.js裡面寫當emberjs載入後建立我的App，這裡必須把App放進window.App不然在跑emberjs時會有錯誤。</p>
-
-<figure class='code'><figcaption><span>application.template.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">define</span><span class="p">([</span>
-</span><span class='line'>  <span class="s1">&#39;ember&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;views/menubar.view&#39;</span>
-</span><span class='line'><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Ember</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">Ember</span><span class="p">.</span><span class="nx">TEMPLATES</span><span class="p">[</span><span class="s1">&#39;application&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Handlebars</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span>
-</span><span class='line'>  <span class="s1">&#39;\</span>
-</span><span class='line'><span class="s1">     &lt;h1&gt;Hello Ember&lt;/h1&gt;\</span>
-</span><span class='line'><span class="s1">     &lt;div&gt;\</span>
-</span><span class='line'><span class="s1">         { {view App.MenuBarView}}\</span>
-</span><span class='line'><span class="s1">         &lt;hr/&gt;\</span>
-</span><span class='line'><span class="s1">         { {outlet}}\</span>
-</span><span class='line'><span class="s1">     &lt;/div&gt;\</span>
-</span><span class='line'><span class="s1"> &#39;</span>
-</span><span class='line'>  <span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>application.template裡面有兩個dependency(ember和menubar.view)。function裡面是comiple ember template。
-在前面的app.js裡面如果沒有把App放進window.App話等程式run下去ember會報錯說找不到App.MenuBarView即使你的確有這個View存在。</p>
-
-<figure class='code'><figcaption><span>menubar.view.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">define</span><span class="p">([</span>
-</span><span class='line'>  <span class="s1">&#39;app&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;text!T/menubar.template.html&#39;</span>
-</span><span class='line'><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">App</span><span class="p">,</span> <span class="nx">template</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">App</span><span class="p">.</span><span class="nx">MenuBarView</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
-</span><span class='line'>      <span class="nx">tagName</span><span class="o">:</span><span class="s1">&#39;div&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">classNames</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;menubar&#39;</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>  <span class="nx">Ember</span><span class="p">.</span><span class="nx">TEMPLATES</span><span class="p">[</span><span class="s1">&#39;menubar&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Handlebars</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">template</span><span class="p">);</span>    
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>menubar.view.js裡面我利用text這個requirejs plugin載入外部的html進來ember compile。那如何得到載入進來的html呢？很簡單就
-是只要在function裡面加入相對應的parameters，由於這個module有2個dependencies所以在function裡面有2個parameters。而template
-很自然就是對應到讀進來的html。</p>
 ]]></content>
   </entry>
   

@@ -9,8 +9,7 @@
   <meta name="author" content="Weichien Hung">
 
   
-  <meta name="description" content="I push rails101_groupme to heroku today.
-The project doesn&#8217;t have access control and i18n. I use cancan gem to do access authorization and &hellip;">
+  <meta name="description" content="Continue ActionSupport useful record Extensions to Numeric Defined in active_support/core_ext/numeric/bytes.rb. Bytes All number respond to these &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +70,130 @@ The project doesn&#8217;t have access control and i18n. I use cancan gem to do a
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/13/actionsupport-in-rails4-part2/">ActionSupport in Rails4 Part2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-13T21:42:00+08:00" pubdate data-updated="true">Sep 13<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/09/13/actionsupport-in-rails4-part2/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Continue ActionSupport useful record</p>
+
+<h3>Extensions to Numeric</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/numeric/bytes.rb.</p>
+
+<h4>Bytes</h4>
+
+<p>All number respond to these methods</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">kilobytes</span>   <span class="c1"># =&gt; 2048</span>
+</span><span class='line'><span class="mi">3</span><span class="o">.</span><span class="n">megabytes</span>   <span class="c1"># =&gt; 3145728</span>
+</span><span class='line'><span class="mi">3</span><span class="o">.</span><span class="mi">5</span><span class="o">.</span><span class="n">gigabytes</span> <span class="c1"># =&gt; 3758096384</span>
+</span><span class='line'><span class="o">-</span><span class="mi">4</span><span class="o">.</span><span class="n">exabytes</span>   <span class="c1"># =&gt; -4611686018427387904</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/09/13/actionsupport-in-rails4-part2/">Continue reading &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/12/actionsupport-methods-in-rails4/">ActionSupport in Rails4 Part1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-12T17:23:00+08:00" pubdate data-updated="true">Sep 12<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/09/12/actionsupport-methods-in-rails4/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Recently i study documents in <a href="http://edgeguides.rubyonrails.org/">ruby edgeguides</a>.
+There are a lot of methods in ActionSupport chapter. I record something useful here and for reference in the future.</p>
+
+<h3>Extensions to All Objects</h3>
+
+<hr />
+
+<p>Defined in active_support/core_ext/object/blank.rb.</p>
+
+<h4>blank?</h4>
+
+<p>Following vlaues are considered to be blank.<br/>
+* nil and false<br/>
+* strings composed only of whitespace (see note below)<br/>
+* empty arrays and hashes<br/>
+In particular, 0 and 0.0 are not blank.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/09/12/actionsupport-methods-in-rails4/">Continue reading &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -393,7 +516,35 @@ I am planing to have a new project that use Rails and Emberjs. I could add my js
 <p>Make your current indent with different color. Open <code>Preferences</code> > <code>Settings - Default</code> and add <code>draw_active</code> to <code>indent_guide_options</code></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;indent_guide&quot;</span><span class="err">:</span> <span class="p">[</span><span class="s2">&quot;draw_normal&quot;</span><span class="p">,</span><span class="s2">&quot;draw_active&quot;</span><span class="p">]</span><span class="err">,</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">...</span>
+</span><span class='line'><span class="s2">&quot;indent_guide_options&quot;</span><span class="err">:</span> <span class="p">[</span><span class="s2">&quot;draw_normal&quot;</span><span class="p">,</span><span class="s2">&quot;draw_active&quot;</span><span class="p">]</span><span class="err">,</span>
+</span><span class='line'><span class="err">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You could change the color of draw_active. Open your current color scheme setting file.
+Add</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;key&gt;</span>settings<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>    ...
+</span><span class='line'>    ...
+</span><span class='line'>    <span class="nt">&lt;key&gt;</span>activeGuide<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string&gt;</span>#CED418<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dict&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dict&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -500,93 +651,6 @@ I try skills in this projects<br/>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/07/memcached-study/">Memcached Study</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-07T21:27:00+08:00" pubdate data-updated="true">Aug 7<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/08/07/memcached-study/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I studied the memcached since yesterday. It&#8217;s a good cache implementation used by Twitter,Facebook..etc.
-Because the official site doesn&#8217;t provide the rpm for download and i can&#8217;t get the latest version from yum.
-I learn how to build it from source and also try the <a href="http://repcached.lab.klab.org/">repached</a>(for memcached replication but not official)</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/08/07/memcached-study/">Continue reading &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/06/write-english-blog/">Write English Blog</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-06T23:12:00+08:00" pubdate data-updated="true">Aug 6<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/08/06/write-english-blog/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I receive a email from a stranger today. He writes English email to me and ask an emberjs question.
-He saw my old post but can&#8217;t understand what i said because the post was writen by Chinese.
-I reply the email and he gets the answer finally.
-Although my blog is put on Internet but I never thought someone will get help from here :)
-After this I decide to write the post in English from now.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -599,11 +663,19 @@ After this I decide to write the post in English from now.</p>
   
     <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/coffeescript'>coffeescript (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (7)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (5)</a></li><li><a href='/blog/categories/rails'>rails (5)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/coffeescript'>coffeescript (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (7)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (5)</a></li><li><a href='/blog/categories/rails'>rails (7)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/13/actionsupport-in-rails4-part2/">ActionSupport in Rails4 part2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/12/actionsupport-methods-in-rails4/">ActionSupport in Rails4 part1</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/09/09/rails-and-heroku/">Rails and heroku</a>
@@ -615,14 +687,6 @@ After this I decide to write the post in English from now.</p>
     
       <li class="post">
         <a href="/blog/2013/09/01/multiple-model-in-a-view/">Multiple models in a view</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/01/coffee-script-memo/">Coffee script memo</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/25/rails-and-ember-study/">rails and ember study</a>
       </li>
     
   </ul>
