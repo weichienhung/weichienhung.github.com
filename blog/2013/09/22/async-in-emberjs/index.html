@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Weichien Hung's studying note</title>
+  <title>Async in Emberjs - Weichien Hung's studying note</title>
   <meta name="author" content="Weichien Hung">
 
   
@@ -19,7 +19,7 @@ If you want to make sure model is ready before entering the target route. You co
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://weichienhung.github.io/">
+  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/09/22/async-in-emberjs/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -69,15 +69,12 @@ If you want to make sure model is ready before entering the target route. You co
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/09/22/async-in-emberjs/">Async in Emberjs</a></h1>
+      <h1 class="entry-title">Async in Emberjs</h1>
     
     
       <p class="meta">
@@ -95,14 +92,14 @@ If you want to make sure model is ready before entering the target route. You co
 
 <time datetime="2013-09-22T17:40:00+08:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2013</time>
         
-         | <a href="/blog/2013/09/22/async-in-emberjs/#disqus_thread">Comments</a>
+         | <a href="#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h2>Async Routing</h2>
+<div class="entry-content"><h2>Async Routing</h2>
 
 <p>Reference to <a href="http://emberjs.com/guides/routing/asynchronous-routing/">ember guide</a>.<br/>
 If you want to make sure model is ready before entering the target route. You could use async routing. How?<br/>
@@ -219,70 +216,16 @@ So i make <code>drawLineChart</code> method to observe controller&#8217;s attrib
 </span></code></pre></td></tr></table></div></figure>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/22/use-highchartjs-to-visual/">Use HighchartJS to Visual Data</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">Weichien Hung</span></span>
 
-<time datetime="2013-09-22T17:16:00+08:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2013</time>
-        
-         | <a href="/blog/2013/09/22/use-highchartjs-to-visual/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I just push a new project to <a href="https://github.com/weichienhung/money">github</a> and <a href="http://weichien-money.herokuapp.com/">heroku</a>.
-This project is derived from my iOS App <a href="https://itunes.apple.com/tw/app/monny/id590327036?mt=8">Monny</a>.
-The App I used it to record my daily expense. The free version doesn&#8217;t have visual graph to show summary data.
-So i use EmberJS,HighchartJS and Rails to build this simple web app. I always learned new knowledge during coding.</p>
-
-<p>I take few snaphots of this probject.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/09/22/use-highchartjs-to-visual/">Continue reading &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/13/actionsupport-in-rails4-part2/">ActionSupport in Rails4 Part2</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -294,481 +237,64 @@ So i use EmberJS,HighchartJS and Rails to build this simple web app. I always le
   
 
 
-<time datetime="2013-09-13T21:42:00+08:00" pubdate data-updated="true">Sep 13<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/09/13/actionsupport-in-rails4-part2/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Continue ActionSupport useful record</p>
-
-<h3>Extensions to Numeric</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/numeric/bytes.rb.</p>
-
-<h4>Bytes</h4>
-
-<p>All number respond to these methods</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">kilobytes</span>   <span class="c1"># =&gt; 2048</span>
-</span><span class='line'><span class="mi">3</span><span class="o">.</span><span class="n">megabytes</span>   <span class="c1"># =&gt; 3145728</span>
-</span><span class='line'><span class="mi">3</span><span class="o">.</span><span class="mi">5</span><span class="o">.</span><span class="n">gigabytes</span> <span class="c1"># =&gt; 3758096384</span>
-</span><span class='line'><span class="o">-</span><span class="mi">4</span><span class="o">.</span><span class="n">exabytes</span>   <span class="c1"># =&gt; -4611686018427387904</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/09/13/actionsupport-in-rails4-part2/">Continue reading &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2013-09-22T17:40:00+08:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2013</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/12/actionsupport-methods-in-rails4/">ActionSupport in Rails4 Part1</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
+    <a class='category' href='/blog/categories/emberjs/'>emberjs</a>
+  
+</span>
 
 
-<time datetime="2013-09-12T17:23:00+08:00" pubdate data-updated="true">Sep 12<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/09/12/actionsupport-methods-in-rails4/#disqus_thread">Comments</a>
-        
-      </p>
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>Recently i study documents in <a href="http://edgeguides.rubyonrails.org/">ruby edgeguides</a>.
-There are a lot of methods in ActionSupport chapter. I record something useful here and for reference in the future.</p>
-
-<h3>Extensions to All Objects</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/object/blank.rb.</p>
-
-<h4>blank?</h4>
-
-<p>Following vlaues are considered to be blank.<br/>
-* nil and false<br/>
-* strings composed only of whitespace (see note below)<br/>
-* empty arrays and hashes<br/>
-In particular, 0 and 0.0 are not blank.</p>
-
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/09/22/async-in-emberjs/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/09/22/async-in-emberjs/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/09/12/actionsupport-methods-in-rails4/">Continue reading &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/09/rails-and-heroku/">Ckeditor With Rails4 on Heroku</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-09T22:32:00+08:00" pubdate data-updated="true">Sep 9<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/09/09/rails-and-heroku/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I push <a href="https://github.com/weichienhung/rails101_groupme">rails101_groupme</a> to <a href="http://weichien-groupme.herokuapp.com/">heroku</a> today.
-The project doesn&#8217;t have access control and i18n. I use cancan gem to do access authorization and default i18n mechanism.
-Besides, i also upgrade twitter bootstrap to 3.0.0.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/09/09/rails-and-heroku/">Continue reading &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+        <a class="basic-alignment left" href="/blog/2013/09/22/use-highchartjs-to-visual/" title="Previous Post: Use HighchartJS to visual data">&laquo; Use HighchartJS to visual data</a>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/03/first-ember-rails-project/">First Ember_rails Project</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-03T23:57:00+08:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2013</time>
-        
-         | <a href="/blog/2013/09/03/first-ember-rails-project/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Last time i said i want to make an ember-rails project(<a href="http://127.0.0.1:4000/blog/2013/08/25/rails-and-ember-study/">post</a>).
-Today I push my first Ember-Rails(food-ntpc) project to <a href="https://github.com/weichienhung/food-ntpc">github</a> and <a href="http://food-ntpc.herokuapp.com/">heroku</a>.
-It takes me more time to finish it because i am not familiar with coffee script. I also create a new <a href="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/">post</a> for coffee script memo.
-During practicing i use Emberjs 1.0.0.rc7. But Emberjs 1.0.0 was released few days ago and i upgrade it to 1.0.0.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/01/multiple-model-in-a-view/">Multiple Models in a View</a></h1>
-    
-    
-      <p class="meta">
-        
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="facebook_comments" aria-live="polite">
+      <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
+<div
+  class="fb-comments"
+  data-href="http://weichienhung.github.io/blog/2013/09/22/async-in-emberjs/"
+  data-num-posts="2"
+  data-width="470"
+  data-colorscheme="light">
+</div>
+
+    </div>
+  </section>
 
 
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-01T20:29:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time>
-        
-         | <a href="/blog/2013/09/01/multiple-model-in-a-view/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>How to use multiple models in a view?
-Retrieve another data and set to controller in Route&#8217;s setupController method.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">model: </span><span class="nf">-&gt;</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">Place</span><span class="p">.</span><span class="nx">places</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">setupController: </span><span class="nf">(controller, model) -&gt;</span>
-</span><span class='line'>  <span class="c1">#model is the result of Place.places()</span>
-</span><span class='line'>  <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;content&#39;</span><span class="p">,</span> <span class="nx">model</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">#another data</span>
-</span><span class='line'>  <span class="nv">categorys = </span><span class="nx">Category</span><span class="p">.</span><span class="nx">categorys</span><span class="p">()</span>
-</span><span class='line'>  <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;categorys&#39;</span><span class="p">,</span> <span class="nx">categorys</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I create CategoryView and bind data to it in template</p>
-
-<pre>
-&#123;{#each category in categorys}}
-  &#123;{#view CategoryView contentBinding="category"}}
-    &#123;{category.name}}
-  &#123;{/view}}
-&#123;{/each}}
-
-&#123;{#each place in content}}
-  &#123;{place.name}}
-&#123;{/each}}
-</pre>
-
-
-<p>CategoryView code:
-I use classNameBinding to auto update class when status is changed.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">CategoryView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>  <span class="nv">classNameBindings: </span><span class="p">[</span><span class="s">&#39;getClass&#39;</span><span class="p">]</span>
-</span><span class='line'>  <span class="nv">status: </span><span class="kc">true</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">getClass: </span><span class="p">(</span> <span class="nf">-&gt;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">return</span> <span class="s">&quot;btn-info&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="k">return</span> <span class="s">&quot;btn-default&quot;</span>
-</span><span class='line'>  <span class="p">).</span><span class="nx">property</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
 
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/01/coffee-script-memo/">Coffee Script Memo</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-01T16:35:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time>
-        
-         | <a href="/blog/2013/09/01/coffee-script-memo/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>From last week i tried the Ember-Rails and studied the coffee script btw. Because more and more people use coffee script and i want to understand their codes!
-In the beginning the coffee script syntax confuses me a lot and cost a lot of time to google it.
-I decide to keep it on post for reference in the future.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/09/01/coffee-script-memo/">Continue reading &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/25/rails-and-ember-study/">Rails and Ember Study</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-25T07:13:00+08:00" pubdate data-updated="true">Aug 25<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/08/25/rails-and-ember-study/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I pushed two project(<a href="https://github.com/weichienhung/rails101_groupme">rails101-groupme</a>,<a href="https://github.com/weichienhung/project101">project101</a>)to github yesterday.
-I bought the ebook <a href="http://rails-101.logdown.com/">rails101</a> and make rails101-groupme project by follow instructions of book.
-Besides i add some features into rails101-groupme.<br/>
-1.Every user could reply the post<br/>
-2.Rich text editor, CKeditor</p>
-
-<p><a href="https://github.com/weichienhung/project101">project101</a> is the old project i practiced emberjs. It retrieves data from <a href="http://data.taipei.gov.tw/">open data Taipei</a> and show on table.
-This project was made because inspired by yunglinho&#8217;s <a href="http://blog.yunglinho.com/blog/2011/11/15/">post</a>. I study google map API and add into it recently.
-Most of locations could be show on google map. Somes are not because can&#8217;t be geocode to <a href="https://developers.google.com/maps/documentation/javascript/reference#LatLng">LatLng</a>.
-There&#8217;s a disadvantage here. Geocode needs to send requests to google but google will block it if you use API frequently. Implement it on clide side is not a good idea.
-I am planing to have a new project that use Rails and Emberjs. I could add my json API and store LatLng in database to prevent too many requests to google.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/19/improve-sublime/">Improve Sublime</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-19T23:16:00+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/08/19/improve-sublime/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I install new Color Schemes,Theme,package to sublime and make it&#8217;s look and feel better. Here is the list i have added.</p>
-
-<h3>1.indent Guide</h3>
-
-<p>Make your current indent with different color. Open <code>Preferences</code> > <code>Settings - Default</code> and add <code>draw_active</code> to <code>indent_guide_options</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">...</span>
-</span><span class='line'><span class="s2">&quot;indent_guide_options&quot;</span><span class="err">:</span> <span class="p">[</span><span class="s2">&quot;draw_normal&quot;</span><span class="p">,</span><span class="s2">&quot;draw_active&quot;</span><span class="p">]</span><span class="err">,</span>
-</span><span class='line'><span class="err">...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You could change the color of draw_active. Open your current color scheme setting file.
-Add</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dict&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;key&gt;</span>settings<span class="nt">&lt;/key&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;dict&gt;</span>
-</span><span class='line'>    ...
-</span><span class='line'>    ...
-</span><span class='line'>    <span class="nt">&lt;key&gt;</span>activeGuide<span class="nt">&lt;/key&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;string&gt;</span>#CED418<span class="nt">&lt;/string&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/dict&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dict&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/08/19/improve-sublime/">Continue reading &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -824,6 +350,7 @@ Add</p>
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -838,7 +365,10 @@ Add</p>
       var disqus_shortname = 'weichienhung';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/09/22/async-in-emberjs/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2013/09/22/async-in-emberjs/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

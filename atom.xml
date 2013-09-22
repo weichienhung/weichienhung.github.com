@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-14T23:02:34+08:00</updated>
+  <updated>2013-09-22T18:39:54+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,161 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Async in Emberjs]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/22/async-in-emberjs/"/>
+    <updated>2013-09-22T17:40:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/22/async-in-emberjs</id>
+    <content type="html"><![CDATA[<h2>Async Routing</h2>
+
+<p>Reference to <a href="http://emberjs.com/guides/routing/asynchronous-routing/">ember guide</a>.<br/>
+If you want to make sure model is ready before entering the target route. You could use async routing. How?<br/>
+Make your model as Promise object in route&#8217;s model function.
+For example: In year route i return a model that comes from <code>ModelMgr.listMonth(params.year_id)</code>.
+Because model is Promise object, i add a <code>then</code> method to set id attribute to model(resolve will be model here)</p>
+
+<figure class='code'><figcaption><span>YearRoute</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">model: </span><span class="nf">(params) -&gt;</span>
+</span><span class='line'>  <span class="nv">model = </span><span class="nx">ModelMgr</span><span class="p">.</span><span class="nx">listMonth</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">year_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">model</span><span class="p">.</span><span class="nx">then</span> <span class="nf">(resolve, reject)-&gt;</span>
+</span><span class='line'>      <span class="nx">resolve</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">year_id</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">model</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In <code>ModelMgr.listMonth</code> method, use <code>Ember.RSVP.Promise</code> to wrap your function. Because i don&#8217;t return anything in the last line of function.
+CoffeeScript will return the promise object automatically. <code>months</code> will be the real model object.</p>
+
+<figure class='code'><figcaption><span>ModelMgr</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">listMonth: </span><span class="nf">(year) -&gt;</span>
+</span><span class='line'>  <span class="nv">months = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">ArrayProxy</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span><span class="nx">content</span><span class="o">:</span><span class="p">[]})</span>
+</span><span class='line'>  <span class="k">new</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">RSVP</span><span class="p">.</span><span class="nx">Promise</span> <span class="nf">(resolve) -&gt;</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span> <span class="s">&#39;/api/list&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">type: </span><span class="s">&#39;GET&#39;</span>
+</span><span class='line'>    <span class="nv">dataType: </span><span class="s">&#39;json&#39;</span>
+</span><span class='line'>    <span class="nv">data: </span><span class="s">&#39;y=&#39;</span><span class="o">+</span><span class="nx">year</span>
+</span><span class='line'>    <span class="nv">success: </span><span class="nf">(data, textStatus, jqXHR) -&gt;</span>
+</span><span class='line'>      <span class="k">for</span> <span class="nx">raw</span> <span class="k">in</span> <span class="nx">data</span>
+</span><span class='line'>        <span class="nx">months</span><span class="p">.</span><span class="nx">addObject</span> <span class="nx">raw</span>
+</span><span class='line'>      <span class="nx">months</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;isReady&#39;</span><span class="p">,</span> <span class="kc">true</span>
+</span><span class='line'>      <span class="nx">resolve</span><span class="p">(</span><span class="nx">months</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Wait multiple function call ready</h2>
+
+<p>Sometimes you will use 3rd party library and it requires element existed in the DOM tree.
+For example: I use highchartJS to draw diagram.<br/>
+In the route it queries two models to finish the whole scenarios.
+<code>model</code> is the result from <code>ModelMgr.listMonth</code> and <code>modelForTrend</code> is the result from <code>ModelMgr.queryTrend</code>.
+The models all have attributes called <code>isReady</code> with false default. After <code>ModelMgr</code> get the data, it will set to true.</p>
+
+<figure class='code'><figcaption><span>SummaryRoute</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'>  <span class="nv">model: </span><span class="nf">(params)-&gt;</span>
+</span><span class='line'>    <span class="nv">model = </span><span class="nx">ModelMgr</span><span class="p">.</span><span class="nx">listMonth</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">year_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="nv">model.year = </span><span class="nx">params</span><span class="p">.</span><span class="nx">year_id</span> <span class="c1">#For queryTrend needs year as parameter</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">model</span>
+</span><span class='line'>  <span class="nv">setupController: </span><span class="nf">(controller, model)-&gt;</span>
+</span><span class='line'>    <span class="nv">modelForTrend = </span><span class="nx">ModelMgr</span><span class="p">.</span><span class="nx">queryTrend</span><span class="p">(</span><span class="nx">model</span><span class="p">.</span><span class="nx">year</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;model&#39;</span><span class="p">,</span> <span class="nx">model</span>
+</span><span class='line'>    <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;modelForTrend&#39;</span><span class="p">,</span> <span class="nx">modelForTrend</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We have two attribute bindings to model&#8217;s attributes in controller.</p>
+
+<figure class='code'><figcaption><span>SummaryController</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">SummaryController = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">ObjectController</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">dataReadyBinding: </span><span class="s">&#39;model.isReady&#39;</span>
+</span><span class='line'>  <span class="nv">trendDataReadyBinding: </span><span class="s">&#39;modelForTrend.isReady&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create a method to observe all attributes we care about. View shouldn&#8217;t connect to Model directly.
+So i make <code>drawLineChart</code> method to observe controller&#8217;s attribute.</p>
+
+<figure class='code'><figcaption><span>SummaryView</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">SummaryView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">elementReady: </span><span class="kc">false</span>
+</span><span class='line'>  <span class="nv">drawLineChart: </span><span class="p">(</span> <span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;controller.dataReady&#39;</span><span class="p">)</span> <span class="o">and</span> <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;controller.trendDataReady&#39;</span><span class="p">)</span> <span class="o">and</span> <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;elementReady&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="nv">content = </span><span class="nx">@get</span> <span class="s">&#39;controller.model.content&#39;</span> <span class="c1"># content is ready</span>
+</span><span class='line'>      <span class="nv">contentForTrend = </span><span class="nx">@get</span> <span class="s">&#39;controller.modelForTrend.content&#39;</span> <span class="c1"># contentForTrend is ready</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#myTrend&#39;</span><span class="p">).</span><span class="nx">highcharts</span><span class="p">(</span> <span class="p">...</span> <span class="p">)</span> <span class="c1"># element is ready.</span>
+</span><span class='line'>      <span class="c1"># do something here...</span>
+</span><span class='line'>  <span class="p">).</span><span class="nx">observes</span><span class="p">(</span><span class="s">&#39;controller.dataReady&#39;</span><span class="p">,</span> <span class="s">&#39;elementReady&#39;</span><span class="p">,</span> <span class="s">&#39;controller.trendDataReady&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">didInsertElement: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="nx">@set</span> <span class="s">&#39;elementReady&#39;</span><span class="p">,</span> <span class="kc">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Use HighchartJS to visual data]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/22/use-highchartjs-to-visual/"/>
+    <updated>2013-09-22T17:16:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/22/use-highchartjs-to-visual</id>
+    <content type="html"><![CDATA[<p>I just push a new project to <a href="https://github.com/weichienhung/money">github</a> and <a href="http://weichien-money.herokuapp.com/">heroku</a>.
+This project is derived from my iOS App <a href="https://itunes.apple.com/tw/app/monny/id590327036?mt=8">Monny</a>.
+The App I used it to record my daily expense. The free version doesn&#8217;t have visual graph to show summary data.
+So i use EmberJS,HighchartJS and Rails to build this simple web app. I always learned new knowledge during coding.</p>
+
+<p>I take few snaphots of this probject.</p>
+
+<!-- more -->
+
+
+<h3>List every record</h3>
+
+<p><img src="http://weichienhung.github.io/images/0922-list.png" width="500" height="500" title="list-image" alt="list"></p>
+
+<h3>Category summary</h3>
+
+<p><img src="http://weichienhung.github.io/images/0922-summary.png" width="500" height="500" title="summary-image" alt="summary"></p>
+
+<h3>Year trend</h3>
+
+<p><img src="http://weichienhung.github.io/images/0922-trend.png" width="500" height="500" title="trend-image" alt="trend"></p>
+
+<p>I won&#8217;t describe studying notes here but write them in other posts.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ActionSupport in Rails4 part2]]></title>
@@ -543,7 +698,7 @@ Pass a :separator to truncate the string at a natural break:</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Rails and heroku]]></title>
+    <title type="html"><![CDATA[Ckeditor with Rails4 on heroku]]></title>
     <link href="http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku/"/>
     <updated>2013-09-09T22:32:00+08:00</updated>
     <id>http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku</id>
@@ -1000,7 +1155,7 @@ Some parts of doc are out of dated and here i write down the steps for reference
 <ol>
 <li>run <code>bundle install --without production</code></li>
 <li>In Rails 3.x precompile your assets file, you have to add <code>config.assets.initialize_on_precompile=false</code> to your <code>config/application.rb</code>. Rails 4 ignore this.</li>
-<li>run <code>rake assets:precompile</code></li>
+<li>run <code>rake assets:precompile RAILS_ENV=production</code></li>
 <li>run <code>git commit -am "your commit message"</code> because only commited source code will be pushed to heroku.</li>
 <li>run <code>heroku create appname</code> to create your app on heroku. It requires you input your account,password and your ssh public key(id_rsa).</li>
 <li>run <code>git push heroku master</code>. You will see your app running on http://appname.herokuapp.com.
@@ -2208,467 +2363,6 @@ With proc, you write your code once. Proc is savable block.</p>
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ruby beginning]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/02/21/ruby-beginning/"/>
-    <updated>2013-02-21T22:31:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/02/21/ruby-beginning</id>
-    <content type="html"><![CDATA[<p>前幾天開始看Ruby起因是網路上很多分享的project都是Rails,為了能夠加速了解理面的內容就來學一下Rails,
-不過為了Rails必須要先打好Ruby的基礎。在這裡紀錄下學習過的語法避免自己忘光,光是昨天沒看語法我已經忘了不少XD。</p>
-
-<!--more-->
-
-
-<p>Everything is object,在Ruby裡每一個東西都是物件,像直接對1這個object呼叫next兩次就會得到3</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>呼叫methods得到一個array包含所有的methods</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">methods</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ruby裡蠻特殊的是會回傳布林值的method傳參數是用&#8217;?&#8217;,其它的用&#8217;()&#8217;或空格</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">between?</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span>  <span class="o">/*</span> <span class="kp">true</span> <span class="o">*/</span>
-</span><span class='line'><span class="s2">&quot;I am a Rubyist&quot;</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;R&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s2">&quot;I am a Rubyist&quot;</span><span class="o">.</span><span class="n">index</span> <span class="s1">&#39;R&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>String operations</h2>
-
-<h4>search</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;[Luke:] I can’t believe it. [Yoda:] That is why you fail.&quot;</span><span class="o">.</span><span class="n">include?</span><span class="s1">&#39;Yoda&#39;</span>
-</span><span class='line'><span class="s2">&quot;Ruby is a beautiful language&quot;</span><span class="o">.</span><span class="n">start_with?</span><span class="s1">&#39;Ruby&#39;</span>
-</span><span class='line'><span class="s2">&quot;I can&#39;t work with any other language but Ruby&quot;</span><span class="o">.</span><span class="n">end_with?</span><span class="s1">&#39;Ruby&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>在字串裡可以輕易地使用#{}把值傳進去,puts就是console output</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
-</span><span class='line'><span class="n">b</span> <span class="o">=</span> <span class="mi">1</span>
-</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;The number </span><span class="si">#{</span><span class="n">a</span><span class="si">}</span><span class="s2"> is less than </span><span class="si">#{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<h4>case change</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s1">&#39;This is Mixed CASE&#39;</span><span class="o">.</span><span class="n">downcase</span>
-</span><span class='line'><span class="s1">&#39;This is Mixed CASE&#39;</span><span class="o">.</span><span class="n">upcase</span>
-</span><span class='line'><span class="s1">&#39;This is Mixed CASE&#39;</span><span class="o">.</span><span class="n">swapcase</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>split</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s1">&#39;Fear is the path to the dark side&#39;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>concatenat</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s1">&#39;Ruby&#39;</span><span class="o">+</span><span class="s1">&#39;Monk&#39;</span>
-</span><span class='line'><span class="s1">&#39;Ruby&#39;</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;Monk&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>replacing</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;I should look into your problem when I get time&quot;</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;I&#39;</span><span class="p">,</span><span class="s1">&#39;We&#39;</span><span class="p">)</span> <span class="sr">/* only replace first found */</span>
-</span><span class='line'><span class="s2">&quot;I should look into your problem when I get time&quot;</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="s1">&#39;I&#39;</span><span class="p">,</span><span class="s1">&#39;We&#39;</span><span class="p">)</span> <span class="sr">/* replace all */</span>
-</span><span class='line'><span class="s1">&#39;RubyMonk&#39;</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/[aeiou]/</span><span class="p">,</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>  <span class="sr">/* use RegEX, it must wrap it with /</span> <span class="o">/</span> <span class="o">*/</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Boolean operations</h2>
-
-<h4>Like Java, use ==,&amp;&amp;,||,>=,&lt;=</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;Bob&quot;</span>
-</span><span class='line'><span class="nb">name</span> <span class="o">==</span> <span class="s2">&quot;Bob&quot;</span> <span class="sr">/* true */</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Conditional</h2>
-
-<h4>if..else</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">check_sign</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">if</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">0</span>
-</span><span class='line'>    <span class="s2">&quot;</span><span class="si">#{</span><span class="n">number</span><span class="si">}</span><span class="s2"> is positive&quot;</span>
-</span><span class='line'>  <span class="k">elsif</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">25</span>
-</span><span class='line'>    <span class="s2">&quot;</span><span class="si">#{</span><span class="n">number</span><span class="si">}</span><span class="s2"> is smaller than 25&quot;</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="s2">&quot;</span><span class="si">#{</span><span class="n">number</span><span class="si">}</span><span class="s2"> is negative&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Loop</h2>
-
-<h4>remember to use &#8216;break&#8217; to break loop</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="kp">loop</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">monk</span><span class="o">.</span><span class="n">meditate</span>
-</span><span class='line'>  <span class="k">break</span> <span class="k">if</span> <span class="n">monk</span><span class="o">.</span><span class="n">nirvana?</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>run N times</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">n</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Hello&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Arrays</h2>
-
-<h4>access array</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">][</span><span class="mi">2</span><span class="o">]</span> <span class="sr">/* answer is 3 */</span>
-</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">][-</span><span class="mi">1</span><span class="o">]</span> <span class="sr">/* answer is 5 */</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>add array, you could put different type object in Ruby Array</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;6&#39;</span>
-</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">].</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;6&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>delete</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">].</span><span class="n">delete</span> <span class="mi">3</span> <span class="o">/*</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">]</span> <span class="o">*/</span>
-</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="o">].</span><span class="n">delete_if</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>filter elements of array</h4>
-
-<p>Ruby會有許多如底下的寫法, number代表存在於array裡面的object, 如果大於3會被挑出來</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">].</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>array iteration</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">]</span>
-</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">array</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="n">i</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">]</span>
-</span><span class='line'><span class="n">array</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="n">i</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Hashs</h2>
-
-<h4>create a hash</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">restaurant_menu</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s1">&#39;Ramen&#39;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;Dal Makhani&#39;</span> <span class="o">=&gt;</span> <span class="mi">4</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;Tea&#39;</span> <span class="o">=&gt;</span><span class="mi">2</span>
-</span><span class='line'>  <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>fetch and modify value, like Array access</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">restaurant_menu</span><span class="o">[</span><span class="s1">&#39;Ramen&#39;</span><span class="o">]</span> <span class="sr">/* 3 */</span>
-</span><span class='line'><span class="n">restaurant_menu</span><span class="o">[</span><span class="s1">&#39;Dal Makhani&#39;</span><span class="o">]=</span><span class="mi">4</span><span class="o">.</span><span class="mi">5</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">restaurant_menu</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;Tea&#39;</span><span class="p">)</span> <span class="sr">/* delete it */</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>hash iteration</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">restaurant_menu</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Ramen&#39;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;Dal Makhani&#39;</span> <span class="o">=&gt;</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;Coffee&#39;</span> <span class="o">=&gt;</span> <span class="mi">2</span> <span class="p">}</span>
-</span><span class='line'><span class="n">restaurant_menu</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="p">,</span> <span class="n">price</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">restaurant_menu</span><span class="o">[</span><span class="n">item</span><span class="o">]</span> <span class="o">=</span> <span class="n">price</span> <span class="o">+</span> <span class="p">(</span><span class="n">price</span> <span class="o">*</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">restaurant_menu</span><span class="o">.</span><span class="n">each_key</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="n">item</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">restaurant_menu</span><span class="o">.</span><span class="n">each_value</span> <span class="k">do</span> <span class="o">|</span><span class="n">price</span><span class="o">|</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="n">price</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Class和def Function就留到下次再來寫。在Ruby Function中Method叫做Behaviour,Variable叫做State。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[emberjs and i18n]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/02/10/ember-and-i18n/"/>
-    <updated>2013-02-10T10:18:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/02/10/ember-and-i18n</id>
-    <content type="html"><![CDATA[<p>這兩天試了emberjs的i18n方法，有了一點小心得在這裡紀錄一下。
-一開始google下去找到的就是<a href="https://github.com/jamesarosen/ember-i18n">jamesarosen</a>這個ember i18n library。
-library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</a>這個library，主要是處理不同語言間名詞數量的問題。
-當然你可以單獨使用i18n library，也可以搭配CLDR.js。
-請參考<a href="http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html">CLDR plural 規範</a></p>
-
-<!--more-->
-
-
-<p>使用ember i18n library很容易，首先就是載入i18n.js，要注意的是如果你要使用CLDR的話要比i18n.js更早載入</p>
-
-<pre><code>&lt;script src="js/vendor/plurals.js"&gt;&lt;/script&gt;
-&lt;script src="js/vendor/i18n.js"&gt;&lt;/script&gt;
-</code></pre>
-
-<p>接著就是定義你的字典，假設我先定義三個語言分別是中文，英文和法文</p>
-
-<figure class='code'><figcaption><span>dictionary.en.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Em</span><span class="p">.</span><span class="nx">I18n</span><span class="p">.</span><span class="nx">translations</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s1">&#39;user.edit.title&#39;</span><span class="o">:</span> <span class="s1">&#39;Edit User&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;user.followers.title.one&#39;</span><span class="o">:</span> <span class="s1">&#39;One Follower&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;user.followers.title.other&#39;</span><span class="o">:</span> <span class="s1">&#39;All { {count}} Followers&#39;</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>dictionary.zh.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Em</span><span class="p">.</span><span class="nx">I18n</span><span class="p">.</span><span class="nx">translations</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s1">&#39;user.edit.title&#39;</span><span class="o">:</span> <span class="s1">&#39;編輯使用者&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;user.followers.title.one&#39;</span><span class="o">:</span> <span class="s1">&#39;一個跟隨著&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;user.followers.title.other&#39;</span><span class="o">:</span> <span class="s1">&#39;全部{ {count}}個跟隨者&#39;</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>dictionary.fr.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Em</span><span class="p">.</span><span class="nx">I18n</span><span class="p">.</span><span class="nx">translations</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s1">&#39;user.edit.title&#39;</span><span class="o">:</span> <span class="s1">&#39;Modifier l\&#39;utilisateur&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;user.followers.title.one&#39;</span><span class="o">:</span> <span class="s1">&#39;un suiveur&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;user.followers.title.other&#39;</span><span class="o">:</span> <span class="s1">&#39;{ {count}} disciples&#39;</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在你程式開始地方宣告你目前使用的language，我是放在ember App建立之後，在我的html載入js時也是預設先載入英文字典檔。</p>
-
-<figure class='code'><figcaption><span>main.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">App</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">ready</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;my App is ready&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="nx">CLDR</span><span class="p">.</span><span class="nx">defaultLanguage</span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<pre><code>...
-&lt;script src="js/dictionary.en.js"&gt;&lt;/script&gt;
-&lt;script src="js/main.js"&gt;&lt;/script&gt;
-...
-</code></pre>
-
-<p>接著你就只要隨便在你的畫面上放按鈕切換語系，切換的方法也就是用ajax去載入其它的字典檔。
-我寫在controller裡面用一個method去讀我想要的字典檔回來，但我在寫的時候發現由於ajax async的方式所以字典檔載入後畫面不會有變動，
-變成必須先切到別的頁面才會生效，為了讓它立即生效我讓它transition到一個叫i18redirect的route然後在那個route裡面再回到原本的頁面。
-這樣的好處就是在畫面上按下切換語系會馬上生效。</p>
-
-<figure class='code'><figcaption><span>internationalization.controller.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">InternationalizationController</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">ObjectController</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">updateLanguage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">lang</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">_self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-</span><span class='line'>      <span class="c1">//ajax load js and redirect to make template rerender</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">.</span><span class="nx">getScript</span><span class="p">(</span><span class="s2">&quot;js/utils/dictionary.&quot;</span><span class="o">+</span><span class="nx">lang</span><span class="o">+</span><span class="s2">&quot;.js&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">CLDR</span><span class="p">.</span><span class="nx">defaultLanguage</span> <span class="o">=</span> <span class="nx">lang</span><span class="p">;</span>
-</span><span class='line'>          <span class="nx">_self</span><span class="p">.</span><span class="nx">transitionToRoute</span><span class="p">(</span><span class="s1">&#39;i18redirect&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">});</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>i18redirect.router.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">I18redirectRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">redirect</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="s1">&#39;internationalization&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>稍微解釋一下字典檔裡面xxx.one跟xxx.other的意思，你剛才看字典檔(dictionary.xx.js)會發現如下的寫法。</p>
-
-<pre><code>'user.followers.title.one': 'One Follower',
-'user.followers.title.other': 'All { {count}} Followers'
-</code></pre>
-
-<p>你必須去參考我一開始給的那<a href="http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html">網頁</a>裡面定義各國語言中什麼時候該用one或other</p>
-
-<p>以英文為例當數量為1的時候會使用xxx.one這個字，其它情況下就是用xxx.other。</p>
-
-<pre><code>one → n is 1;
-other → everything else
-</code></pre>
-
-<p>所以如果我在我的template裡面放進底下這些字</p>
-
-<pre><code>&lt;h2&gt;{ {t user.edit.title}}&lt;/h2&gt;\
-&lt;h2&gt;{ {t user.followers.title count="0"}}&lt;/h2&gt;\
-&lt;h2&gt;{ {t user.followers.title count="1"}}&lt;/h2&gt;\
-&lt;h2&gt;{ {t user.followers.title count="2"}}&lt;/h2&gt;\
-</code></pre>
-
-<p>在切換到各個語系看起來就是</p>
-
-<p>English</p>
-
-<pre><code>Edit User
-All 0 Followers
-One Follower
-All 2 Followers
-</code></pre>
-
-<p>Chinese</p>
-
-<pre><code>編輯使用者
-全部0個跟隨者
-全部1個跟隨者
-全部2個跟隨者
-</code></pre>
-
-<p>French</p>
-
-<pre><code>Modifier l'utilisateur
-un suiveur
-un suiveur
-2 disciples
-</code></pre>
 ]]></content>
   </entry>
   

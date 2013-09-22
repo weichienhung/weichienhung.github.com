@@ -4,7 +4,7 @@
   <title><![CDATA[Category: emberjs | Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/emberjs/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-14T23:02:34+08:00</updated>
+  <updated>2013-09-22T18:39:54+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,133 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Async in Emberjs]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/22/async-in-emberjs/"/>
+    <updated>2013-09-22T17:40:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/22/async-in-emberjs</id>
+    <content type="html"><![CDATA[<h2>Async Routing</h2>
+
+<p>Reference to <a href="http://emberjs.com/guides/routing/asynchronous-routing/">ember guide</a>.<br/>
+If you want to make sure model is ready before entering the target route. You could use async routing. How?<br/>
+Make your model as Promise object in route's model function.
+For example: In year route i return a model that comes from <code>ModelMgr.listMonth(params.year_id)</code>.
+Because model is Promise object, i add a <code>then</code> method to set id attribute to model(resolve will be model here)
+``` coffeescript YearRoute
+model: (params) ->
+  model = ModelMgr.listMonth(params.year_id)</p>
+
+<pre><code>model.then (resolve, reject)-&gt;
+  resolve.set 'id', params.year_id
+</code></pre>
+
+<p>  return model
+<code>
+In `ModelMgr.listMonth` method, use `Ember.RSVP.Promise` to wrap your function. Because i don't return anything in the last line of function.
+CoffeeScript will return the promise object automatically. `months` will be the real model object.
+</code> coffeescript ModelMgr
+listMonth: (year) ->
+  months = Ember.ArrayProxy.create({content:[]})
+  new Ember.RSVP.Promise (resolve) -></p>
+
+<pre><code>$.ajax '/api/list',
+type: 'GET'
+dataType: 'json'
+data: 'y='+year
+success: (data, textStatus, jqXHR) -&gt;
+  for raw in data
+    months.addObject raw
+  months.set 'isReady', true
+  resolve(months)
+</code></pre>
+
+<p>```</p>
+
+<h2>Wait multiple function call ready</h2>
+
+<p>Sometimes you will use 3rd party library and it requires element existed in the DOM tree.
+For example: I use highchartJS to draw diagram.<br/>
+In the route it queries two models to finish the whole scenarios.
+<code>model</code> is the result from <code>ModelMgr.listMonth</code> and <code>modelForTrend</code> is the result from <code>ModelMgr.queryTrend</code>.
+The models all have attributes called <code>isReady</code> with false default. After <code>ModelMgr</code> get the data, it will set to true.
+``` coffeescript SummaryRoute
+  model: (params)-></p>
+
+<pre><code>model = ModelMgr.listMonth(params.year_id)
+model.year = params.year_id #For queryTrend needs year as parameter
+return model
+</code></pre>
+
+<p>  setupController: (controller, model)-></p>
+
+<pre><code>modelForTrend = ModelMgr.queryTrend(model.year)
+controller.set 'model', model
+controller.set 'modelForTrend', modelForTrend
+</code></pre>
+
+<p><code>
+We have two attribute bindings to model's attributes in controller.
+</code> coffeescript SummaryController
+SummaryController = Ember.ObjectController.extend
+  dataReadyBinding: 'model.isReady'
+  trendDataReadyBinding: 'modelForTrend.isReady'
+```</p>
+
+<p>Create a method to observe all attributes we care about. View shouldn't connect to Model directly.
+So i make <code>drawLineChart</code> method to observe controller's attribute.
+``` coffeescript SummaryView
+SummaryView = Ember.View.extend
+  elementReady: false
+  drawLineChart: ( -></p>
+
+<pre><code>if @get('controller.dataReady') and @get('controller.trendDataReady') and @get('elementReady')
+  content = @get 'controller.model.content' # content is ready
+  contentForTrend = @get 'controller.modelForTrend.content' # contentForTrend is ready
+  $('#myTrend').highcharts( ... ) # element is ready.
+  # do something here...
+</code></pre>
+
+<p>  ).observes('controller.dataReady', 'elementReady', 'controller.trendDataReady')
+  didInsertElement: -></p>
+
+<pre><code>@set 'elementReady', true
+</code></pre>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Use HighchartJS to visual data]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/22/use-highchartjs-to-visual/"/>
+    <updated>2013-09-22T17:16:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/22/use-highchartjs-to-visual</id>
+    <content type="html"><![CDATA[<p>I just push a new project to <a href="https://github.com/weichienhung/money">github</a> and <a href="http://weichien-money.herokuapp.com/">heroku</a>.
+This project is derived from my iOS App <a href="https://itunes.apple.com/tw/app/monny/id590327036?mt=8">Monny</a>.
+The App I used it to record my daily expense. The free version doesn't have visual graph to show summary data.
+So i use EmberJS,HighchartJS and Rails to build this simple web app. I always learned new knowledge during coding.</p>
+
+<p>I take few snaphots of this probject.</p>
+
+<!-- more -->
+
+
+<h3>List every record</h3>
+
+<p><img src="/images/0922-list.png" width="500" height="500" title="list-image" alt="list"></p>
+
+<h3>Category summary</h3>
+
+<p><img src="/images/0922-summary.png" width="500" height="500" title="summary-image" alt="summary"></p>
+
+<h3>Year trend</h3>
+
+<p><img src="/images/0922-trend.png" width="500" height="500" title="trend-image" alt="trend"></p>
+
+<p>I won't describe studying notes here but write them in other posts.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[First ember_rails project]]></title>
@@ -95,225 +222,6 @@ This project was made because inspired by yunglinho's <a href="http://blog.yungl
 Most of locations could be show on google map. Somes are not because can't be geocode to <a href="https://developers.google.com/maps/documentation/javascript/reference#LatLng">LatLng</a>.
 There's a disadvantage here. Geocode needs to send requests to google but google will block it if you use API frequently. Implement it on clide side is not a good idea.
 I am planing to have a new project that use Rails and Emberjs. I could add my json API and store LatLng in database to prevent too many requests to google.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[hello octopress]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/07/07/hello-again/"/>
-    <updated>2013-07-07T15:22:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/07/07/hello-again</id>
-    <content type="html"><![CDATA[<p>真的是好久沒寫blog了。看了一下最後一篇是在3月2日已經整整4個月沒寫了。</p>
-
-<p>markdown的語法也都快忘光了:(一開始執行rake new_post時還發生錯誤無法產生新文章，快速地google了一下原來是dependency太舊的關係，執行完bundle update就OK了真是好險啊。
-前陣子使用emberjs發現了一些之前沒注意到的細節。</p>
-
-<!--more-->
-
-
-<h3>使用transitionTo不會呼叫在route裡的model function</h3>
-
-<p>例如底下的程式碼，當使用transitionTo()到post route的時候. emberjs並不會幫你呼叫model(), 所以在toPost()裡面必須自己將所需要的model產生並當成
-參數一併帶在transitionTo()裡面。model()只有當你直接在URL進入post route才會被呼叫。
-setupController則是無論使用transitionTo()或是在browser直接打URL進去post route都會被呼叫。
-``` javascript example</p>
-
-<pre><code>application.PostRoute = Ember.Route.extend({
-    setupController: function(controller, model) {
-        controller.set('content', model);
-    },
-
-    model : function(params){
-        return application.Post.find(params.post_id);
-    }
-});
-
-
-toPost : function(target_post){
-        var model = application.Post.find(target_post);
-        this.transitionTo('post', model);
-},
-</code></pre>
-
-<p>```</p>
-
-<h3>nested route使用</h3>
-
-<p>一開始以為nest route的命名規則都是parent route name + child route name。
-其實不盡然，原來是要看你是使用this.route或是this.resource如果是this.route的話就要加上parent name(如底下的board and summary route)</p>
-
-<p>當要轉換到board這個route就要加上parent route name. (見底下的transitionTo())
-```
-MyApp.Router.map(function() {</p>
-
-<pre><code>this.route("landing", {path: "/landing"});
-this.resource("lobby", {path: "/lobby"}, function(){
-  this.route("board", {path: "/board"} );
-  this.resource("store", {path: "/store"}, function(){
-    this.route("summary", {path: "/summary/:game_id"} );
-  });
-});
-this.route("pageNotFound", {path: "*:"});
-</code></pre>
-
-<p>});</p>
-
-<p>//route naming
-MyApp.LandingRoute = Ember.Route.extend({});
-MyApp.LobbyRoute = Ember.Route.extend({});
-MyApp.LobbyBoardRoute = Ember.Route.extend({});
-MyApp.StoreRoute = Ember.Route.extend({});
-MyApp.StoreSummaryRoute = Ember.Route.extend({});</p>
-
-<p>toBoard : function(){</p>
-
-<pre><code>this.transitionTo('lobby.board');
-</code></pre>
-
-<p>}</p>
-
-<p>```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[emberjs and i18n]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/02/10/ember-and-i18n/"/>
-    <updated>2013-02-10T10:18:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/02/10/ember-and-i18n</id>
-    <content type="html"><![CDATA[<p>這兩天試了emberjs的i18n方法，有了一點小心得在這裡紀錄一下。
-一開始google下去找到的就是<a href="https://github.com/jamesarosen/ember-i18n">jamesarosen</a>這個ember i18n library。
-library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</a>這個library，主要是處理不同語言間名詞數量的問題。
-當然你可以單獨使用i18n library，也可以搭配CLDR.js。
-請參考<a href="http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html">CLDR plural 規範</a></p>
-
-<!--more-->
-
-
-<p>使用ember i18n library很容易，首先就是載入i18n.js，要注意的是如果你要使用CLDR的話要比i18n.js更早載入</p>
-
-<pre><code>&lt;script src="js/vendor/plurals.js"&gt;&lt;/script&gt;
-&lt;script src="js/vendor/i18n.js"&gt;&lt;/script&gt;
-</code></pre>
-
-<p>接著就是定義你的字典，假設我先定義三個語言分別是中文，英文和法文
-<code>javascript dictionary.en.js
-Em.I18n.translations = {
-  'user.edit.title': 'Edit User',
-  'user.followers.title.one': 'One Follower',
-  'user.followers.title.other': 'All { {count}} Followers'
-};
-</code>
-<code>javascript dictionary.zh.js
-Em.I18n.translations = {
-  'user.edit.title': '編輯使用者',
-  'user.followers.title.one': '一個跟隨著',
-  'user.followers.title.other': '全部{ {count}}個跟隨者'
-};
-</code>
-<code>javascript dictionary.fr.js
-Em.I18n.translations = {
-  'user.edit.title': 'Modifier l\'utilisateur',
-  'user.followers.title.one': 'un suiveur',
-  'user.followers.title.other': '{ {count}} disciples'
-};
-</code></p>
-
-<p>在你程式開始地方宣告你目前使用的language，我是放在ember App建立之後，在我的html載入js時也是預設先載入英文字典檔。
-``` javascript main.js
-var App = Ember.Application.create({</p>
-
-<pre><code>ready: function() {
-    console.log('my App is ready');
-    CLDR.defaultLanguage = 'en';
-}
-</code></pre>
-
-<p>});
-```</p>
-
-<pre><code>...
-&lt;script src="js/dictionary.en.js"&gt;&lt;/script&gt;
-&lt;script src="js/main.js"&gt;&lt;/script&gt;
-...
-</code></pre>
-
-<p>接著你就只要隨便在你的畫面上放按鈕切換語系，切換的方法也就是用ajax去載入其它的字典檔。
-我寫在controller裡面用一個method去讀我想要的字典檔回來，但我在寫的時候發現由於ajax async的方式所以字典檔載入後畫面不會有變動，
-變成必須先切到別的頁面才會生效，為了讓它立即生效我讓它transition到一個叫i18redirect的route然後在那個route裡面再回到原本的頁面。
-這樣的好處就是在畫面上按下切換語系會馬上生效。
-``` javascript internationalization.controller.js
-App.InternationalizationController = Ember.ObjectController.extend({</p>
-
-<pre><code>updateLanguage: function(lang) {
-    var _self = this;
-    //ajax load js and redirect to make template rerender
-    $.getScript("js/utils/dictionary."+lang+".js", function() {
-        CLDR.defaultLanguage = lang;
-        _self.transitionToRoute('i18redirect');
-    });
-},
-</code></pre>
-
-<p>});
-<code>
-</code> javascript i18redirect.router.js
-App.I18redirectRoute = Ember.Route.extend({</p>
-
-<pre><code>redirect: function() {
-    this.transitionTo('internationalization');
-}
-</code></pre>
-
-<p>});
-```
-稍微解釋一下字典檔裡面xxx.one跟xxx.other的意思，你剛才看字典檔(dictionary.xx.js)會發現如下的寫法。</p>
-
-<pre><code>'user.followers.title.one': 'One Follower',
-'user.followers.title.other': 'All { {count}} Followers'
-</code></pre>
-
-<p>你必須去參考我一開始給的那<a href="http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html">網頁</a>裡面定義各國語言中什麼時候該用one或other</p>
-
-<p>以英文為例當數量為1的時候會使用xxx.one這個字，其它情況下就是用xxx.other。</p>
-
-<pre><code>one → n is 1;
-other → everything else
-</code></pre>
-
-<p>所以如果我在我的template裡面放進底下這些字</p>
-
-<pre><code>&lt;h2&gt;{ {t user.edit.title}}&lt;/h2&gt;\
-&lt;h2&gt;{ {t user.followers.title count="0"}}&lt;/h2&gt;\
-&lt;h2&gt;{ {t user.followers.title count="1"}}&lt;/h2&gt;\
-&lt;h2&gt;{ {t user.followers.title count="2"}}&lt;/h2&gt;\
-</code></pre>
-
-<p>在切換到各個語系看起來就是</p>
-
-<p>English</p>
-
-<pre><code>Edit User
-All 0 Followers
-One Follower
-All 2 Followers
-</code></pre>
-
-<p>Chinese</p>
-
-<pre><code>編輯使用者
-全部0個跟隨者
-全部1個跟隨者
-全部2個跟隨者
-</code></pre>
-
-<p>French</p>
-
-<pre><code>Modifier l'utilisateur
-un suiveur
-un suiveur
-2 disciples
-</code></pre>
 ]]></content>
   </entry>
   
