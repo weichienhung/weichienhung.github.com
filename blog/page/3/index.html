@@ -9,8 +9,24 @@
   <meta name="author" content="Weichien Hung">
 
   
-  <meta name="description" content="前幾天開始看Ruby起因是網路上很多分享的project都是Rails,為了能夠加速了解理面的內容就來學一下Rails,
-不過為了Rails必須要先打好Ruby的基礎。在這裡紀錄下學習過的語法避免自己忘光,光是昨天沒看語法我已經忘了不少XD。 ">
+  <meta name="description" content="今天持續Ruby study,紀錄一下學習到的東西 Yield 讓自定義的method可以接受block, 在yield之後的code會等block內容跑完才接著跑 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+def block_test puts & &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +87,168 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/02/ruby-is-deligight/">Ruby Is Elegance</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-02T14:08:00+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2013</time>
+        
+         | <a href="/blog/2013/03/02/ruby-is-deligight/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天持續Ruby study,紀錄一下學習到的東西</p>
+
+<h3>Yield</h3>
+
+<p>讓自定義的method可以接受block, 在yield之後的code會等block內容跑完才接著跑</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">block_test</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;We&#39;re in the method!&quot;</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Yielding to the block...&quot;</span>
+</span><span class='line'>  <span class="k">yield</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;We&#39;re back in the method!&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">block_test</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;&gt;&gt;&gt; We&#39;re in the block!&quot;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#you can pass parameter too</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">yield_name</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;In the method! Let&#39;s yield.&quot;</span>
+</span><span class='line'>  <span class="k">yield</span> <span class="nb">name</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Block complete! Back in the method.&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">yield_name</span><span class="p">(</span><span class="s2">&quot;samuel&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;My name is </span><span class="si">#{</span><span class="n">a</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The output is</p>
+
+<pre><code>We're in the method!
+Yielding to the block...
+&gt;&gt;&gt; We're in the block!
+We're back in the method!
+
+In the method! Let's yield.
+My name is samuel.
+Block complete! Back in the method.
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/03/02/ruby-is-deligight/">Continue reading &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/01/ruby-study/">Ruby Study</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-01T23:39:00+08:00" pubdate data-updated="true">Mar 1<span>st</span>, 2013</time>
+        
+         | <a href="/blog/2013/03/01/ruby-study/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近都在看CSS沒什麼時間繼續看Ruby,今天上codecademy練習ruby。
+在這裡紀錄一下之前沒看過的語法。</p>
+
+<h3>Multiple comments</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="cm">=begin</span>
+</span><span class='line'><span class="cm">this is comment,</span>
+</span><span class='line'><span class="cm">i am comment too.</span>
+</span><span class='line'><span class="cm">=end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Get input from console</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">print</span> <span class="s2">&quot;Integer please: &quot;</span>
+</span><span class='line'><span class="n">user_num</span> <span class="o">=</span> <span class="nb">Integer</span><span class="p">(</span><span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/03/01/ruby-study/">Continue reading &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -437,97 +615,6 @@ library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/26/add-fb-comment-for-octopress/">幫你的Octopress加上FB Comments</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-26T22:49:00+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/01/26/add-fb-comment-for-octopress/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-今天試著幫blog加上facebook comment的功能。上網google了一下果然就有強者教學～真棒.
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/26/add-fb-comment-for-octopress/">Continue reading &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/">前人種樹後人乘涼</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-25T21:57:00+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-剛安裝完octopress連 category, comment, about都沒有&#8230;XD</br>
-快速網上查找了一下發現了底下這幾篇文章教人怎麼設置，實在是太感謝~~</br>
-<ul>
-    <li><a href="http://gibuloto.com/blog/octopress-categories-tag-cloud/">category</a></li>
-    <li><a href="http://blog.rx836.tw/blog/octopress-notes-1/">comment</a></li>
-    <li><a href="http://gangmax.me/blog/2012/05/04/add-about-page-in-octopress/">about</a></li>
-</ul>
-剩下的功能就改天再研究吧
-</p>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -542,11 +629,19 @@ library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</
   
     <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/coffeescript'>coffeescript (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (9)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (5)</a></li><li><a href='/blog/categories/rails'>rails (8)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/coffeescript'>coffeescript (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (9)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (5)</a></li><li><a href='/blog/categories/rails'>rails (9)</a></li><li><a href='/blog/categories/ruby'>ruby (5)</a></li></ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/28/string-thing-in-ruby/">String things in ruby</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/28/rails-generator-in-gem/">Rails Generator and Gem</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/09/22/async-in-emberjs/">Async in Emberjs</a>
@@ -558,14 +653,6 @@ library裡面有介紹<a href="https://github.com/jamesarosen/CLDR.js">CLDR.js</
     
       <li class="post">
         <a href="/blog/2013/09/13/actionsupport-in-rails4-part2/">ActionSupport in Rails4 part2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/12/actionsupport-methods-in-rails4/">ActionSupport in Rails4 part1</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/09/rails-and-heroku/">Ckeditor with Rails4 on heroku</a>
       </li>
     
   </ul>

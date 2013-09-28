@@ -9,8 +9,11 @@
   <meta name="author" content="Weichien Hung">
 
   
-  <meta name="description" content="Async Routing Reference to ember guide.
-If you want to make sure model is ready before entering the target route. You could use async routing. How? &hellip;">
+  <meta name="description" content="String alternatives in ruby %Q Alternative for double-quoted strings. Below are equivalent 1
+2
+3
+name_of_object = &quot;John&quot;
+puts %Q(Hello &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +74,125 @@ If you want to make sure model is ready before entering the target route. You co
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/28/string-thing-in-ruby/">String Things in Ruby</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-28T22:21:00+08:00" pubdate data-updated="true">Sep 28<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/09/28/string-thing-in-ruby/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>String alternatives in ruby</p>
+
+<h3>%Q</h3>
+
+<p>Alternative for double-quoted strings. Below are equivalent</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">name_of_object</span> <span class="o">=</span> <span class="s2">&quot;John&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="sx">%Q(Hello World </span><span class="si">#{</span><span class="n">name_of_object</span><span class="si">}</span><span class="sx">)</span>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Hello World John&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You could replace <code>(</code> and <code>)</code> with non-alphanumeric characters.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="sx">%Q!Hello World!</span>
+</span><span class='line'><span class="nb">puts</span> <span class="sx">%Q[Hello World]</span>
+</span><span class='line'><span class="nb">puts</span> <span class="sx">%Q+Hello World+</span>
+</span><span class='line'><span class="nb">puts</span> <span class="sx">%/Hello World/</span> <span class="c1"># you can use also.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/09/28/string-thing-in-ruby/">Continue reading &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/28/rails-generator-in-gem/">Rails Generator and Gem</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-28T20:52:00+08:00" pubdate data-updated="true">Sep 28<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/09/28/rails-generator-in-gem/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Recently i created two emberjs-rails projects.(<a href="https://github.com/weichienhung/money">money</a>,<a href="https://github.com/weichienhung/food-ntpc">food-ntpc</a>).
+Everytime i have to create a new rails project and add gems(ember-rails,twitter-bootstrap,thin&#8230;) repeatedly. Based on DRY principle i try to write a gem to solve trivials.<br/>
+Finally, my first gem <a href="http://rubygems.org/gems/railsone">railsone</a> is out and push to RubyGems. There are many Rail proper nouns like Generator,Template,Plugins,Engine.
+In the beginning it&#8217;s very confuse to me but i have solved them luckly :)</p>
+
+<h3>How to make gem and generator?</h3>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/09/28/rails-generator-in-gem/">Continue reading &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -633,134 +755,6 @@ I decide to keep it on post for reference in the future.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/25/rails-and-ember-study/">Rails and Ember Study</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-25T07:13:00+08:00" pubdate data-updated="true">Aug 25<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/08/25/rails-and-ember-study/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I pushed two project(<a href="https://github.com/weichienhung/rails101_groupme">rails101-groupme</a>,<a href="https://github.com/weichienhung/project101">project101</a>)to github yesterday.
-I bought the ebook <a href="http://rails-101.logdown.com/">rails101</a> and make rails101-groupme project by follow instructions of book.
-Besides i add some features into rails101-groupme.<br/>
-1.Every user could reply the post<br/>
-2.Rich text editor, CKeditor</p>
-
-<p><a href="https://github.com/weichienhung/project101">project101</a> is the old project i practiced emberjs. It retrieves data from <a href="http://data.taipei.gov.tw/">open data Taipei</a> and show on table.
-This project was made because inspired by yunglinho&#8217;s <a href="http://blog.yunglinho.com/blog/2011/11/15/">post</a>. I study google map API and add into it recently.
-Most of locations could be show on google map. Somes are not because can&#8217;t be geocode to <a href="https://developers.google.com/maps/documentation/javascript/reference#LatLng">LatLng</a>.
-There&#8217;s a disadvantage here. Geocode needs to send requests to google but google will block it if you use API frequently. Implement it on clide side is not a good idea.
-I am planing to have a new project that use Rails and Emberjs. I could add my json API and store LatLng in database to prevent too many requests to google.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/19/improve-sublime/">Improve Sublime</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-19T23:16:00+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/08/19/improve-sublime/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I install new Color Schemes,Theme,package to sublime and make it&#8217;s look and feel better. Here is the list i have added.</p>
-
-<h3>1.indent Guide</h3>
-
-<p>Make your current indent with different color. Open <code>Preferences</code> > <code>Settings - Default</code> and add <code>draw_active</code> to <code>indent_guide_options</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">...</span>
-</span><span class='line'><span class="s2">&quot;indent_guide_options&quot;</span><span class="err">:</span> <span class="p">[</span><span class="s2">&quot;draw_normal&quot;</span><span class="p">,</span><span class="s2">&quot;draw_active&quot;</span><span class="p">]</span><span class="err">,</span>
-</span><span class='line'><span class="err">...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You could change the color of draw_active. Open your current color scheme setting file.
-Add</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dict&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;key&gt;</span>settings<span class="nt">&lt;/key&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;dict&gt;</span>
-</span><span class='line'>    ...
-</span><span class='line'>    ...
-</span><span class='line'>    <span class="nt">&lt;key&gt;</span>activeGuide<span class="nt">&lt;/key&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;string&gt;</span>#CED418<span class="nt">&lt;/string&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/dict&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dict&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/08/19/improve-sublime/">Continue reading &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -773,11 +767,19 @@ Add</p>
   
     <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/coffeescript'>coffeescript (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (9)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (5)</a></li><li><a href='/blog/categories/rails'>rails (8)</a></li><li><a href='/blog/categories/ruby'>ruby (4)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/coffeescript'>coffeescript (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (9)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (5)</a></li><li><a href='/blog/categories/rails'>rails (9)</a></li><li><a href='/blog/categories/ruby'>ruby (5)</a></li></ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/09/28/string-thing-in-ruby/">String things in ruby</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/28/rails-generator-in-gem/">Rails Generator and Gem</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/09/22/async-in-emberjs/">Async in Emberjs</a>
@@ -789,14 +791,6 @@ Add</p>
     
       <li class="post">
         <a href="/blog/2013/09/13/actionsupport-in-rails4-part2/">ActionSupport in Rails4 part2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/12/actionsupport-methods-in-rails4/">ActionSupport in Rails4 part1</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/09/rails-and-heroku/">Ckeditor with Rails4 on heroku</a>
       </li>
     
   </ul>

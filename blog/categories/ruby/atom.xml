@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-22T18:39:54+08:00</updated>
+  <updated>2013-09-28T22:41:33+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,64 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[String things in ruby]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/28/string-thing-in-ruby/"/>
+    <updated>2013-09-28T22:21:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/28/string-thing-in-ruby</id>
+    <content type="html"><![CDATA[<p>String alternatives in ruby</p>
+
+<h3>%Q</h3>
+
+<p>Alternative for double-quoted strings. Below are equivalent
+<code>ruby
+name_of_object = "John"
+puts %Q(Hello World #{name_of_object})
+puts "Hello World John"
+</code>
+You could replace <code>(</code> and <code>)</code> with non-alphanumeric characters.
+<code>
+puts %Q!Hello World!
+puts %Q[Hello World]
+puts %Q+Hello World+
+puts %/Hello World/ # you can use also.
+</code></p>
+
+<!-- more -->
+
+
+<h3>%q</h3>
+
+<p>Alternative for single-quoted strings. But it can't do expression substitution
+<code>ruby
+puts %q(Hello World #{name_of_object}) # output: Hello World #{name_of_object}
+</code></p>
+
+<h3>%W</h3>
+
+<p>Used for double-quoted array.
+<code>
+world = "World"
+%W(Hello #{world} John\ Smile) # output: ["Hello", "World", "John Smile"]
+</code></p>
+
+<h3>%w</h3>
+
+<p>Used for single-quoted array. No expression substitution
+<code>
+%w(Hello #{world} Good) # output: ["Hello", "#{world}", "Good"]
+</code></p>
+
+<h3>%s</h3>
+
+<p>Used for symbols. No expression substitution.
+<code>
+%s(foo) # output: :foo
+%s(foo bar) # output: :"foo bar"
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[rails practice]]></title>

@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-22T18:39:54+08:00</updated>
+  <updated>2013-09-28T22:41:33+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,273 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[String things in ruby]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/28/string-thing-in-ruby/"/>
+    <updated>2013-09-28T22:21:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/28/string-thing-in-ruby</id>
+    <content type="html"><![CDATA[<p>String alternatives in ruby</p>
+
+<h3>%Q</h3>
+
+<p>Alternative for double-quoted strings. Below are equivalent</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">name_of_object</span> <span class="o">=</span> <span class="s2">&quot;John&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="sx">%Q(Hello World </span><span class="si">#{</span><span class="n">name_of_object</span><span class="si">}</span><span class="sx">)</span>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Hello World John&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You could replace <code>(</code> and <code>)</code> with non-alphanumeric characters.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="sx">%Q!Hello World!</span>
+</span><span class='line'><span class="nb">puts</span> <span class="sx">%Q[Hello World]</span>
+</span><span class='line'><span class="nb">puts</span> <span class="sx">%Q+Hello World+</span>
+</span><span class='line'><span class="nb">puts</span> <span class="sx">%/Hello World/</span> <span class="c1"># you can use also.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<h3>%q</h3>
+
+<p>Alternative for single-quoted strings. But it can&#8217;t do expression substitution</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="sx">%q(Hello World #{name_of_object})</span> <span class="c1"># output: Hello World #{name_of_object}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>%W</h3>
+
+<p>Used for double-quoted array.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">world</span> <span class="o">=</span> <span class="s2">&quot;World&quot;</span>
+</span><span class='line'><span class="sx">%W(Hello </span><span class="si">#{</span><span class="n">world</span><span class="si">}</span><span class="sx"> John\ Smile)</span> <span class="c1"># output: [&quot;Hello&quot;, &quot;World&quot;, &quot;John Smile&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>%w</h3>
+
+<p>Used for single-quoted array. No expression substitution</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w(Hello #{world} Good)</span> <span class="c1"># output: [&quot;Hello&quot;, &quot;#{world}&quot;, &quot;Good&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>%s</h3>
+
+<p>Used for symbols. No expression substitution.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%s(foo)</span> <span class="c1"># output: :foo</span>
+</span><span class='line'><span class="sx">%s(foo bar)</span> <span class="c1"># output: :&quot;foo bar&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails Generator and Gem]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/28/rails-generator-in-gem/"/>
+    <updated>2013-09-28T20:52:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/28/rails-generator-in-gem</id>
+    <content type="html"><![CDATA[<p>Recently i created two emberjs-rails projects.(<a href="https://github.com/weichienhung/money">money</a>,<a href="https://github.com/weichienhung/food-ntpc">food-ntpc</a>).
+Everytime i have to create a new rails project and add gems(ember-rails,twitter-bootstrap,thin&#8230;) repeatedly. Based on DRY principle i try to write a gem to solve trivials.<br/>
+Finally, my first gem <a href="http://rubygems.org/gems/railsone">railsone</a> is out and push to RubyGems. There are many Rail proper nouns like Generator,Template,Plugins,Engine.
+In the beginning it&#8217;s very confuse to me but i have solved them luckly :)</p>
+
+<h3>How to make gem and generator?</h3>
+
+<!-- more -->
+
+
+<p>Use bundler to create gem structure. <em>railsone</em> is my gem name.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>bundle gem railsone
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It create structure like below</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>railsone/lib/
+</span><span class='line'>railsone/lib/railsone.rb
+</span><span class='line'>railsone/lib/railsone/version.rb
+</span><span class='line'>railsone/railsone.gemspec
+</span><span class='line'>railsone/Gemfile
+</span><span class='line'>railsone/Rakefile
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Edit <em>railsone.gemspec</em>. We should finish <code>TODO</code> parts.</p>
+
+<figure class='code'><figcaption><span>railsone.gemspec</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="n">spec</span><span class="o">.</span><span class="n">description</span>   <span class="o">=</span> <span class="sx">%q{Railsone helps you create emberjs 1.0 with twitter bootstrap 3.0}</span>
+</span><span class='line'><span class="n">spec</span><span class="o">.</span><span class="n">summary</span>       <span class="o">=</span> <span class="sx">%q{Create emberjs with twitter bootstrap}</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then create a file in <em>lib/railsone/generators/install_generator.rb</em>. It&#8217;s better to put my custom generator in a generators folder.</p>
+
+<figure class='code'><figcaption><span>railsone.gemspec</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">vim</span> <span class="n">railsone</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">railsone</span><span class="o">/</span><span class="n">generators</span><span class="o">/</span><span class="n">install_generator</span><span class="o">.</span><span class="n">rb</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next the default auto generated file is in <em>lib/railsone.rb</em>. We should modify it to require my generator file.</p>
+
+<figure class='code'><figcaption><span>railsone.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;railsone/version&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;railsone/generators/install_generator&quot;</span> <span class="c1"># require my custom generator.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">Railsone</span>
+</span><span class='line'>  <span class="c1"># Your code goes here...</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now continue to finish our <em>install_generator.rb</em></p>
+
+<figure class='code'><figcaption><span>railsone.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;rails/generators&#39;</span> <span class="c1"># require rails&#39;s generator</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">Railsone</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">Generators</span>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">InstallGenerator</span> <span class="o">&lt;</span> <span class="o">::</span><span class="ss">Rails</span><span class="p">:</span><span class="ss">:Generators</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>      <span class="n">desc</span> <span class="s2">&quot;generator to create emberjs and twitter bootstrap&quot;</span> <span class="c1"># description when you type rails g railsone:install --help</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">source_paths</span> <span class="o">&lt;&lt;</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">),</span> <span class="s1">&#39;../../../templates&#39;</span><span class="p">)</span> <span class="c1"># source_paths is for external files</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">example_cmd</span>
+</span><span class='line'>        <span class="n">gem</span> <span class="s1">&#39;ember-rails&#39;</span>
+</span><span class='line'>        <span class="n">remove_file</span> <span class="s1">&#39;app/assets/javascripts/application.js&#39;</span>
+</span><span class='line'>        <span class="n">copy_file</span> <span class="s1">&#39;application.js&#39;</span><span class="p">,</span> <span class="s1">&#39;app/assets/javascripts/application.js&#39;</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Your generator may use external files and they should be searched by <code>source_paths</code>. I create a <em>templates</em> folder to place files. It&#8217;s under root folder.</p>
+
+<figure class='code'><figcaption><span>folder_structure</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>railsone/lib/
+</span><span class='line'>railsone/templates/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Any public method in your generator will be executed automatically. It means <code>example_cmd</code> will be executed when you execute generator.<br/>
+Directive <code>gem 'ember-rails'</code> means add <em>gem &#8216;ember-rails&#8217;</em> into Gemfile. All commands can be found in <a href="http://guides.rubyonrails.org/generators.html">RubyGuides</a> and <a href="http://rdoc.info/github/wycats/thor/master/Thor/Actions.html">Thor:Action</a>.<br/>
+Directive <code>copy_file</code> copy my custom application.js<em>(in templates/application.js)</em> to overwrite project&#8217;s application.js<em>(in app/assets/javascripts/application.js)</em>.</p>
+
+<h3>How to test?</h3>
+
+<p>Before push to RubyGems, we should do a minimal testing. Create a new rails project.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rails new myrails
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Assume your <em>myrails</em> and <em>railsone</em> are in the same folder</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>railsone/
+</span><span class='line'>myrails/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add <em>railsone</em> to your myrails&#8217;s Gemfile</p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;railsone&#39;</span><span class="p">,</span> <span class="ss">path</span><span class="p">:</span> <span class="s1">&#39;../railsone&#39;</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Execute railsone generator. <em>railsone</em> is our namespace and <em>install</em> is our generator name.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd </span>myrails/
+</span><span class='line'>rails g railsone:install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then your will find your myrails Gemfile and application.js are changed.</p>
+
+<h3>How to publish?</h3>
+
+<p>Push to RubyGems is incrediblely simple. Refer to <a href="http://rubygems.org/">RubyGems</a>. <strong>Don&#8217;t forget to create your account first.</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># build your gem</span>
+</span><span class='line'>gem build railsone.gemspec
+</span><span class='line'>
+</span><span class='line'><span class="c"># publish your gem</span>
+</span><span class='line'>gem push railsone-0.0.1.gem
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Async in Emberjs]]></title>
@@ -1773,595 +2040,6 @@ setupController則是無論使用transitionTo()或是在browser直接打URL進�
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="s1">&#39;lobby.board&#39;</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ruby is elegance]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/03/02/ruby-is-deligight/"/>
-    <updated>2013-03-02T14:08:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/03/02/ruby-is-deligight</id>
-    <content type="html"><![CDATA[<p>今天持續Ruby study,紀錄一下學習到的東西</p>
-
-<h3>Yield</h3>
-
-<p>讓自定義的method可以接受block, 在yield之後的code會等block內容跑完才接著跑</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">block_test</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;We&#39;re in the method!&quot;</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Yielding to the block...&quot;</span>
-</span><span class='line'>  <span class="k">yield</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;We&#39;re back in the method!&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">block_test</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;&gt;&gt;&gt; We&#39;re in the block!&quot;</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#you can pass parameter too</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">yield_name</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;In the method! Let&#39;s yield.&quot;</span>
-</span><span class='line'>  <span class="k">yield</span> <span class="nb">name</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Block complete! Back in the method.&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">yield_name</span><span class="p">(</span><span class="s2">&quot;samuel&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;My name is </span><span class="si">#{</span><span class="n">a</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The output is</p>
-
-<pre><code>We're in the method!
-Yielding to the block...
-&gt;&gt;&gt; We're in the block!
-We're back in the method!
-
-In the method! Let's yield.
-My name is samuel.
-Block complete! Back in the method.
-</code></pre>
-
-<!--more-->
-
-
-<h3>Why Proc?</h3>
-
-<p>block can&#8217;t be saved to a variable and not a regular object. Proc keep your code reusable. With blocks you have to write your code out each time you need it.
-With proc, you write your code once. Proc is savable block.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">floats</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">.</span><span class="mi">45</span><span class="p">,</span> <span class="mi">0</span><span class="o">.</span><span class="mi">91</span><span class="p">,</span> <span class="mi">7</span><span class="o">.</span><span class="mi">727</span><span class="p">,</span> <span class="mi">11</span><span class="o">.</span><span class="mi">42</span><span class="p">,</span> <span class="mi">482</span><span class="o">.</span><span class="mi">911</span><span class="o">]</span>
-</span><span class='line'><span class="n">round_down</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="o">.</span><span class="n">floor</span> <span class="p">}</span>
-</span><span class='line'><span class="c1"># &amp; is used to convert round_down proc to block</span>
-</span><span class='line'><span class="n">ints</span> <span class="o">=</span> <span class="n">floats</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">round_down</span><span class="p">)</span>  <span class="c1"># [1, 3, 0, 7, 11, 482]</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># you can call proc directly</span>
-</span><span class='line'><span class="n">round_down</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="mi">10</span><span class="o">.</span><span class="mi">45</span><span class="p">)</span> <span class="c1"># 10</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># convert Symbol to Proc by &amp;</span>
-</span><span class='line'><span class="nb">puts</span> <span class="n">floats</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_s</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Lambdas</h3>
-
-<p>lambdas are objects and identical to procs</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">strings</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;leonardo&quot;</span><span class="p">,</span> <span class="s2">&quot;donatello&quot;</span><span class="p">,</span> <span class="s2">&quot;raphael&quot;</span><span class="p">,</span> <span class="s2">&quot;michaelangelo&quot;</span><span class="o">]</span>
-</span><span class='line'><span class="n">symbolize</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="o">.</span><span class="n">to_sym</span> <span class="p">}</span>
-</span><span class='line'><span class="n">symbols</span> <span class="o">=</span> <span class="n">strings</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">symbolize</span><span class="p">)</span> <span class="c1"># [:leonardo, :donatello, :raphael, :michaelangelo]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Differences between Procs and Lambdas</h4>
-
-<ol>
-<li>Lambdas checks the number of arguments passed to it. Procs ignore it.</li>
-<li>When Lambdas returns, it passes control back to calling method. Procs doesn&#8217;t</li>
-</ol>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">batman_ironman_proc</span>
-</span><span class='line'>  <span class="n">victor</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">&quot;Batman will win!&quot;</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">victor</span><span class="o">.</span><span class="n">call</span>
-</span><span class='line'>  <span class="s2">&quot;Iron Man will win!&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">puts</span> <span class="n">batman_ironman_proc</span>  <span class="c1"># Batman will win!</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">batman_ironman_lambda</span>
-</span><span class='line'>  <span class="n">victor</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">&quot;Batman will win!&quot;</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">victor</span><span class="o">.</span><span class="n">call</span>
-</span><span class='line'>  <span class="s2">&quot;Iron Man will win!&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">puts</span> <span class="n">batman_ironman_lambda</span>  <span class="c1"># Iron Man will win!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Class</h3>
-
-<p>Object-Oriented language always has class.  def initialize就相當於constructor</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-</span><span class='line'>      <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="n">matz</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Yukihiro&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>global ($), instance (@), class (@@) variable</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="vg">$type</span> <span class="o">=</span> <span class="s2">&quot;human&quot;</span>
-</span><span class='line'>  <span class="vc">@@other</span> <span class="o">=</span> <span class="s2">&quot;other info&quot;</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-</span><span class='line'>      <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">getMe</span>
-</span><span class='line'>      <span class="vi">@name</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">getOther</span>
-</span><span class='line'>      <span class="vc">@@other</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">man</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;samuel&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="nb">puts</span> <span class="vg">$type</span>  <span class="c1"># human</span>
-</span><span class='line'><span class="nb">puts</span> <span class="n">man</span><span class="o">.</span><span class="n">getMe</span>  <span class="c1"># samuel</span>
-</span><span class='line'><span class="nb">puts</span> <span class="no">Person</span><span class="o">.</span><span class="n">getOther</span>  <span class="c1"># other info</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Inheritance</h3>
-
-<p>Like Java, Ruby only allow one parent class</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Parent</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">isMankind?</span>
-</span><span class='line'>      <span class="kp">true</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">Child</span> <span class="o">&lt;</span> <span class="no">Parent</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">child</span> <span class="o">=</span> <span class="no">Child</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">child</span><span class="o">.</span><span class="n">isMankind</span>  <span class="c1"># true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Public and Private method</h3>
-
-<p>It&#8217;s very simple, put method declaration under public or private</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">MyClass</span>
-</span><span class='line'>  <span class="kp">public</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">iampublic</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">private</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">iamprivate</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Method getter and setter</h3>
-
-<p>Incredible simple. attr_accessor means both writer and reader</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'><span class="kp">attr_reader</span> <span class="ss">:name</span>
-</span><span class='line'><span class="kp">attr_writer</span> <span class="ss">:job</span>
-</span><span class='line'><span class="kp">attr_accessor</span> <span class="ss">:age</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">job</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
-</span><span class='line'>    <span class="vi">@job</span> <span class="o">=</span> <span class="n">job</span>
-</span><span class='line'>    <span class="vi">@age</span> <span class="o">=</span> <span class="n">age</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;samuel&quot;</span><span class="p">,</span><span class="s2">&quot;engineer&quot;</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">age</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Module</h3>
-
-<p>module is like class but it can&#8217;t create instance and submodule</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">MyModule</span>
-</span><span class='line'>  <span class="c1">#constant variable</span>
-</span><span class='line'>  <span class="no">NAME</span> <span class="o">=</span> <span class="s2">&quot;samuel&quot;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">#class method</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">showFull</span>
-</span><span class='line'>      <span class="nb">puts</span> <span class="no">NAME</span> <span class="o">+</span> <span class="s2">&quot; hung&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1"># user :: to access variable</span>
-</span><span class='line'><span class="nb">puts</span> <span class="ss">MyModule</span><span class="p">:</span><span class="ss">:NAME</span>  <span class="c1"># samuel</span>
-</span><span class='line'><span class="no">MyModule</span><span class="o">.</span><span class="n">showFull</span> <span class="c1"># samuel hung</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># you can use include to get module scope</span>
-</span><span class='line'><span class="kp">include</span> <span class="no">MyModule</span>
-</span><span class='line'><span class="nb">puts</span> <span class="no">NAME</span> <span class="c1"># samuel</span>
-</span><span class='line'><span class="n">showFull</span>  <span class="c1"># this line will cause error, you can&#39;t do this on method even you change the scope.</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># load other module to use</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;date&#39;</span>
-</span><span class='line'><span class="nb">puts</span> <span class="no">Date</span><span class="o">.</span><span class="n">today</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Module and Class</h3>
-
-<p>Easily put module in class</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">MyModule</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">showFull</span>
-</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;samuel hung&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="kp">include</span> <span class="no">MyModule</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="n">man</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">man</span><span class="o">.</span><span class="n">showFull</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ruby study]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/03/01/ruby-study/"/>
-    <updated>2013-03-01T23:39:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/03/01/ruby-study</id>
-    <content type="html"><![CDATA[<p>最近都在看CSS沒什麼時間繼續看Ruby,今天上codecademy練習ruby。
-在這裡紀錄一下之前沒看過的語法。</p>
-
-<h3>Multiple comments</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="cm">=begin</span>
-</span><span class='line'><span class="cm">this is comment,</span>
-</span><span class='line'><span class="cm">i am comment too.</span>
-</span><span class='line'><span class="cm">=end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Get input from console</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">print</span> <span class="s2">&quot;Integer please: &quot;</span>
-</span><span class='line'><span class="n">user_num</span> <span class="o">=</span> <span class="nb">Integer</span><span class="p">(</span><span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<!--more-->
-
-
-<h3>Different between string.downcase and string.downcase!</h3>
-
-<p>With ! the user&#8217;s string is modified in-place; otherwise, Ruby will create a copy of user_input and modify that instead</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;Samuel&quot;</span>
-</span><span class='line'><span class="n">downcase_name</span> <span class="o">=</span> <span class="nb">name</span><span class="o">.</span><span class="n">downcase</span>
-</span><span class='line'><span class="nb">puts</span> <span class="nb">name</span>  <span class="c1"># &quot;Samuel&quot;</span>
-</span><span class='line'><span class="n">downcase_name</span> <span class="o">=</span> <span class="nb">name</span><span class="o">.</span><span class="n">downcase!</span>
-</span><span class='line'><span class="nb">puts</span> <span class="nb">name</span>  <span class="c1"># &quot;samuel&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Hash sort_by and Array sort!</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span class='line'><span class="n">h</span><span class="o">.</span><span class="n">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span> <span class="n">b</span> <span class="p">}</span>  <span class="c1"># we can sort by value</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">my_array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="o">]</span>
-</span><span class='line'><span class="n">my_array</span><span class="o">.</span><span class="n">sort!</span> <span class="c1"># [1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#descending order</span>
-</span><span class='line'><span class="n">my_array</span><span class="o">.</span><span class="n">sort!</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">|</span> <span class="n">b</span> <span class="o">&lt;=&gt;</span> <span class="n">a</span><span class="p">}</span> <span class="c1"># [9, 8, 7, 6, 5, 4, 3, 2, 1]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>What&#8217;s Symbol? it&#8217;s not a string</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;string&quot;</span> <span class="o">==</span> <span class="ss">:string</span> <span class="c1"># false</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">object_id</span> <span class="o">==</span> <span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">object_id</span>  <span class="c1"># false</span>
-</span><span class='line'>
-</span><span class='line'><span class="ss">:symbol</span><span class="o">.</span><span class="n">object_id</span> <span class="o">==</span> <span class="ss">:symbol</span><span class="o">.</span><span class="n">object_id</span> <span class="c1"># true</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">to_sym</span> <span class="o">==</span> <span class="ss">:string</span> <span class="c1"># true</span>
-</span><span class='line'><span class="s2">&quot;string&quot;</span><span class="o">.</span><span class="n">intern</span> <span class="o">==</span> <span class="ss">:string</span> <span class="c1"># true, inter is the same as to_sym</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Why need symbol? 主要是用來當hash的key以及用來參考到method的名字</p>
-
-<ol>
-<li>They&#8217;re immutable, meaning they can&#8217;t be changed once they&#8217;re created</li>
-<li>Only one copy,節省記憶體</li>
-<li>Hashes that use symbols instead of strings as keys work faster</li>
-</ol>
-
-
-<p>來看一下怎麼使用</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">movies</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;star_war&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="ss">:age</span> <span class="o">=&gt;</span> <span class="s2">&quot;1970&quot;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#But since ruby 1.9 hash become more compact</span>
-</span><span class='line'><span class="n">movies</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nb">name</span><span class="p">:</span> <span class="s2">&quot;star_war&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="ss">age</span><span class="p">:</span> <span class="s2">&quot;1970&quot;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>switch conidition</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">case</span> <span class="n">language</span>
-</span><span class='line'><span class="k">when</span> <span class="s2">&quot;JS&quot;</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Websites!&quot;</span>
-</span><span class='line'><span class="k">when</span> <span class="s2">&quot;Python&quot;</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Science!&quot;</span>
-</span><span class='line'><span class="k">when</span> <span class="s2">&quot;Ruby&quot;</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Web apps!&quot;</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;I don&#39;t know!&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">case</span> <span class="n">language</span>
-</span><span class='line'>  <span class="k">when</span> <span class="s2">&quot;JS&quot;</span> <span class="k">then</span> <span class="nb">puts</span> <span class="s2">&quot;Websites!&quot;</span>
-</span><span class='line'>  <span class="k">when</span> <span class="s2">&quot;Python&quot;</span> <span class="k">then</span> <span class="nb">puts</span> <span class="s2">&quot;Science!&quot;</span>
-</span><span class='line'>  <span class="k">when</span> <span class="s2">&quot;Ruby&quot;</span> <span class="k">then</span> <span class="nb">puts</span> <span class="s2">&quot;Web apps!&quot;</span>
-</span><span class='line'>  <span class="k">else</span> <span class="nb">puts</span> <span class="s2">&quot;I don&#39;t know!&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Ternary conditional expression</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="mi">3</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="o">?</span> <span class="s2">&quot;hello world&quot;</span>  <span class="p">:</span> <span class="s2">&quot;evil&quot;</span>  <span class="c1"># hello world</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Conditional assignment.</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">favorite_book</span> <span class="o">=</span> <span class="kp">nil</span>
-</span><span class='line'><span class="nb">puts</span> <span class="n">favorite_book</span>  <span class="c1"># won&#39;t output anything</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">favorite_book</span> <span class="o">||=</span> <span class="s2">&quot;Cat&#39;s Cradle&quot;</span>
-</span><span class='line'><span class="nb">puts</span> <span class="n">favorite_book</span>  <span class="c1"># Cat&#39;s Cradle</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>upto and downto</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">95</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">num</span><span class="o">|</span> <span class="nb">print</span> <span class="n">num</span> <span class="p">}</span> <span class="c1"># 95 96 97 98 99 100</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># also apply to alphabet</span>
-</span><span class='line'><span class="s2">&quot;L&quot;</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="nb">print</span> <span class="n">word</span> <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Call and Response</h3>
-
-<p>Here we use symbol to reference a method name. For example, we want to check variable has next method or not.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">age</span> <span class="o">=</span> <span class="mi">30</span>
-</span><span class='line'><span class="n">age</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:next</span><span class="p">)</span> <span class="c1"># true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
 
 ]]></content>
   </entry>

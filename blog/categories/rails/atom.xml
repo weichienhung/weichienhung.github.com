@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Weichien Hung's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-22T18:39:54+08:00</updated>
+  <updated>2013-09-28T22:41:33+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,127 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails Generator and Gem]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/28/rails-generator-in-gem/"/>
+    <updated>2013-09-28T20:52:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/28/rails-generator-in-gem</id>
+    <content type="html"><![CDATA[<p>Recently i created two emberjs-rails projects.(<a href="https://github.com/weichienhung/money">money</a>,<a href="https://github.com/weichienhung/food-ntpc">food-ntpc</a>).
+Everytime i have to create a new rails project and add gems(ember-rails,twitter-bootstrap,thin...) repeatedly. Based on DRY principle i try to write a gem to solve trivials.<br/>
+Finally, my first gem <a href="http://rubygems.org/gems/railsone">railsone</a> is out and push to RubyGems. There are many Rail proper nouns like Generator,Template,Plugins,Engine.
+In the beginning it's very confuse to me but i have solved them luckly :)</p>
+
+<h3>How to make gem and generator?</h3>
+
+<!-- more -->
+
+
+<p>Use bundler to create gem structure. <em>railsone</em> is my gem name.
+<code>sh
+bundle gem railsone
+</code>
+It create structure like below
+<code>
+railsone/lib/
+railsone/lib/railsone.rb
+railsone/lib/railsone/version.rb
+railsone/railsone.gemspec
+railsone/Gemfile
+railsone/Rakefile
+</code>
+Edit <em>railsone.gemspec</em>. We should finish <code>TODO</code> parts.
+<code>ruby railsone.gemspec
+...
+spec.description   = %q{Railsone helps you create emberjs 1.0 with twitter bootstrap 3.0}
+spec.summary       = %q{Create emberjs with twitter bootstrap}
+...
+</code></p>
+
+<p>Then create a file in <em>lib/railsone/generators/install_generator.rb</em>. It's better to put my custom generator in a generators folder.
+<code>
+vim railsone/lib/railsone/generators/install_generator.rb
+</code>
+Next the default auto generated file is in <em>lib/railsone.rb</em>. We should modify it to require my generator file.
+``` ruby railsone.rb
+require "railsone/version"
+require "railsone/generators/install_generator" # require my custom generator.</p>
+
+<p>module Railsone
+  # Your code goes here...
+end
+<code>
+Now continue to finish our *install_generator.rb*
+</code>
+require 'rails/generators' # require rails's generator</p>
+
+<p>module Railsone
+  module Generators</p>
+
+<pre><code>class InstallGenerator &lt; ::Rails::Generators::Base
+  desc "generator to create emberjs and twitter bootstrap" # description when you type rails g railsone:install --help
+
+  self.source_paths &lt;&lt; File.join(File.dirname(__FILE__), '../../../templates') # source_paths is for external files
+
+  def example_cmd
+    gem 'ember-rails'
+    remove_file 'app/assets/javascripts/application.js'
+    copy_file 'application.js', 'app/assets/javascripts/application.js'
+    ...
+  end
+</code></pre>
+
+<p>  end
+end
+<code>
+Your generator may use external files and they should be searched by `source_paths`. I create a *templates* folder to place files. It's under root folder.
+</code> sh folder_structure
+railsone/lib/
+railsone/templates/
+<code>``
+Any public method in your generator will be executed automatically. It means</code>example_cmd<code>will be executed when you execute generator.  
+Directive</code>gem 'ember-rails'<code>means add *gem 'ember-rails'* into Gemfile. All commands can be found in [RubyGuides](http://guides.rubyonrails.org/generators.html) and [Thor:Action](http://rdoc.info/github/wycats/thor/master/Thor/Actions.html).  
+Directive</code>copy_file` copy my custom application.js<em>(in templates/application.js)</em> to overwrite project's application.js<em>(in app/assets/javascripts/application.js)</em>.</p>
+
+<h3>How to test?</h3>
+
+<p>Before push to RubyGems, we should do a minimal testing. Create a new rails project.
+<code>sh
+rails new myrails
+</code>
+Assume your <em>myrails</em> and <em>railsone</em> are in the same folder
+<code>
+railsone/
+myrails/
+</code>
+Add <em>railsone</em> to your myrails's Gemfile
+<code>ruby Gemfile
+...
+gem 'railsone', path: '../railsone'
+...
+</code>
+Execute railsone generator. <em>railsone</em> is our namespace and <em>install</em> is our generator name.
+<code>sh
+cd myrails/
+rails g railsone:install
+</code>
+Then your will find your myrails Gemfile and application.js are changed.</p>
+
+<h3>How to publish?</h3>
+
+<p>Push to RubyGems is incrediblely simple. Refer to <a href="http://rubygems.org/">RubyGems</a>. <strong>Don't forget to create your account first.</strong>
+``` sh</p>
+
+<h1>build your gem</h1>
+
+<p>gem build railsone.gemspec</p>
+
+<h1>publish your gem</h1>
+
+<p>gem push railsone-0.0.1.gem
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Use HighchartJS to visual data]]></title>
@@ -526,18 +647,6 @@ Execute `rake ckeditor` after `rake assets:precompile`
 rake assets:precompile
 rake ckeditor
 ```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[First ember_rails project]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/03/first-ember-rails-project/"/>
-    <updated>2013-09-03T23:57:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/03/first-ember-rails-project</id>
-    <content type="html"><![CDATA[<p>Last time i said i want to make an ember-rails project(<a href="http://127.0.0.1:4000/blog/2013/08/25/rails-and-ember-study/">post</a>).
-Today I push my first Ember-Rails(food-ntpc) project to <a href="https://github.com/weichienhung/food-ntpc">github</a> and <a href="http://food-ntpc.herokuapp.com/">heroku</a>.
-It takes me more time to finish it because i am not familiar with coffee script. I also create a new <a href="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/">post</a> for coffee script memo.
-During practicing i use Emberjs 1.0.0.rc7. But Emberjs 1.0.0 was released few days ago and i upgrade it to 1.0.0.</p>
 ]]></content>
   </entry>
   
