@@ -1,105 +1,98 @@
 
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE HTML>
+<html>
 <head>
-  <meta charset="utf-8">
-  <title>幫你的Octopress加上FB comments - Weichien Hung's studying note</title>
-  <meta name="author" content="Weichien Hung">
+	<meta charset="utf-8">
+	<title>幫你的Octopress加上FB comments - Weichien's studying note</title>
+	<meta name="author" content="Weichien Hung">
 
-  
-  <meta name="description" content="今天試著幫blog加上facebook comment的功能。上網google了一下果然就有強者教學～真棒. 參考了這篇文章Adding Facebook Comments to Octopress
+	
+	<meta name="description" content="今天試著幫blog加上facebook comment的功能。上網google了一下果然就有強者教學～真棒. 參考了這篇文章Adding Facebook Comments to Octopress
 不過根據教學一步一步完成後竟然看不到fb comment.後來把facebook &hellip;">
-  
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://weichienhung.github.io/blog/2013/01/26/add-fb-comment-for-octopress/">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <link href="/atom.xml" rel="alternate" title="Weichien Hung's studying note" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
-<meta property="fb:app_id" content="116996781810928" />
-
-  
-
+	<link href="/atom.xml" rel="alternate" title="Weichien's studying note" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	
 </head>
 
-<body   >
-  <header role="banner"><hgroup class="myheader">
-  <img class="myheader-avatar" src="/images/samuel.jpg"/>
-  <div>
-	  <h1><a href="/">Weichien Hung's studying note</a></h1>
-	  
-	    <h2>Practice makes perfect</h2>
-	  
-  </div>
-</hgroup>
+
+<body>
+	<header id="header" class="inner"><a class="myheader-avatar" href="/"><img src="/images/samuel.jpg"></a>
+<div class="myheader-slogan">
+<h1><a href="/">Weichien's studying note</a></h1>
+<h2>Practice makes perfect</h2>
+</div>
+<nav id="main-nav"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <!-- <li><a href="/blog/category">Category</a></li> -->
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a id="menu-btn" class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <!-- <li><a href="/blog/category">Category</a></li> -->
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:weichienhung.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		<a class="facebook" href="http://www.facebook.com/weichien.hung" title="Facebook">Facebook</a>
+		
+		
+		<a class="google" href="https://plus.google.com/113676445086645352045?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/HungWeichien" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/weichienhung" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		<!-- 
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		 -->
+    
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:weichienhung.github.io">
+	</form>
+</nav>
 
 </header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:weichienhung.github.io" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="/about">About</a></li>
-</ul>
-
-</nav>
-  <div id="main">
-    <div id="content">
-      <div>
-<article class="hentry" role="article">
-  
-  <header>
-    
-      <h1 class="entry-title">幫你的Octopress加上FB Comments</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-26T22:49:00+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2013</time>
-        
-         | <a href="#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>
+<!-- 	
+		
+	 -->
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">幫你的Octopress加上FB Comments</h2>
+	<div class="entry-content"><p>
 今天試著幫blog加上facebook comment的功能。上網google了一下果然就有強者教學～真棒.
 <!--more-->
 參考了這篇文章<a href="http://blog.grambo.me.uk/blog/2012/02/20/adding-facebook-comments-to-octopress/">Adding Facebook Comments to Octopress</a>
@@ -112,14 +105,8 @@
 </div>
 
 
-  <footer>
-    <p class="meta">
-      
-  
-
-<span class="byline author vcard">Posted by <span class="fn">Weichien Hung</span></span>
-
-      
+<div class="meta">
+	<div class="date">
 
 
 
@@ -131,131 +118,57 @@
   
 
 
-<time datetime="2013-01-26T22:49:00+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2013</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/octopress/'>octopress</a>
-  
-</span>
+<time datetime="2013-01-26T22:49:00+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2013</time></div>
+	<div class="tags">
 
 
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://weichienhung.github.io/blog/2013/01/26/add-fb-comment-for-octopress/" data-via="HungWeichien" data-counturl="http://weichienhung.github.io/blog/2013/01/26/add-fb-comment-for-octopress/" >Tweet</a>
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
+	<a class='category' href='/blog/categories/octopress/'>octopress</a>
+
+
 </div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/" title="Previous Post: 前人種樹後人乘涼">&laquo; 前人種樹後人乘涼</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2013/01/27/submit-sitemaps-dot-xml/" title="Next Post: 讓web site能夠被search engine找到">讓web site能夠被search engine找到 &raquo;</a>
-      
-    </p>
-  </footer>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
 </article>
 
-  <section>
-    <h1>Comments</h1>
-    <div id="facebook_comments" aria-live="polite">
-      <noscript>Please enable JavaScript to view the comments powered by facebook</a></noscript>
-<div
-  class="fb-comments"
-  data-href="http://weichienhung.github.io/blog/2013/01/26/add-fb-comment-for-octopress/"
-  data-num-posts="2"
-  data-width="470"
-  data-colorscheme="light">
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+		
+		
+	</div>
+	
 </div>
 
-    </div>
-  </section>
 
 
-  <section>
-    <h1>Comments</h1>
+<section id="comment">
+    <h2 class="title">Comments</h2>
     <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-  </section>
-
+</section>
 </div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
 
-<aside class="sidebar">
-  
-    <section>
-  <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/coffeescript'>coffeescript (1)</a></li><li><a href='/blog/categories/css'>css (1)</a></li><li><a href='/blog/categories/emberjs'>emberjs (9)</a></li><li><a href='/blog/categories/linux'>linux (2)</a></li><li><a href='/blog/categories/octopress'>octopress (6)</a></li><li><a href='/blog/categories/other'>other (5)</a></li><li><a href='/blog/categories/rails'>rails (9)</a></li><li><a href='/blog/categories/ruby'>ruby (5)</a></li></ul>
-</section>
-<section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2013/09/28/string-thing-in-ruby/">String things in ruby</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/28/rails-generator-in-gem/">Rails Generator and Gem</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/22/async-in-emberjs/">Async in Emberjs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/22/use-highchartjs-to-visual/">Use HighchartJS to visual data</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/13/actionsupport-in-rails4-part2/">ActionSupport in Rails4 part2</a>
-      </li>
-    
-  </ul>
-</section>
-
-
-<section>
-  <h1>Latest Tweets</h1>
-  <p><a class="twitter-timeline" href="https://twitter.com/HungWeichien" data-widget-id="350533954492837888" data-tweet-limit="5" data-chrome="nofooter">Tweets by @HungWeichien</a></p>
-  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</section>
-
-
-<section class="googleplus">
-  <h1>
-    <a href="https://plus.google.com/113676445086645352045?rel=author">
-      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
-      Google+
-    </a>
-  </h1>
-</section>
-
-
-
-  
-</aside>
-
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Weichien Hung -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
+    Weichien Hung
 
 </footer>
-  
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $(document).ready(function(){
+    $('.fancybox').fancybox();
+  })
+})(jQuery);
+</script> 
+
 
 <script type="text/javascript">
       var disqus_shortname = 'weichienhung';
@@ -268,43 +181,10 @@
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = '//go.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>
-
-
-
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#appId=116996781810928&xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
-
-
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
 
 
 

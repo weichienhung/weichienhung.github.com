@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Weichien Hung's studying note]]></title>
+  <title><![CDATA[Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-28T22:41:33+08:00</updated>
+  <updated>2013-09-29T15:20:38+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,21 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Apply octopress new theme]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/29/apply-octopress-new-theme/"/>
+    <updated>2013-09-29T15:04:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/29/apply-octopress-new-theme</id>
+    <content type="html"><![CDATA[<p>I change octopress theme to <a href="http://zespia.tw/Octopress-Theme-Slash/index_tw.html">slash</a>.
+I also do a little modification. like<br/>
+1. Add avatar<br/>
+2. Show site&#8217;s subtitle<br/>
+3. Add <em>About</em> page and remove <em>Blog</em> page in the navigation header.<br/>
+4. Modify CSS to fit mobile browing.<br/>
+I feel whole site becomes beatiful and clear.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[String things in ruby]]></title>
@@ -1933,114 +1948,6 @@ After this I decide to write the post in English from now.</p>
 
 
 <p>這樣就可以在config.txt裡面插入新的一行YourTest在每一行符合中間有MyTest的字串。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[hello octopress]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/07/07/hello-again/"/>
-    <updated>2013-07-07T15:22:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/07/07/hello-again</id>
-    <content type="html"><![CDATA[<p>真的是好久沒寫blog了。看了一下最後一篇是在3月2日已經整整4個月沒寫了。</p>
-
-<p>markdown的語法也都快忘光了:(一開始執行rake new_post時還發生錯誤無法產生新文章，快速地google了一下原來是dependency太舊的關係，執行完bundle update就OK了真是好險啊。
-前陣子使用emberjs發現了一些之前沒注意到的細節。</p>
-
-<!--more-->
-
-
-<h3>使用transitionTo不會呼叫在route裡的model function</h3>
-
-<p>例如底下的程式碼，當使用transitionTo()到post route的時候. emberjs並不會幫你呼叫model(), 所以在toPost()裡面必須自己將所需要的model產生並當成
-參數一併帶在transitionTo()裡面。model()只有當你直接在URL進入post route才會被呼叫。
-setupController則是無論使用transitionTo()或是在browser直接打URL進去post route都會被呼叫。</p>
-
-<figure class='code'><figcaption><span>example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">application</span><span class="p">.</span><span class="nx">PostRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">setupController</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">controller</span><span class="p">,</span> <span class="nx">model</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="nx">model</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">model</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">params</span><span class="p">){</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">application</span><span class="p">.</span><span class="nx">Post</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">post_id</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="nx">toPost</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">target_post</span><span class="p">){</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">model</span> <span class="o">=</span> <span class="nx">application</span><span class="p">.</span><span class="nx">Post</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">target_post</span><span class="p">);</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="nx">model</span><span class="p">);</span>
-</span><span class='line'><span class="p">},</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>nested route使用</h3>
-
-<p>一開始以為nest route的命名規則都是parent route name + child route name。
-其實不盡然，原來是要看你是使用this.route或是this.resource如果是this.route的話就要加上parent name(如底下的board and summary route)</p>
-
-<p>當要轉換到board這個route就要加上parent route name. (見底下的transitionTo())</p>
-
-<figure class='code'><figcaption><span>example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s2">&quot;landing&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/landing&quot;</span><span class="p">});</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">resource</span><span class="p">(</span><span class="s2">&quot;lobby&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/lobby&quot;</span><span class="p">},</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s2">&quot;board&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/board&quot;</span><span class="p">}</span> <span class="p">);</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">resource</span><span class="p">(</span><span class="s2">&quot;store&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/store&quot;</span><span class="p">},</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/summary/:game_id&quot;</span><span class="p">}</span> <span class="p">);</span>
-</span><span class='line'>      <span class="p">});</span>
-</span><span class='line'>    <span class="p">});</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s2">&quot;pageNotFound&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;*:&quot;</span><span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//route naming</span>
-</span><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LandingRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
-</span><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LobbyRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
-</span><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LobbyBoardRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
-</span><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">StoreRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
-</span><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">StoreSummaryRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="nx">toBoard</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="s1">&#39;lobby.board&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   

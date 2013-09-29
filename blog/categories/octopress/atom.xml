@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: octopress | Weichien Hung's studying note]]></title>
+  <title><![CDATA[Category: octopress | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-28T22:41:33+08:00</updated>
+  <updated>2013-09-29T15:20:38+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,21 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Apply octopress new theme]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/09/29/apply-octopress-new-theme/"/>
+    <updated>2013-09-29T15:04:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/09/29/apply-octopress-new-theme</id>
+    <content type="html"><![CDATA[<p>I change octopress theme to <a href="http://zespia.tw/Octopress-Theme-Slash/index_tw.html">slash</a>.
+I also do a little modification. like<br/>
+1. Add avatar<br/>
+2. Show site's subtitle<br/>
+3. Add <em>About</em> page and remove <em>Blog</em> page in the navigation header.<br/>
+4. Modify CSS to fit mobile browing.<br/>
+I feel whole site becomes beatiful and clear.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[octopress 設定問題]]></title>
@@ -227,24 +242,6 @@ console.log('hello world');
 還真是相當方便。<br/>
 先登入到 <a href="https://www.google.com/webmasters/">Google網站管理工具</a>
 然後根據網站的步驟去做，主要是必須放一個驗證檔到你的github上然後驗證網站是你所屬。
-</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[幫你的Octopress加上FB comments]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/01/26/add-fb-comment-for-octopress/"/>
-    <updated>2013-01-26T22:49:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/01/26/add-fb-comment-for-octopress</id>
-    <content type="html"><![CDATA[<p>
-今天試著幫blog加上facebook comment的功能。上網google了一下果然就有強者教學～真棒.
-<!--more-->
-參考了這篇文章<a href="http://blog.grambo.me.uk/blog/2012/02/20/adding-facebook-comments-to-octopress/">Adding Facebook Comments to Octopress</a>
-不過根據教學一步一步完成後竟然看不到fb comment.後來把facebook like的功能打開後就連facebook comment都出現了.
-我想是因為facebook_like.html裡面會include facebook javascript所以連帶facebook commment功能都出現了。 <br/><br/>
-順便也查了一下怎麼只秀出部份文章在首頁上。只要在文章加入<code>&lt;!--more--&gt;</code>
-這個tag,後面的文章就不會出現在blog首頁. 如下
 </p>
 
 ]]></content>
