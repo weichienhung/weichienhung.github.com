@@ -1,0 +1,235 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>animated on media query - Weichien's studying note</title>
+	<meta name="author" content="Weichien Hung">
+
+	
+	<meta name="description" content="I see a post animated on media query today.
+It&#8217;s very interest to put CSS transition on media query changed. It&#8217;s a simple skill and i &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Weichien's studying note" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><a class="myheader-avatar" href="/"><img src="/images/samuel.jpg"></a>
+<div class="myheader-slogan">
+<h1><a href="/">Weichien's studying note</a></h1>
+<h2>Practice makes perfect</h2>
+</div>
+<nav id="main-nav"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <!-- <li><a href="/blog/category">Category</a></li> -->
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a id="menu-btn" class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <!-- <li><a href="/blog/category">Category</a></li> -->
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:weichienhung.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		<a class="facebook" href="http://www.facebook.com/weichien.hung" title="Facebook">Facebook</a>
+		
+		
+		<a class="google" href="https://plus.google.com/113676445086645352045?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/HungWeichien" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/weichienhung" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		<!-- 
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		 -->
+    
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:weichienhung.github.io">
+	</form>
+</nav>
+
+</header>
+<!-- 	
+		
+	 -->
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Animated on Media Query</h2>
+	<div class="entry-content"><p>I see a post <a href="http://css-tricks.com/animated-media-queries/?utm_source=dlvr.it&amp;utm_medium=twitter">animated on media query</a> today.
+It&#8217;s very interest to put CSS transition on media query changed. It&#8217;s a simple skill and i just try it on my blog.
+You could resize my blog to check it.<br/>
+For example: add width transition to my avatar.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.myheader-avatar</span> <span class="o">&gt;</span> <span class="nt">img</span><span class="p">{</span>
+</span><span class='line'>  <span class="k">height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+</span><span class='line'>  <span class="o">@</span><span class="n">include</span> <span class="n">high_z_index</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c">/* New line. */</span>
+</span><span class='line'>  <span class="n">transition</span><span class="o">:</span> <span class="k">width</span> <span class="m">1.5s</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@media</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">700px</span><span class="o">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nc">.myheader-avatar</span> <span class="o">&gt;</span> <span class="nt">img</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c">/* When devie max-width under 700px, change width to 0 */</span>
+</span><span class='line'>    <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c">/* transition can&#39;t put on display. So i change it to set width=0 */</span>
+</span><span class='line'>    <span class="c">/* display: none; */</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Originally i use <code>display:none</code> to hide avatar but it doesn&#8217;t work with transition. I use <code>width=0</code> insteadly.</p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-12T14:44:00+08:00" pubdate data-updated="true">Oct 12<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/css/'>css</a>
+
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Weichien Hung
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $(document).ready(function(){
+    $('.fancybox').fancybox();
+  })
+})(jQuery);
+</script> 
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'weichienhung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/10/12/animated-on-media-query/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2013/10/12/animated-on-media-query/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

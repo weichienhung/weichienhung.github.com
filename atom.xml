@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-29T17:07:28+08:00</updated>
+  <updated>2013-10-12T14:59:57+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,65 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[animated on media query]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/10/12/animated-on-media-query/"/>
+    <updated>2013-10-12T14:44:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/10/12/animated-on-media-query</id>
+    <content type="html"><![CDATA[<p>I see a post <a href="http://css-tricks.com/animated-media-queries/?utm_source=dlvr.it&amp;utm_medium=twitter">animated on media query</a> today.
+It&#8217;s very interest to put CSS transition on media query changed. It&#8217;s a simple skill and i just try it on my blog.
+You could resize my blog to check it.<br/>
+For example: add width transition to my avatar.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.myheader-avatar</span> <span class="o">&gt;</span> <span class="nt">img</span><span class="p">{</span>
+</span><span class='line'>  <span class="k">height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+</span><span class='line'>  <span class="o">@</span><span class="n">include</span> <span class="n">high_z_index</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c">/* New line. */</span>
+</span><span class='line'>  <span class="n">transition</span><span class="o">:</span> <span class="k">width</span> <span class="m">1.5s</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@media</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">700px</span><span class="o">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nc">.myheader-avatar</span> <span class="o">&gt;</span> <span class="nt">img</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c">/* When devie max-width under 700px, change width to 0 */</span>
+</span><span class='line'>    <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c">/* transition can&#39;t put on display. So i change it to set width=0 */</span>
+</span><span class='line'>    <span class="c">/* display: none; */</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Originally i use <code>display:none</code> to hide avatar but it doesn&#8217;t work with transition. I use <code>width=0</code> insteadly.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Apply octopress new theme]]></title>
@@ -1821,133 +1880,6 @@ After this I decide to write the post in English from now.</p>
 
 <p>你只應該在一些輔助類別(helper classes)上使用 <code>!important</code> 修飾子。用 <code>!important</code> 提升優先級也可以，例如如果你要讓某條規則 一直 生效的話，可以用 <code>.error{ color:red!important; }</code>。<br/>
 避免主動使用 <code>!important</code> 修飾子。例如當你的 CSS 寫得很複雜的時候，不要因為想偷懶而使用 <code>!important</code> 來取巧，建議重寫你之前寫好的樣式，並重構選取系的使用方式。記得：維持選取器的簡短並且避免用 ID，將可有效幫助你寫好 CSS。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[shell script on linux ]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/07/10/linux-shellscript/"/>
-    <updated>2013-07-10T22:15:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/07/10/linux-shellscript</id>
-    <content type="html"><![CDATA[<p>前陣子用linux shell script寫了module自動deploy機制。紀錄一下這之中遇到的問題及常用的指令。<br/>
-簡單的自動deploy不外乎就是將檔案傳送至遠端機器然後進行安裝動作，修改設定檔。</p>
-
-<ul>
-<li><h3>login to remote server</h3></li>
-</ul>
-
-
-<!-- more -->
-
-
-<p>由於原生shell script裡面無法自動輸入帳密進行登錄動作，基本上常用的方法有兩種。<br/>
-第一種方法就是建立ssh public key然後放在遠端機器上，這樣你ssh時就不需要再輸入密碼。
-第二種方法是安裝其它套件協助自動輸入密碼。在這裡我介紹的是使用<a href="http://sourceforge.net/projects/sshpass/">sshpass</a>。
-安裝完後要記得自己先手動登入一次遠端機器，不然它不會作用。接下來你要登入遠端機器的指令就如下</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> ssh root@<span class="o">{</span>remote ip<span class="o">}</span> <span class="s2">&quot;echo &#39;hello world&#39;&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>這樣就可以登入遠端機器並輸出一個hello world。</p>
-
-<p>另外你也可以用scp來拷貝資料過去</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> scp data.zip root@<span class="o">{</span>remote ip<span class="o">}</span>:/home/root/
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>這樣就可以把data.zip丟到遠端/home/root/目錄</p>
-
-<ul>
-<li><h3>execute command on remote server</h3>
-
-<p>簡單地方法就是在sshpass之後帶入command</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> ssh root@<span class="o">{</span>remote ip<span class="o">}</span> <span class="s2">&quot;mkdir myFolder;rm myFile.txt&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>這樣就可以在登入後執行mkdir及rm兩個指令。
-另一種方法就是把你要執行的指令寫成一個shell script，然後scp過去後執行。例如我把這兩行指令寫在myScript.sh裡</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>mkdir myFolder
-</span><span class='line'>rm myFile.txt
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然後執行底下指令</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> scp myScript.sh root@<span class="o">{</span>remote ip<span class="o">}</span>:/home/root/
-</span><span class='line'>sshpass -p <span class="o">{</span>your password<span class="o">}</span> ssh root@<span class="o">{</span>remote ip<span class="o">}</span> <span class="s2">&quot;/home/root/myScript.sh&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><h3>retrieve the specified string from a line</h3>
-
-<p>例如我有一個my.xml檔裡面紀錄了最新的版號如下</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;myxml&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;release&gt;</span>1.0.22<span class="nt">&lt;/release&gt;</span>
-</span><span class='line'><span class="nt">&lt;/myxml&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>用底下的指令來取出版號</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">latest</span><span class="o">=</span><span class="k">$(</span>cat my.xml | sed -n <span class="s1">&#39;s/.*&lt;release&gt;\(.*\)&lt;\/release&gt;/\1/p&#39;</span><span class="k">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>由於(, ), /是特殊字元,所以在re裡前面都要加上\<br/>
-後面的\1表示要取result的第一個group。<br/>
-整個用$()包覆是因為要把執行結果放進latest這個變數。</p>
-
-<ul>
-<li><h3>replace string in a config file</h3>
-
-<p>使用sed指令加上regular expression</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sed -i <span class="s1">&#39;s/.*MyTest.*/YourTest/&#39;</span> config.txt
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>這樣就可以把config.txt裡面所有字串裡中間有MyTest替換成YourTest</p>
-
-<ul>
-<li><h3>insert a new line in a config file</h3>
-
-<p>使用sed指令加上regular expression</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sed -i <span class="s1">&#39;s/.*MyTest.*/&amp;\nYourTest/g&#39;</span> config.txt
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>這樣就可以在config.txt裡面插入新的一行YourTest在每一行符合中間有MyTest的字串。</p>
 ]]></content>
   </entry>
   

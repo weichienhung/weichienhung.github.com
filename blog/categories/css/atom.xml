@@ -4,7 +4,7 @@
   <title><![CDATA[Category: css | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/css/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-09-29T17:07:28+08:00</updated>
+  <updated>2013-10-12T14:59:57+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,45 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[animated on media query]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/10/12/animated-on-media-query/"/>
+    <updated>2013-10-12T14:44:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/10/12/animated-on-media-query</id>
+    <content type="html"><![CDATA[<p>I see a post <a href="http://css-tricks.com/animated-media-queries/?utm_source=dlvr.it&amp;utm_medium=twitter">animated on media query</a> today.
+It's very interest to put CSS transition on media query changed. It's a simple skill and i just try it on my blog.
+You could resize my blog to check it.<br/>
+For example: add width transition to my avatar.
+``` css
+.myheader-avatar > img{
+  height: 60px;
+  width: 60px;
+  float: left;
+  border-radius: 30px;
+  @include high_z_index;</p>
+
+<p>  /<em> New line. </em>/
+  transition: width 1.5s;
+}</p>
+
+<p>@media screen and (max-width: 700px) {
+  .myheader-avatar > img {</p>
+
+<pre><code>/* When devie max-width under 700px, change width to 0 */
+height: 0;
+width: 0;
+
+/* transition can't put on display. So i change it to set width=0 */
+/* display: none; */
+</code></pre>
+
+<p>  }
+}
+<code>``
+Originally i use</code>display:none<code>to hide avatar but it doesn't work with transition. I use</code>width=0` insteadly.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[write maintainable css]]></title>
