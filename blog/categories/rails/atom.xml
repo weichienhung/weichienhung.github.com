@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-10-12T14:59:57+08:00</updated>
+  <updated>2013-10-13T20:55:59+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,192 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testing,Documentation and others]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/10/13/testing/"/>
+    <updated>2013-10-13T19:38:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/10/13/testing</id>
+    <content type="html"><![CDATA[<p>Past two weeks, i have studied some useful gems in rails. Here are the summary and tips.</p>
+
+<h2><a href="https://github.com/cucumber/cucumber-rails">Cucumber</a></h2>
+
+<p>Cucumber is the Behavior Driven Development(BDD). Writing testing is the most important in software development.
+Without testing case it's hard to refactor any code in the future.</p>
+
+<p>For instance: my site provide REST API with JSON and require devise login to use.
+How to test?<br/>
+Add to Gemfile. Suggest to use rspec and factory_gril gems together.
+<code>ruby Gemfile
+group :test do
+  gem "rspec-rails"
+  gem 'cucumber-rails', :require =&gt; false
+  gem "factory_girl_rails"
+  gem 'database_cleaner'
+end
+group :development do
+  gem "rspec-rails"
+end
+</code>
+Run <code>rails g cucumber:install</code> to initial features/ structure.</p>
+
+<!--more-->
+
+
+<p>Create <em>api.feature</em> in features/. You should describe your feature by plain english.
+``` ruby api.feature
+Feature: Provide API
+  In order to show list
+  As an Frontend javascript
+  Should be able to retrieve data through REST API</p>
+
+<p>  Scenario: list category through REST API</p>
+
+<pre><code>Given I exist as a user and logged in
+  And the system knows about the following category
+   | 1 | 食 |
+   | 2 | 交際娛樂 |
+   | 3 | 交通 |
+When I send a GET request to category api
+Then should response correct category JSON data
+  """
+  {"monny":[{"cid":1,"name":"食"},
+  {"cid":2,"name":"交際娛樂"},
+  {"cid":3,"name":"交通"}]}
+  """
+</code></pre>
+
+<p><code>
+Create _api_steps.rb_ in features/step_definitions/ and _users.rb_ in spec/factories/.
+</code> ruby api_steps.rb
+def create_user
+  @user = FactoryGirl.create(:user)
+end</p>
+
+<p>def sign_in
+  visit '/users/sign_in'
+  fill_in "user_email", :with => @user[:email]
+  fill_in "user_password", :with => @user[:password]
+  click_button "Sign in"
+end</p>
+
+<p>Given /<sup>I</sup> exist as a user and logged in$/ do
+  create_user
+  sign_in
+  page.should have_content "Signed in successfully."
+end</p>
+
+<p>And /<sup>the</sup> system knows about the following category$/ do |table|
+  table.raw.each do |cid, name|</p>
+
+<pre><code>Category.create({cid: cid, name: name})
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>When /<sup>I</sup> send a GET request to category api$/ do
+  @response = page.driver.get api_category_path
+end</p>
+
+<p>Then /<sup>should</sup> response correct category JSON data$/ do |expect|
+  assert_equal expect.gsub(/\n/,''), @response.body
+end
+<code>
+</code> ruby users.rb
+FactoryGirl.define do
+  factory :user do</p>
+
+<pre><code>email 'a@a.com'
+password 'a1234567'
+confirmed_at Time.now
+</code></pre>
+
+<p>  end
+end
+<code>``
+Here are some items should be take care.  
+1. Use capybara to visit _sign_in_ page and click it to sign in  
+2. With</code>| name | yyy |<code>, you can pass a table into steps function. I use it to create Category.  
+3. Use</code>page.driver.get api_category_path<code>to send GET request with authentication session(Because you have sign in)  
+4. Use</code>expect.gsub(/\n/,'')<code>to eliminate</code>\n` because i use break line in feature description.</p>
+
+<h2><a href="https://github.com/ernie/ransack">Ransack</a></h2>
+
+<p>Search your data in active record. I add the search function into <a href="https://github.com/weichienhung/rails101_groupme">rails101_groupme</a> project.
+The usage is quite simple. The groupme site has a search field in the navigation bar to search all posts.<br/>
+<img src="/images/20131013-groupme.png" width="500" height="500" title="groupme" alt="groupme">
+Add a method in application_controller.rb because we have a search field in nav bar and every controller need to render it.
+``` ruby application_controller.rb
+...</p>
+
+<h1>exec set_search before_filter</h1>
+
+<p>before_filter :set_search</p>
+
+<p>def set_search
+  @q = Post.search(params[:q])
+end
+...
+<code>
+Add controller to handle search request.
+</code> ruby search_controller.rb
+class SearchController &lt; ApplicationController
+  def search</p>
+
+<pre><code>@posts = @q.result(distinct: true)
+</code></pre>
+
+<p>  end
+end
+<code>
+Add search path in route. Only accepts post here.
+</code> ruby routes.rb
+...
+post 'search' => 'search#search'
+...
+<code>
+Add search view. Ransack has `search_form_for` tag and it's nice!
+</code> ruby search.html.erb
+&lt;%= search_form_for @q, :class => "navbar-form navbar-left", url: search_path, html: { method: :post }  do |f| %>
+  &lt;%= f.text_field :content_or_title_cont %> <br/>
+&lt;% end %>
+<code>``
+</code>:content_or_title_cont<code>means we want to search content or title that matches search keyword.
+If you want to search title column only, you should use</code>:title_cont<code>.</code>_cont` is necessary and means column's content.
+column name is the same with the active record you defined.</p>
+
+<h2><a href="http://yardoc.org/">Yard</a></h2>
+
+<p>Documentation is important. The Yard syntax is like Java and i like it.
+``` ruby</p>
+
+<h1>@author weichienhung</h1>
+
+<h1>Get places data belong to the category.</h1>
+
+<h1>It uses <em>id</em> from ApplicationController#params to query Place from Category.</h1>
+
+<h1>@return [JSON] the Place json format.</h1>
+
+<p>def show
+  begin</p>
+
+<pre><code>@category = Category.find(params[:id])
+respond_with @category.places
+</code></pre>
+
+<p>  rescue</p>
+
+<pre><code>respond_with []
+</code></pre>
+
+<p>  end
+end
+<code>``
+Yard supports markdown syntax in describe your method.</code><em>id</em>` is the italic word in markdown.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails Generator and Gem]]></title>
@@ -576,76 +762,6 @@ Pass a :separator to truncate the string at a natural break:
 
 <p>"2010-07-27 23:42:00".to_time(:utc)   # => Tue Jul 27 23:42:00 UTC 2010
 "2010-07-27 23:42:00".to_time(:local) # => Tue Jul 27 23:42:00 +0200 2010
-```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ckeditor with Rails4 on heroku]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku/"/>
-    <updated>2013-09-09T22:32:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku</id>
-    <content type="html"><![CDATA[<p>I push <a href="https://github.com/weichienhung/rails101_groupme">rails101_groupme</a> to <a href="http://weichien-groupme.herokuapp.com/">heroku</a> today.
-The project doesn't have access control and i18n. I use cancan gem to do access authorization and default i18n mechanism.
-Besides, i also upgrade twitter bootstrap to 3.0.0.</p>
-
-<!-- more -->
-
-
-<p>When i push to heroku, i get stuck in ckeditor's rails 4 compatibility and git issue. After googling i solve it finally.</p>
-
-<h3>Fail to fetch gem from git</h3>
-
-<p>Error message like this
-<code>
-Fetching git@github.com:Compass/compass-rails.git
-Host key verification failed.
-fatal: The remote end hung up unexpectedly
-Git error: command `git clone 'git@github.com:Compass/compass-rails.git' "/tmp/build_1xa9
-</code>
-Because git@github.com use SSH to communication, it requires authentication.
-Your gemfile may contain some gems like
-<code>ruby Old
-gem "compass-rails", :git =&gt; "git@github.com:Compass/compass-rails.git", :branch =&gt; "rails4"
-</code>
-Change to
-<code>ruby New
-gem "compass-rails", :github =&gt; "Compass/compass-rails", :branch =&gt; "rails4"
-</code></p>
-
-<h3>Miss assets in rails 4</h3>
-
-<p>Very helpful <a href="http://theotherzach.com/writes/2013/3/13/rails-4-and-heroku-missing-assets">link</a>. Put below in your production.rb
-<code>ruby production.rb
-...
-config.serve_static_assets = true
-...
-</code></p>
-
-<h3>Ckeditor doesn't show correctly</h3>
-
-<p>Reference to <a href="http://www.cnblogs.com/lmei/p/3306643.html">link</a> and <a href="http://dev.mensfeld.pl/2013/07/upgrading-to-rails-4-0-from-rails-3-2-test-case-part-ii-assets-models/">link2</a>.
-Because ckeditor will read the assets file without digest postfix. My solution is<br/>
-Add a rake file to create nondigest file of all ckeditor assets.
-``` ruby ckeditor.rake
-require 'fileutils'
-desc "Create nondigest versions of all ckeditor digest assets"
-task ckeditor: :environment do
-  fingerprint = /-[0-9a-f]{32}./
-  for file in Dir["public/assets/ckeditor/<em>*/</em>"]</p>
-
-<pre><code>next unless file =~ fingerprint
-nondigest = file.sub fingerprint, '.'
-FileUtils.cp file, nondigest, verbose: true
-</code></pre>
-
-<p>  end
-end
-<code>
-Execute `rake ckeditor` after `rake assets:precompile`
-</code> sh
-rake assets:precompile
-rake ckeditor
 ```</p>
 ]]></content>
   </entry>

@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-10-12T14:59:57+08:00</updated>
+  <updated>2013-10-13T20:55:59+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,279 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testing,Documentation and others]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/10/13/testing/"/>
+    <updated>2013-10-13T19:38:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/10/13/testing</id>
+    <content type="html"><![CDATA[<p>Past two weeks, i have studied some useful gems in rails. Here are the summary and tips.</p>
+
+<h2><a href="https://github.com/cucumber/cucumber-rails">Cucumber</a></h2>
+
+<p>Cucumber is the Behavior Driven Development(BDD). Writing testing is the most important in software development.
+Without testing case it&#8217;s hard to refactor any code in the future.</p>
+
+<p>For instance: my site provide REST API with JSON and require devise login to use.
+How to test?<br/>
+Add to Gemfile. Suggest to use rspec and factory_gril gems together.</p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:test</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s2">&quot;rspec-rails&quot;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;cucumber-rails&#39;</span><span class="p">,</span> <span class="ss">:require</span> <span class="o">=&gt;</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s2">&quot;factory_girl_rails&quot;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;database_cleaner&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s2">&quot;rspec-rails&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Run <code>rails g cucumber:install</code> to initial features/ structure.</p>
+
+<!--more-->
+
+
+<p>Create <em>api.feature</em> in features/. You should describe your feature by plain english.</p>
+
+<figure class='code'><figcaption><span>api.feature</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">Feature</span><span class="p">:</span> <span class="no">Provide</span> <span class="no">API</span>
+</span><span class='line'>  <span class="no">In</span> <span class="n">order</span> <span class="n">to</span> <span class="n">show</span> <span class="n">list</span>
+</span><span class='line'>  <span class="no">As</span> <span class="n">an</span> <span class="no">Frontend</span> <span class="n">javascript</span>
+</span><span class='line'>  <span class="no">Should</span> <span class="n">be</span> <span class="n">able</span> <span class="n">to</span> <span class="n">retrieve</span> <span class="n">data</span> <span class="n">through</span> <span class="no">REST</span> <span class="no">API</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="ss">Scenario</span><span class="p">:</span> <span class="n">list</span> <span class="n">category</span> <span class="n">through</span> <span class="no">REST</span> <span class="no">API</span>
+</span><span class='line'>    <span class="no">Given</span> <span class="n">I</span> <span class="n">exist</span> <span class="n">as</span> <span class="n">a</span> <span class="n">user</span> <span class="ow">and</span> <span class="n">logged</span> <span class="k">in</span>
+</span><span class='line'>      <span class="no">And</span> <span class="n">the</span> <span class="nb">system</span> <span class="n">knows</span> <span class="n">about</span> <span class="n">the</span> <span class="n">following</span> <span class="n">category</span>
+</span><span class='line'>       <span class="o">|</span> <span class="mi">1</span> <span class="o">|</span> <span class="err">食</span> <span class="o">|</span>
+</span><span class='line'>       <span class="o">|</span> <span class="mi">2</span> <span class="o">|</span> <span class="err">交際娛樂</span> <span class="o">|</span>
+</span><span class='line'>       <span class="o">|</span> <span class="mi">3</span> <span class="o">|</span> <span class="err">交通</span> <span class="o">|</span>
+</span><span class='line'>    <span class="no">When</span> <span class="n">I</span> <span class="nb">send</span> <span class="n">a</span> <span class="no">GET</span> <span class="n">request</span> <span class="n">to</span> <span class="n">category</span> <span class="n">api</span>
+</span><span class='line'>    <span class="no">Then</span> <span class="n">should</span> <span class="n">response</span> <span class="n">correct</span> <span class="n">category</span> <span class="no">JSON</span> <span class="n">data</span>
+</span><span class='line'>      <span class="s2">&quot;&quot;&quot;</span>
+</span><span class='line'><span class="s2">      {&quot;</span><span class="n">monny</span><span class="s2">&quot;:[{&quot;</span><span class="n">cid</span><span class="s2">&quot;:1,&quot;</span><span class="nb">name</span><span class="s2">&quot;:&quot;</span><span class="err">食</span><span class="s2">&quot;},</span>
+</span><span class='line'><span class="s2">      {&quot;</span><span class="n">cid</span><span class="s2">&quot;:2,&quot;</span><span class="nb">name</span><span class="s2">&quot;:&quot;</span><span class="err">交際娛樂</span><span class="s2">&quot;},</span>
+</span><span class='line'><span class="s2">      {&quot;</span><span class="n">cid</span><span class="s2">&quot;:3,&quot;</span><span class="nb">name</span><span class="s2">&quot;:&quot;</span><span class="err">交通</span><span class="s2">&quot;}]}</span>
+</span><span class='line'><span class="s2">      &quot;&quot;&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create <em>api_steps.rb</em> in features/step_definitions/ and <em>users.rb</em> in spec/factories/.</p>
+
+<figure class='code'><figcaption><span>api_steps.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create_user</span>
+</span><span class='line'>  <span class="vi">@user</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">sign_in</span>
+</span><span class='line'>  <span class="n">visit</span> <span class="s1">&#39;/users/sign_in&#39;</span>
+</span><span class='line'>  <span class="n">fill_in</span> <span class="s2">&quot;user_email&quot;</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="vi">@user</span><span class="o">[</span><span class="ss">:email</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">fill_in</span> <span class="s2">&quot;user_password&quot;</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="vi">@user</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">click_button</span> <span class="s2">&quot;Sign in&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Given</span> <span class="sr">/^I exist as a user and logged in$/</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">create_user</span>
+</span><span class='line'>  <span class="n">sign_in</span>
+</span><span class='line'>  <span class="n">page</span><span class="o">.</span><span class="n">should</span> <span class="n">have_content</span> <span class="s2">&quot;Signed in successfully.&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">And</span> <span class="sr">/^the system knows about the following category$/</span> <span class="k">do</span> <span class="o">|</span><span class="n">table</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">table</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">cid</span><span class="p">,</span> <span class="nb">name</span><span class="o">|</span>
+</span><span class='line'>    <span class="no">Category</span><span class="o">.</span><span class="n">create</span><span class="p">({</span><span class="ss">cid</span><span class="p">:</span> <span class="n">cid</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="nb">name</span><span class="p">})</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">When</span> <span class="sr">/^I send a GET request to category api$/</span> <span class="k">do</span>
+</span><span class='line'>  <span class="vi">@response</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get</span> <span class="n">api_category_path</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Then</span> <span class="sr">/^should response correct category JSON data$/</span> <span class="k">do</span> <span class="o">|</span><span class="n">expect</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="n">expect</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/\n/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="vi">@response</span><span class="o">.</span><span class="n">body</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>users.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">email</span> <span class="s1">&#39;a@a.com&#39;</span>
+</span><span class='line'>    <span class="n">password</span> <span class="s1">&#39;a1234567&#39;</span>
+</span><span class='line'>    <span class="n">confirmed_at</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here are some items should be take care.<br/>
+1. Use capybara to visit <em>sign_in</em> page and click it to sign in<br/>
+2. With <code>| name | yyy |</code>, you can pass a table into steps function. I use it to create Category.<br/>
+3. Use <code>page.driver.get api_category_path</code> to send GET request with authentication session(Because you have sign in)<br/>
+4. Use <code>expect.gsub(/\n/,'')</code> to eliminate <code>\n</code> because i use break line in feature description.</p>
+
+<h2><a href="https://github.com/ernie/ransack">Ransack</a></h2>
+
+<p>Search your data in active record. I add the search function into <a href="https://github.com/weichienhung/rails101_groupme">rails101_groupme</a> project.
+The usage is quite simple. The groupme site has a search field in the navigation bar to search all posts.<br/>
+<img src="http://weichienhung.github.io/images/20131013-groupme.png" width="500" height="500" title="groupme" alt="groupme">
+Add a method in application_controller.rb because we have a search field in nav bar and every controller need to render it.</p>
+
+<figure class='code'><figcaption><span>application_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="c1"># exec set_search before_filter</span>
+</span><span class='line'><span class="n">before_filter</span> <span class="ss">:set_search</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">set_search</span>
+</span><span class='line'>  <span class="vi">@q</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:q</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add controller to handle search request.</p>
+
+<figure class='code'><figcaption><span>search_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SearchController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">search</span>
+</span><span class='line'>    <span class="vi">@posts</span> <span class="o">=</span> <span class="vi">@q</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="ss">distinct</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add search path in route. Only accepts post here.</p>
+
+<figure class='code'><figcaption><span>routes.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="n">post</span> <span class="s1">&#39;search&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;search#search&#39;</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add search view. Ransack has <code>search_form_for</code> tag and it&#8217;s nice!</p>
+
+<figure class='code'><figcaption><span>search.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= search_form_for @q, :class =</span><span class="o">&gt;</span> <span class="s2">&quot;navbar-form navbar-left&quot;</span><span class="p">,</span> <span class="ss">url</span><span class="p">:</span> <span class="n">search_path</span><span class="p">,</span> <span class="ss">html</span><span class="p">:</span> <span class="p">{</span> <span class="nb">method</span><span class="p">:</span> <span class="ss">:post</span> <span class="p">}</span>  <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%= f.text_field :content_or_title_cont %&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>:content_or_title_cont</code> means we want to search content or title that matches search keyword.
+If you want to search title column only, you should use <code>:title_cont</code>. <code>_cont</code> is necessary and means column&#8217;s content.
+column name is the same with the active record you defined.</p>
+
+<h2><a href="http://yardoc.org/">Yard</a></h2>
+
+<p>Documentation is important. The Yard syntax is like Java and i like it.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># @author weichienhung</span>
+</span><span class='line'><span class="c1"># Get places data belong to the category.  </span>
+</span><span class='line'><span class="c1"># It uses _id_ from ApplicationController#params to query Place from Category.</span>
+</span><span class='line'><span class="c1"># @return [JSON] the Place json format.</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="k">begin</span>
+</span><span class='line'>    <span class="vi">@category</span> <span class="o">=</span> <span class="no">Category</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">respond_with</span> <span class="vi">@category</span><span class="o">.</span><span class="n">places</span>
+</span><span class='line'>  <span class="k">rescue</span>
+</span><span class='line'>    <span class="n">respond_with</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yard supports markdown syntax in describe your method. <code>_id_</code> is the italic word in markdown.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[animated on media query]]></title>
@@ -1767,119 +2040,6 @@ After this I decide to write the post in English from now.</p>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'>rake setup_github_pages
 </span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[write maintainable css]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/07/27/write-maintainable-css/"/>
-    <updated>2013-07-27T11:25:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/07/27/write-maintainable-css</id>
-    <content type="html"><![CDATA[<p>今天看了<a href="https://github.com/doggy8088/CSS-Guidelines">CSS guideline</a>描述在大型專案如何撰寫容易維護的CSS，我直接從翻譯過文章摘錄了其中覺得還不錯而且執行上也不會太困難的幾點記下來讓自己隨時能夠複習</p>
-
-<!-- more -->
-
-
-<h3>階層式CSS</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.widget</span><span class="p">{</span>
-</span><span class='line'>    <span class="k">padding</span><span class="o">:</span><span class="m">10px</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">border</span><span class="o">:</span><span class="m">1px</span> <span class="k">solid</span> <span class="m">#BADA55</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">background-color</span><span class="o">:</span><span class="m">#C0FFEE</span><span class="p">;</span>
-</span><span class='line'>    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span><span class="m">4px</span><span class="p">;</span>
-</span><span class='line'>       <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span><span class="m">4px</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span><span class="m">4px</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>    <span class="nc">.widget-heading</span><span class="p">{</span>
-</span><span class='line'>        <span class="k">font-size</span><span class="o">:</span><span class="m">1</span><span class="o">.</span><span class="m">5</span><span class="n">rem</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">line-height</span><span class="o">:</span><span class="m">1</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">font-weight</span><span class="o">:</span><span class="k">bold</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">color</span><span class="o">:</span><span class="m">#BADA55</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">margin-right</span><span class="o">:-</span><span class="m">10px</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">margin-left</span><span class="o">:</span> <span class="m">-10px</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">padding</span><span class="o">:</span><span class="m">0.25em</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>我們可以發現，<code>.widget-heading</code> 是 <code>.widget</code> 的子元素，因為前者比後者多縮排了一級，這使網頁開發人員在閱讀這些樣式時，可以迅速得知在 HTML 裡面的標籤結構大致為何。</p>
-
-<h3>JS hooks</h3>
-
-<p>千萬不要把 CSS 樣式當成 JS hooks 來用。我們在寫 jQuery 的時候，經常會自訂一些 class 樣式類別名稱，以方便我們透過 jQuery 的選取器選中這個元素。<br/>
-除此之外，有時候我們也會自訂一些 HTML 屬性，讓 HTML 擁有一些特殊的行為，這些都算是 JS hooks 的應用，如果你把 JS 的行為與樣式綁在一起時，代表我們套用的樣式與 JavaScript 行為無法區分開來，這對可維護性來說也蠻傷的。<br/>
-如果你要把 JS 行為與某些標籤綁定起來的話，寫一個 JS 專用的 class 類別名稱。簡單地說就是在名稱上增加一個前綴 .js- 的命名空間，例如 <code>.js-toggle</code>，<code>.js-drag-and-drop</code>，這意味著我們可以透過不同的 class 綁定不同的 JS 行為和 CSS 樣式，而不會為偶發的衝突帶來困擾，範例如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="o">&lt;</span><span class="nt">th</span> <span class="nt">class</span><span class="o">=</span><span class="s2">&quot;is-sortable  js-is-sortable&quot;</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nt">th</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>上面的這個 th 標籤有兩個 class，你可以用 <code>is-sortable</code> 這個類別來定義這個表格的樣式，而用另一個 <code>js-is-sortable</code> 來套用排序功能。</p>
-
-<h3>物件導向 CSS (OOCSS)</h3>
-
-<p>我都是以物件導向的方式撰寫 CSS，我把元件區分成結構（物件）與外觀（擴充）。正如以下想法（注意這個只是想法而非例子）：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.room</span><span class="p">{}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nc">.room--kitchen</span><span class="p">{}</span>
-</span><span class='line'><span class="nc">.room--bedroom</span><span class="p">{}</span>
-</span><span class='line'><span class="nc">.room--bathroom</span><span class="p">{}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>我們在屋子裡有許多房間，它們都有共同的特點：它們都包含地板、天花板、牆壁和門。這些共享的部分我們可以放到一個抽像的 <code>.room{} class</code> 中。<br/>
-不過我們還有其它與眾不同的房間：一個廚房可能有地磚，臥室可能有地毯，洗手間可能沒有窗戶但是臥室會有，每個房間的牆壁顏色也許也會不一樣。<br/>
-物件導向 CSS 的思考方式，使我們把相同部分抽像出來，並組成結構部分，然後再用更具體的 class 來擴充這些外觀，並新增特殊的處理方法。</p>
-
-<h3>簡寫</h3>
-
-<p>使用簡寫的 CSS 語法應該要特別注意。
-或許你會嘗試撰寫像 <code>background:red;</code> 這樣的屬性，或許你這樣寫的背後真正意思是 <code>background-image:none; background-position:top left; background-repeat: repeat; background-color:red;</code> 這樣的語法，雖然這樣寫通常不會出什麼問題，但是哪怕只出一次問題就值得考慮要不要放棄簡寫了，在這個例子裡，你應該將其改寫為 <code>background-color:red;</code> 比較洽當。<br/>
-類似的，像 <code>margin:0;</code> 這樣的宣告迪缺清楚明瞭，但是還是應該 盡量寫清楚，如果你只是想修改底部的 margin，最好具體一點，寫成 <code>margin-bottom:0;</code> 會來的好很多。
-你必須把樣式定義的很清楚，不要因為習慣用簡寫，而不小心改到其他樣式的相關屬性。例如你只想改掉底部的 margin，那就不要用也會把其它邊距也歸零的 <code>margin:0</code> 語法。
-簡寫雖然是好東西，但是切忌濫用。</p>
-
-<h3>在 CSS 裡千萬不要用 ID</h3>
-
-<p>在 HTML 裡 ID 可以用於 JS 以及錨點定位(anchor)，但是在 CSS 裡建議只用 class 來設定樣式，你不會想看到在任何一個樣式表中看見使用 ID 的選取器 (#someid)。</p>
-
-<h3>選取器</h3>
-
-<p>請維持選取器簡短、有效率與可攜性。<br/>
-那些依賴頁面元素來定位的選取器有很多缺點。例如 <code>.sidebar h3 span{}</code> 這樣的選取器，就是太過依賴元素的相對位置，所以很難把 span 移到 h3 和 sidebar 外面並維持其樣式。<br/>
-結構複雜的選取器也會影響網頁顯示效能，選取器結構越複雜（如 <code>.sidebar h3 span</code> 為三層，<code>.content ul p a</code> 是四層），瀏覽器對於顯示網頁的負擔就越大。<br/>
-所以，盡量不要讓樣式依賴於其他元素的位置，也盡量讓選取器保持簡短而易懂。</p>
-
-<h3>!important</h3>
-
-<p>你只應該在一些輔助類別(helper classes)上使用 <code>!important</code> 修飾子。用 <code>!important</code> 提升優先級也可以，例如如果你要讓某條規則 一直 生效的話，可以用 <code>.error{ color:red!important; }</code>。<br/>
-避免主動使用 <code>!important</code> 修飾子。例如當你的 CSS 寫得很複雜的時候，不要因為想偷懶而使用 <code>!important</code> 來取巧，建議重寫你之前寫好的樣式，並重構選取系的使用方式。記得：維持選取器的簡短並且避免用 ID，將可有效幫助你寫好 CSS。</p>
 ]]></content>
   </entry>
   
