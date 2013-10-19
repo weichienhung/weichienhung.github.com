@@ -4,7 +4,7 @@
   <title><![CDATA[Category: coffeescript | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/coffeescript/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-10-13T20:55:59+08:00</updated>
+  <updated>2013-10-19T15:40:15+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,55 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[design pattern in javascript]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/10/19/design-pattern-in-javascript/"/>
+    <updated>2013-10-19T14:50:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/10/19/design-pattern-in-javascript</id>
+    <content type="html"><![CDATA[<p>I read the <a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/">javascript design pattern</a> from Addy Osmani.
+There're code examples in the book and i try to re-write it by coffeescript.
+It helps me understand pattern more and clear. During writing i found a good coffeescript <a href="http://coffeescriptcookbook.com">cookbook</a> and very helpful.
+Some coffeescript syntax are learned.</p>
+
+<h3>loop a array from middle</h3>
+
+<p>Usually we use below to iter a array
+<code>coffeescript
+myarray = [1..5]
+for element in myarray
+  console.log element # output 1~5
+</code>
+Can strat from index 2, index is from 0. Means from third element
+<code>
+for index in [2...myarray.length]
+  console.log myarray[index] # output 3~5
+</code></p>
+
+<h3>Ternary opeartor</h3>
+
+<p>```
+console.log if 10>5 ? "hi" : "bye" # Compile ERROR</p>
+
+<p>console.log if 10>5 then "hi" else "bye" # output hi
+```</p>
+
+<h3>set value using ?=</h3>
+
+<p>If you use <code>?=</code> you have to declare 'instance = null' first.
+```
+instance = null # without this, Compile ERROR
+instance ?= "abc"
+console.log instance # output abc</p>
+
+<p>instance2 = instance2 || "abc"
+console.log instance2 # output abc
+```</p>
+
+<p>The result i have pushed to github. <a href="https://github.com/weichienhung/practice-design-pattern">practice-design-pattern</a><br/>
+It's tiny project by yeoman scaffold.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Coffee script memo]]></title>

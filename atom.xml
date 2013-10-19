@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-10-13T20:55:59+08:00</updated>
+  <updated>2013-10-19T15:40:15+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,73 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[design pattern in javascript]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/10/19/design-pattern-in-javascript/"/>
+    <updated>2013-10-19T14:50:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/10/19/design-pattern-in-javascript</id>
+    <content type="html"><![CDATA[<p>I read the <a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/">javascript design pattern</a> from Addy Osmani.
+There&#8217;re code examples in the book and i try to re-write it by coffeescript.
+It helps me understand pattern more and clear. During writing i found a good coffeescript <a href="http://coffeescriptcookbook.com">cookbook</a> and very helpful.
+Some coffeescript syntax are learned.</p>
+
+<h3>loop a array from middle</h3>
+
+<p>Usually we use below to iter a array</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">myarray = </span><span class="p">[</span><span class="mi">1</span><span class="p">..</span><span class="mi">5</span><span class="p">]</span>
+</span><span class='line'><span class="k">for</span> <span class="nx">element</span> <span class="k">in</span> <span class="nx">myarray</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">element</span> <span class="c1"># output 1~5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Can strat from index 2, index is from 0. Means from third element</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">for</span> <span class="nx">index</span> <span class="k">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">...</span><span class="nx">myarray</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">myarray</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="c1"># output 3~5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Ternary opeartor</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="k">if</span> <span class="mi">10</span><span class="o">&gt;</span><span class="mi">5</span> <span class="o">?</span> <span class="s">&quot;hi&quot;</span> <span class="o">:</span> <span class="s">&quot;bye&quot;</span> <span class="c1"># Compile ERROR</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="k">if</span> <span class="mi">10</span><span class="o">&gt;</span><span class="mi">5</span> <span class="k">then</span> <span class="s">&quot;hi&quot;</span> <span class="k">else</span> <span class="s">&quot;bye&quot;</span> <span class="c1"># output hi</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>set value using ?=</h3>
+
+<p>If you use <code>?=</code> you have to declare &#8216;instance = null&#8217; first.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">instance = </span><span class="kc">null</span> <span class="c1"># without this, Compile ERROR</span>
+</span><span class='line'><span class="nx">instance</span> <span class="o">?=</span> <span class="s">&quot;abc&quot;</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">instance</span> <span class="c1"># output abc</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">instance2 = </span><span class="nx">instance2</span> <span class="o">||</span> <span class="s">&quot;abc&quot;</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">instance2</span> <span class="c1"># output abc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The result i have pushed to github. <a href="https://github.com/weichienhung/practice-design-pattern">practice-design-pattern</a><br/>
+It&#8217;s tiny project by yeoman scaffold.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testing,Documentation and others]]></title>
@@ -1980,66 +2047,6 @@ He saw my old post but can&#8217;t understand what i said because the post was w
 I reply the email and he gets the answer finally.
 Although my blog is put on Internet but I never thought someone will get help from here :)
 After this I decide to write the post in English from now.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[octopress 設定問題]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/07/28/octopress-she-ding-wen-ti/"/>
-    <updated>2013-07-28T11:20:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/07/28/octopress-she-ding-wen-ti</id>
-    <content type="html"><![CDATA[<p>這兩天使用octopress時遇到了一些問題，有簡單google解決也有亂試之下解決</p>
-
-<ul>
-<li>想產生新的文章時出現</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>You have already activated rake 10.1.0, but your Gemfile requires rake 0.9.6. Using bundle <span class="nb">exec</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<!--more-->
-
-
-<p>google之下很單純，只要修改你的Gemfile<br/>
-本來是</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem <span class="s1">&#39;rake&#39;</span>, <span class="s1">&#39;~&gt; 0.9.6&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>改成以下即可，不過老實說我自己的版本什麼時候吃到10.0我也沒印象</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem <span class="s1">&#39;rake&#39;</span>, <span class="s1">&#39;~&gt; 10.0&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>rake deploy時出現</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>src refspec master does not match any
-</span><span class='line'>error src refspec master does not match any. error failed to push some refs to
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>一開始google時網路大部份的文章都是說你的project repo還沒有任何commit，只要加個README commit即可。
-但我怎麼試都不行而且明明我的project己經用了一陣子了後來終於發現原來是我的git沒有local master branch。
-原因是我之前手動把<code>_deploy</code>目錄砍過的樣子，理論上在你的<code>_deploy</code>目錄打<code>git branch</code>應該要出現<code>* master</code>
-在根目錄底下則是出現<code>* source</code><br/>
-後來的解決方法就是重設github page</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake setup_github_pages
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   
