@@ -4,7 +4,7 @@
   <title><![CDATA[Category: coffeescript | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/coffeescript/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-10-19T15:40:15+08:00</updated>
+  <updated>2013-10-19T20:58:52+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -53,12 +53,12 @@ instance = null # without this, Compile ERROR
 instance ?= "abc"
 console.log instance # output abc</p>
 
+<h1>the old way.</h1>
+
 <p>instance2 = instance2 || "abc"
 console.log instance2 # output abc
-```</p>
-
-<p>The result i have pushed to github. <a href="https://github.com/weichienhung/practice-design-pattern">practice-design-pattern</a><br/>
-It's tiny project by yeoman scaffold.</p>
+```
+I put the final result to <a href="https://gist.github.com/weichienhung/7055412">gist</a></p>
 ]]></content>
   </entry>
   

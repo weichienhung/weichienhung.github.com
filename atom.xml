@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-10-19T15:40:15+08:00</updated>
+  <updated>2013-10-19T20:58:52+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -66,17 +66,18 @@ Some coffeescript syntax are learned.</p>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
+<span class='line-number'>7</span>
 </pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">instance = </span><span class="kc">null</span> <span class="c1"># without this, Compile ERROR</span>
 </span><span class='line'><span class="nx">instance</span> <span class="o">?=</span> <span class="s">&quot;abc&quot;</span>
 </span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">instance</span> <span class="c1"># output abc</span>
 </span><span class='line'>
+</span><span class='line'><span class="c1"># the old way.</span>
 </span><span class='line'><span class="nv">instance2 = </span><span class="nx">instance2</span> <span class="o">||</span> <span class="s">&quot;abc&quot;</span>
 </span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">instance2</span> <span class="c1"># output abc</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The result i have pushed to github. <a href="https://github.com/weichienhung/practice-design-pattern">practice-design-pattern</a><br/>
-It&#8217;s tiny project by yeoman scaffold.</p>
+<p>I put the final result to <a href="https://gist.github.com/weichienhung/7055412">gist</a></p>
 ]]></content>
   </entry>
   
