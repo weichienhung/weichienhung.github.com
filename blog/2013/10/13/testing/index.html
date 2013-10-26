@@ -128,6 +128,13 @@ Add to Gemfile. Suggest to use rspec and factory_gril gems together.</p>
 <!--more-->
 
 
+<p>Modify <em>config/initializers/devise.rb</em> if you use devise and need to test sign_out function.</p>
+
+<figure class='code'><figcaption><span>devise.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">sign_out_via</span> <span class="o">=</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">test?</span> <span class="p">?</span> <span class="ss">:get</span> <span class="p">:</span> <span class="ss">:delete</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 <p>Create <em>api.feature</em> in features/. You should describe your feature by plain english.</p>
 
 <figure class='code'><figcaption><span>api.feature</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -201,6 +208,10 @@ Add to Gemfile. Suggest to use rspec and factory_gril gems together.</p>
 <span class='line-number'>28</span>
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create_user</span>
 </span><span class='line'>  <span class="vi">@user</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
 </span><span class='line'><span class="k">end</span>
@@ -229,7 +240,11 @@ Add to Gemfile. Suggest to use rspec and factory_gril gems together.</p>
 </span><span class='line'><span class="k">end</span>
 </span><span class='line'>
 </span><span class='line'><span class="no">Then</span> <span class="sr">/^should response correct category JSON data$/</span> <span class="k">do</span> <span class="o">|</span><span class="n">expect</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">assert_equal</span> <span class="n">expect</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/\n/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="vi">@response</span><span class="o">.</span><span class="n">body</span>
+</span><span class='line'>  <span class="n">actual</span> <span class="o">=</span> <span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="vi">@response</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">expect</span> <span class="o">=</span> <span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">expect</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">expect</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="n">value</span><span class="p">,</span> <span class="n">actual</span><span class="o">[</span><span class="n">key</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -255,7 +270,7 @@ Add to Gemfile. Suggest to use rspec and factory_gril gems together.</p>
 1. Use capybara to visit <em>sign_in</em> page and click it to sign in<br/>
 2. With <code>| name | yyy |</code>, you can pass a table into steps function. I use it to create Category.<br/>
 3. Use <code>page.driver.get api_category_path</code> to send GET request with authentication session(Because you have sign in)<br/>
-4. Use <code>expect.gsub(/\n/,'')</code> to eliminate <code>\n</code> because i use break line in feature description.</p>
+Run <em>cucumber</em> to test and get report.</p>
 
 <h2><a href="https://github.com/ernie/ransack">Ransack</a></h2>
 

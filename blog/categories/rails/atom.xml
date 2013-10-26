@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-10-19T20:58:52+08:00</updated>
+  <updated>2013-10-26T11:43:18+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,250 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[mongodb in rails4]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/10/25/mongodb-in-rails/"/>
+    <updated>2013-10-25T23:53:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/10/25/mongodb-in-rails</id>
+    <content type="html"><![CDATA[<p>In the past week i had tried <a href="http://www.mongodb.org">mongodb</a> in rails.
+I rewrite my previous project <a href="https://github.com/weichienhung/money">money</a> to use mongodb instead of active record.
+The source code is in branch <a href="https://github.com/weichienhung/money/tree/mongodb">money-mongodb</a>.
+Here i record the steps of changing active record to mongodb</p>
+
+<!-- more -->
+
+
+<h3>Install mongodb</h3>
+
+<p>I am using Mac OSX, very easy to install
+<code>sh
+brew install mongodb
+</code>
+Run mongodb in your shell
+<code>
+mongod
+</code></p>
+
+<h3>Update Gemfile</h3>
+
+<p>I choose <em>mongoid</em> gem because it has good documents and it's a object document mapper framework.
+I am familiar with SQL so i could catch up NonSQL database easily.<br/>
+Need to add <code>github: 'mongoid/mongoid'</code> because Rails4.
+<code>ruby Gemfile
+gem 'mongoid', github: 'mongoid/mongoid'
+</code></p>
+
+<h3>Generate mongoid config</h3>
+
+<p><code>sh
+rails g mongoid:config
+</code></p>
+
+<h3>Mark active record related codes</h3>
+
+<p>In <em>application.rb</em> mark the <code>require rails/all</code> and add below.
+``` ruby application.rb</p>
+
+<h1>require 'rails/all'</h1>
+
+<p>require "action_controller/railtie"
+require "action_mailer/railtie"
+require "sprockets/railtie"
+require "rails/test_unit/railtie"
+<code>
+In _development.rb_ mark the `config.active_record.migration_error = :page_load`
+</code> ruby development.rb</p>
+
+<h1>config.active_record.migration_error = :page_load</h1>
+
+<p>```</p>
+
+<h3>Re-generate devise</h3>
+
+<p>Mark <code>devise_for :users</code> in routes.rb
+``` ruby routes.rb</p>
+
+<h1>devise_for :users</h1>
+
+<p><code>
+Execute `devise:install`
+</code> sh
+rails g devise:install
+<code>
+Remember to unmark `devise_for` after new user.rb created.
+New _user.rb_ looks like below, it includes `Mongoid::Document`.
+</code> ruby user.rb
+class User
+  include Mongoid::Document
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,</p>
+
+<pre><code>     :recoverable, :rememberable, :trackable, :validatable
+</code></pre>
+
+<p>  ## Database authenticatable
+  field :email,              :type => String, :default => ""
+  field :encrypted_password, :type => String, :default => ""</p>
+
+<p>  ...
+end
+```</p>
+
+<h3>Update models</h3>
+
+<p>Bascially we just need to include <code>Mongoid::Document</code> and add <code>field</code>
+``` ruby category.rb</p>
+
+<h1>class Category &lt; ActiveRecord::Base</h1>
+
+<h1>end</h1>
+
+<p>class Category
+  include Mongoid::Document
+  field :name, type: String
+  field :cid, type: Integer
+end
+```</p>
+
+<h3>Update logic of querying data in model</h3>
+
+<p>This is the most difficult part.  Model has methods to query data from database.
+All need to rewrite.</p>
+
+<p>No <code>where.not</code>.
+``` ruby</p>
+
+<h1>scope :expense, -> { where.not(category_id: 0) }</h1>
+
+<p>scope :expense, -> { where(:category_id.gt => 0) }
+<code>
+Order by
+</code></p>
+
+<h1>where.order('month ASC')</h1>
+
+<p>where.asc(:month)
+<code>
+Query condition.
+</code></p>
+
+<h1>r = where('year = ?', params[:y])</h1>
+
+<p>r = where(year: params[:y])
+<code>
+No `group()`. Need to use map/reduce funciton. Good [tutorial](http://www.mongovue.com/2010/11/03/yet-another-mongodb-map-reduce-tutorial/#comment-117).  
+For instance: calculate each month's total cost.
+</code></p>
+
+<h1>r.expense.group(:month).select(:month, 'sum(amount) as total')</h1>
+
+<p>map = %Q(
+  function(){</p>
+
+<pre><code>emit(this.month, { month:this.month, amount:this.amount});
+</code></pre>
+
+<p>  }
+)
+reduce = %Q(
+  function(key, values) {</p>
+
+<pre><code>var result = { month: 0, total: 0 };
+values.forEach(function(value) {
+  result.month = value.month;
+  if (value.amount)
+    result.total += value.amount;
+  else
+    result.total += value.total;
+  });
+return result;
+</code></pre>
+
+<p>  }
+)
+final = %Q(
+  function(key, value) {</p>
+
+<pre><code>if (value.amount)
+  value.total = value.amount
+return value;
+</code></pre>
+
+<p>  }
+)
+result = []
+where(year: params[:y]).map_reduce(map, reduce).out(inline: true).finalize(final).each do |document|
+  result.push self.build_money_record_by_month(document)
+end
+<code>
+Fecth data from reduced document.
+If there's more easy way to fetch data from `document`, plz let me know.
+</code>
+def self.build_money_record_by_month(document)
+  value = document.fetch 'value'
+  monny = MoneyRecord.new
+  monny.total = value.fetch 'total'
+  monny.month = value.fetch 'month'
+  return monny
+end
+```</p>
+
+<h3>Update cucumber and rspec testing</h3>
+
+<p>In <em>spec/spec_help.rb</em>
+``` ruby spec_help.rb</p>
+
+<h1>mark below</h1>
+
+<h1>config.fixture_path = "#{::Rails.root}/spec/fixtures"</h1>
+
+<h1>config.use_transactional_fixtures = true</h1>
+
+<h1>unmark below</h1>
+
+<p>config.before(:suite) do
+  DatabaseCleaner.strategy = :truncation # must be truncation
+end
+config.before(:each) do
+  DatabaseCleaner.start
+end
+config.after(:each) do
+  DatabaseCleaner.clean
+end
+<code>
+In _feature/env/rb_
+</code> ruby env.rb
+begin
+  DatabaseCleaner.strategy = :truncation  # must be truncation
+rescue NameError
+  raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
+end
+<code>
+That's it. But i still have a question not solved. During my trying the mongod process was crash easily and no idea why.
+Error log like below.
+</code> sh
+Wed Oct 23 00:37:28.314 Invalid access at address: 0x10 from thread: conn5</p>
+
+<p>Wed Oct 23 00:37:28.314 Got signal: 11 (Segmentation fault: 11).</p>
+
+<p>Wed Oct 23 00:37:28.380 Backtrace:
+0x100a3eaf0 0x1005515bd 0x1005518f8 0x7fff8904a90a 0 0x100b70cc7 0x100c3e2c9 0x100c3e131 0x1009f873b 0x1009f85ff 0x1009f32c2 0x1009f3093 0x1009f2c0f 0x100699c7d 0x1006a484c 0x1006c72f5 0x1006c82b3 0x1006c9096 0x1007dec8d 0x1007e50a8
+ 0   mongod                              0x0000000100a3eaf0 <em>ZN5mongo15printStackTraceERSo + 64
+ 1   mongod                              0x00000001005515bd </em>ZN5mongo10abruptQuitEi + 397
+ 2   mongod                              0x00000001005518f8 <em>ZN5mongo24abruptQuitWithAddrSignalEiP9__siginfoPv + 344
+ 3   libsystem_c.dylib                   0x00007fff8904a90a </em>sigtramp + 26
+ 4   ???                                 0x0000000000000000 0x0 + 0
+ 5   mongod                              0x0000000100b70cc7 <em>ZN2v88internal15DeoptimizerDataD1Ev + 55
+ 6   mongod                              0x0000000100c3e2c9 </em>ZN2v88internal7Isolate6DeinitEv + 105
+ 7   mongod                              0x0000000100c3e131 <em>ZN2v88internal7Isolate8TearDownEv + 81
+ 8   mongod                              0x00000001009f873b </em>ZN5mongo7V8ScopeD2Ev + 267
+ 9   mongod                              0x00000001009f85ff _ZN5mongo7V8ScopeD0Ev + 15
+ 10  mongod
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testing,Documentation and others]]></title>
@@ -44,7 +288,11 @@ Run <code>rails g cucumber:install</code> to initial features/ structure.</p>
 <!--more-->
 
 
-<p>Create <em>api.feature</em> in features/. You should describe your feature by plain english.
+<p>Modify <em>config/initializers/devise.rb</em> if you use devise and need to test sign_out function.
+<code>ruby devise.rb
+config.sign_out_via = Rails.env.test? ? :get : :delete
+</code>
+Create <em>api.feature</em> in features/. You should describe your feature by plain english.
 ``` ruby api.feature
 Feature: Provide API
   In order to show list
@@ -101,7 +349,14 @@ end</p>
 end</p>
 
 <p>Then /<sup>should</sup> response correct category JSON data$/ do |expect|
-  assert_equal expect.gsub(/\n/,''), @response.body
+  actual = JSON.parse(@response.body)
+  expect = JSON.parse(expect)
+  expect.each do |key,value|</p>
+
+<pre><code>assert_equal value, actual[key]
+</code></pre>
+
+<p>  end
 end
 <code>
 </code> ruby users.rb
@@ -119,8 +374,8 @@ end
 Here are some items should be take care.  
 1. Use capybara to visit _sign_in_ page and click it to sign in  
 2. With</code>| name | yyy |<code>, you can pass a table into steps function. I use it to create Category.  
-3. Use</code>page.driver.get api_category_path<code>to send GET request with authentication session(Because you have sign in)  
-4. Use</code>expect.gsub(/\n/,'')<code>to eliminate</code>\n` because i use break line in feature description.</p>
+3. Use</code>page.driver.get api_category_path` to send GET request with authentication session(Because you have sign in)<br/>
+Run <em>cucumber</em> to test and get report.</p>
 
 <h2><a href="https://github.com/ernie/ransack">Ransack</a></h2>
 
@@ -485,284 +740,6 @@ If a block is given, sum becomes an iterator that yields the elements of the col
 <h1>=> [["1", "2", "3"], ["4", "5", nil], ["6", "7", nil]]</h1>
 
 <p>```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ActionSupport in Rails4 part1]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4/"/>
-    <updated>2013-09-12T17:23:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/12/actionsupport-methods-in-rails4</id>
-    <content type="html"><![CDATA[<p>Recently i study documents in <a href="http://edgeguides.rubyonrails.org/">ruby edgeguides</a>.
-There are a lot of methods in ActionSupport chapter. I record something useful here and for reference in the future.</p>
-
-<h3>Extensions to All Objects</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/object/blank.rb.</p>
-
-<h4>blank?</h4>
-
-<p>Following vlaues are considered to be blank.<br/>
-* nil and false<br/>
-* strings composed only of whitespace (see note below)<br/>
-* empty arrays and hashes<br/>
-In particular, 0 and 0.0 are not blank.</p>
-
-<!-- more-->
-
-
-<h4>present?</h4>
-
-<p>The method <code>present?</code> is equivalent to <code>!blank?</code></p>
-
-<h4>presence</h4>
-
-<p>Returns itself if present?, and nil otherwise. Useful
-``` ruby
-host = config[:host].presence || 'localhost'</p>
-
-<h2>```</h2>
-
-<p>Defined in active_support/core_ext/object/duplicable.rb.</p>
-
-<h4>duplicable?</h4>
-
-<p>By definition all objects are duplicable? except nil, false, true, symbols, numbers, class, and module objects.</p>
-
-<hr />
-
-<p>Defined in active_support/core_ext/object/duplicable.rb.</p>
-
-<h4>deep_dup</h4>
-
-<p>Deep duplicate. Normally, <code>dup</code> an object that contains other objects, Ruby only creates a shallow copy of the object.</p>
-
-<hr />
-
-<p>Defined in active_support/core_ext/object/try.rb.</p>
-
-<h4>try</h4>
-
-<p>Try to call a method only if it is not nil
-```</p>
-
-<h1>without try</h1>
-
-<p>unless @number.nil?
-  @number.next
-end</p>
-
-<h1>with try</h1>
-
-<p>@number.try(:next)
-<code>
-try can also be called without arguments but a block
-</code>
-@person.try { |person| "#{person.first_name} #{person.last_name}" }
-```</p>
-
-<hr />
-
-<p>Defined in active_support/core_ext/object/with_options.rb.</p>
-
-<h4>with_options</h4>
-
-<p>```
-class Account &lt; ActiveRecord::Base
-  has_many :customers, dependent: :destroy
-  has_many :products,  dependent: :destroy
-  has_many :invoices,  dependent: :destroy
-  has_many :expenses,  dependent: :destroy
-end</p>
-
-<h1>with options way</h1>
-
-<p>class Account &lt; ActiveRecord::Base
-  with_options dependent: :destroy do |assoc|</p>
-
-<pre><code>assoc.has_many :customers
-assoc.has_many :products
-assoc.has_many :invoices
-assoc.has_many :expenses
-</code></pre>
-
-<p>  end
-end
-```</p>
-
-<hr />
-
-<p>Defined in active_support/core_ext/object/instance_variables.rb.</p>
-
-<h4>instance_values</h4>
-
-<p>```
-class C
-  def initialize(x, y)</p>
-
-<pre><code>@x, @y = x, y
-</code></pre>
-
-<p>  end
-end</p>
-
-<p>C.new(0, 1).instance_values # => {"x" => 0, "y" => 1}
-```</p>
-
-<h4>instance_variable_names</h4>
-
-<p>```
-class C
-  def initialize(x, y)</p>
-
-<pre><code>@x, @y = x, y
-</code></pre>
-
-<p>  end
-end</p>
-
-<p>C.new(0, 1).instance_variable_names # => ["@x", "@y"]
-```</p>
-
-<hr />
-
-<p>Defined in active_support/core_ext/object/inclusion.rb.</p>
-
-<h4>in?</h4>
-
-<p><code>
-1.in?([1,2])        # =&gt; true
-"lo".in?("hello")   # =&gt; true
-25.in?(30..50)      # =&gt; false
-1.in?(1)            # =&gt; ArgumentError because argument passed does not respond to include?.
-</code></p>
-
-<h3>Extensions to Module</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/module/attr_internal.rb.</p>
-
-<h4>Internal Attributes</h4>
-
-<p>Active Support defines the macros attr_internal_reader, attr_internal_writer, and attr_internal_accessor
-The macro attr_internal is a synonym for attr_internal_accessor:
-``` ruby</p>
-
-<h1>library</h1>
-
-<p>class ThirdPartyLibrary::Crawler
-  attr_internal :log_level
-end</p>
-
-<h1>client code</h1>
-
-<p>class MyCrawler &lt; ThirdPartyLibrary::Crawler
-  attr_accessor :log_level
-end
-```</p>
-
-<h3>Extensions to String</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/string/filters.rb.</p>
-
-<h4>remove</h4>
-
-<p><code>
-Hello World".remove(/Hello /) =&gt; "World"
-</code></p>
-
-<h4>squish</h4>
-
-<p>The method squish strips leading and trailing whitespace, and substitutes runs of whitespace with a single space each:
-<code>
-" \n  foo\n\r \t bar \n".squish # =&gt; "foo bar"
-</code></p>
-
-<h4>truncate</h4>
-
-<p>```
-"Oh dear! Oh dear! I shall be late!".truncate(20)</p>
-
-<h1>=> "Oh dear! Oh dear!..."</h1>
-
-<p><code>
-Ellipsis can be customized with the :omission option
-</code>
-"Oh dear! Oh dear! I shall be late!".truncate(20, omission: '&hellip;')</p>
-
-<h1>=> "Oh dear! Oh &hellip;"</h1>
-
-<p><code>
-Note in particular that truncation takes into account the length of the omission string.
-Pass a :separator to truncate the string at a natural break:
-</code>
-"Oh dear! Oh dear! I shall be late!".truncate(18)</p>
-
-<h1>=> "Oh dear! Oh dea..."</h1>
-
-<p>"Oh dear! Oh dear! I shall be late!".truncate(18, separator: ' ')</p>
-
-<h1>=> "Oh dear! Oh..."</h1>
-
-<h2>```</h2>
-
-<p>Defined in active_support/core_ext/string/starts_ends_with.rb.</p>
-
-<h4>starts_with? and ends_with?</h4>
-
-<p>```
-"foo".starts_with?("f") # => true
-"foo".ends_with?("o")   # => true</p>
-
-<h2>```</h2>
-
-<p>Defined in active_support/core_ext/string/access.rb.</p>
-
-<h4>at(position)</h4>
-
-<p><code>
-"hello".at(0)  # =&gt; "h"
-"hello".at(4)  # =&gt; "o"
-"hello".at(-1) # =&gt; "o"
-"hello".at(10) # =&gt; nil
-</code></p>
-
-<h4>from(position)</h4>
-
-<p><code>
-"hello".from(0)  # =&gt; "hello"
-"hello".from(2)  # =&gt; "llo"
-"hello".from(-2) # =&gt; "lo"
-"hello".from(10) # =&gt; "" if &lt; 1.9, nil in 1.9
-</code></p>
-
-<h4>to(position)</h4>
-
-<p>```
-"hello".to(0)  # => "h"
-"hello".to(2)  # => "hel"
-"hello".to(-2) # => "hell"
-"hello".to(10) # => "hello"</p>
-
-<h2>```</h2>
-
-<p>Defined in active_support/core_ext/string/conversions.rb.</p>
-
-<h4>to_date, to_time, to_datetime</h4>
-
-<p>```
-"2010-07-27".to_date              # => Tue, 27 Jul 2010
-"2010-07-27 23:37:00".to_time     # => Tue Jul 27 23:37:00 UTC 2010
-"2010-07-27 23:37:00".to_datetime # => Tue, 27 Jul 2010 23:37:00 +0000</p>
-
-<p>"2010-07-27 23:42:00".to_time(:utc)   # => Tue Jul 27 23:42:00 UTC 2010
-"2010-07-27 23:42:00".to_time(:local) # => Tue Jul 27 23:42:00 +0200 2010
-```</p>
 ]]></content>
   </entry>
   
