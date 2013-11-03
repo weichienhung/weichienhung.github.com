@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-10-27T00:13:39+08:00</updated>
+  <updated>2013-11-03T15:32:06+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,212 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[open source project studying]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/11/03/open-source-projects-studying/"/>
+    <updated>2013-11-03T09:57:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/11/03/open-source-projects-studying</id>
+    <content type="html"><![CDATA[<p>I study the open source project <a href="https://github.com/gitlabhq/gitlabhq">gitlab</a>. It's a well coding rails structure.
+Here are some examples i think they are good.</p>
+
+<h3>Don't query data in View/Helper</h3>
+
+<p>Avoid perform query in view/helper in Xdite's <a href="http://blog.xdite.net/posts/2013/10/31/maintainable-rails-view-6">Maintainable Rails View</a>.
+``` ruby dashboard_controller.rb
+def show
+  @projects_limit = 30
+  @groups = current_user.authorized_groups.sort_by(&amp;:human_name)
+  @has_authorized_projects = @projects.count > 0
+  @projects_count = @projects.count
+  @projects = @projects.limit(@projects_limit)</p>
+
+<p>  @events = Event.in_projects(current_user.authorized_projects.pluck(:id))
+  @events = @event_filter.apply_filter(@events)
+  @events = @events.limit(20).offset(params[:offset] || 0)</p>
+
+<p>  @last_push = current_user.recent_push
+  respond_to do |format|</p>
+
+<pre><code>format.html
+format.js
+format.atom { render layout: false }
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<!-- more -->
+
+
+<h3>Group class methods</h3>
+
+<p>You could put all your class methods inside <code>class &lt;&lt; self</code>. Avoid to put <code>self.</code> in each methods.
+``` ruby</p>
+
+<h1>method 1</h1>
+
+<p>class Ability
+  class &lt;&lt; self</p>
+
+<pre><code>def allowed(user, subject)
+  ...
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>method 2</h1>
+
+<p>class Ability
+  def self.allowed(user,subject)</p>
+
+<pre><code>...
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<h3>Always sexy validations</h3>
+
+<p>```
+validates :name, presence: true
+validates :email, presence: true, format: { with: /\A([<sup>@\s]+)@((?:[-a-z0-9]+.)+[a-z]{2,})\Z/</sup> }
+validates :bio, length: { within: 0..255 }
+validates :extern_uid, allow_blank: true, uniqueness: {scope: :provider}
+validates :projects_limit, presence: true, numericality: {greater_than_or_equal_to: 0}
+validates :username, presence: true, uniqueness: true,</p>
+
+<pre><code>      exclusion: { in: Gitlab::Blacklist.path },
+      format: { with: Gitlab::Regex.username_regex,
+                message: "only letters, digits &amp; '_' '-' '.' allowed. Letter should be first" } 
+</code></pre>
+
+<p>validate :namespace_uniq, if: ->(user) { user.username_changed? }
+```</p>
+
+<h3>Delgate method</h3>
+
+<p>Reference <a href="http://www.simonecarletti.com/blog/2009/12/inside-ruby-on-rails-delegate/">delegate in rails</a>
+```
+class Post
+  belongs_to :user
+  delegate :name, :to => :user, :allow_nil => true, :prefix => true
+  delegate :name, :to => :user, :allow_nil => true, :prefix => "author"</p>
+
+<p>end</p>
+
+<p>class User
+  has_many :posts
+end</p>
+
+<h1>You can call it in Post instance</h1>
+
+<p>post = Post.find(param[:id])
+post.user_name # return user's name
+post.author_name # return user' name
+```</p>
+
+<h2>Some basics i didn't mention before.</h2>
+
+<h3>object.map(&amp;:foo)</h3>
+
+<p>Below are equivalent.
+``` ruby
+Base = Struct.new(:name)</p>
+
+<p>tag1 = Base.new('hello')
+tag2 = Base.new('bye')</p>
+
+<p>result = [tag1, tag2].map { |tag| tag.name }
+result = [tag1, tag2].map(&amp;:name)
+```</p>
+
+<h3>send</h3>
+
+<p>```</p>
+
+<h1>These statements are equal</h1>
+
+<p>@person.age
+@person.send :age</p>
+
+<p>@person.age = 5
+@person.send :age=, 5</p>
+
+<p>@person.set_age(5)
+@person.send :set_age, 5
+```</p>
+
+<h3>content_for ( yield )</h3>
+
+<p>Learned from Xdite's <a href="http://blog.xdite.net/posts/2013/10/31/maintainable-rails-view-3">Maintainable Rails View</a>
+``` ruby layout.html.erb</p>
+
+<h1>In your layout, you can put a sidebar with yield :sidebar</h1>
+
+<div class="main">  
+  <%= yield %>
+</div>
+
+
+
+
+<div class="sidebar"> 
+  <%= yield :sidebar %>
+</div>
+
+
+<p><code>
+</code> ruby xxx.html.erb</p>
+
+<h1>Use content_for :sidebar to render sidebar.</h1>
+
+<p>&lt;%= content_for :sidebar do %>  <br/>
+  &lt;%= render "ad/foo"%>
+&lt;% end %>
+```</p>
+
+<h3>change entire layout</h3>
+
+<p>Use <code>layout</code> to make profiles page use <em>profile</em> layout not <em>application</em> layout
+``` ruby
+class ProfilesController &lt; ApplicationController</p>
+
+<p>  layout 'profile'
+  ...
+end
+```</p>
+
+<h3>redirect from localhost/project/yyy.git to localhost/project/yyy</h3>
+
+<p>``` ruby application_controller.rb
+def project
+  if id =~ /.git\Z/</p>
+
+<pre><code>redirect_to request.original_url.gsub(/\.git\Z/, '') and return
+</code></pre>
+
+<p>  end
+  ...
+end
+```</p>
+
+<h2>Good gems</h2>
+
+<ol>
+<li><a href="https://github.com/ctran/annotate_models">annotate</a>: add comments to your ActiveRecord models/specs/routes..rb</li>
+<li><a href="https://github.com/michaeldv/awesome_print">awesome_print</a>: pretty print your ruby objects</li>
+<li><a href="https://github.com/charliesome/better_errors">better_errors</a>: better error page for rails</li>
+<li><a href="https://github.com/mbleigh/acts-as-taggable-on">acts-as-taggable-on</a>: a tagging plugin</li>
+<li><a href="https://github.com/railsbp/rails_best_practices">rails_best_practices</a>: code metric tool for rails</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[mongodb in rails4]]></title>
@@ -603,143 +809,6 @@ So i use EmberJS,HighchartJS and Rails to build this simple web app. I always le
 <p><img src="/images/0922-trend.png" width="500" height="500" title="trend-image" alt="trend"></p>
 
 <p>I won't describe studying notes here but write them in other posts.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ActionSupport in Rails4 part2]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/13/actionsupport-in-rails4-part2/"/>
-    <updated>2013-09-13T21:42:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/13/actionsupport-in-rails4-part2</id>
-    <content type="html"><![CDATA[<p>Continue ActionSupport useful record</p>
-
-<h3>Extensions to Numeric</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/numeric/bytes.rb.</p>
-
-<h4>Bytes</h4>
-
-<p>All number respond to these methods
-<code>ruby
-2.kilobytes   # =&gt; 2048
-3.megabytes   # =&gt; 3145728
-3.5.gigabytes # =&gt; 3758096384
--4.exabytes   # =&gt; -4611686018427387904
-</code></p>
-
-<!-- more-->
-
-
-<hr />
-
-<p>Defined in active_support/core_ext/numeric/time.rb.</p>
-
-<h4>Time</h4>
-
-<p>```</p>
-
-<h1>equivalent to Time.current.advance(months: 1)</h1>
-
-<p>1.month.from_now</p>
-
-<h1>equivalent to Time.current.advance(years: 2)</h1>
-
-<p>2.years.from_now</p>
-
-<h1>equivalent to Time.current.advance(months: 4, years: 5)</h1>
-
-<p>(4.months + 5.years).from_now
-```</p>
-
-<h3>Extensions to Integer</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/integer/multiple.rb.</p>
-
-<h4>multiple_of</h4>
-
-<p><code>
-2.multiple_of?(1) # =&gt; true
-1.multiple_of?(2) # =&gt; false
-</code></p>
-
-<h3>Extensions to Enumerable</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/enumerable.rb.</p>
-
-<h4>sum</h4>
-
-<p><code>
-[1, 2, 3].sum # =&gt; 6
-(1..100).sum  # =&gt; 5050
-</code>
-If a block is given, sum becomes an iterator that yields the elements of the collection and sums the returned values:
-<code>
-(1..5).sum {|n| n * 2 } # =&gt; 30
-[2, 4, 6, 8, 10].sum    # =&gt; 30
-</code></p>
-
-<h4>many?</h4>
-
-<p>The method many? is shorthand for collection.size > 1:
-<code>
-&lt;% if pages.many? %&gt;
-  &lt;%= pagination_links %&gt;
-&lt;% end %&gt;
-</code></p>
-
-<h3>Extensions to Array</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/array/access.rb.
-<code>
-%w(a b c d).to(2) # =&gt; %w(a b c)
-[].to(7)          # =&gt; []
-%w(a b c d).from(2)  # =&gt; %w(c d)
-%w(a b c d).from(10) # =&gt; []
-</code></p>
-
-<hr />
-
-<p>Defined in active_support/core_ext/array/prepend_and_append.rb.</p>
-
-<h4>prepend and append</h4>
-
-<p><code>
-%w(a b c d).prepend('e')  # =&gt; %w(e a b c d)
-[].prepend(10)            # =&gt; [10]
-%w(a b c d).append('e')  # =&gt; %w(a b c d e)
-[].append([1,2])         # =&gt; [[1,2]]
-</code></p>
-
-<hr />
-
-<p>Defined in active_support/core_ext/array/grouping.rb</p>
-
-<h4>in_groups_of(number, fill_with = nil)</h4>
-
-<p>The method in_groups_of splits an array into consecutive groups of a certain size.
-<code>
-[1, 2, 3].in_groups_of(2) # =&gt; [[1, 2], [3, nil]]
-[1, 2, 3].in_groups_of(2, false) # =&gt; [[1, 2], [3]]
-[1, 2, 3].in_groups_of(2, 0) # =&gt; [[1, 2], [3, 0]]
-</code></p>
-
-<h4>in_groups(number, fill_with = nil)</h4>
-
-<p>The method in_groups splits an array into a certain number of groups.
-```
-%w(1 2 3 4 5 6 7).in_groups(3)</p>
-
-<h1>=> [["1", "2", "3"], ["4", "5", nil], ["6", "7", nil]]</h1>
-
-<p>```</p>
 ]]></content>
   </entry>
   

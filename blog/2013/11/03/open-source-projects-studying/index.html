@@ -1,0 +1,458 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>open source project studying - Weichien's studying note</title>
+	<meta name="author" content="Weichien Hung">
+
+	
+	<meta name="description" content="I study the open source project gitlab. It&#8217;s a well coding rails structure.
+Here are some examples i think they are good. Don&#8217;t query &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Weichien's studying note" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><a class="myheader-avatar" href="/"><img src="/images/samuel.jpg"></a>
+<div class="myheader-slogan">
+<h1><a href="/">Weichien's studying note</a></h1>
+<h2>Practice makes perfect</h2>
+</div>
+<nav id="main-nav"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Tags</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a id="menu-btn" class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Tags</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:weichienhung.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		<a class="facebook" href="http://www.facebook.com/weichien.hung" title="Facebook">Facebook</a>
+		
+		
+		<a class="google" href="https://plus.google.com/113676445086645352045?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/HungWeichien" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/weichienhung" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		<!-- 
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		 -->
+    
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:weichienhung.github.io">
+	</form>
+</nav>
+
+</header>
+<!-- 	
+		
+	 -->
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Open Source Project Studying</h2>
+	<div class="entry-content"><p>I study the open source project <a href="https://github.com/gitlabhq/gitlabhq">gitlab</a>. It&#8217;s a well coding rails structure.
+Here are some examples i think they are good.</p>
+
+<h3>Don&#8217;t query data in View/Helper</h3>
+
+<p>Avoid perform query in view/helper in Xdite&#8217;s <a href="http://blog.xdite.net/posts/2013/10/31/maintainable-rails-view-6">Maintainable Rails View</a>.</p>
+
+<figure class='code'><figcaption><span>dashboard_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@projects_limit</span> <span class="o">=</span> <span class="mi">30</span>
+</span><span class='line'>  <span class="vi">@groups</span> <span class="o">=</span> <span class="n">current_user</span><span class="o">.</span><span class="n">authorized_groups</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:human_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@has_authorized_projects</span> <span class="o">=</span> <span class="vi">@projects</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="vi">@projects_count</span> <span class="o">=</span> <span class="vi">@projects</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'>  <span class="vi">@projects</span> <span class="o">=</span> <span class="vi">@projects</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="vi">@projects_limit</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="vi">@events</span> <span class="o">=</span> <span class="no">Event</span><span class="o">.</span><span class="n">in_projects</span><span class="p">(</span><span class="n">current_user</span><span class="o">.</span><span class="n">authorized_projects</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">))</span>
+</span><span class='line'>  <span class="vi">@events</span> <span class="o">=</span> <span class="vi">@event_filter</span><span class="o">.</span><span class="n">apply_filter</span><span class="p">(</span><span class="vi">@events</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@events</span> <span class="o">=</span> <span class="vi">@events</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:offset</span><span class="o">]</span> <span class="o">||</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="vi">@last_push</span> <span class="o">=</span> <span class="n">current_user</span><span class="o">.</span><span class="n">recent_push</span>
+</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">html</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">js</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">atom</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">layout</span><span class="p">:</span> <span class="kp">false</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!-- more -->
+
+
+<h3>Group class methods</h3>
+
+<p>You could put all your class methods inside <code>class &lt;&lt; self</code>. Avoid to put <code>self.</code> in each methods.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># method 1</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Ability</span>
+</span><span class='line'>  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">allowed</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">subject</span><span class="p">)</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># method 2</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Ability</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">allowed</span><span class="p">(</span><span class="n">user</span><span class="p">,</span><span class="n">subject</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Always sexy validations</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">presence</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="p">{</span> <span class="ss">with</span><span class="p">:</span> <span class="sr">/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/</span> <span class="p">}</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:bio</span><span class="p">,</span> <span class="ss">length</span><span class="p">:</span> <span class="p">{</span> <span class="ss">within</span><span class="p">:</span> <span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">255</span> <span class="p">}</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:extern_uid</span><span class="p">,</span> <span class="n">allow_blank</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">uniqueness</span><span class="p">:</span> <span class="p">{</span><span class="ss">scope</span><span class="p">:</span> <span class="ss">:provider</span><span class="p">}</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:projects_limit</span><span class="p">,</span> <span class="ss">presence</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">numericality</span><span class="p">:</span> <span class="p">{</span><span class="n">greater_than_or_equal_to</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:username</span><span class="p">,</span> <span class="ss">presence</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">uniqueness</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>          <span class="ss">exclusion</span><span class="p">:</span> <span class="p">{</span> <span class="k">in</span><span class="p">:</span> <span class="ss">Gitlab</span><span class="p">:</span><span class="ss">:Blacklist</span><span class="o">.</span><span class="n">path</span> <span class="p">},</span>
+</span><span class='line'>          <span class="nb">format</span><span class="p">:</span> <span class="p">{</span> <span class="ss">with</span><span class="p">:</span> <span class="ss">Gitlab</span><span class="p">:</span><span class="ss">:Regex</span><span class="o">.</span><span class="n">username_regex</span><span class="p">,</span>
+</span><span class='line'>                    <span class="ss">message</span><span class="p">:</span> <span class="s2">&quot;only letters, digits &amp; &#39;_&#39; &#39;-&#39; &#39;.&#39; allowed. Letter should be first&quot;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">validate</span> <span class="ss">:namespace_uniq</span><span class="p">,</span> <span class="k">if</span><span class="p">:</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="p">{</span> <span class="n">user</span><span class="o">.</span><span class="n">username_changed?</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Delgate method</h3>
+
+<p>Reference <a href="http://www.simonecarletti.com/blog/2009/12/inside-ruby-on-rails-delegate/">delegate in rails</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Post</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:user</span>
+</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">:allow_nil</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:prefix</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">:allow_nil</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:prefix</span> <span class="o">=&gt;</span> <span class="s2">&quot;author&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">User</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:posts</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># You can call it in Post instance</span>
+</span><span class='line'><span class="n">post</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">param</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="n">post</span><span class="o">.</span><span class="n">user_name</span> <span class="c1"># return user&#39;s name</span>
+</span><span class='line'><span class="n">post</span><span class="o">.</span><span class="n">author_name</span> <span class="c1"># return user&#39; name</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Some basics i didn&#8217;t mention before.</h2>
+
+<h3>object.map(&amp;:foo)</h3>
+
+<p>Below are equivalent.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Base</span> <span class="o">=</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">tag1</span> <span class="o">=</span> <span class="no">Base</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">tag2</span> <span class="o">=</span> <span class="no">Base</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;bye&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="o">[</span><span class="n">tag1</span><span class="p">,</span> <span class="n">tag2</span><span class="o">].</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">tag</span><span class="o">|</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="p">}</span>
+</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="o">[</span><span class="n">tag1</span><span class="p">,</span> <span class="n">tag2</span><span class="o">].</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:name</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>send</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># These statements are equal</span>
+</span><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">age</span>
+</span><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">send</span> <span class="ss">:age</span>
+</span><span class='line'>
+</span><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="mi">5</span>
+</span><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">send</span> <span class="ss">:age</span><span class="o">=</span><span class="p">,</span> <span class="mi">5</span>
+</span><span class='line'>
+</span><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">set_age</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">send</span> <span class="ss">:set_age</span><span class="p">,</span> <span class="mi">5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>content_for ( yield )</h3>
+
+<p>Learned from Xdite&#8217;s <a href="http://blog.xdite.net/posts/2013/10/31/maintainable-rails-view-3">Maintainable Rails View</a></p>
+
+<figure class='code'><figcaption><span>layout.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># In your layout, you can put a sidebar with yield :sidebar</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= yield %&gt;</span>
+</span><span class='line'><span class="sx">&lt;/div&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">&lt;div class=</span><span class="s2">&quot;sidebar&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;%=</span> <span class="k">yield</span> <span class="ss">:sidebar</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>xxx.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Use content_for :sidebar to render sidebar.</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">%= content_for :sidebar do %&gt;    </span>
+</span><span class='line'><span class="sx">  &lt;%=</span> <span class="n">render</span> <span class="s2">&quot;ad/foo&quot;</span><span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;% end %&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>change entire layout</h3>
+
+<p>Use <code>layout</code> to make profiles page use <em>profile</em> layout not <em>application</em> layout</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">layout</span> <span class="s1">&#39;profile&#39;</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>redirect from localhost/project/yyy.git to localhost/project/yyy</h3>
+
+<figure class='code'><figcaption><span>application_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">project</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">id</span> <span class="o">=~</span> <span class="sr">/\.git\Z/</span>
+</span><span class='line'>    <span class="n">redirect_to</span> <span class="n">request</span><span class="o">.</span><span class="n">original_url</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/\.git\Z/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="k">return</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Good gems</h2>
+
+<ol>
+<li><a href="https://github.com/ctran/annotate_models">annotate</a>: add comments to your ActiveRecord models/specs/routes..rb</li>
+<li><a href="https://github.com/michaeldv/awesome_print">awesome_print</a>: pretty print your ruby objects</li>
+<li><a href="https://github.com/charliesome/better_errors">better_errors</a>: better error page for rails</li>
+<li><a href="https://github.com/mbleigh/acts-as-taggable-on">acts-as-taggable-on</a>: a tagging plugin</li>
+<li><a href="https://github.com/railsbp/rails_best_practices">rails_best_practices</a>: code metric tool for rails</li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-03T09:57:00+08:00" pubdate data-updated="true">Nov 3<span>rd</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/rails/'>rails</a>
+
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Weichien Hung
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $(document).ready(function(){
+    $('.fancybox').fancybox();
+  })
+})(jQuery);
+</script> 
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'weichienhung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/11/03/open-source-projects-studying/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2013/11/03/open-source-projects-studying/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

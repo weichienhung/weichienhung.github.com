@@ -7,9 +7,8 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="In the past week i had tried mongodb in rails.
-I rewrite my previous project money to use mongodb instead of active record.
-The source code is in &hellip;">
+	<meta name="description" content="I study the open source project gitlab. It&#8217;s a well coding rails structure.
+Here are some examples i think they are good. Don&#8217;t query &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -92,6 +91,94 @@ The source code is in &hellip;">
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/11/03/open-source-projects-studying/">
+		
+			Open Source Project Studying</a>
+	</h2>
+	<div class="entry-content">
+		<p>I study the open source project <a href="https://github.com/gitlabhq/gitlabhq">gitlab</a>. It&#8217;s a well coding rails structure.
+Here are some examples i think they are good.</p>
+
+<h3>Don&#8217;t query data in View/Helper</h3>
+
+<p>Avoid perform query in view/helper in Xdite&#8217;s <a href="http://blog.xdite.net/posts/2013/10/31/maintainable-rails-view-6">Maintainable Rails View</a>.</p>
+
+<figure class='code'><figcaption><span>dashboard_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@projects_limit</span> <span class="o">=</span> <span class="mi">30</span>
+</span><span class='line'>  <span class="vi">@groups</span> <span class="o">=</span> <span class="n">current_user</span><span class="o">.</span><span class="n">authorized_groups</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:human_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@has_authorized_projects</span> <span class="o">=</span> <span class="vi">@projects</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="vi">@projects_count</span> <span class="o">=</span> <span class="vi">@projects</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'>  <span class="vi">@projects</span> <span class="o">=</span> <span class="vi">@projects</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="vi">@projects_limit</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="vi">@events</span> <span class="o">=</span> <span class="no">Event</span><span class="o">.</span><span class="n">in_projects</span><span class="p">(</span><span class="n">current_user</span><span class="o">.</span><span class="n">authorized_projects</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">))</span>
+</span><span class='line'>  <span class="vi">@events</span> <span class="o">=</span> <span class="vi">@event_filter</span><span class="o">.</span><span class="n">apply_filter</span><span class="p">(</span><span class="vi">@events</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@events</span> <span class="o">=</span> <span class="vi">@events</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:offset</span><span class="o">]</span> <span class="o">||</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="vi">@last_push</span> <span class="o">=</span> <span class="n">current_user</span><span class="o">.</span><span class="n">recent_push</span>
+</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">html</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">js</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">atom</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">layout</span><span class="p">:</span> <span class="kp">false</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+		
+		<a href="/blog/2013/11/03/open-source-projects-studying/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-03T09:57:00+08:00" pubdate data-updated="true">Nov 3<span>rd</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/rails/'>rails</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2013/11/03/open-source-projects-studying/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -784,73 +871,6 @@ So i use EmberJS,HighchartJS and Rails to build this simple web app. I always le
 </div>
 	
 	<div class="comments"><a href="/blog/2013/09/22/use-highchartjs-to-visual/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/09/13/actionsupport-in-rails4-part2/">
-		
-			ActionSupport in Rails4 Part2</a>
-	</h2>
-	<div class="entry-content">
-		<p>Continue ActionSupport useful record</p>
-
-<h3>Extensions to Numeric</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/numeric/bytes.rb.</p>
-
-<h4>Bytes</h4>
-
-<p>All number respond to these methods</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">kilobytes</span>   <span class="c1"># =&gt; 2048</span>
-</span><span class='line'><span class="mi">3</span><span class="o">.</span><span class="n">megabytes</span>   <span class="c1"># =&gt; 3145728</span>
-</span><span class='line'><span class="mi">3</span><span class="o">.</span><span class="mi">5</span><span class="o">.</span><span class="n">gigabytes</span> <span class="c1"># =&gt; 3758096384</span>
-</span><span class='line'><span class="o">-</span><span class="mi">4</span><span class="o">.</span><span class="n">exabytes</span>   <span class="c1"># =&gt; -4611686018427387904</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-
-		
-		<a href="/blog/2013/09/13/actionsupport-in-rails4-part2/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-13T21:42:00+08:00" pubdate data-updated="true">Sep 13<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>rails</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/09/13/actionsupport-in-rails4-part2/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

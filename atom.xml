@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-10-27T00:13:39+08:00</updated>
+  <updated>2013-11-03T15:32:06+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,288 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[open source project studying]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/11/03/open-source-projects-studying/"/>
+    <updated>2013-11-03T09:57:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/11/03/open-source-projects-studying</id>
+    <content type="html"><![CDATA[<p>I study the open source project <a href="https://github.com/gitlabhq/gitlabhq">gitlab</a>. It&#8217;s a well coding rails structure.
+Here are some examples i think they are good.</p>
+
+<h3>Don&#8217;t query data in View/Helper</h3>
+
+<p>Avoid perform query in view/helper in Xdite&#8217;s <a href="http://blog.xdite.net/posts/2013/10/31/maintainable-rails-view-6">Maintainable Rails View</a>.</p>
+
+<figure class='code'><figcaption><span>dashboard_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@projects_limit</span> <span class="o">=</span> <span class="mi">30</span>
+</span><span class='line'>  <span class="vi">@groups</span> <span class="o">=</span> <span class="n">current_user</span><span class="o">.</span><span class="n">authorized_groups</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:human_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@has_authorized_projects</span> <span class="o">=</span> <span class="vi">@projects</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="vi">@projects_count</span> <span class="o">=</span> <span class="vi">@projects</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'>  <span class="vi">@projects</span> <span class="o">=</span> <span class="vi">@projects</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="vi">@projects_limit</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="vi">@events</span> <span class="o">=</span> <span class="no">Event</span><span class="o">.</span><span class="n">in_projects</span><span class="p">(</span><span class="n">current_user</span><span class="o">.</span><span class="n">authorized_projects</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">))</span>
+</span><span class='line'>  <span class="vi">@events</span> <span class="o">=</span> <span class="vi">@event_filter</span><span class="o">.</span><span class="n">apply_filter</span><span class="p">(</span><span class="vi">@events</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@events</span> <span class="o">=</span> <span class="vi">@events</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:offset</span><span class="o">]</span> <span class="o">||</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="vi">@last_push</span> <span class="o">=</span> <span class="n">current_user</span><span class="o">.</span><span class="n">recent_push</span>
+</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">html</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">js</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">atom</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">layout</span><span class="p">:</span> <span class="kp">false</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!-- more -->
+
+
+<h3>Group class methods</h3>
+
+<p>You could put all your class methods inside <code>class &lt;&lt; self</code>. Avoid to put <code>self.</code> in each methods.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># method 1</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Ability</span>
+</span><span class='line'>  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">allowed</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">subject</span><span class="p">)</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># method 2</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Ability</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">allowed</span><span class="p">(</span><span class="n">user</span><span class="p">,</span><span class="n">subject</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Always sexy validations</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">presence</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="p">{</span> <span class="ss">with</span><span class="p">:</span> <span class="sr">/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/</span> <span class="p">}</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:bio</span><span class="p">,</span> <span class="ss">length</span><span class="p">:</span> <span class="p">{</span> <span class="ss">within</span><span class="p">:</span> <span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">255</span> <span class="p">}</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:extern_uid</span><span class="p">,</span> <span class="n">allow_blank</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">uniqueness</span><span class="p">:</span> <span class="p">{</span><span class="ss">scope</span><span class="p">:</span> <span class="ss">:provider</span><span class="p">}</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:projects_limit</span><span class="p">,</span> <span class="ss">presence</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">numericality</span><span class="p">:</span> <span class="p">{</span><span class="n">greater_than_or_equal_to</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+</span><span class='line'><span class="n">validates</span> <span class="ss">:username</span><span class="p">,</span> <span class="ss">presence</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">uniqueness</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>          <span class="ss">exclusion</span><span class="p">:</span> <span class="p">{</span> <span class="k">in</span><span class="p">:</span> <span class="ss">Gitlab</span><span class="p">:</span><span class="ss">:Blacklist</span><span class="o">.</span><span class="n">path</span> <span class="p">},</span>
+</span><span class='line'>          <span class="nb">format</span><span class="p">:</span> <span class="p">{</span> <span class="ss">with</span><span class="p">:</span> <span class="ss">Gitlab</span><span class="p">:</span><span class="ss">:Regex</span><span class="o">.</span><span class="n">username_regex</span><span class="p">,</span>
+</span><span class='line'>                    <span class="ss">message</span><span class="p">:</span> <span class="s2">&quot;only letters, digits &amp; &#39;_&#39; &#39;-&#39; &#39;.&#39; allowed. Letter should be first&quot;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">validate</span> <span class="ss">:namespace_uniq</span><span class="p">,</span> <span class="k">if</span><span class="p">:</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="p">{</span> <span class="n">user</span><span class="o">.</span><span class="n">username_changed?</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Delgate method</h3>
+
+<p>Reference <a href="http://www.simonecarletti.com/blog/2009/12/inside-ruby-on-rails-delegate/">delegate in rails</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Post</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:user</span>
+</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">:allow_nil</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:prefix</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">:allow_nil</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:prefix</span> <span class="o">=&gt;</span> <span class="s2">&quot;author&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">User</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:posts</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># You can call it in Post instance</span>
+</span><span class='line'><span class="n">post</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">param</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="n">post</span><span class="o">.</span><span class="n">user_name</span> <span class="c1"># return user&#39;s name</span>
+</span><span class='line'><span class="n">post</span><span class="o">.</span><span class="n">author_name</span> <span class="c1"># return user&#39; name</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Some basics i didn&#8217;t mention before.</h2>
+
+<h3>object.map(&amp;:foo)</h3>
+
+<p>Below are equivalent.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Base</span> <span class="o">=</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">tag1</span> <span class="o">=</span> <span class="no">Base</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">tag2</span> <span class="o">=</span> <span class="no">Base</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;bye&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="o">[</span><span class="n">tag1</span><span class="p">,</span> <span class="n">tag2</span><span class="o">].</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">tag</span><span class="o">|</span> <span class="n">tag</span><span class="o">.</span><span class="n">name</span> <span class="p">}</span>
+</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="o">[</span><span class="n">tag1</span><span class="p">,</span> <span class="n">tag2</span><span class="o">].</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:name</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>send</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># These statements are equal</span>
+</span><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">age</span>
+</span><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">send</span> <span class="ss">:age</span>
+</span><span class='line'>
+</span><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="mi">5</span>
+</span><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">send</span> <span class="ss">:age</span><span class="o">=</span><span class="p">,</span> <span class="mi">5</span>
+</span><span class='line'>
+</span><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">set_age</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'><span class="vi">@person</span><span class="o">.</span><span class="n">send</span> <span class="ss">:set_age</span><span class="p">,</span> <span class="mi">5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>content_for ( yield )</h3>
+
+<p>Learned from Xdite&#8217;s <a href="http://blog.xdite.net/posts/2013/10/31/maintainable-rails-view-3">Maintainable Rails View</a></p>
+
+<figure class='code'><figcaption><span>layout.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># In your layout, you can put a sidebar with yield :sidebar</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= yield %&gt;</span>
+</span><span class='line'><span class="sx">&lt;/div&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">&lt;div class=</span><span class="s2">&quot;sidebar&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;%=</span> <span class="k">yield</span> <span class="ss">:sidebar</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>xxx.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Use content_for :sidebar to render sidebar.</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">%= content_for :sidebar do %&gt;    </span>
+</span><span class='line'><span class="sx">  &lt;%=</span> <span class="n">render</span> <span class="s2">&quot;ad/foo&quot;</span><span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;% end %&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>change entire layout</h3>
+
+<p>Use <code>layout</code> to make profiles page use <em>profile</em> layout not <em>application</em> layout</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ProfilesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">layout</span> <span class="s1">&#39;profile&#39;</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>redirect from localhost/project/yyy.git to localhost/project/yyy</h3>
+
+<figure class='code'><figcaption><span>application_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">project</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">id</span> <span class="o">=~</span> <span class="sr">/\.git\Z/</span>
+</span><span class='line'>    <span class="n">redirect_to</span> <span class="n">request</span><span class="o">.</span><span class="n">original_url</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/\.git\Z/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="k">return</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Good gems</h2>
+
+<ol>
+<li><a href="https://github.com/ctran/annotate_models">annotate</a>: add comments to your ActiveRecord models/specs/routes..rb</li>
+<li><a href="https://github.com/michaeldv/awesome_print">awesome_print</a>: pretty print your ruby objects</li>
+<li><a href="https://github.com/charliesome/better_errors">better_errors</a>: better error page for rails</li>
+<li><a href="https://github.com/mbleigh/acts-as-taggable-on">acts-as-taggable-on</a>: a tagging plugin</li>
+<li><a href="https://github.com/railsbp/rails_best_practices">rails_best_practices</a>: code metric tool for rails</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[mongodb in rails4]]></title>
@@ -2127,7 +2409,7 @@ I prefer the Tomorrow-Night-Eighties theme</p>
 <p>Auto complete in every opening tab.
 Use <code>Package Control</code> > <code>Install Package</code> > <code>All Autocomplete</code></p>
 
-<h3>6. Default setting update</h3>
+<h3>6. Better your default setting</h3>
 
 <p><code>Preferences</code> > <code>Settings -&gt; Default</code></p>
 
@@ -2138,12 +2420,28 @@ Use <code>Package Control</code> > <code>Install Package</code> > <code>All Auto
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
 </pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">...</span>
-</span><span class='line'><span class="err">//Change</span> <span class="err">tab</span> <span class="err">to</span> <span class="err">spaces</span>
+</span><span class='line'><span class="err">//Change</span> <span class="err">tab</span> <span class="err">to</span> <span class="err">spaces</span> <span class="err">and</span> <span class="err">set</span> <span class="err">size</span>
+</span><span class='line'><span class="s2">&quot;tab_size&quot;</span><span class="err">:</span> <span class="mi">2</span><span class="err">,</span>
 </span><span class='line'><span class="s2">&quot;translate_tabs_to_spaces&quot;</span><span class="err">:</span> <span class="kc">true</span><span class="err">,</span>
 </span><span class='line'>
 </span><span class='line'><span class="err">//Highlight</span> <span class="err">the</span> <span class="err">current</span> <span class="err">line</span>
 </span><span class='line'><span class="s2">&quot;highlight_line&quot;</span><span class="err">:</span> <span class="kc">true</span><span class="err">,</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">//Highlight</span> <span class="err">the</span> <span class="err">modified</span> <span class="err">tab</span>
+</span><span class='line'><span class="s2">&quot;highlight_modified_tabs&quot;</span><span class="err">:</span> <span class="kc">true</span><span class="err">,</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">//</span> <span class="err">bold</span> <span class="err">the</span> <span class="err">folder</span>
+</span><span class='line'><span class="s2">&quot;bold_folder_labels&quot;</span><span class="err">:</span> <span class="kc">true</span><span class="err">,</span>
+</span><span class='line'>
 </span><span class='line'><span class="err">...</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -2258,150 +2556,6 @@ I try skills in this projects<br/>
 4. rails REST<br/>
 5. RSpec<br/>
 6. Capybara</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[memcached study]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/08/07/memcached-study/"/>
-    <updated>2013-08-07T21:27:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/08/07/memcached-study</id>
-    <content type="html"><![CDATA[<p>I studied the memcached since yesterday. It&#8217;s a good cache implementation used by Twitter,Facebook..etc.
-Because the official site doesn&#8217;t provide the rpm for download and i can&#8217;t get the latest version from yum.
-I learn how to build it from source and also try the <a href="http://repcached.lab.klab.org/">repached</a>(for memcached replication but not official)</p>
-
-<!-- more -->
-
-
-<h2>how to install memcached from source</h2>
-
-<p>You can refer to <a href="https://code.google.com/p/memcached/wiki/NewInstallFromSource">link</a>(i didn&#8217;t find this post until i solve the installation XD)</p>
-
-<h3>install libevent dependency</h3>
-
-<p>I try download the libevent source from website and build it. But i found <code>yum</code> is the easiest. Don&#8217;t worry if your libevent version is 1.4.x not 2.0.x.
-memcached-1.4.15 can be build with libevent-1.4.x</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>yum install libevent-devel
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>download the memcached-1.x.x.tar from <a href="http://memcached.org/">memcached.org</a> and untar</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>tar zxvf memcached-1.x.x.tar
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>make it</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>./configure --prefix<span class="o">=</span>/usr/local/memcached-1.4.x/
-</span><span class='line'>
-</span><span class='line'>make
-</span><span class='line'>
-</span><span class='line'>make install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>you may fail in <code>configure</code> and show no libevent dependency. you should add <code>--with-libevent=/usr/local/libevent/</code>(your libevent library folder) in configure</p>
-
-<h2>start memcached</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> /usr/local/memcached-1.4.x/bin/
-</span><span class='line'>
-</span><span class='line'>./memcached -u nobody -p 11211 -P /usr/local/memcached-1.4.x/bin/mem.pid -d -v
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>stop memcached</h2>
-
-<p>find the process id from /usr/local/memcached-1.4.x/bin/mem.pid and kill it</p>
-
-<h2>how to make memcached cluster</h2>
-
-<p>Each memcached node is configured independently in the cluster. They don&#8217;t communicate or exchange data. It&#8217;s the client&#8217;s job to decide which
-server  from the cluster. Clients may use the consistent-hash to choose a memcached node and write/read data.<br/>
-Memcached make your application performance better but your application have to work correctly even the memcached servers crash.
-Memcached is not the storage solution.</p>
-
-<h2>install memcached with repcache</h2>
-
-<p>I upload the related repache patch and memcached-1.4.4 source to Dropbox. You can download from it.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget --no-check-certificate https://dl.dropboxusercontent.com/u/60216960/memcached-1.4.4.zip
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>patch source before configure</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>patch -p1 -i repcached-2.2-1.4.4.patch
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>make it</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>./configure --enable-replication --prefix<span class="o">=</span>/usr/local/memcached-1.4.4-rep/
-</span><span class='line'>
-</span><span class='line'>make
-</span><span class='line'>
-</span><span class='line'>make install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>start memcached with repcache</h2>
-
-<p>For example, we have two servers: server 1(192.168.0.103) and server 2(192.168.0.101)<br/>
-In server 1</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>./memcached -u nobody -v -p 11211 -X 11212
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In server 2</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>./memcached -u nobody -v -p 11211 -x 192.168.0.103 -X 11212
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>test the replication</h3>
-
-<p>add key in server 1</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>telnet 192.168.0.103 11211
-</span><span class='line'>add hello 0 0 2
-</span><span class='line'>99
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>read in server 2</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>telnet 192.168.0.101 11211
-</span><span class='line'>get hello
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   
