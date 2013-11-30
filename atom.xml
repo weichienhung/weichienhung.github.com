@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-11-03T15:32:06+08:00</updated>
+  <updated>2013-11-30T23:44:28+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,164 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[new rails project for fun]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/11/30/new-practicing-rails-project/"/>
+    <updated>2013-11-30T20:16:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/11/30/new-practicing-rails-project</id>
+    <content type="html"><![CDATA[<p>Today i push a new rails project to <a href="http://weichien-lunch.herokuapp.com/">heroku</a> called lunch.
+I also push to <a href="https://github.com/weichienhung/lunch">github</a>.
+Every week day i and colleague have to discuss which lunch to eat.
+It will be very helpful if a site can random pick a lunch restaurant for us. So i create a new rails project for this purpose.
+The basic idea is simple, everybody can share a restaurant and add others&#8217; restaurants to favorites list. Then site pick a restaurant for you.
+I can study new stuff when i practice rails each time. I try to write down here.</p>
+
+<!-- more -->
+
+
+<h3>image store in S3</h3>
+
+<p>Because the heroku doesn&#8217;t allow to store images, i move the paperclip default storage to S3.
+It&#8217;s very easy to implement, just follow this <a href="https://devcenter.heroku.com/articles/paperclip-s3">tutorial</a></p>
+
+<h3>social network signin</h3>
+
+<p>This time i integrate three social networks(facebook, twitter, google).
+I am stuck in google app setting for a while. Because they all have different callback url setting.
+Finally i resolved and here are screenshots for these sites. These samples are for <code>127.0.0.1:3000</code> testing</p>
+
+<h4>google</h4>
+
+<p><img src="http://weichienhung.github.io/images/posts/20131129-1.png" width="800" height="600" title="list-image" alt="list"></p>
+
+<h4>twitter</h4>
+
+<p><img src="http://weichienhung.github.io/images/posts/20131129-2.png" width="800" height="600" title="list-image" alt="list"></p>
+
+<h4>facebook</h4>
+
+<p><img src="http://weichienhung.github.io/images/posts/20131129-3.png" width="800" height="600" title="list-image" alt="list"></p>
+
+<h3>MVP design</h3>
+
+<p>I add a <code>app/presenters</code> folder and make controller logic more impact.
+Add folder path to <code>application.rb</code> that controller could access them.</p>
+
+<figure class='code'><figcaption><span>application.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">paths</span><span class="o">.</span><span class="n">add</span> <span class="s2">&quot;app/presenters&quot;</span><span class="p">,</span> <span class="ss">glob</span><span class="p">:</span> <span class="s2">&quot;**/*.rb&quot;</span>
+</span><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">autoload_paths</span> <span class="o">+=</span> <span class="no">Dir</span><span class="o">[</span><span class="s2">&quot;</span><span class="si">#{</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="si">}</span><span class="s2">/app/presenters/*&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Google map support</h3>
+
+<p>Use <code>gmaps4rails</code> gem. github <a href="https://github.com/apneadiving/Google-Maps-for-Rails">link</a>.
+Good video tutorial <a href="https://www.youtube.com/watch?v=R0l-7en3dUw&amp;feature=youtu.be">link</a></p>
+
+<h3>rspec testing</h3>
+
+<h4>devise signin</h4>
+
+<p>Just create a user and call <code>signin</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
+</span><span class='line'>    <span class="nb">name</span> <span class="ss">Faker</span><span class="p">:</span><span class="ss">:Name</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>    <span class="n">sequence</span><span class="p">(</span><span class="ss">:email</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span> <span class="s2">&quot;example</span><span class="si">#{</span><span class="n">n</span><span class="si">}</span><span class="s2">@example.com&quot;</span> <span class="p">}</span> <span class="c1"># create different email each user.</span>
+</span><span class='line'>    <span class="n">password</span> <span class="s1">&#39;a1234567&#39;</span>
+</span><span class='line'>    <span class="n">password_confirmation</span> <span class="s1">&#39;a1234567&#39;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">factory</span> <span class="ss">:user_with_restaurant</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">after</span><span class="p">(</span><span class="ss">:create</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>        <span class="n">restaurant</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="ss">:restaurant</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">restaurant</span><span class="o">.</span><span class="n">creator_id</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>        <span class="n">restaurant</span><span class="o">.</span><span class="n">save!</span>
+</span><span class='line'>        <span class="n">user</span><span class="o">.</span><span class="n">favor_restaurant</span> <span class="o">&lt;&lt;</span> <span class="n">restaurant</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># It&#39;s good practice to put in before block</span>
+</span><span class='line'><span class="n">before</span><span class="p">(</span><span class="ss">:each</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>  <span class="vi">@user</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">sign_in</span> <span class="vi">@user</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Use expect to assert result</h4>
+
+<p>For example <code>restaurant</code> is the return object from controller.</p>
+
+<figure class='code'><figcaption><span>xx_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">new</span>
+</span><span class='line'>    <span class="vi">@restaurant</span> <span class="o">=</span> <span class="no">Restaurant</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>xx_spec.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">restaurant</span> <span class="o">=</span> <span class="n">assigns</span><span class="p">(</span><span class="ss">:restaurant</span><span class="p">)</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span> <span class="mi">302</span> <span class="c1"># check http status code</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">render_template</span> <span class="ss">:index</span> <span class="c1"># check render template</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">be_a_new</span><span class="p">(</span><span class="no">Restaurant</span><span class="p">)</span> <span class="c1"># check restaurant is new object</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">flash</span><span class="o">[</span><span class="ss">:notice</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">be</span> <span class="c1"># check flash[:notice] exist</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">flash</span><span class="o">[</span><span class="ss">:warn</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">be_nil</span> <span class="c1"># check flash[:warn] nil</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># we could even use block </span>
+</span><span class='line'><span class="c1"># check restaurant is added by 1 after post to create controller</span>
+</span><span class='line'><span class="n">expect</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">post</span> <span class="ss">:create</span><span class="p">,</span> <span class="ss">restaurant</span><span class="p">:</span> <span class="n">attributes_for</span><span class="p">(</span><span class="ss">:restaurant</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span><span class="o">.</span><span class="n">to</span> <span class="n">change</span><span class="p">(</span><span class="no">Restaurant</span><span class="p">,</span> <span class="ss">:count</span><span class="p">)</span><span class="o">.</span><span class="n">by</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[open source project studying]]></title>
@@ -905,7 +1063,7 @@ Run <em>cucumber</em> to test and get report.</p>
 
 <p>Search your data in active record. I add the search function into <a href="https://github.com/weichienhung/rails101_groupme">rails101_groupme</a> project.
 The usage is quite simple. The groupme site has a search field in the navigation bar to search all posts.<br/>
-<img src="http://weichienhung.github.io/images/20131013-groupme.png" width="500" height="500" title="groupme" alt="groupme">
+<img src="http://weichienhung.github.io/images/posts/20131013-groupme.png" width="500" height="500" title="groupme" alt="groupme">
 Add a method in application_controller.rb because we have a search field in nav bar and every controller need to render it.</p>
 
 <figure class='code'><figcaption><span>application_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -1485,15 +1643,15 @@ So i use EmberJS,HighchartJS and Rails to build this simple web app. I always le
 
 <h3>List every record</h3>
 
-<p><img src="http://weichienhung.github.io/images/0922-list.png" width="500" height="500" title="list-image" alt="list"></p>
+<p><img src="http://weichienhung.github.io/images/posts/0922-list.png" width="500" height="500" title="list-image" alt="list"></p>
 
 <h3>Category summary</h3>
 
-<p><img src="http://weichienhung.github.io/images/0922-summary.png" width="500" height="500" title="summary-image" alt="summary"></p>
+<p><img src="http://weichienhung.github.io/images/posts/0922-summary.png" width="500" height="500" title="summary-image" alt="summary"></p>
 
 <h3>Year trend</h3>
 
-<p><img src="http://weichienhung.github.io/images/0922-trend.png" width="500" height="500" title="trend-image" alt="trend"></p>
+<p><img src="http://weichienhung.github.io/images/posts/0922-trend.png" width="500" height="500" title="trend-image" alt="trend"></p>
 
 <p>I won&#8217;t describe studying notes here but write them in other posts.</p>
 ]]></content>
@@ -2503,6 +2661,7 @@ Some parts of doc are out of dated and here i write down the steps for reference
 <li>run <code>bundle install --without production</code></li>
 <li>In Rails 3.x precompile your assets file, you have to add <code>config.assets.initialize_on_precompile=false</code> to your <code>config/application.rb</code>. Rails 4 ignore this.</li>
 <li>run <code>rake assets:precompile RAILS_ENV=production</code></li>
+<li>set <code>config.serve_static_assets = true</code> in your <code>production.rb</code> because we use rails to serve static assets</li>
 <li>run <code>git commit -am "your commit message"</code> because only commited source code will be pushed to heroku.</li>
 <li>run <code>heroku create appname</code> to create your app on heroku. It requires you input your account,password and your ssh public key(id_rsa).</li>
 <li>run <code>git push heroku master</code>. You will see your app running on http://appname.herokuapp.com.
@@ -2538,24 +2697,6 @@ Heroku will modify your production datbase connection in database.yml when push 
 </span><span class='line'><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">newname</span> <span class="n">git</span><span class="vi">@herokuapp</span><span class="o">.</span><span class="n">com</span><span class="ss">:yourapp</span><span class="o">.</span><span class="n">git</span>
 </span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[rails practice]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/08/11/rails-practice/"/>
-    <updated>2013-08-11T12:36:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/08/11/rails-practice</id>
-    <content type="html"><![CDATA[<p>I push my first rails project <a href="https://github.com/weichienhung/bookmarks-rails">bookmarks-rails</a> to github today. It&#8217;s a very small project for practicing rails framework.
-The web provide user a very simple interface to create a bookmark and basic authentication. I take free time after work to finish this project.
-Thanks to ihower&#8217;s <a href="http://ihower.tw/rails3/index.html">Ruby on Rails實戰聖經</a>,Yangtheman&#8217;s <a href="http://blog.yangtheman.com/2012/02/09/facebook-connect-with-rails-omniauth-devise/">post</a> and <a href="https://www.codeschool.com/">Code school</a>, it helps me a lot.<br/>
-I try skills in this projects<br/>
-1. Twitter Bootstrap 3.0.0.rc1<br/>
-2. devise account system<br/>
-3. omniauth with facebook login<br/>
-4. rails REST<br/>
-5. RSpec<br/>
-6. Capybara</p>
 ]]></content>
   </entry>
   

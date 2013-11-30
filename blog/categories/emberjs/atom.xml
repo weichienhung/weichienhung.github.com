@@ -4,7 +4,7 @@
   <title><![CDATA[Category: emberjs | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/emberjs/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-11-03T15:32:06+08:00</updated>
+  <updated>2013-11-30T23:44:28+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -126,15 +126,15 @@ So i use EmberJS,HighchartJS and Rails to build this simple web app. I always le
 
 <h3>List every record</h3>
 
-<p><img src="/images/0922-list.png" width="500" height="500" title="list-image" alt="list"></p>
+<p><img src="/images/posts/0922-list.png" width="500" height="500" title="list-image" alt="list"></p>
 
 <h3>Category summary</h3>
 
-<p><img src="/images/0922-summary.png" width="500" height="500" title="summary-image" alt="summary"></p>
+<p><img src="/images/posts/0922-summary.png" width="500" height="500" title="summary-image" alt="summary"></p>
 
 <h3>Year trend</h3>
 
-<p><img src="/images/0922-trend.png" width="500" height="500" title="trend-image" alt="trend"></p>
+<p><img src="/images/posts/0922-trend.png" width="500" height="500" title="trend-image" alt="trend"></p>
 
 <p>I won't describe studying notes here but write them in other posts.</p>
 ]]></content>

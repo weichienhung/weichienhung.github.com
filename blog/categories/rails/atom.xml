@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-11-03T15:32:06+08:00</updated>
+  <updated>2013-11-30T23:44:28+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[new rails project for fun]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/11/30/new-practicing-rails-project/"/>
+    <updated>2013-11-30T20:16:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/11/30/new-practicing-rails-project</id>
+    <content type="html"><![CDATA[<p>Today i push a new rails project to <a href="http://weichien-lunch.herokuapp.com/">heroku</a> called lunch.
+I also push to <a href="https://github.com/weichienhung/lunch">github</a>.
+Every week day i and colleague have to discuss which lunch to eat.
+It will be very helpful if a site can random pick a lunch restaurant for us. So i create a new rails project for this purpose.
+The basic idea is simple, everybody can share a restaurant and add others' restaurants to favorites list. Then site pick a restaurant for you.
+I can study new stuff when i practice rails each time. I try to write down here.</p>
+
+<!-- more -->
+
+
+<h3>image store in S3</h3>
+
+<p>Because the heroku doesn't allow to store images, i move the paperclip default storage to S3.
+It's very easy to implement, just follow this <a href="https://devcenter.heroku.com/articles/paperclip-s3">tutorial</a></p>
+
+<h3>social network signin</h3>
+
+<p>This time i integrate three social networks(facebook, twitter, google).
+I am stuck in google app setting for a while. Because they all have different callback url setting.
+Finally i resolved and here are screenshots for these sites. These samples are for <code>127.0.0.1:3000</code> testing</p>
+
+<h4>google</h4>
+
+<p><img src="/images/posts/20131129-1.png" width="800" height="600" title="list-image" alt="list"></p>
+
+<h4>twitter</h4>
+
+<p><img src="/images/posts/20131129-2.png" width="800" height="600" title="list-image" alt="list"></p>
+
+<h4>facebook</h4>
+
+<p><img src="/images/posts/20131129-3.png" width="800" height="600" title="list-image" alt="list"></p>
+
+<h3>MVP design</h3>
+
+<p>I add a <code>app/presenters</code> folder and make controller logic more impact.
+Add folder path to <code>application.rb</code> that controller could access them.
+<code>ruby application.rb
+config.paths.add "app/presenters", glob: "**/*.rb"
+config.autoload_paths += Dir["#{Rails.root}/app/presenters/*"]
+</code></p>
+
+<h3>Google map support</h3>
+
+<p>Use <code>gmaps4rails</code> gem. github <a href="https://github.com/apneadiving/Google-Maps-for-Rails">link</a>.
+Good video tutorial <a href="https://www.youtube.com/watch?v=R0l-7en3dUw&amp;feature=youtu.be">link</a></p>
+
+<h3>rspec testing</h3>
+
+<h4>devise signin</h4>
+
+<p>Just create a user and call <code>signin</code>.
+``` ruby
+FactoryGirl.define do</p>
+
+<p>  factory :user do</p>
+
+<pre><code>name Faker::Name.name 
+sequence(:email) { |n| "example#{n}@example.com" } # create different email each user.
+password 'a1234567'
+password_confirmation 'a1234567'
+
+factory :user_with_restaurant do
+  after(:create) do |user|
+    restaurant = FactoryGirl.build(:restaurant)
+    restaurant.creator_id = user.id
+    restaurant.save!
+    user.favor_restaurant &lt;&lt; restaurant
+  end
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>end</p>
+
+<h1>It's good practice to put in before block</h1>
+
+<p>before(:each) do
+  @user = create(:user)
+  sign_in @user
+end
+```</p>
+
+<h4>Use expect to assert result</h4>
+
+<p>For example <code>restaurant</code> is the return object from controller.
+``` ruby xx_controller.rb
+  def new</p>
+
+<pre><code>@restaurant = Restaurant.new
+</code></pre>
+
+<p>  end
+<code>
+</code> ruby xx_spec.rb
+restaurant = assigns(:restaurant)
+expect(response.status).to eq 302 # check http status code
+expect(response).to render_template :index # check render template
+expect(restaurant).to be_a_new(Restaurant) # check restaurant is new object
+expect(flash[:notice]).to be # check flash[:notice] exist
+expect(flash[:warn]).to be_nil # check flash[:warn] nil</p>
+
+<h1>we could even use block</h1>
+
+<h1>check restaurant is added by 1 after post to create controller</h1>
+
+<p>expect {
+  post :create, restaurant: attributes_for(:restaurant)
+}.to change(Restaurant, :count).by(1)
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[open source project studying]]></title>
@@ -587,7 +706,7 @@ Run <em>cucumber</em> to test and get report.</p>
 
 <p>Search your data in active record. I add the search function into <a href="https://github.com/weichienhung/rails101_groupme">rails101_groupme</a> project.
 The usage is quite simple. The groupme site has a search field in the navigation bar to search all posts.<br/>
-<img src="/images/20131013-groupme.png" width="500" height="500" title="groupme" alt="groupme">
+<img src="/images/posts/20131013-groupme.png" width="500" height="500" title="groupme" alt="groupme">
 Add a method in application_controller.rb because we have a search field in nav bar and every controller need to render it.
 ``` ruby application_controller.rb
 ...</p>
@@ -778,37 +897,6 @@ Then your will find your myrails Gemfile and application.js are changed.</p>
 
 <p>gem push railsone-0.0.1.gem
 ```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Use HighchartJS to visual data]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/22/use-highchartjs-to-visual/"/>
-    <updated>2013-09-22T17:16:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/22/use-highchartjs-to-visual</id>
-    <content type="html"><![CDATA[<p>I just push a new project to <a href="https://github.com/weichienhung/money">github</a> and <a href="http://weichien-money.herokuapp.com/">heroku</a>.
-This project is derived from my iOS App <a href="https://itunes.apple.com/tw/app/monny/id590327036?mt=8">Monny</a>.
-The App I used it to record my daily expense. The free version doesn't have visual graph to show summary data.
-So i use EmberJS,HighchartJS and Rails to build this simple web app. I always learned new knowledge during coding.</p>
-
-<p>I take few snaphots of this probject.</p>
-
-<!-- more -->
-
-
-<h3>List every record</h3>
-
-<p><img src="/images/0922-list.png" width="500" height="500" title="list-image" alt="list"></p>
-
-<h3>Category summary</h3>
-
-<p><img src="/images/0922-summary.png" width="500" height="500" title="summary-image" alt="summary"></p>
-
-<h3>Year trend</h3>
-
-<p><img src="/images/0922-trend.png" width="500" height="500" title="trend-image" alt="trend"></p>
-
-<p>I won't describe studying notes here but write them in other posts.</p>
 ]]></content>
   </entry>
   
