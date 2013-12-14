@@ -362,7 +362,7 @@ With proc, you write your code once. Proc is savable block.</p>
 
 <h3>Method getter and setter</h3>
 
-<p>Incredible simple. attr_accessor means both writer and reader</p>
+<p>Incredible simple. attr_accessor means both writer and reader.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -378,10 +378,19 @@ With proc, you write your code once. Proc is savable block.</p>
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'><span class="kp">attr_reader</span> <span class="ss">:name</span>
-</span><span class='line'><span class="kp">attr_writer</span> <span class="ss">:job</span>
-</span><span class='line'><span class="kp">attr_accessor</span> <span class="ss">:age</span>
+</span><span class='line'>  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>    <span class="kp">attr_accessor</span> <span class="ss">:is_good?</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:name</span>
+</span><span class='line'>  <span class="kp">attr_writer</span> <span class="ss">:job</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:age</span>
 </span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">job</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
 </span><span class='line'>    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
 </span><span class='line'>    <span class="vi">@job</span> <span class="o">=</span> <span class="n">job</span>
@@ -389,6 +398,7 @@ With proc, you write your code once. Proc is savable block.</p>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
 </span><span class='line'>
+</span><span class='line'><span class="no">Person</span><span class="o">.</span><span class="n">is_good?</span>
 </span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;samuel&quot;</span><span class="p">,</span><span class="s2">&quot;engineer&quot;</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
 </span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span>
 </span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">age</span>

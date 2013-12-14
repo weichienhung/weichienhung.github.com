@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-11-30T23:44:28+08:00</updated>
+  <updated>2013-12-14T22:12:31+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,144 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Useful methods in ruby]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/12/14/utility-tool-by-ruby/"/>
+    <updated>2013-12-14T21:14:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/12/14/utility-tool-by-ruby</id>
+    <content type="html"><![CDATA[<p>This week i write automatic utility tools for colleague.
+It saves time and reduce trivial works. Learn useful ruby built-in methods.</p>
+
+<h3>List all under a folder</h3>
+
+<p>``` ruby</p>
+
+<h1>lists all files and folders under target/ folder</h1>
+
+<p>Dir.glob('target/<strong>/</strong>').select do |f|
+  if File.directory? f</p>
+
+<pre><code># do something
+</code></pre>
+
+<p>  else</p>
+
+<pre><code># do something
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>ONLY list all in target/ , doesn't list subfolders like target/subfolders/</h1>
+
+<p>Dir.glob('target/**').select do |f|</p>
+
+<p>end
+```</p>
+
+<!--more -->
+
+
+<h3>Get folder name or file name from file path</h3>
+
+<p><code>
+f = "/abc/def/ghi.rb"
+File.dirname(f) # /abc/def
+File.basename(f) # ghi.rb
+</code></p>
+
+<h3>Read and parse file to json</h3>
+
+<p><code>@data</code> will be JSON object
+```
+require 'json'</p>
+
+<p>File.open("data.cfg", "r:UTF-8") { |f| @data = JSON.parse(f.read) }
+```</p>
+
+<h3>Write json to file</h3>
+
+<p>Use <code>JSON.pretty_generate</code> to create well format json file.
+```
+require 'json'</p>
+
+<p>File.open("data.cfg", "w") {|file| file.puts JSON.pretty_generate(@data)}
+```</p>
+
+<h3>Read a CSV file</h3>
+
+<p><code>{ headers: true }</code> means first row is as header
+```
+require 'csv'</p>
+
+<p>CSV.open("datacfg.csv", "r", { headers: true }) do |csv|
+  matches = csv.find_all do |row|</p>
+
+<pre><code>puts row.headers[0] # first column of header
+puts row[0] # first column of each row
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<h3>Create a http connection to download big file and calculate progress</h3>
+
+<p>```
+require 'net/http'</p>
+
+<p>downloadLink = "http://abc/def/ghi.zip"
+uri = URI.parse downloadLink
+Net::HTTP.start(uri.host, uri.port) do |http|
+  request = Net::HTTP::Get.new uri.request_uri
+  request.basic_auth USERNAME, PASSWORD # if you need basic web auth</p>
+
+<p>  http.request request do |response|</p>
+
+<pre><code>download_size = 0
+begin
+  file = File.open("target.zip", 'wb')
+  length = response.content_length
+  response.read_body do |fragment|
+    download_size += fragment.length
+    file.write(fragment) 
+    progress = '%.2f' % (download_size.to_f * 100 / length)
+  end
+ensure
+  file.close
+end
+</code></pre>
+
+<p>  end
+end       <br/>
+```</p>
+
+<h3>XML handle by nokogiri</h3>
+
+<p>```
+require 'nokogiri'</p>
+
+<p>doc = Nokogiri::XML(f) # create a xml doc from a file</p>
+
+<p>nodes = doc.xpath('//bean[@id="getcha"]/*') # find nodes under bean with id 'getcha'
+nodes.each do |node|
+  node['value'] = "good" # set the attribute 'value' to 'good'
+  node.content = "bad" # set the content to 'bad'
+end</p>
+
+<p>File.open(f, 'w') { |file| file.write(doc) } # write xml to file
+```</p>
+
+<h3>xpath with xml namespace</h3>
+
+<p>For example, the <code>bean</code> is under namespace <code>http://www.springframework.org/schema/util</code>
+```
+nodes = doc.xpath('//util:bean[@id="getcha"]/*', {"util" => "http://www.springframework.org/schema/util"} )</p>
+
+<p>```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[String things in ruby]]></title>
@@ -68,24 +206,6 @@ world = "World"
 %s(foo) # output: :foo
 %s(foo bar) # output: :"foo bar"
 </code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[rails practice]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/08/11/rails-practice/"/>
-    <updated>2013-08-11T12:36:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/08/11/rails-practice</id>
-    <content type="html"><![CDATA[<p>I push my first rails project <a href="https://github.com/weichienhung/bookmarks-rails">bookmarks-rails</a> to github today. It's a very small project for practicing rails framework.
-The web provide user a very simple interface to create a bookmark and basic authentication. I take free time after work to finish this project.
-Thanks to ihower's <a href="http://ihower.tw/rails3/index.html">Ruby on Rails實戰聖經</a>,Yangtheman's <a href="http://blog.yangtheman.com/2012/02/09/facebook-connect-with-rails-omniauth-devise/">post</a> and <a href="https://www.codeschool.com/">Code school</a>, it helps me a lot.<br/>
-I try skills in this projects<br/>
-1. Twitter Bootstrap 3.0.0.rc1<br/>
-2. devise account system<br/>
-3. omniauth with facebook login<br/>
-4. rails REST<br/>
-5. RSpec<br/>
-6. Capybara</p>
 ]]></content>
   </entry>
   
@@ -270,12 +390,19 @@ end
 
 <h3>Method getter and setter</h3>
 
-<p>Incredible simple. attr_accessor means both writer and reader
+<p>Incredible simple. attr_accessor means both writer and reader.
 ```
 class Person
-attr_reader :name
-attr_writer :job
-attr_accessor :age
+  class &lt;&lt; self</p>
+
+<pre><code>attr_accessor :is_good?
+</code></pre>
+
+<p>  end</p>
+
+<p>  attr_reader :name
+  attr_writer :job
+  attr_accessor :age
   def initialize(name, job, age)</p>
 
 <pre><code>@name = name
@@ -286,7 +413,8 @@ attr_accessor :age
 <p>  end
 end</p>
 
-<p>person = Person.new("samuel","engineer",30)
+<p>Person.is_good?
+person = Person.new("samuel","engineer",30)
 person.name
 person.age
 ```</p>
