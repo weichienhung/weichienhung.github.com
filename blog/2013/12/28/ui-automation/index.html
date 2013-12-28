@@ -1,0 +1,431 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>UI automation - Weichien's studying note</title>
+	<meta name="author" content="Weichien Hung">
+
+	
+	<meta name="description" content="This article is the last one in 2013. In the rails project we use capybara to do UI testing.
+Like click a button/link or fill the form. But i will &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Weichien's studying note" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><a class="myheader-avatar" href="/"><img src="/images/samuel.jpg"></a>
+<div class="myheader-slogan">
+<h1><a href="/">Weichien's studying note</a></h1>
+<h2>Practice makes perfect</h2>
+</div>
+<nav id="main-nav"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Tags</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a id="menu-btn" class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Tags</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:weichienhung.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		<a class="facebook" href="http://www.facebook.com/weichien.hung" title="Facebook">Facebook</a>
+		
+		
+		<a class="google" href="https://plus.google.com/113676445086645352045?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/HungWeichien" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/weichienhung" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		<!-- 
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		 -->
+    
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:weichienhung.github.io">
+	</form>
+</nav>
+
+</header>
+<!-- 	
+		
+	 -->
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">UI Automation</h2>
+	<div class="entry-content"><p>This article is the last one in 2013. In the rails project we use capybara to do UI testing.
+Like click a button/link or fill the form. But i will show how to use capybara without rails in UI automation today.</p>
+
+<p>Sometimes we have to repeat trivial works and these require user to interactive with browser.
+For instance, upload file to server or input necessary data.</p>
+
+<p>Install below gems and Firefox</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem install capybara
+</span><span class='line'>gem install selenium-webdriver
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In orer to use capybara without rails. You need to require <code>capybara</code> manually.
+In default capybara will launch rack server, change <code>run_server</code> to <code>false</code>.
+Because we assume your server is running. Use <code>selenium</code> as <code>driver</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;capybara&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;capybara/dsl&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Capybara</span><span class="o">.</span><span class="n">run_server</span> <span class="o">=</span> <span class="kp">false</span>
+</span><span class='line'><span class="no">Capybara</span><span class="o">.</span><span class="n">current_driver</span> <span class="o">=</span> <span class="ss">:selenium</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># it will open the browser to 127.0.0.1:8888/admin</span>
+</span><span class='line'><span class="no">Capybara</span><span class="o">.</span><span class="n">app_host</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8888/admin&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!-- more -->
+
+
+<p>With capybara DSL, you can operate UI easily.
+Below code shows fill id and password field with <code>admin</code> then click login button.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">login</span>
+</span><span class='line'>  <span class="n">visit</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">fill_in</span> <span class="s1">&#39;userNameTxtField&#39;</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span>
+</span><span class='line'>  <span class="n">fill_in</span> <span class="s1">&#39;passwordTxtField&#39;</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="s1">&#39;admin&#39;</span>
+</span><span class='line'>  <span class="n">find</span><span class="p">(</span><span class="s1">&#39;#loginBtn&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In case you have to wait specified element show in page or element class changed</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">wait_util_find</span><span class="p">(</span><span class="n">cssString</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;start waiting until find &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cssString</span>
+</span><span class='line'>  <span class="k">until</span> <span class="n">page</span><span class="o">.</span><span class="n">has_selector?</span><span class="p">(</span><span class="n">cssString</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;waiting...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cssString</span>
+</span><span class='line'>    <span class="nb">sleep</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">wait_element_enable</span><span class="p">(</span><span class="n">cssString</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">elem</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">cssString</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">while</span> <span class="n">elem</span><span class="o">[</span><span class="ss">:class</span><span class="o">].</span><span class="n">include?</span><span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;waiting...&quot;</span>
+</span><span class='line'>    <span class="nb">sleep</span> <span class="mi">5</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># If you need to find multiple elements, you can use page.all</span>
+</span><span class='line'><span class="c1"># find() method can&#39;t find multiple elements. It causes exception.</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">wait_something</span><span class="p">(</span><span class="n">cssString</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">while</span> <span class="n">page</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="ss">:css</span><span class="p">,</span> <span class="n">cssString</span><span class="p">)</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;waiting...&quot;</span>
+</span><span class='line'>    <span class="nb">sleep</span> <span class="mi">5</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>How to attach file? In capybara official document, you can use <code>attach_file</code> to attach file easily.
+But i found it doesn&#8217;t work in HTML5 input file tag with multiple like</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">input</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;upload&quot;</span> <span class="nb">name</span><span class="o">=</span><span class="s2">&quot;upload-btn&quot;</span> <span class="n">type</span><span class="o">=</span><span class="s2">&quot;file&quot;</span> <span class="n">multiple</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The capybara always show can&#8217;t find the element.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">attach_file</span> <span class="s1">&#39;upload-btn&#39;</span><span class="p">,</span> <span class="s1">&#39;/upload/1.zip&#39;</span> <span class="c1"># it won&#39;t work.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then i think i could click the button then select the file myself.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">upload</span>
+</span><span class='line'>  <span class="n">find</span><span class="p">(</span><span class="s1">&#39;#upload&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span> <span class="c1"># click upload button </span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">select_file</span> <span class="c1"># select files from disk.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But here is the problem, selenium driver can&#8217;t control the native file selection window.
+There&#8217;s no way to select files in file selection window.
+After few days survey, i solved it with <code>rautomation</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem install rautomation
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After the file selection window popups, the running program is stoped.
+It means <code>select_file</code> method won&#8217;t be executed.
+I think it&#8217;s because the native window popups and require user to interactive.
+So i change capybara click method to selenium method and <code>select_file</code> can be executed.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="sb">`rautomation`</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">upload</span>
+</span><span class='line'>  <span class="c1"># find(&#39;#upload&#39;).click </span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">upload_elem</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="ss">:xpath</span><span class="p">,</span> <span class="s1">&#39;//input[@name=&quot;upload-btn&quot;]&#39;</span><span class="p">)</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">upload_elem</span><span class="o">.</span><span class="n">send_keys</span> <span class="s2">&quot;gogo&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">select_file</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The next step is how to select files in native window.
+The first step is find the native window. I use a simple way to do it.
+Compare the window number before click upload button and after.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">upload</span>
+</span><span class='line'>  <span class="n">before</span> <span class="o">=</span> <span class="ss">RAutomation</span><span class="p">:</span><span class="ss">:Window</span><span class="o">.</span><span class="n">windows</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:hwnd</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">upload_elem</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="ss">:xpath</span><span class="p">,</span> <span class="s1">&#39;//input[@name=&quot;upload-btn&quot;]&#39;</span><span class="p">)</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">upload_elem</span><span class="o">.</span><span class="n">send_keys</span> <span class="s2">&quot;gogo&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">after</span> <span class="o">=</span> <span class="ss">RAutomation</span><span class="p">:</span><span class="ss">:Window</span><span class="o">.</span><span class="n">windows</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:hwnd</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">select_file</span><span class="p">(</span><span class="n">before</span><span class="p">,</span> <span class="n">after</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">select_file</span><span class="p">(</span><span class="n">before</span><span class="p">,</span> <span class="n">after</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">file_select_window</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="n">candidate</span> <span class="o">=</span> <span class="n">after</span> <span class="o">-</span> <span class="n">before</span>
+</span><span class='line'>  <span class="k">case</span> <span class="n">candidate</span><span class="o">.</span><span class="n">length</span>
+</span><span class='line'>    <span class="k">when</span> <span class="mi">0</span>
+</span><span class='line'>      <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">when</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="n">file_select_window</span> <span class="o">=</span> <span class="ss">RAutomation</span><span class="p">:</span><span class="ss">:Window</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:hwnd</span> <span class="o">=&gt;</span> <span class="n">candidate</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">select_from_other_criteria</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If the candidate length equals 1, that candidate will be the file selection window.
+There should be better way to find the native window.
+I try to find window by window&#8217;s title but it won&#8217;t work. Maybe it&#8217;s because my OS or Firebox is Chinese.<br/>
+After you get the <code>file_select_window</code>, set the file path to text_field and click the button.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">select_file</span><span class="p">(</span><span class="n">before</span><span class="p">,</span> <span class="n">after</span><span class="p">)</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">file_select_window</span><span class="o">.</span><span class="n">text_field</span><span class="o">.</span><span class="n">set</span> <span class="s1">&#39;/upload/1.zip&#39;</span>
+</span><span class='line'>  <span class="n">file_select_window</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">click</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-28T15:47:00+08:00" pubdate data-updated="true">Dec 28<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Weichien Hung
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $(document).ready(function(){
+    $('.fancybox').fancybox();
+  })
+})(jQuery);
+</script> 
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'weichienhung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2013/12/28/ui-automation/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2013/12/28/ui-automation/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
