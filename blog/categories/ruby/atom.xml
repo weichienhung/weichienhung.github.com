@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-12-28T16:45:52+08:00</updated>
+  <updated>2013-12-28T16:48:35+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,174 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[UI automation]]></title>
+    <link href="http://weichienhung.github.io/blog/2013/12/28/ui-automation/"/>
+    <updated>2013-12-28T15:47:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2013/12/28/ui-automation</id>
+    <content type="html"><![CDATA[<p>This article is the last one in 2013. In the rails project we use capybara to do UI testing.
+Like click a button/link or fill the form. But i will show how to use capybara without rails in UI automation today.</p>
+
+<p>Sometimes we have to repeat trivial works and these require user to interactive with browser.
+For instance, upload file to server or input necessary data.</p>
+
+<p>Install below gems and Firefox
+<code>sh
+gem install capybara
+gem install selenium-webdriver
+</code></p>
+
+<p>In orer to use capybara without rails. You need to require <code>capybara</code> manually.
+In default capybara will launch rack server, change <code>run_server</code> to <code>false</code>.
+Because we assume your server is running. Use <code>selenium</code> as <code>driver</code>.
+``` ruby
+require 'capybara'
+require 'capybara/dsl'</p>
+
+<p>Capybara.run_server = false
+Capybara.current_driver = :selenium</p>
+
+<h1>it will open the browser to 127.0.0.1:8888/admin</h1>
+
+<p>Capybara.app_host = 'http://127.0.0.1:8888/admin'
+```</p>
+
+<!-- more -->
+
+
+<p>With capybara DSL, you can operate UI easily.
+Below code shows fill id and password field with <code>admin</code> then click login button.
+<code>
+def login
+  visit('/')
+  fill_in 'userNameTxtField', :with =&gt; 'admin'
+  fill_in 'passwordTxtField', :with =&gt; 'admin'
+  find('#loginBtn').click
+end
+</code>
+In case you have to wait specified element show in page or element class changed
+```
+def wait_util_find(cssString)
+  puts "start waiting until find " &lt;&lt; cssString
+  until page.has_selector?(cssString) do</p>
+
+<pre><code>puts "waiting..." &lt;&lt; cssString
+sleep 1
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>def wait_element_enable(cssString)
+  elem = find(cssString)
+  while elem[:class].include?('disabled') do</p>
+
+<pre><code>puts "waiting..."
+sleep 5
+</code></pre>
+
+<p>  end
+end</p>
+
+<h1>If you need to find multiple elements, you can use page.all</h1>
+
+<h1>find() method can't find multiple elements. It causes exception.</h1>
+
+<p>def wait_something(cssString)
+  while page.all(:css, cssString).length > 1</p>
+
+<pre><code>puts "waiting..."
+sleep 5
+</code></pre>
+
+<p>  end
+end
+<code>
+How to attach file? In capybara official document, you can use `attach_file` to attach file easily.
+But i found it doesn't work in HTML5 input file tag with multiple like
+</code>
+<input id="upload" name="upload-btn" type="file" multiple>
+<code>
+The capybara always show can't find the element.
+</code>
+attach_file 'upload-btn', '/upload/1.zip' # it won't work.
+<code>
+Then i think i could click the button then select the file myself.
+</code>
+def upload
+  find('#upload').click # click upload button</p>
+
+<p>  select_file # select files from disk.
+end
+<code>
+But here is the problem, selenium driver can't control the native file selection window.
+There's no way to select files in file selection window.
+After few days survey, i solved it with `rautomation`.
+</code> sh
+gem install rautomation
+<code>
+After the file selection window popups, the running program is stoped.
+It means `select_file` method won't be executed.
+I think it's because the native window popups and require user to interactive.
+So i change capybara click method to selenium method and `select_file` can be executed.
+</code> ruby
+require <code>rautomation</code></p>
+
+<p>def upload
+  # find('#upload').click</p>
+
+<p>  upload_elem = page.driver.browser.all(:xpath, '//input[@name="upload-btn"]')[1]
+  upload_elem.send_keys "gogo"</p>
+
+<p>  select_file
+end
+<code>
+The next step is how to select files in native window.
+The first step is find the native window. I use a simple way to do it.
+Compare the window number before click upload button and after.
+</code>
+def upload
+  before = RAutomation::Window.windows.map(&amp;:hwnd)</p>
+
+<p>  upload_elem = page.driver.browser.all(:xpath, '//input[@name="upload-btn"]')[1]
+  upload_elem.send_keys "gogo"</p>
+
+<p>  after = RAutomation::Window.windows.map(&amp;:hwnd)</p>
+
+<p>  select_file(before, after)
+end</p>
+
+<p>def select_file(before, after)
+  file_select_window = nil
+  candidate = after - before
+  case candidate.length</p>
+
+<pre><code>when 0
+  nil
+when 1
+  file_select_window = RAutomation::Window.new(:hwnd =&gt; candidate[0])
+else
+  select_from_other_criteria(candidate)
+</code></pre>
+
+<p>  end
+end
+<code>
+If the candidate length equals 1, that candidate will be the file selection window.
+There should be better way to find the native window.
+I try to find window by window's title but it won't work. Maybe it's because my OS or Firebox is Chinese.  
+After you get the `file_select_window`, set the file path to text_field and click the button.
+</code>
+def select_file(before, after)
+  ...</p>
+
+<p>  file_select_window.text_field.set '/upload/1.zip'
+  file_select_window.button.click
+end
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Useful methods in ruby]]></title>
@@ -627,221 +795,6 @@ puts favorite_book  # Cat's Cradle
 age = 30
 age.respond_to?(:next) # true
 </code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ruby beginning]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/02/21/ruby-beginning/"/>
-    <updated>2013-02-21T22:31:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/02/21/ruby-beginning</id>
-    <content type="html"><![CDATA[<p>前幾天開始看Ruby起因是網路上很多分享的project都是Rails,為了能夠加速了解理面的內容就來學一下Rails,
-不過為了Rails必須要先打好Ruby的基礎。在這裡紀錄下學習過的語法避免自己忘光,光是昨天沒看語法我已經忘了不少XD。</p>
-
-<!--more-->
-
-
-<p>Everything is object,在Ruby裡每一個東西都是物件,像直接對1這個object呼叫next兩次就會得到3
-<code>ruby
-1.next.next
-</code>
-呼叫methods得到一個array包含所有的methods
-<code>
-1.methods
-</code>
-Ruby裡蠻特殊的是會回傳布林值的method傳參數是用'?',其它的用'()'或空格
-<code>
-2.between?1,3  /* true */
-"I am a Rubyist".index('R')
-"I am a Rubyist".index 'R'
-</code></p>
-
-<h2>String operations</h2>
-
-<h4>search</h4>
-
-<p><code>
-"[Luke:] I can’t believe it. [Yoda:] That is why you fail.".include?'Yoda'
-"Ruby is a beautiful language".start_with?'Ruby'
-"I can't work with any other language but Ruby".end_with?'Ruby'
-</code></p>
-
-<h4>在字串裡可以輕易地使用#{}把值傳進去,puts就是console output</h4>
-
-<p><code>
-a = 1
-b = 1
-puts "The number #{a} is less than #{b}"
-</code></p>
-
-<h4>case change</h4>
-
-<p><code>
-'This is Mixed CASE'.downcase
-'This is Mixed CASE'.upcase
-'This is Mixed CASE'.swapcase
-</code></p>
-
-<h4>split</h4>
-
-<p><code>
-'Fear is the path to the dark side'.split(' ')
-</code></p>
-
-<h4>concatenat</h4>
-
-<p><code>
-'Ruby'+'Monk'
-'Ruby' &lt;&lt; 'Monk'
-</code></p>
-
-<h4>replacing</h4>
-
-<p><code>
-"I should look into your problem when I get time".sub('I','We') /* only replace first found */
-"I should look into your problem when I get time".gsub('I','We') /* replace all */
-'RubyMonk'.gsub(/[aeiou]/,'1')  /* use RegEX, it must wrap it with / / */
-</code></p>
-
-<h2>Boolean operations</h2>
-
-<h4>Like Java, use ==,&amp;&amp;,||,>=,&lt;=</h4>
-
-<p><code>
-name = "Bob"
-name == "Bob" /* true */
-</code></p>
-
-<h2>Conditional</h2>
-
-<h4>if..else</h4>
-
-<p>```
-def check_sign(number)
-  if number > 0</p>
-
-<pre><code>"#{number} is positive"
-</code></pre>
-
-<p>  elsif number &lt; 25</p>
-
-<pre><code>"#{number} is smaller than 25"
-</code></pre>
-
-<p>  else</p>
-
-<pre><code>"#{number} is negative"
-</code></pre>
-
-<p>  end      <br/>
-end
-```</p>
-
-<h2>Loop</h2>
-
-<h4>remember to use 'break' to break loop</h4>
-
-<p><code>
-loop do
-  monk.meditate
-  break if monk.nirvana?
-end
-</code></p>
-
-<h4>run N times</h4>
-
-<p>```
-n.times do</p>
-
-<pre><code>puts "Hello"
-</code></pre>
-
-<p>end
-```</p>
-
-<h2>Arrays</h2>
-
-<h4>access array</h4>
-
-<p><code>
-[1, 2, 3, 4, 5][2] /* answer is 3 */
-[1, 2, 3, 4, 5][-1] /* answer is 5 */
-</code></p>
-
-<h4>add array, you could put different type object in Ruby Array</h4>
-
-<p><code>
-[1,2,3,4,5] &lt;&lt; '6'
-[1,2,3,4,5].push('6')
-</code></p>
-
-<h4>delete</h4>
-
-<p><code>
-[1,2,3,4,5].delete 3 /* [1,2,4,5] */
-[1,2,3,4,5,6,7].delete_if{ |i| i &lt; 4 }
-</code></p>
-
-<h4>filter elements of array</h4>
-
-<p>Ruby會有許多如底下的寫法, number代表存在於array裡面的object, 如果大於3會被挑出來
-<code>
-[1,2,3,4,5].select{ |number| number &gt; 3}
-</code></p>
-
-<h4>array iteration</h4>
-
-<p>```
-array = [1, 2, 3, 4, 5]
-for i in array
-  puts i
-end</p>
-
-<p>array = [1, 2, 3, 4, 5]
-array.each do |i|
-  puts i
-end
-```</p>
-
-<h2>Hashs</h2>
-
-<h4>create a hash</h4>
-
-<p><code>
-restaurant_menu = {
-  'Ramen' =&gt; 3,
-  'Dal Makhani' =&gt; 4,
-  'Tea' =&gt;2
-  }
-</code></p>
-
-<h4>fetch and modify value, like Array access</h4>
-
-<p>```
-restaurant_menu['Ramen'] /<em> 3 </em>/
-restaurant_menu['Dal Makhani']=4.5</p>
-
-<p>restaurant_menu.delete('Tea') /<em> delete it </em>/
-```</p>
-
-<h4>hash iteration</h4>
-
-<p>```
-restaurant_menu = { 'Ramen' => 3, 'Dal Makhani' => 4, 'Coffee' => 2 }
-restaurant_menu.each do |item, price|
-  restaurant_menu[item] = price + (price * 0.1)
-end</p>
-
-<p>restaurant_menu.each_key do |item|
-  puts item
-end</p>
-
-<p>restaurant_menu.each_value do |price|
-  puts price
-end</p>
-
-<p>```
-Class和def Function就留到下次再來寫。在Ruby Function中Method叫做Behaviour,Variable叫做State。</p>
 ]]></content>
   </entry>
   
