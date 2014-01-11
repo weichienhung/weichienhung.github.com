@@ -96,63 +96,7 @@ It helps me &hellip;">
 	<div class="entry-content"><p>I read the <a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/">javascript design pattern</a> from Addy Osmani.
 There&#8217;re code examples in the book and i try to re-write it by coffeescript.
 It helps me understand pattern more and clear. During writing i found a good coffeescript <a href="http://coffeescriptcookbook.com">cookbook</a> and very helpful.
-Some coffeescript syntax are learned.</p>
-
-<h3>loop a array from middle</h3>
-
-<p>Usually we use below to iter a array</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">myarray = </span><span class="p">[</span><span class="mi">1</span><span class="p">..</span><span class="mi">5</span><span class="p">]</span>
-</span><span class='line'><span class="k">for</span> <span class="nx">element</span> <span class="k">in</span> <span class="nx">myarray</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">element</span> <span class="c1"># output 1~5</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Can strat from index 2, index is from 0. Means from third element</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">for</span> <span class="nx">index</span> <span class="k">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">...</span><span class="nx">myarray</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">myarray</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="c1"># output 3~5</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Ternary opeartor</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="k">if</span> <span class="mi">10</span><span class="o">&gt;</span><span class="mi">5</span> <span class="o">?</span> <span class="s">&quot;hi&quot;</span> <span class="o">:</span> <span class="s">&quot;bye&quot;</span> <span class="c1"># Compile ERROR</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="k">if</span> <span class="mi">10</span><span class="o">&gt;</span><span class="mi">5</span> <span class="k">then</span> <span class="s">&quot;hi&quot;</span> <span class="k">else</span> <span class="s">&quot;bye&quot;</span> <span class="c1"># output hi</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>set value using ?=</h3>
-
-<p>If you use <code>?=</code> you have to declare &#8216;instance = null&#8217; first.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">instance = </span><span class="kc">null</span> <span class="c1"># without this, Compile ERROR</span>
-</span><span class='line'><span class="nx">instance</span> <span class="o">?=</span> <span class="s">&quot;abc&quot;</span>
-</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">instance</span> <span class="c1"># output abc</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># the old way.</span>
-</span><span class='line'><span class="nv">instance2 = </span><span class="nx">instance2</span> <span class="o">||</span> <span class="s">&quot;abc&quot;</span>
-</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">instance2</span> <span class="c1"># output abc</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I put the final result to <a href="https://gist.github.com/weichienhung/7055412">gist</a></p>
+I put the final result to <a href="https://gist.github.com/weichienhung/7055412">gist</a></p>
 </div>
 
 
@@ -205,7 +149,7 @@ Some coffeescript syntax are learned.</p>
 </div>
 </section>
 </div>
-	<footer id="footer" class="inner">Copyright &copy; 2013
+	<footer id="footer" class="inner">Copyright &copy; 2014
 
     Weichien Hung
 

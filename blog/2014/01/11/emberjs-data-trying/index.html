@@ -1,0 +1,455 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>emberjs-data trying - Weichien's studying note</title>
+	<meta name="author" content="Weichien Hung">
+
+	
+	<meta name="description" content="In my old emberjs project(money,food-ntpc)
+i didn&#8217;t use ember-data to handle data processing with backend server.
+The ember-data is closed to 1 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Weichien's studying note" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><a class="myheader-avatar" href="/"><img src="/images/samuel.jpg"></a>
+<div class="myheader-slogan">
+<h1><a href="/">Weichien's studying note</a></h1>
+<h2>Practice makes perfect</h2>
+</div>
+<nav id="main-nav"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Tags</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a id="menu-btn" class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Tags</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:weichienhung.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		<a class="facebook" href="http://www.facebook.com/weichien.hung" title="Facebook">Facebook</a>
+		
+		
+		<a class="google" href="https://plus.google.com/113676445086645352045?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/HungWeichien" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/weichienhung" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		<!-- 
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		 -->
+    
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:weichienhung.github.io">
+	</form>
+</nav>
+
+</header>
+<!-- 	
+		
+	 -->
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Emberjs-data Trying</h2>
+	<div class="entry-content"><p>In my old emberjs project(<a href="https://github.com/weichienhung/money">money</a>,<a href="https://github.com/weichienhung/food-ntpc">food-ntpc</a>)
+i didn&#8217;t use <a href="https://github.com/emberjs/data">ember-data</a> to handle data processing with backend server.
+The ember-data is closed to 1.0.0(now is 1.0.0.beta4) so i give it a try.
+The official document is quite less and some posts in StackOverflow are out of date.
+Checkout their source code is the quickest way to understand how they work and do customized.
+I write down tips here for my reference in the future.</p>
+
+<p>Define your store to use ember-data</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyAdapter = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">RESTAdapter</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">MyApp.Store = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">Store</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">revision: </span><span class="mi">11</span>
+</span><span class='line'>  <span class="nv">adapter: </span><span class="nx">MyAdapter</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Assume your have a <code>record</code> object and json format is</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;record&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;dinner&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Define your model object.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyApp.Record = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">category_id: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span> <span class="s">&#39;number&#39;</span>
+</span><span class='line'>  <span class="nv">amount: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span> <span class="s">&#39;number&#39;</span>
+</span><span class='line'>  <span class="nv">description: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span> <span class="s">&#39;string&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<p>Get all <code>MyApp.Record</code> from backend server.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyApp.ApplicationRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">(params)-&gt;</span>
+</span><span class='line'>    <span class="nv">model = </span><span class="nx">@store</span><span class="p">.</span><span class="nx">find</span> <span class="s">&#39;record&#39;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">model</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>If you want to use store without in route,controller</em></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">__container__</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s">&#39;store:main&#39;</span><span class="p">).</span><span class="nx">find</span> <span class="s">&#39;record&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The backend should provide the REST api path <code>http://127.0.0.1/records</code>.<br/>
+Server response json should be like</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;records&quot;</span><span class="p">:</span> <span class="p">[{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;dinner&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">250</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;lunch&quot;</span>
+</span><span class='line'>  <span class="p">}]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The default root of json become <code>records</code> not <code>record</code> and content should be a Array.<br/>
+In case you want to pass parameter into URL like <code>http://127.0.0.1/records?year=2014</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyApp.ApplicationRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">(params)-&gt;</span>
+</span><span class='line'>    <span class="nv">model = </span><span class="nx">@store</span><span class="p">.</span><span class="nx">find</span> <span class="s">&#39;record&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nv">year: </span><span class="mi">2014</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">model</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Get single record.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyApp.RecordRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">(params)-&gt;</span>
+</span><span class='line'>    <span class="c1"># assume params.id is 1</span>
+</span><span class='line'>    <span class="nv">model = </span><span class="nx">@store</span><span class="p">.</span><span class="nx">find</span> <span class="s">&#39;record&#39;</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">id</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">model</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The backend should provide the REST api path <code>http://127.0.0.1/record/1</code>.</p>
+
+<h2>Customerized</h2>
+
+<h3>change default request url</h3>
+
+<p>Your backend server may provide REST api like <code>http://127.0.0.1/api/records</code>.
+You could add namesapce to your rest adapter.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyAdapter = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">RESTAdapter</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">namespace: </span><span class="s">&#39;api&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>change single model request url</h3>
+
+<p>Your backend server doesn&#8217;t provide REST api <code>http://127.0.0.1/api/records</code> but <code>http://127.0.0.1/api/usages</code>.
+The responsed json format doesn&#8217;t change.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">records_pattern = </span><span class="sr">///</span>
+</span><span class='line'><span class="sr">  api/records</span>
+</span><span class='line'><span class="sr">///</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">MyAdapter = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">RESTAdapter</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">namespace: </span><span class="s">&#39;api&#39;</span>
+</span><span class='line'>  <span class="nv">buildURL: </span><span class="nf">(type,id)-&gt;</span>
+</span><span class='line'>    <span class="nv">url = </span><span class="nx">@</span><span class="p">.</span><span class="nx">_super</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nx">url</span><span class="p">.</span><span class="nx">match</span> <span class="nx">records_pattern</span>
+</span><span class='line'>      <span class="nv">url = </span><span class="nx">url</span><span class="p">.</span><span class="nx">replace</span> <span class="s">&#39;records&#39;</span><span class="p">,</span> <span class="s">&#39;usages&#39;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">url</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>change root of responsed json</h3>
+
+<p>Your backend server change the default json format from</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;records&quot;</span><span class="p">:</span> <span class="p">[{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;dinner&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">250</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;lunch&quot;</span>
+</span><span class='line'>  <span class="p">}]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>to</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;usages&quot;</span><span class="p">:</span> <span class="p">[{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;dinner&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">250</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;lunch&quot;</span>
+</span><span class='line'>  <span class="p">}]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Simple extend the original serializer and overwrite methods</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyApp.RecordSerializer = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">RESTSerializer</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">typeForRoot: </span><span class="nf">(root) -&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">&quot;usage&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Refer to <a href="https://github.com/emberjs/data/blob/master/packages/ember-data/lib/serializers/rest_serializer.js">rest_serializer.js</a> to know more customerized.</p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-11T11:05:00+08:00" pubdate data-updated="true">Jan 11<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/emberjs/'>emberjs</a>
+
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    Weichien Hung
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $(document).ready(function(){
+    $('.fancybox').fancybox();
+  })
+})(jQuery);
+</script> 
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'weichienhung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2014/01/11/emberjs-data-trying/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2014/01/11/emberjs-data-trying/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

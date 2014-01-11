@@ -4,7 +4,7 @@
   <title><![CDATA[Category: emberjs | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/emberjs/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-12-28T16:48:35+08:00</updated>
+  <updated>2014-01-11T12:41:47+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,208 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[emberjs-data trying]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/01/11/emberjs-data-trying/"/>
+    <updated>2014-01-11T11:05:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/01/11/emberjs-data-trying</id>
+    <content type="html"><![CDATA[<p>In my old emberjs project(<a href="https://github.com/weichienhung/money">money</a>,<a href="https://github.com/weichienhung/food-ntpc">food-ntpc</a>)
+i didn't use <a href="https://github.com/emberjs/data">ember-data</a> to handle data processing with backend server.
+The ember-data is closed to 1.0.0(now is 1.0.0.beta4) so i give it a try.
+The official document is quite less and some posts in StackOverflow are out of date.
+Checkout their source code is the quickest way to understand how they work and do customized.
+I write down tips here for my reference in the future.</p>
+
+<p>Define your store to use ember-data
+``` coffeescript
+MyAdapter = DS.RESTAdapter.extend</p>
+
+<p>MyApp.Store = DS.Store.extend
+  revision: 11
+  adapter: MyAdapter
+```</p>
+
+<p>Assume your have a <code>record</code> object and json format is
+``` json
+{
+  "record": {</p>
+
+<pre><code>"id":"1",
+"amount":150,
+"category_id":1,
+"description":"dinner"
+</code></pre>
+
+<p>  }
+}
+<code>
+Define your model object.
+</code> coffeescript
+MyApp.Record = DS.Model.extend
+  category_id: DS.attr 'number'
+  amount: DS.attr 'number'
+  description: DS.attr 'string'
+```</p>
+
+<!-- more -->
+
+
+<p>Get all <code>MyApp.Record</code> from backend server.
+``` coffeescript
+MyApp.ApplicationRoute = Ember.Route.extend
+  model: (params)-></p>
+
+<pre><code>model = @store.find 'record'
+return model
+</code></pre>
+
+<p><code>
+_If you want to use store without in route,controller_
+</code>
+MyApp.<strong>container</strong>.lookup('store:main').find 'record'
+<code>
+The backend should provide the REST api path `http://127.0.0.1/records`.  
+Server response json should be like
+</code> json
+{
+  "records": [{</p>
+
+<pre><code>"id":"1",
+"amount":150,
+"category_id":1,
+"description":"dinner"
+</code></pre>
+
+<p>  },
+  {</p>
+
+<pre><code>"id":"2",
+"amount":250,
+"category_id":1,
+"description":"lunch"
+</code></pre>
+
+<p>  }]
+}
+<code>
+The default root of json become `records` not `record` and content should be a Array.  
+In case you want to pass parameter into URL like `http://127.0.0.1/records?year=2014`.
+</code> coffeescript
+MyApp.ApplicationRoute = Ember.Route.extend
+  model: (params)-></p>
+
+<pre><code>model = @store.find 'record', { year: 2014 }
+return model
+</code></pre>
+
+<p>```</p>
+
+<p>Get single record.
+``` coffeescript
+MyApp.RecordRoute = Ember.Route.extend
+  model: (params)-></p>
+
+<pre><code># assume params.id is 1
+model = @store.find 'record', params.id
+return model
+</code></pre>
+
+<p><code>``
+The backend should provide the REST api path</code>http://127.0.0.1/record/1`.</p>
+
+<h2>Customerized</h2>
+
+<h3>change default request url</h3>
+
+<p>Your backend server may provide REST api like <code>http://127.0.0.1/api/records</code>.
+You could add namesapce to your rest adapter.
+<code>
+MyAdapter = DS.RESTAdapter.extend
+  namespace: 'api'
+</code></p>
+
+<h3>change single model request url</h3>
+
+<p>Your backend server doesn't provide REST api <code>http://127.0.0.1/api/records</code> but <code>http://127.0.0.1/api/usages</code>.
+The responsed json format doesn't change.
+```
+records_pattern = ///
+  api/records
+///</p>
+
+<p>MyAdapter = DS.RESTAdapter.extend
+  namespace: 'api'
+  buildURL: (type,id)-></p>
+
+<pre><code>url = @._super(type, id)
+if url.match records_pattern
+  url = url.replace 'records', 'usages'
+return url
+</code></pre>
+
+<p>```</p>
+
+<h3>change root of responsed json</h3>
+
+<p>Your backend server change the default json format from
+``` json
+{
+  "records": [{</p>
+
+<pre><code>"id":"1",
+"amount":150,
+"category_id":1,
+"description":"dinner"
+</code></pre>
+
+<p>  },
+  {</p>
+
+<pre><code>"id":"2",
+"amount":250,
+"category_id":1,
+"description":"lunch"
+</code></pre>
+
+<p>  }]
+}
+<code>
+to
+</code>
+{
+  "usages": [{</p>
+
+<pre><code>"id":"1",
+"amount":150,
+"category_id":1,
+"description":"dinner"
+</code></pre>
+
+<p>  },
+  {</p>
+
+<pre><code>"id":"2",
+"amount":250,
+"category_id":1,
+"description":"lunch"
+</code></pre>
+
+<p>  }]
+}
+<code>
+Simple extend the original serializer and overwrite methods
+</code> coffeescript
+MyApp.RecordSerializer = DS.RESTSerializer.extend
+  typeForRoot: (root) -></p>
+
+<pre><code>return "usage"
+</code></pre>
+
+<p>```
+Refer to <a href="https://github.com/emberjs/data/blob/master/packages/ember-data/lib/serializers/rest_serializer.js">rest_serializer.js</a> to know more customerized.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Async in Emberjs]]></title>
@@ -203,25 +405,6 @@ else
 
 <p>  ).property('status')
 ```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[rails and ember study]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/08/25/rails-and-ember-study/"/>
-    <updated>2013-08-25T07:13:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/08/25/rails-and-ember-study</id>
-    <content type="html"><![CDATA[<p>I pushed two project(<a href="https://github.com/weichienhung/rails101_groupme">rails101-groupme</a>,<a href="https://github.com/weichienhung/project101">project101</a>)to github yesterday.
-I bought the ebook <a href="http://rails-101.logdown.com/">rails101</a> and make rails101-groupme project by follow instructions of book.
-Besides i add some features into rails101-groupme.<br/>
-1.Every user could reply the post<br/>
-2.Rich text editor, CKeditor</p>
-
-<p><a href="https://github.com/weichienhung/project101">project101</a> is the old project i practiced emberjs. It retrieves data from <a href="http://data.taipei.gov.tw/">open data Taipei</a> and show on table.
-This project was made because inspired by yunglinho's <a href="http://blog.yunglinho.com/blog/2011/11/15/">post</a>. I study google map API and add into it recently.
-Most of locations could be show on google map. Somes are not because can't be geocode to <a href="https://developers.google.com/maps/documentation/javascript/reference#LatLng">LatLng</a>.
-There's a disadvantage here. Geocode needs to send requests to google but google will block it if you use API frequently. Implement it on clide side is not a good idea.
-I am planing to have a new project that use Rails and Emberjs. I could add my json API and store LatLng in database to prevent too many requests to google.</p>
 ]]></content>
   </entry>
   

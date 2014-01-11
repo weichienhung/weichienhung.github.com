@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-12-28T16:48:35+08:00</updated>
+  <updated>2014-01-11T12:41:47+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,284 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[emberjs-data trying]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/01/11/emberjs-data-trying/"/>
+    <updated>2014-01-11T11:05:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/01/11/emberjs-data-trying</id>
+    <content type="html"><![CDATA[<p>In my old emberjs project(<a href="https://github.com/weichienhung/money">money</a>,<a href="https://github.com/weichienhung/food-ntpc">food-ntpc</a>)
+i didn&#8217;t use <a href="https://github.com/emberjs/data">ember-data</a> to handle data processing with backend server.
+The ember-data is closed to 1.0.0(now is 1.0.0.beta4) so i give it a try.
+The official document is quite less and some posts in StackOverflow are out of date.
+Checkout their source code is the quickest way to understand how they work and do customized.
+I write down tips here for my reference in the future.</p>
+
+<p>Define your store to use ember-data</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyAdapter = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">RESTAdapter</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">MyApp.Store = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">Store</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">revision: </span><span class="mi">11</span>
+</span><span class='line'>  <span class="nv">adapter: </span><span class="nx">MyAdapter</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Assume your have a <code>record</code> object and json format is</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;record&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;dinner&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Define your model object.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyApp.Record = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">category_id: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span> <span class="s">&#39;number&#39;</span>
+</span><span class='line'>  <span class="nv">amount: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span> <span class="s">&#39;number&#39;</span>
+</span><span class='line'>  <span class="nv">description: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span> <span class="s">&#39;string&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<p>Get all <code>MyApp.Record</code> from backend server.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyApp.ApplicationRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">(params)-&gt;</span>
+</span><span class='line'>    <span class="nv">model = </span><span class="nx">@store</span><span class="p">.</span><span class="nx">find</span> <span class="s">&#39;record&#39;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">model</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>If you want to use store without in route,controller</em></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">__container__</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s">&#39;store:main&#39;</span><span class="p">).</span><span class="nx">find</span> <span class="s">&#39;record&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The backend should provide the REST api path <code>http://127.0.0.1/records</code>.<br/>
+Server response json should be like</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;records&quot;</span><span class="p">:</span> <span class="p">[{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;dinner&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">250</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;lunch&quot;</span>
+</span><span class='line'>  <span class="p">}]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The default root of json become <code>records</code> not <code>record</code> and content should be a Array.<br/>
+In case you want to pass parameter into URL like <code>http://127.0.0.1/records?year=2014</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyApp.ApplicationRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">(params)-&gt;</span>
+</span><span class='line'>    <span class="nv">model = </span><span class="nx">@store</span><span class="p">.</span><span class="nx">find</span> <span class="s">&#39;record&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nv">year: </span><span class="mi">2014</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">model</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Get single record.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyApp.RecordRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">(params)-&gt;</span>
+</span><span class='line'>    <span class="c1"># assume params.id is 1</span>
+</span><span class='line'>    <span class="nv">model = </span><span class="nx">@store</span><span class="p">.</span><span class="nx">find</span> <span class="s">&#39;record&#39;</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">id</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">model</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The backend should provide the REST api path <code>http://127.0.0.1/record/1</code>.</p>
+
+<h2>Customerized</h2>
+
+<h3>change default request url</h3>
+
+<p>Your backend server may provide REST api like <code>http://127.0.0.1/api/records</code>.
+You could add namesapce to your rest adapter.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyAdapter = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">RESTAdapter</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">namespace: </span><span class="s">&#39;api&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>change single model request url</h3>
+
+<p>Your backend server doesn&#8217;t provide REST api <code>http://127.0.0.1/api/records</code> but <code>http://127.0.0.1/api/usages</code>.
+The responsed json format doesn&#8217;t change.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">records_pattern = </span><span class="sr">///</span>
+</span><span class='line'><span class="sr">  api/records</span>
+</span><span class='line'><span class="sr">///</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">MyAdapter = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">RESTAdapter</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">namespace: </span><span class="s">&#39;api&#39;</span>
+</span><span class='line'>  <span class="nv">buildURL: </span><span class="nf">(type,id)-&gt;</span>
+</span><span class='line'>    <span class="nv">url = </span><span class="nx">@</span><span class="p">.</span><span class="nx">_super</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nx">url</span><span class="p">.</span><span class="nx">match</span> <span class="nx">records_pattern</span>
+</span><span class='line'>      <span class="nv">url = </span><span class="nx">url</span><span class="p">.</span><span class="nx">replace</span> <span class="s">&#39;records&#39;</span><span class="p">,</span> <span class="s">&#39;usages&#39;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">url</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>change root of responsed json</h3>
+
+<p>Your backend server change the default json format from</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;records&quot;</span><span class="p">:</span> <span class="p">[{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;dinner&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">250</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;lunch&quot;</span>
+</span><span class='line'>  <span class="p">}]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>to</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;usages&quot;</span><span class="p">:</span> <span class="p">[{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;dinner&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">250</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;lunch&quot;</span>
+</span><span class='line'>  <span class="p">}]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Simple extend the original serializer and overwrite methods</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyApp.RecordSerializer = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">RESTSerializer</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">typeForRoot: </span><span class="nf">(root) -&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">&quot;usage&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Refer to <a href="https://github.com/emberjs/data/blob/master/packages/ember-data/lib/serializers/rest_serializer.js">rest_serializer.js</a> to know more customerized.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[UI automation]]></title>
@@ -1263,63 +1541,7 @@ Error log like below.</p>
     <content type="html"><![CDATA[<p>I read the <a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/">javascript design pattern</a> from Addy Osmani.
 There&#8217;re code examples in the book and i try to re-write it by coffeescript.
 It helps me understand pattern more and clear. During writing i found a good coffeescript <a href="http://coffeescriptcookbook.com">cookbook</a> and very helpful.
-Some coffeescript syntax are learned.</p>
-
-<h3>loop a array from middle</h3>
-
-<p>Usually we use below to iter a array</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">myarray = </span><span class="p">[</span><span class="mi">1</span><span class="p">..</span><span class="mi">5</span><span class="p">]</span>
-</span><span class='line'><span class="k">for</span> <span class="nx">element</span> <span class="k">in</span> <span class="nx">myarray</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">element</span> <span class="c1"># output 1~5</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Can strat from index 2, index is from 0. Means from third element</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">for</span> <span class="nx">index</span> <span class="k">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">...</span><span class="nx">myarray</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">myarray</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="c1"># output 3~5</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Ternary opeartor</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="k">if</span> <span class="mi">10</span><span class="o">&gt;</span><span class="mi">5</span> <span class="o">?</span> <span class="s">&quot;hi&quot;</span> <span class="o">:</span> <span class="s">&quot;bye&quot;</span> <span class="c1"># Compile ERROR</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="k">if</span> <span class="mi">10</span><span class="o">&gt;</span><span class="mi">5</span> <span class="k">then</span> <span class="s">&quot;hi&quot;</span> <span class="k">else</span> <span class="s">&quot;bye&quot;</span> <span class="c1"># output hi</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>set value using ?=</h3>
-
-<p>If you use <code>?=</code> you have to declare &#8216;instance = null&#8217; first.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">instance = </span><span class="kc">null</span> <span class="c1"># without this, Compile ERROR</span>
-</span><span class='line'><span class="nx">instance</span> <span class="o">?=</span> <span class="s">&quot;abc&quot;</span>
-</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">instance</span> <span class="c1"># output abc</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># the old way.</span>
-</span><span class='line'><span class="nv">instance2 = </span><span class="nx">instance2</span> <span class="o">||</span> <span class="s">&quot;abc&quot;</span>
-</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">instance2</span> <span class="c1"># output abc</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I put the final result to <a href="https://gist.github.com/weichienhung/7055412">gist</a></p>
+I put the final result to <a href="https://gist.github.com/weichienhung/7055412">gist</a></p>
 ]]></content>
   </entry>
   
@@ -2835,7 +3057,7 @@ I decide to keep it on post for reference in the future.</p>
 
 
 <p>The indent is the most important to coffeescript. Wrong indent cause compile fail.
-For example: define a method to call ajax. You can insert variable into string using <code>"#{}"</code>. <code>@successHandle</code> invoke the another method inside ajax scope</p>
+For example: define a method to call ajax. You can insert variable into string using <code>"#{}"</code>. <code>@successHandle</code> is the same as <code>this.successHandle</code>.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2864,25 +3086,6 @@ For example: define a method to call ajax. You can insert variable into string u
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">button</span><span class="p">.</span><span class="nx">addListener</span> <span class="s">&#39;click&#39;</span><span class="p">,()</span> <span class="nf">-&gt;</span>
 </span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;btn click&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Iterate a hash object</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">hashobject =</span>
-</span><span class='line'>  <span class="nv">name: </span><span class="s">&#39;ben&#39;</span>
-</span><span class='line'>  <span class="nv">address: </span><span class="s">&#39;xxxxx&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">hashobject</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">key</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">value</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2915,7 +3118,26 @@ For example: define a method to call ajax. You can insert variable into string u
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Timeout syntax</p>
+<h3>iterate a hash object</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">hashobject =</span>
+</span><span class='line'>  <span class="nv">name: </span><span class="s">&#39;ben&#39;</span>
+</span><span class='line'>  <span class="nv">address: </span><span class="s">&#39;xxxxx&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">hashobject</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">key</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">value</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>timeout syntax</h3>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2925,25 +3147,81 @@ For example: define a method to call ajax. You can insert variable into string u
 </span><span class='line'><span class="p">),</span> <span class="mi">100</span>
 </span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[rails and ember study]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/08/25/rails-and-ember-study/"/>
-    <updated>2013-08-25T07:13:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/08/25/rails-and-ember-study</id>
-    <content type="html"><![CDATA[<p>I pushed two project(<a href="https://github.com/weichienhung/rails101_groupme">rails101-groupme</a>,<a href="https://github.com/weichienhung/project101">project101</a>)to github yesterday.
-I bought the ebook <a href="http://rails-101.logdown.com/">rails101</a> and make rails101-groupme project by follow instructions of book.
-Besides i add some features into rails101-groupme.<br/>
-1.Every user could reply the post<br/>
-2.Rich text editor, CKeditor</p>
 
-<p><a href="https://github.com/weichienhung/project101">project101</a> is the old project i practiced emberjs. It retrieves data from <a href="http://data.taipei.gov.tw/">open data Taipei</a> and show on table.
-This project was made because inspired by yunglinho&#8217;s <a href="http://blog.yunglinho.com/blog/2011/11/15/">post</a>. I study google map API and add into it recently.
-Most of locations could be show on google map. Somes are not because can&#8217;t be geocode to <a href="https://developers.google.com/maps/documentation/javascript/reference#LatLng">LatLng</a>.
-There&#8217;s a disadvantage here. Geocode needs to send requests to google but google will block it if you use API frequently. Implement it on clide side is not a good idea.
-I am planing to have a new project that use Rails and Emberjs. I could add my json API and store LatLng in database to prevent too many requests to google.</p>
+<h3>loop a array from middle</h3>
+
+<p>Usually we use below to iter a array</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">myarray = </span><span class="p">[</span><span class="mi">1</span><span class="p">..</span><span class="mi">5</span><span class="p">]</span>
+</span><span class='line'><span class="k">for</span> <span class="nx">element</span> <span class="k">in</span> <span class="nx">myarray</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">element</span> <span class="c1"># output 1~5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Can strat from index 2, index is from 0. Means from third element</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">for</span> <span class="nx">index</span> <span class="k">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">...</span><span class="nx">myarray</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">myarray</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="c1"># output 3~5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>ternary opeartor</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="k">if</span> <span class="mi">10</span><span class="o">&gt;</span><span class="mi">5</span> <span class="o">?</span> <span class="s">&quot;hi&quot;</span> <span class="o">:</span> <span class="s">&quot;bye&quot;</span> <span class="c1"># Compile ERROR</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="k">if</span> <span class="mi">10</span><span class="o">&gt;</span><span class="mi">5</span> <span class="k">then</span> <span class="s">&quot;hi&quot;</span> <span class="k">else</span> <span class="s">&quot;bye&quot;</span> <span class="c1"># output hi</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>set value using ?=</h3>
+
+<p>If you use <code>?=</code> you have to declare &#8216;instance = null&#8217; first.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">instance = </span><span class="kc">null</span> <span class="c1"># without this, Compile ERROR</span>
+</span><span class='line'><span class="nx">instance</span> <span class="o">?=</span> <span class="s">&quot;abc&quot;</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">instance</span> <span class="c1"># output abc</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># the old way.</span>
+</span><span class='line'><span class="nv">instance2 = </span><span class="nx">instance2</span> <span class="o">||</span> <span class="s">&quot;abc&quot;</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">instance2</span> <span class="c1"># output abc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>regular expression</h3>
+
+<p>Put regular exprssion in <code>/// ///</code> block</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">summaries_pattern = </span><span class="sr">///</span>
+</span><span class='line'><span class="sr">  summaries.*</span>
+</span><span class='line'><span class="sr">///</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">msg = </span><span class="s">&quot;the final summaries is good&quot;</span>
+</span><span class='line'><span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">match</span> <span class="nx">summaries_pattern</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;good job&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 ]]></content>
   </entry>
   

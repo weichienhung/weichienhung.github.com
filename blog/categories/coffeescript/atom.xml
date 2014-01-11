@@ -4,7 +4,7 @@
   <title><![CDATA[Category: coffeescript | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/coffeescript/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2013-12-28T16:48:35+08:00</updated>
+  <updated>2014-01-11T12:41:47+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -21,43 +21,6 @@
     <content type="html"><![CDATA[<p>I read the <a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/">javascript design pattern</a> from Addy Osmani.
 There're code examples in the book and i try to re-write it by coffeescript.
 It helps me understand pattern more and clear. During writing i found a good coffeescript <a href="http://coffeescriptcookbook.com">cookbook</a> and very helpful.
-Some coffeescript syntax are learned.</p>
-
-<h3>loop a array from middle</h3>
-
-<p>Usually we use below to iter a array
-<code>coffeescript
-myarray = [1..5]
-for element in myarray
-  console.log element # output 1~5
-</code>
-Can strat from index 2, index is from 0. Means from third element
-<code>
-for index in [2...myarray.length]
-  console.log myarray[index] # output 3~5
-</code></p>
-
-<h3>Ternary opeartor</h3>
-
-<p>```
-console.log if 10>5 ? "hi" : "bye" # Compile ERROR</p>
-
-<p>console.log if 10>5 then "hi" else "bye" # output hi
-```</p>
-
-<h3>set value using ?=</h3>
-
-<p>If you use <code>?=</code> you have to declare 'instance = null' first.
-```
-instance = null # without this, Compile ERROR
-instance ?= "abc"
-console.log instance # output abc</p>
-
-<h1>the old way.</h1>
-
-<p>instance2 = instance2 || "abc"
-console.log instance2 # output abc
-```
 I put the final result to <a href="https://gist.github.com/weichienhung/7055412">gist</a></p>
 ]]></content>
   </entry>
@@ -75,7 +38,7 @@ I decide to keep it on post for reference in the future.</p>
 
 
 <p>The indent is the most important to coffeescript. Wrong indent cause compile fail.
-For example: define a method to call ajax. You can insert variable into string using <code>"#{}"</code>. <code>@successHandle</code> invoke the another method inside ajax scope
+For example: define a method to call ajax. You can insert variable into string using <code>"#{}"</code>. <code>@successHandle</code> is the same as <code>this.successHandle</code>.
 ``` coffeescript
 getData: ->
   $.ajax '/api/post/',</p>
@@ -95,19 +58,8 @@ Pass a string and function. For example: listen a click event
 button.addListener 'click',() ->
   console.log 'btn click'
 <code>
-Iterate a hash object
+All variable definition will be scoped in function. If you want to def a variable in each loop, you should use `do () -&gt;`
 </code>
-hashobject =
-  name: 'ben'
-  address: 'xxxxx'</p>
-
-<p>for key, value of hashobject
-  console.log key
-  console.log value
-```</p>
-
-<p>All variable definition will be scoped in function. If you want to def a variable in each loop, you should use <code>do () -&gt;</code>
-```
 check = () ->
   for person in people</p>
 
@@ -127,12 +79,75 @@ person.setPost post
 
 <h1>every person has his post</h1>
 
+<p>```</p>
+
+<h3>iterate a hash object</h3>
+
+<p>```
+hashobject =
+  name: 'ben'
+  address: 'xxxxx'</p>
+
+<p>for key, value of hashobject
+  console.log key
+  console.log value
+```</p>
+
+<h3>timeout syntax</h3>
+
 <p><code>
-Timeout syntax
-</code>
-setTimeout (->
+setTimeout (-&gt;
   console.log "hello world"
 ), 100
+</code></p>
+
+<h3>loop a array from middle</h3>
+
+<p>Usually we use below to iter a array
+<code>coffeescript
+myarray = [1..5]
+for element in myarray
+  console.log element # output 1~5
+</code>
+Can strat from index 2, index is from 0. Means from third element
+<code>
+for index in [2...myarray.length]
+  console.log myarray[index] # output 3~5
+</code></p>
+
+<h3>ternary opeartor</h3>
+
+<p>```
+console.log if 10>5 ? "hi" : "bye" # Compile ERROR</p>
+
+<p>console.log if 10>5 then "hi" else "bye" # output hi
+```</p>
+
+<h3>set value using ?=</h3>
+
+<p>If you use <code>?=</code> you have to declare 'instance = null' first.
+```
+instance = null # without this, Compile ERROR
+instance ?= "abc"
+console.log instance # output abc</p>
+
+<h1>the old way.</h1>
+
+<p>instance2 = instance2 || "abc"
+console.log instance2 # output abc
+```</p>
+
+<h3>regular expression</h3>
+
+<p>Put regular exprssion in <code>/// ///</code> block
+```
+summaries_pattern = ///
+  summaries.*
+///</p>
+
+<p>msg = "the final summaries is good"
+if msg.match summaries_pattern
+  console.log 'good job'
 ```</p>
 ]]></content>
   </entry>
