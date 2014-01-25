@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-01-11T12:41:47+08:00</updated>
+  <updated>2014-01-25T14:24:49+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,193 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[nginx configuration]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/01/25/nginx-configuration/"/>
+    <updated>2014-01-25T10:04:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/01/25/nginx-configuration</id>
+    <content type="html"><![CDATA[<p>As a web developer, nginx is often used in deployment architecture.
+Write down the useful nginx configuration examples here.</p>
+
+<p>Intall nginx is very easy and not describe here. Configuration good reference <a href="https://calomel.org/nginx.html">here</a></p>
+
+<p>底下的設定值是用最基本的nginx install, 沒有額外的module</p>
+
+<h3>Basic configuration</h3>
+
+<p>``` sh /etc/nginx/nginx.conf</p>
+
+<h1>最基本的設定,不詳述</h1>
+
+<p>user  nginx;
+worker_processes  1;
+pid        /var/run/nginx.pid;</p>
+
+<p>events {
+  worker_connections  1024;
+}</p>
+
+<p>http {
+  # 載入支援的mime type
+  include       /etc/nginx/mime.types;</p>
+
+<p>  # 當有不認識的mime type時就用octet-stream當一般binary檔案處理
+  default_type  application/octet-stream;</p>
+
+<p>  # 定義自己的log format
+  log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '</p>
+
+<pre><code>                '$status $body_bytes_sent "$http_referer" '
+                '"$http_user_agent" "$http_x_forwarded_for"';
+</code></pre>
+
+<p>  # access log存放位置並且使用 main 這個log format,也就是上述定義的格式
+  # buffer=8k 表示不會一直寫log到disk,等到buffer滿了才寫,避免I/O過重
+  access_log  /var/log/nginx/access.log main buffer=8k;</p>
+
+<p>  ## Size Limits
+  # 當request body超過這個body size時會被先寫進暫存檔處理
+  client_body_buffer_size   8k;</p>
+
+<p>  # 限制http header的大小
+  client_header_buffer_size 1k;</p>
+
+<p>  # 限制request body大小，超過server會回傳413(Request Entity Too Large)
+  client_max_body_size      1m;</p>
+
+<p>  ## Timeouts, do not keep connections open longer then necessary to reduce
+  # 讀取request body timeout時間,超過時間會回傳408(Request time out)
+  client_body_timeout     4s;</p>
+
+<p>  # 讀取request header timeout時間(e.g GET HTTP/1.1),超過時間回傳408(Request time out)
+  client_header_timeout   2s;</p>
+
+<p>  # HTTP 1.1 keepalive的timeout時間, 各家browser各有不同時間.
+  keepalive_timeout       65s;</p>
+
+<p>  # 送資料給client的timeout時間(指得是兩次資料讀取時間), 降低這個值可以避免Slowloris DoS attack
+  send_timeout            5s;</p>
+
+<p>  ## General Options
+  # 設定值 >=1 的話讓NGINX支持下載部份檔。 如果你的server有要讓人下載大檔續傳的話..
+  max_ranges 0;</p>
+
+<p>  # keepalive的連線最大數量
+  keepalive_requests        5;</p>
+
+<p>  # Browder cache 失效時間, 負值的話表示不要有任何cache.
+  expires 1d;</p>
+
+<p>  # Request limits
+  # 限制一個IP在1秒內只處理5個requests
+  # myzone是自行定義的名稱,用來存放IP, 2m表示最大不超過2M記憶體
+  limit_req_zone  $binary_remote_addr  zone=myzone:2m  rate=5r/s;</p>
+
+<p>  # 載入其它設定檔
+  include /etc/nginx/conf.d/*.conf;</p>
+
+<p>}
+```</p>
+
+<h3>How to reverse proxy?</h3>
+
+<!-- more -->
+
+
+<p>Separate the config from nginx.conf is good practice. I move server defination into <code>default.conf</code>
+``` sh /etc/nginx/conf.d/default.conf</p>
+
+<h1>定義在後端的servers</h1>
+
+<p>upstream backend_web_servers {
+  server 192.168.0.102:3000 max_fails=250 fail_timeout=180s;
+  server 192.168.0.103:3000 max_fails=250 fail_timeout=180s;</p>
+
+<p>  # 設了backup後只有當上面102,103 server都掛點時才會導request到底下100
+  server 192.168.0.100 backup;
+}</p>
+
+<p>server {
+  # listening on 80 port. 額外設定socket receive和send buffer size
+  listen 80 rcvbuf=8k sndbuf=8k;</p>
+
+<p>  # server名稱
+  server_name www.myserver.io</p>
+
+<p>  ＃ 文件根目錄<br/>
+  root /usr/share/nginx/html;</p>
+
+<p>  # 限制一個IP不能超過10個open connections. nodelay會讓超過限制的connection直接回傳503不等待
+  limit_req zone=myzone burst=10 nodelay;</p>
+
+<p>  # location 怎麼用可以參考http://cssor.com/nginx-location-configuration.html
+  location / {</p>
+
+<pre><code>try_files $uri @backend_web_servers;
+</code></pre>
+
+<p>  }</p>
+
+<p>  location @backend_web_servers {</p>
+
+<pre><code># 允許proxies server cache網頁，看個人需求。如果你的網頁有太多個人資訊就不建議public
+add_header  Cache-Control "public";
+
+# 不允許網頁內容被放進iframe
+add_header  X-Frame-Options "DENY";
+
+# header設定. 將real ip傳進backend servers
+proxy_set_header   Host             $host;
+proxy_set_header   X-Real-IP        $remote_addr;
+proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+
+# 將request proxy到後端server
+proxy_pass http://backend_web_servers;
+</code></pre>
+
+<p>  }</p>
+
+<p>}
+```</p>
+
+<h3>Redirect domain name.</h3>
+
+<p>For instance: redirect <code>http://myserver.io</code> to <code>http://www.myserver.io</code>.
+The official document suggest us using <code>return</code> not <code>rewrite</code>.
+``` sh /etc/nginx/conf.d/redirect_server.conf
+server {
+  listen 80;
+  server_name myserver.io;
+  return 301 $scheme://www.myserver.io$request_uri;
+}</p>
+
+<p>```</p>
+
+<h3>Enable/Disable Maintenance mode</h3>
+
+<p>If the maintenance.html exists, it shows maintenance page first.
+And disable the cache(set <code>expires -1</code>) to prevent browser cache maintenance.html.
+``` sh /etc/nginx/conf.d/default.conf
+location / {
+  try_files /maintenance.html $uri @backend_web_servers;
+}</p>
+
+<p>location /maintenance.html {
+  expires -1; # prevent maintenance.html cached
+}
+```</p>
+
+<h3>Serve static resources for RAILS</h3>
+
+<p>All requests to assets folder like <code>http://127.0.0.1/assets/applicatoin-xxxxx.js</code> will be served by Nginx.
+<code>sh /etc/nginx/conf.d/default.conf
+location ^~ /assets/ {
+  root /home/rails/myrail/public/;
+}
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[memcached study]]></title>
