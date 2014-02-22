@@ -4,7 +4,7 @@
   <title><![CDATA[Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-01-25T14:24:49+08:00</updated>
+  <updated>2014-02-22T13:57:12+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,280 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Refactor ruby code by meta programming]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/02/22/refactor-ruby-code-by-meta-programming/"/>
+    <updated>2014-02-22T12:52:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/02/22/refactor-ruby-code-by-meta-programming</id>
+    <content type="html"><![CDATA[<p>最近重構了一些自動化部署的程式碼，因為發現程式碼裡面大部份的邏輯是一樣的。
+決定使用meta programming來重構這些程式碼順便學習ruby的meta programming。</p>
+
+<h3>dynamic define method</h3>
+
+<p>看看底下的程式碼，想取得使用者輸入的版號來進行自動部署。</p>
+
+<figure class='code'><figcaption><span>before_refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">get_gc_version_from_user</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the latest gc:&quot;</span>
+</span><span class='line'>    <span class="vi">@gc_version</span> <span class="o">=</span> <span class="n">get_user_input</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">get_gv_version_from_user</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">unless</span> <span class="vi">@config</span><span class="o">[</span><span class="ss">:import_gv</span><span class="o">]</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the latest gv:&quot;</span>
+</span><span class='line'>    <span class="vi">@gv_version</span> <span class="o">=</span> <span class="n">get_user_input</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">get_game_combo_version_from_user</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">unless</span> <span class="vi">@config</span><span class="o">[</span><span class="ss">:import_game_combo</span><span class="o">]</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the latest game combo:&quot;</span>
+</span><span class='line'>    <span class="vi">@game_combo_version</span> <span class="o">=</span> <span class="n">get_user_input</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After refactor, use array to create methods. <code>define_method</code> is used to define new methods dynamically.
+<code>do |argument|</code> means your could pass parameters in. <code>instance_variable_set</code> is used to set a instance varaible</p>
+
+<figure class='code'><figcaption><span>after_refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="o">[</span><span class="s1">&#39;gc&#39;</span><span class="p">,</span><span class="s1">&#39;gv&#39;</span><span class="p">,</span><span class="s1">&#39;game_combo&#39;</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;get_</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version_from_user&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">argument</span><span class="o">|</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">unless</span> <span class="n">argument</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the </span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="nb">instance_variable_set</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version&quot;</span><span class="p">,</span> <span class="n">get_user_input</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!-- more -->
+
+
+<p>After refactor, how to invoke these methods?</p>
+
+<figure class='code'><figcaption><span>how_to_invoke</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">prefer_versions</span>
+</span><span class='line'>  <span class="n">get_gc_version_from_user</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">get_gv_version_from_user</span><span class="p">(</span><span class="vi">@config</span><span class="o">[</span><span class="ss">:import_gv</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">get_game_combo_version_from_user</span><span class="p">(</span><span class="vi">@config</span><span class="o">[</span><span class="ss">:import_game_combo</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I found it&#8217;s unconvenient to pass parameter everytime. Methods should determine if it&#8217;s executed or not.
+So i did a little updated. Use <code>instance_variable_get</code> to access instance variable and determine return or not.</p>
+
+<figure class='code'><figcaption><span>after_refactor2</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="o">[</span><span class="s1">&#39;gc&#39;</span><span class="p">,</span><span class="s1">&#39;gv&#39;</span><span class="p">,</span><span class="s1">&#39;game_combo&#39;</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;get_</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version_from_user&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">unless</span> <span class="nb">instance_variable_get</span><span class="p">(</span><span class="s2">&quot;@config&quot;</span><span class="p">)</span><span class="o">[</span><span class="s2">&quot;import_</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the </span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="nb">instance_variable_set</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version&quot;</span><span class="p">,</span> <span class="n">get_user_input</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>How to invoke?</p>
+
+<figure class='code'><figcaption><span>how_to_invoke2</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">prefer_versions</span>
+</span><span class='line'>  <span class="n">get_gc_version_from_user</span>
+</span><span class='line'>  <span class="n">get_gv_version_from_user</span>
+</span><span class='line'>  <span class="n">get_game_combo_version_from_user</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>dynamic define class method</h3>
+
+<p>I have a util class and most of methods are class method.</p>
+
+<figure class='code'><figcaption><span>before_refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">MvnUtils</span>
+</span><span class='line'>  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">find_latest_gc_version</span>
+</span><span class='line'>      <span class="n">find_latest_version</span> <span class="s1">&#39;http://xxx.yyy.zzz/folder_a/gc/maven-metadata.xml&#39;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">find_latest_gv_version</span>
+</span><span class='line'>      <span class="n">find_latest_version</span> <span class="s1">&#39;http://xxx.yyy.zzz/folder_b/gv/maven-metadata.xml&#39;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">find_latest_game_combo_version</span>
+</span><span class='line'>      <span class="n">find_latest_version</span> <span class="s1">&#39;http://xxx.yyy.zzz/folder_c/game_combo/maven-metadata.xml&#39;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There&#8217;re few ways to create class methods but i think below are favroite.<br/>
+Use <code>define_method</code> inside <code>class &lt;&lt; self</code></p>
+
+<figure class='code'><figcaption><span>first way</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">MvnUtils</span>
+</span><span class='line'>  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>    <span class="o">[</span><span class="sx">%w(gc folder_a)</span><span class="p">,</span><span class="sx">%w(gv folder_b)</span><span class="p">,</span><span class="sx">%w(game_combo folder_c)</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;find_latest_</span><span class="si">#{</span><span class="n">item</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">_version&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">find_latest_version</span> <span class="s2">&quot;http://xxx.yyy.zzz/</span><span class="si">#{</span><span class="n">item</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">item</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">/maven-metadata.xml&quot;</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>OR use <code>define_singleton_method</code> to create class method</p>
+
+<figure class='code'><figcaption><span>second way</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">MvnUtils</span>
+</span><span class='line'>  <span class="o">[</span><span class="sx">%w(gc folder_a)</span><span class="p">,</span><span class="sx">%w(gv folder_b)</span><span class="p">,</span><span class="sx">%w(game_combo folder_c)</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">define_singleton_method</span><span class="p">(</span><span class="s2">&quot;find_latest_</span><span class="si">#{</span><span class="n">item</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">_version&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">find_latest_version</span> <span class="s2">&quot;http://xxx.yyy.zzz/</span><span class="si">#{</span><span class="n">item</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">item</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">/maven-metadata.xml&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>dynamic call</h3>
+
+<p>Originally i will retrieve the latest version from mvn if user doens&#8217;t specific the target deployment version.</p>
+
+<figure class='code'><figcaption><span>before_refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">check_gc_version</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@gc_version</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>      <span class="vi">@gc_version</span> <span class="o">=</span> <span class="no">MvnUtils</span><span class="o">.</span><span class="n">find_latest_gc_version</span>
+</span><span class='line'>      <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Can&#39;t find the latest gc version.&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="vi">@version</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">check_gv_version</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">unless</span> <span class="vi">@config</span><span class="o">[</span><span class="ss">:import_gv_game</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@gv_version</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>      <span class="vi">@gv_version</span> <span class="o">=</span> <span class="no">MvnUtils</span><span class="o">.</span><span class="n">find_latest_gv_version</span>
+</span><span class='line'>      <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Can&#39;t find the latest gv version.&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="vi">@gv_version</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">check_game_combo_version</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">unless</span> <span class="vi">@config</span><span class="o">[</span><span class="ss">:import_game_combo</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@game_comb_version</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>      <span class="vi">@game_comb_version</span> <span class="o">=</span> <span class="no">MvnUtils</span><span class="o">.</span><span class="n">find_latest_game_combo_version</span>
+</span><span class='line'>      <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Can&#39;t find the latest game comb version.&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="vi">@game_comb_version</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Use <code>.send()</code> to invoke object&#8217;s method</p>
+
+<figure class='code'><figcaption><span>after_factor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="o">[</span><span class="s1">&#39;gc&#39;</span><span class="p">,</span><span class="s1">&#39;gv&#39;</span><span class="p">,</span><span class="s1">&#39;game_combo&#39;</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;check_</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">unless</span> <span class="nb">instance_variable_get</span><span class="p">(</span><span class="s2">&quot;@config&quot;</span><span class="p">)</span><span class="o">[</span><span class="s2">&quot;import_</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span>
+</span><span class='line'>      <span class="k">if</span> <span class="nb">instance_variable_get</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>        <span class="nb">instance_variable_set</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version&quot;</span><span class="p">,</span> <span class="no">MvnUtils</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;find_latest_</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version&quot;</span><span class="p">))</span>
+</span><span class='line'>        <span class="nb">abort</span><span class="p">(</span><span class="s2">&quot;Can&#39;t find the latest </span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2"> version.&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">instance_variable_get</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[nginx configuration]]></title>
@@ -3273,82 +3547,6 @@ Add a rake file to create nondigest file of all ckeditor assets.</p>
 Today I push my first Ember-Rails(food-ntpc) project to <a href="https://github.com/weichienhung/food-ntpc">github</a> and <a href="http://food-ntpc.herokuapp.com/">heroku</a>.
 It takes me more time to finish it because i am not familiar with coffee script. I also create a new <a href="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/">post</a> for coffee script memo.
 During practicing i use Emberjs 1.0.0.rc7. But Emberjs 1.0.0 was released few days ago and i upgrade it to 1.0.0.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Multiple models in a view]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/01/multiple-model-in-a-view/"/>
-    <updated>2013-09-01T20:29:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/01/multiple-model-in-a-view</id>
-    <content type="html"><![CDATA[<p>How to use multiple models in a view?
-Retrieve another data and set to controller in Route&#8217;s setupController method.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">model: </span><span class="nf">-&gt;</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">Place</span><span class="p">.</span><span class="nx">places</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">setupController: </span><span class="nf">(controller, model) -&gt;</span>
-</span><span class='line'>  <span class="c1">#model is the result of Place.places()</span>
-</span><span class='line'>  <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;content&#39;</span><span class="p">,</span> <span class="nx">model</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">#another data</span>
-</span><span class='line'>  <span class="nv">categorys = </span><span class="nx">Category</span><span class="p">.</span><span class="nx">categorys</span><span class="p">()</span>
-</span><span class='line'>  <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;categorys&#39;</span><span class="p">,</span> <span class="nx">categorys</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I create CategoryView and bind data to it in template</p>
-
-<pre>
-&#123;{#each category in categorys}}
-  &#123;{#view CategoryView contentBinding="category"}}
-    &#123;{category.name}}
-  &#123;{/view}}
-&#123;{/each}}
-
-&#123;{#each place in content}}
-  &#123;{place.name}}
-&#123;{/each}}
-</pre>
-
-
-<p>CategoryView code:
-I use classNameBinding to auto update class when status is changed.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">CategoryView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>  <span class="nv">classNameBindings: </span><span class="p">[</span><span class="s">&#39;getClass&#39;</span><span class="p">]</span>
-</span><span class='line'>  <span class="nv">status: </span><span class="kc">true</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">getClass: </span><span class="p">(</span> <span class="nf">-&gt;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">return</span> <span class="s">&quot;btn-info&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="k">return</span> <span class="s">&quot;btn-default&quot;</span>
-</span><span class='line'>  <span class="p">).</span><span class="nx">property</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
 ]]></content>
   </entry>
   

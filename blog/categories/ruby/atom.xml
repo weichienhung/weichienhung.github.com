@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Weichien's studying note]]></title>
   <link href="http://weichienhung.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-01-25T14:24:49+08:00</updated>
+  <updated>2014-02-22T13:57:12+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,199 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Refactor ruby code by meta programming]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/02/22/refactor-ruby-code-by-meta-programming/"/>
+    <updated>2014-02-22T12:52:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/02/22/refactor-ruby-code-by-meta-programming</id>
+    <content type="html"><![CDATA[<p>最近重構了一些自動化部署的程式碼，因為發現程式碼裡面大部份的邏輯是一樣的。
+決定使用meta programming來重構這些程式碼順便學習ruby的meta programming。</p>
+
+<h3>dynamic define method</h3>
+
+<p>看看底下的程式碼，想取得使用者輸入的版號來進行自動部署。
+``` ruby before_refactor
+  def get_gc_version_from_user</p>
+
+<pre><code>puts "Type a version d.d.d or leave blank to get the latest gc:"
+@gc_version = get_user_input
+</code></pre>
+
+<p>  end</p>
+
+<p>  def get_gv_version_from_user</p>
+
+<pre><code>return unless @config[:import_gv]
+puts "Type a version d.d.d or leave blank to get the latest gv:"
+@gv_version = get_user_input
+</code></pre>
+
+<p>  end</p>
+
+<p>  def get_game_combo_version_from_user</p>
+
+<pre><code>return unless @config[:import_game_combo]
+puts "Type a version d.d.d or leave blank to get the latest game combo:"
+@game_combo_version = get_user_input
+</code></pre>
+
+<p>  end
+<code>
+After refactor, use array to create methods. `define_method` is used to define new methods dynamically.
+`do |argument|` means your could pass parameters in. `instance_variable_set` is used to set a instance varaible
+</code> ruby after_refactor
+  ['gc','gv','game_combo'].each do |item|</p>
+
+<pre><code>define_method("get_#{item}_version_from_user") do |argument|
+  return unless argument
+  puts "Type a version d.d.d or leave blank to get the #{item}"
+  instance_variable_set("@#{item}_version", get_user_input)
+end
+</code></pre>
+
+<p>  end
+```</p>
+
+<!-- more -->
+
+
+<p>After refactor, how to invoke these methods?
+<code>ruby how_to_invoke
+def prefer_versions
+  get_gc_version_from_user(true)
+  get_gv_version_from_user(@config[:import_gv])
+  get_game_combo_version_from_user(@config[:import_game_combo])
+end
+</code>
+I found it's unconvenient to pass parameter everytime. Methods should determine if it's executed or not.
+So i did a little updated. Use <code>instance_variable_get</code> to access instance variable and determine return or not.
+``` ruby after_refactor2
+  ['gc','gv','game_combo'].each do |item|</p>
+
+<pre><code>define_method("get_#{item}_version_from_user")
+  return unless instance_variable_get("@config")["import_#{item}".to_sym]
+  puts "Type a version d.d.d or leave blank to get the #{item}"
+  instance_variable_set("@#{item}_version", get_user_input)
+end
+</code></pre>
+
+<p>  end
+<code>
+How to invoke?
+</code> ruby how_to_invoke2
+def prefer_versions
+  get_gc_version_from_user
+  get_gv_version_from_user
+  get_game_combo_version_from_user
+end
+```</p>
+
+<h3>dynamic define class method</h3>
+
+<p>I have a util class and most of methods are class method.
+``` ruby before_refactor
+class MvnUtils
+  class &lt;&lt; self</p>
+
+<pre><code>def find_latest_gc_version
+  find_latest_version 'http://xxx.yyy.zzz/folder_a/gc/maven-metadata.xml'
+end
+def find_latest_gv_version
+  find_latest_version 'http://xxx.yyy.zzz/folder_b/gv/maven-metadata.xml'
+end
+def find_latest_game_combo_version
+  find_latest_version 'http://xxx.yyy.zzz/folder_c/game_combo/maven-metadata.xml'
+end
+</code></pre>
+
+<p>  end
+  ...
+end
+<code>
+There're few ways to create class methods but i think below are favroite.  
+Use `define_method` inside `class &lt;&lt; self`
+</code> ruby first way
+class MvnUtils
+  class &lt;&lt; self</p>
+
+<pre><code>[%w(gc folder_a),%w(gv folder_b),%w(game_combo folder_c)].each do |item|
+  define_method("find_latest_#{item[0]}_version")
+    find_latest_version "http://xxx.yyy.zzz/#{item[1]}/#{item[0]}/maven-metadata.xml"
+  end
+end
+</code></pre>
+
+<p>  end
+  ...
+end
+<code>
+OR use `define_singleton_method` to create class method
+</code> ruby second way
+class MvnUtils
+  [%w(gc folder_a),%w(gv folder_b),%w(game_combo folder_c)].each do |item|</p>
+
+<pre><code>define_singleton_method("find_latest_#{item[0]}_version")
+  find_latest_version "http://xxx.yyy.zzz/#{item[1]}/#{item[0]}/maven-metadata.xml"
+end
+</code></pre>
+
+<p>  end
+  ...
+end
+```</p>
+
+<h3>dynamic call</h3>
+
+<p>Originally i will retrieve the latest version from mvn if user doens't specific the target deployment version.
+``` ruby before_refactor
+  def check_gc_version</p>
+
+<pre><code>if @gc_version.nil?
+  @gc_version = MvnUtils.find_latest_gc_version 
+  abort("Can't find the latest gc version.") if @version.nil?  
+end
+</code></pre>
+
+<p>  end
+  def check_gv_version</p>
+
+<pre><code>return unless @config[:import_gv_game]
+if @gv_version.nil?
+  @gv_version = MvnUtils.find_latest_gv_version 
+  abort("Can't find the latest gv version.") if @gv_version.nil?  
+end
+</code></pre>
+
+<p>  end
+  def check_game_combo_version</p>
+
+<pre><code>return unless @config[:import_game_combo]
+if @game_comb_version.nil?
+  @game_comb_version = MvnUtils.find_latest_game_combo_version 
+  abort("Can't find the latest game comb version.") if @game_comb_version.nil?  
+end
+</code></pre>
+
+<p>  end
+<code>
+Use `.send()` to invoke object's method
+</code> ruby after_factor
+  ['gc','gv','game_combo'].each do |item|</p>
+
+<pre><code>define_method("check_#{item}_version")
+  return unless instance_variable_get("@config")["import_#{item}".to_sym]
+  if instance_variable_get("@#{item}_version").nil?
+    instance_variable_set("@#{item}_version", MvnUtils.send("find_latest_#{item}_version"))
+    abort("Can't find the latest #{item} version.") if instance_variable_get("@#{item}_version").nil?  
+  end
+end
+</code></pre>
+
+<p>  end
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[UI automation]]></title>
@@ -643,158 +836,6 @@ end
 man = Person.new
 man.showFull
 ```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ruby study]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/03/01/ruby-study/"/>
-    <updated>2013-03-01T23:39:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/03/01/ruby-study</id>
-    <content type="html"><![CDATA[<p>最近都在看CSS沒什麼時間繼續看Ruby,今天上codecademy練習ruby。
-在這裡紀錄一下之前沒看過的語法。</p>
-
-<h3>Multiple comments</h3>
-
-<p><code>ruby
-=begin
-this is comment,
-i am comment too.
-=end
-</code></p>
-
-<h3>Get input from console</h3>
-
-<p><code>
-print "Integer please: "
-user_num = Integer(gets.chomp)
-</code></p>
-
-<!--more-->
-
-
-<h3>Different between string.downcase and string.downcase!</h3>
-
-<p>With ! the user's string is modified in-place; otherwise, Ruby will create a copy of user_input and modify that instead
-<code>
-name = "Samuel"
-downcase_name = name.downcase
-puts name  # "Samuel"
-downcase_name = name.downcase!
-puts name  # "samuel"
-</code></p>
-
-<h3>Hash sort_by and Array sort!</h3>
-
-<p>```
-h = Hash.new(0)
-h.sort_by { |a,b| b }  # we can sort by value</p>
-
-<p>my_array = [3, 4, 8, 7, 1, 6, 5, 9, 2]
-my_array.sort! # [1, 2, 3, 4, 5, 6, 7, 8, 9]</p>
-
-<h1>descending order</h1>
-
-<p>my_array.sort! { |a,b| b &lt;=> a} # [9, 8, 7, 6, 5, 4, 3, 2, 1]
-```</p>
-
-<h3>What's Symbol? it's not a string</h3>
-
-<p>```
-"string" == :string # false</p>
-
-<p>"string".object_id == "string".object_id  # false</p>
-
-<p>:symbol.object_id == :symbol.object_id # true</p>
-
-<p>"string".to_sym == :string # true
-"string".intern == :string # true, inter is the same as to_sym
-```
-Why need symbol? 主要是用來當hash的key以及用來參考到method的名字</p>
-
-<ol>
-<li>They're immutable, meaning they can't be changed once they're created</li>
-<li>Only one copy,節省記憶體</li>
-<li>Hashes that use symbols instead of strings as keys work faster</li>
-</ol>
-
-
-<p>來看一下怎麼使用
-```
-movies = {</p>
-
-<pre><code>:name =&gt; "star_war",
-:age =&gt; "1970"
-</code></pre>
-
-<p>}</p>
-
-<h1>But since ruby 1.9 hash become more compact</h1>
-
-<p>movies = {</p>
-
-<pre><code>name: "star_war",
-age: "1970"
-</code></pre>
-
-<p>}
-```</p>
-
-<h3>switch conidition</h3>
-
-<p>```
-case language
-when "JS"
-  puts "Websites!"
-when "Python"
-  puts "Science!"
-when "Ruby"
-  puts "Web apps!"
-else
-  puts "I don't know!"
-end</p>
-
-<p>case language
-  when "JS" then puts "Websites!"
-  when "Python" then puts "Science!"
-  when "Ruby" then puts "Web apps!"
-  else puts "I don't know!"
-end
-```</p>
-
-<h3>Ternary conditional expression</h3>
-
-<p><code>
-puts 3 &lt; 4 ? "hello world"  : "evil"  # hello world
-</code></p>
-
-<h3>Conditional assignment.</h3>
-
-<p>```
-favorite_book = nil
-puts favorite_book  # won't output anything</p>
-
-<p>favorite_book ||= "Cat's Cradle"
-puts favorite_book  # Cat's Cradle
-```</p>
-
-<h3>upto and downto</h3>
-
-<p>```
-95.upto(100) { |num| print num } # 95 96 97 98 99 100</p>
-
-<h1>also apply to alphabet</h1>
-
-<p>"L".upto("P") { |word| print word }
-```</p>
-
-<h3>Call and Response</h3>
-
-<p>Here we use symbol to reference a method name. For example, we want to check variable has next method or not.
-<code>
-age = 30
-age.respond_to?(:next) # true
-</code></p>
 ]]></content>
   </entry>
   
