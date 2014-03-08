@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Weichien's studying note]]></title>
+  <title><![CDATA[Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-02-22T13:57:12+08:00</updated>
+  <updated>2014-03-08T13:51:40+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,281 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Unit testing in Emberjs]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/03/08/unit-testing-in-emberjs/"/>
+    <updated>2014-03-08T12:52:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/03/08/unit-testing-in-emberjs</id>
+    <content type="html"><![CDATA[<p>I apply the <a href="https://qunitjs.com/">QUnit</a> to my Emberjs project to do unit/integration testing.
+In unit testing we usually have to mock object/methods to test every condition.
+I choose <a href="http://sinonjs.org/">SinonJS</a> as my mock library. It&#8217;s really easy to use.</p>
+
+<p>Let&#8217;s see how to unit testing my components.</p>
+
+<h3>Testing html</h3>
+
+<p>Create a html that includes qunit,sinon,emberjs and your source codes. Remeber to use debug Emberjs(<code>ember-1.x.x.js</code>) not production(<code>ember-1.x.x.min.js</code>)<br/>
+Make sure you invoke <code>setupForTesting</code> and <code>injectTestHelpers</code> after Application created.</p>
+
+<figure class='code'><figcaption><span>test.html</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;head&gt;</span>
+</span><span class='line'>  <span class="c">&lt;!-- vendor libs --&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/vendor/jquery-1.9.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/vendor/handlebars-1.0.0.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;lib/ember-1.0.1.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c">&lt;!-- testing libs --&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;lib/qunit-1.14.0.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;lib/qunit-1.14.0.css&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c">&lt;!-- mock libs --&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;lib/sinon-1.8.2.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c">&lt;!-- source codes --&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/components/lobby.component.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'><span class="nt">&lt;/head&gt;</span>
+</span><span class='line'><span class="nt">&lt;body&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;application&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;script&gt;</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">MyApp</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">rootElement</span><span class="o">:</span> <span class="s1">&#39;#application&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>    <span class="nx">MyApp</span><span class="p">.</span><span class="nx">setupForTesting</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">MyApp</span><span class="p">.</span><span class="nx">injectTestHelpers</span><span class="p">();</span>
+</span><span class='line'>  <span class="nt">&lt;/script&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c">&lt;!-- spec codes --&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;spec/lobby.spec.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'><span class="nt">&lt;/body&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Route</h3>
+
+<p>I have a lobby route.</p>
+
+<figure class='code'><figcaption><span>LobbyRoute</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LobbyRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">renderTemplate</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;lobby&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">controller</span><span class="o">:</span> <span class="s2">&quot;lobby&quot;</span> <span class="p">}</span> <span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In QUnit we could use <code>module()</code> to group test cases. <code>test()</code> after <code>module()</code> will be grouped.
+Then we could add <code>setup</code> and <code>teardown</code> methods. They will be invoked in each test case.</p>
+
+<figure class='code'><figcaption><span>lobby.spec.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;LobbyRoute&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">setup</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">MyApp</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">teardown</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">//do something here.</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should render lobby template&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">Ember</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">route</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">__container__</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s1">&#39;route:lobby&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">sinon</span><span class="p">.</span><span class="nx">spy</span><span class="p">(</span><span class="nx">route</span><span class="p">,</span> <span class="s2">&quot;render&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">route</span><span class="p">.</span><span class="nx">renderTemplate</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">ok</span><span class="p">(</span><span class="nx">route</span><span class="p">.</span><span class="nx">render</span><span class="p">.</span><span class="nx">calledOnce</span><span class="p">,</span> <span class="s2">&quot;render should be calledOnce&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Above example uses Ember&#8217;s <code>__container__.lookup</code> to find specific component and testing it.<br/>
+But how we make sure the specified method is called?
+Use <code>sinon.spy</code> to spy a object/method and check it.</p>
+
+<!-- more -->
+
+
+<h3>Controller</h3>
+
+<p>I have a <code>backward</code> function and it will invoke <code>exitApp</code> when <code>isWebview()</code> is true.</p>
+
+<figure class='code'><figcaption><span>LobbyController</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LobbyController</span> <span class="o">=</span> <span class="nx">application</span><span class="p">.</span><span class="nx">AccessibleObjectController</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">backward</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span> <span class="nx">ViewManager</span><span class="p">.</span><span class="nx">isWebview</span><span class="p">()</span> <span class="p">){</span>
+</span><span class='line'>      <span class="nx">LifeManager</span><span class="p">.</span><span class="nx">exitApp</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In below example, we <code>stub</code> the ViewManager&#8217;s <code>isWebview</code> method.
+I want it returns true during testing. Here is a little difference from previous example.
+In the last two lines. I have to invoke <code>restore</code> in each stub/spy method.
+Why? The same method can&#8217;t be spy/stub twice.  We have to <code>restore</code> it to prevent other test cases be influenced.
+Why previous example doesn&#8217;t have <code>restore</code> in route? Because lobby route is in Ember container and it will be re-created in <code>MyApp.reset()</code></p>
+
+<figure class='code'><figcaption><span>lobby.spec.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">test</span><span class="p">(</span><span class="s2">&quot;backward should invoke exitApp in webview&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">Ember</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">controller</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">__container__</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s1">&#39;controller:lobby&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">sinon</span><span class="p">.</span><span class="nx">stub</span><span class="p">(</span><span class="nx">ViewManager</span><span class="p">,</span> <span class="s2">&quot;isWebview&quot;</span><span class="p">).</span><span class="nx">returns</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">sinon</span><span class="p">.</span><span class="nx">spy</span><span class="p">(</span><span class="nx">LifeManager</span><span class="p">,</span> <span class="s2">&quot;exitApp&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">controller</span><span class="p">.</span><span class="nx">backward</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//assert</span>
+</span><span class='line'>    <span class="nx">equal</span><span class="p">(</span><span class="nx">LifeManager</span><span class="p">.</span><span class="nx">exitApp</span><span class="p">.</span><span class="nx">callCount</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;LifeManager.exitApp should be called&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">ViewManager</span><span class="p">.</span><span class="nx">isWebview</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">LifeManager</span><span class="p">.</span><span class="nx">exitApp</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>View</h3>
+
+<p>Have a lobby view and template as below.</p>
+
+<figure class='code'><figcaption><span>LobbyView</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LobbyView</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">templateName</span> <span class="o">:</span> <span class="s1">&#39;tmp_lobby&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">classNames</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;lobby-layout&#39;</span><span class="p">],</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">Ember</span><span class="p">.</span><span class="nx">TEMPLATES</span><span class="p">.</span><span class="nx">tmp_lobby</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Handlebars</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span>
+</span><span class='line'>  <span class="p">[</span><span class="s1">&#39;&lt;div class=&quot;lobby-header&quot;&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>     <span class="s1">&#39;&lt;div class=&quot;lobby-logo&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>   <span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>   <span class="s1">&#39;&lt;div class=&quot;lobby-content&quot;&gt;&lt;/div&gt;&#39;</span>
+</span><span class='line'>  <span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In <code>setup</code> we have to append view to document.
+Then we could use css selector to find expected element.
+Remeber to remove it from document in <code>teardown</code>.</p>
+
+<figure class='code'><figcaption><span>lobby.spec.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;LobbyView&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">setup</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">Gamenow</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">Ember</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">view</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">__container__</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s1">&#39;view:lobby&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">append</span><span class="p">();</span> <span class="c1">// Hook up to our document.</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">teardown</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">Ember</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span> <span class="c1">// Unhook from our document.</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">test</span><span class="p">(</span><span class="s2">&quot;header should has logo&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">equal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.lobby-header .lobby-logo&quot;</span><span class="p">).</span><span class="nx">length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;.lobby-logo should exist&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Refactor ruby code by meta programming]]></title>
@@ -3535,18 +3810,6 @@ Add a rake file to create nondigest file of all ckeditor assets.</p>
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[First ember_rails project]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/03/first-ember-rails-project/"/>
-    <updated>2013-09-03T23:57:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/03/first-ember-rails-project</id>
-    <content type="html"><![CDATA[<p>Last time i said i want to make an ember-rails project(<a href="http://127.0.0.1:4000/blog/2013/08/25/rails-and-ember-study/">post</a>).
-Today I push my first Ember-Rails(food-ntpc) project to <a href="https://github.com/weichienhung/food-ntpc">github</a> and <a href="http://food-ntpc.herokuapp.com/">heroku</a>.
-It takes me more time to finish it because i am not familiar with coffee script. I also create a new <a href="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/">post</a> for coffee script memo.
-During practicing i use Emberjs 1.0.0.rc7. But Emberjs 1.0.0 was released few days ago and i upgrade it to 1.0.0.</p>
 ]]></content>
   </entry>
   

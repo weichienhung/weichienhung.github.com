@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: emberjs | Weichien's studying note]]></title>
+  <title><![CDATA[Category: emberjs | Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/blog/categories/emberjs/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-02-22T13:57:12+08:00</updated>
+  <updated>2014-03-08T13:51:40+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,200 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Unit testing in Emberjs]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/03/08/unit-testing-in-emberjs/"/>
+    <updated>2014-03-08T12:52:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/03/08/unit-testing-in-emberjs</id>
+    <content type="html"><![CDATA[<p>I apply the <a href="https://qunitjs.com/">QUnit</a> to my Emberjs project to do unit/integration testing.
+In unit testing we usually have to mock object/methods to test every condition.
+I choose <a href="http://sinonjs.org/">SinonJS</a> as my mock library. It's really easy to use.</p>
+
+<p>Let's see how to unit testing my components.</p>
+
+<h3>Testing html</h3>
+
+<p>Create a html that includes qunit,sinon,emberjs and your source codes. Remeber to use debug Emberjs(<code>ember-1.x.x.js</code>) not production(<code>ember-1.x.x.min.js</code>)<br/>
+Make sure you invoke <code>setupForTesting</code> and <code>injectTestHelpers</code> after Application created.
+``` html test.html
+<head>
+  <!-- vendor libs -->
+  <script src="js/vendor/jquery-1.9.1.min.js"></script>
+  <script src="js/vendor/handlebars-1.0.0.js"></script>
+  <script src="lib/ember-1.0.1.js"></script></p>
+
+<p>  <!-- testing libs -->
+  <script src="lib/qunit-1.14.0.js"></script>
+  <link rel="stylesheet" href="lib/qunit-1.14.0.css"></p>
+
+<p>  <!-- mock libs -->
+  <script src="lib/sinon-1.8.2.js"></script></p>
+
+<p>  <!-- source codes -->
+  <script src="js/components/lobby.component.js"></script>
+</head>
+<body>
+  <div id="application"></div></p>
+
+<p>  <script></p>
+
+<pre><code>var MyApp = Ember.Application.create({
+  rootElement: '#application',
+});
+MyApp.setupForTesting();
+MyApp.injectTestHelpers();
+</code></pre>
+
+<p>  </script></p>
+
+<p>  <!-- spec codes -->
+  <script src="spec/lobby.spec.js"></script>
+</body>
+```</p>
+
+<h3>Route</h3>
+
+<p>I have a lobby route.
+``` javascript LobbyRoute
+MyApp.LobbyRoute = Ember.Route.extend({
+  renderTemplate : function(){</p>
+
+<pre><code>this.render("lobby", { controller: "lobby" } );
+</code></pre>
+
+<p>  }
+});
+<code>``
+In QUnit we could use</code>module()<code>to group test cases.</code>test()<code>after</code>module()<code>will be grouped.
+Then we could add</code>setup<code>and</code>teardown` methods. They will be invoked in each test case.</p>
+
+<p>``` javascript lobby.spec.js
+module("LobbyRoute", {
+  setup: function() {</p>
+
+<pre><code>MyApp.reset();
+</code></pre>
+
+<p>  },
+  teardown: function() {</p>
+
+<pre><code>//do something here.
+</code></pre>
+
+<p>  }
+});</p>
+
+<p>test("should render lobby template", function() {
+  Ember.run(this,function(){</p>
+
+<pre><code>route = MyApp.__container__.lookup('route:lobby');
+
+sinon.spy(route, "render");
+route.renderTemplate();
+ok(route.render.calledOnce, "render should be calledOnce");  
+</code></pre>
+
+<p>  });
+});
+<code>``
+Above example uses Ember's</code><strong>container</strong>.lookup<code>to find specific component and testing it.  
+But how we make sure the specified method is called?
+Use</code>sinon.spy` to spy a object/method and check it.</p>
+
+<!-- more -->
+
+
+<h3>Controller</h3>
+
+<p>I have a <code>backward</code> function and it will invoke <code>exitApp</code> when <code>isWebview()</code> is true.
+``` javascript LobbyController
+MyApp.LobbyController = application.AccessibleObjectController.extend({
+  backward : function(){</p>
+
+<pre><code>if( ViewManager.isWebview() ){
+  LifeManager.exitApp();
+}         
+</code></pre>
+
+<p>  }
+});
+<code>
+In below example, we `stub` the ViewManager's `isWebview` method.
+I want it returns true during testing. Here is a little difference from previous example.
+In the last two lines. I have to invoke `restore` in each stub/spy method.
+Why? The same method can't be spy/stub twice.  We have to `restore` it to prevent other test cases be influenced.
+Why previous example doesn't have `restore` in route? Because lobby route is in Ember container and it will be re-created in `MyApp.reset()`
+</code> javascript lobby.spec.js
+test("backward should invoke exitApp in webview", function() {
+  Ember.run(this, function() {</p>
+
+<pre><code>controller = MyApp.__container__.lookup('controller:lobby');
+sinon.stub(ViewManager, "isWebview").returns(true);
+sinon.spy(LifeManager, "exitApp");
+controller.backward();
+
+//assert
+equal(LifeManager.exitApp.callCount, 1, "LifeManager.exitApp should be called");
+
+ViewManager.isWebview.restore();
+LifeManager.exitApp.restore();
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<h3>View</h3>
+
+<p>Have a lobby view and template as below.
+``` javascript LobbyView
+MyApp.LobbyView = Ember.View.extend({
+  templateName : 'tmp_lobby',
+  classNames: ['lobby-layout'],
+});
+Ember.TEMPLATES.tmp_lobby = Ember.Handlebars.compile(
+  ['<div class="lobby-header">',</p>
+
+<pre><code> '&lt;div class="lobby-logo"&gt;&lt;/div&gt;',
+</code></pre>
+
+<p>   '</div>',
+   '<div class="lobby-content"></div>'
+  ].join(""));
+<code>
+In `setup` we have to append view to document.
+Then we could use css selector to find expected element.
+Remeber to remove it from document in `teardown`.
+</code> javascript lobby.spec.js
+module("LobbyView", {
+  setup: function() {</p>
+
+<pre><code>Gamenow.reset();
+Ember.run(this, function () {
+  this.view = MyApp.__container__.lookup('view:lobby');
+  this.view.append(); // Hook up to our document.
+});
+</code></pre>
+
+<p>  },
+  teardown: function () {</p>
+
+<pre><code>Ember.run(this, function () {
+  this.view.remove(); // Unhook from our document.
+});
+</code></pre>
+
+<p>  }
+});</p>
+
+<p>test("header should has logo", function () {
+  equal(this.view.$(".lobby-header .lobby-logo").length, 1, ".lobby-logo should exist");
+});</p>
+
+<p>```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[emberjs-data trying]]></title>
@@ -351,60 +545,6 @@ So i use EmberJS,HighchartJS and Rails to build this simple web app. I always le
 Today I push my first Ember-Rails(food-ntpc) project to <a href="https://github.com/weichienhung/food-ntpc">github</a> and <a href="http://food-ntpc.herokuapp.com/">heroku</a>.
 It takes me more time to finish it because i am not familiar with coffee script. I also create a new <a href="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/">post</a> for coffee script memo.
 During practicing i use Emberjs 1.0.0.rc7. But Emberjs 1.0.0 was released few days ago and i upgrade it to 1.0.0.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Multiple models in a view]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/01/multiple-model-in-a-view/"/>
-    <updated>2013-09-01T20:29:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/01/multiple-model-in-a-view</id>
-    <content type="html"><![CDATA[<p>How to use multiple models in a view?
-Retrieve another data and set to controller in Route's setupController method.
-``` coffeescript
-model: ->
-  return Place.places()</p>
-
-<p>setupController: (controller, model) ->
-  #model is the result of Place.places()
-  controller.set 'content', model</p>
-
-<p>  #another data
-  categorys = Category.categorys()
-  controller.set 'categorys', categorys
-```
-I create CategoryView and bind data to it in template</p>
-
-<pre>
-&#123;{#each category in categorys}}
-  &#123;{#view CategoryView contentBinding="category"}}
-    &#123;{category.name}}
-  &#123;{/view}}
-&#123;{/each}}
-
-&#123;{#each place in content}}
-  &#123;{place.name}}
-&#123;{/each}}
-</pre>
-
-
-<p>CategoryView code:
-I use classNameBinding to auto update class when status is changed.
-```
-CategoryView = Ember.View.extend
-  classNameBindings: ['getClass']
-  status: true</p>
-
-<p>  getClass: ( -></p>
-
-<pre><code>if this.get('status')
-  return "btn-info"
-else
-  return "btn-default"
-</code></pre>
-
-<p>  ).property('status')
-```</p>
 ]]></content>
   </entry>
   

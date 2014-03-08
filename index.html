@@ -3,16 +3,16 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Weichien's studying note</title>
+	<title>Practice makes perfect</title>
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="最近重構了一些自動化部署的程式碼，因為發現程式碼裡面大部份的邏輯是一樣的。
-決定使用meta programming來重構這些程式碼順便學習ruby的meta programming。 dynamic define method 看看底下的程式碼，想取得使用者輸入的版號來進行自動部署。 &hellip;">
+	<meta name="description" content="I apply the QUnit to my Emberjs project to do unit/integration testing.
+In unit testing we usually have to mock object/methods to test every &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-	<link href="/atom.xml" rel="alternate" title="Weichien's studying note" type="application/atom+xml">
+	<link href="/atom.xml" rel="alternate" title="Practice makes perfect" type="application/atom+xml">
 	<link rel="canonical" href="">
 	<link href="/favicon.png" rel="shortcut icon">
 	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -25,8 +25,8 @@
 <body>
 	<header id="header" class="inner"><a class="myheader-avatar" href="/"><img src="/images/samuel.jpg"></a>
 <div class="myheader-slogan">
-<h1><a href="/">Weichien's studying note</a></h1>
-<h2>Practice makes perfect</h2>
+<h1><a href="/">Practice makes perfect</a></h1>
+<h2>...</h2>
 </div>
 <nav id="main-nav"><ul class="main">
 	<!-- <li><a href="/">Blog</a></li> -->
@@ -91,6 +91,185 @@
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/03/08/unit-testing-in-emberjs/">
+		
+			Unit Testing in Emberjs</a>
+	</h2>
+	<div class="entry-content">
+		<p>I apply the <a href="https://qunitjs.com/">QUnit</a> to my Emberjs project to do unit/integration testing.
+In unit testing we usually have to mock object/methods to test every condition.
+I choose <a href="http://sinonjs.org/">SinonJS</a> as my mock library. It&#8217;s really easy to use.</p>
+
+<p>Let&#8217;s see how to unit testing my components.</p>
+
+<h3>Testing html</h3>
+
+<p>Create a html that includes qunit,sinon,emberjs and your source codes. Remeber to use debug Emberjs(<code>ember-1.x.x.js</code>) not production(<code>ember-1.x.x.min.js</code>)<br/>
+Make sure you invoke <code>setupForTesting</code> and <code>injectTestHelpers</code> after Application created.</p>
+
+<figure class='code'><figcaption><span>test.html</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;head&gt;</span>
+</span><span class='line'>  <span class="c">&lt;!-- vendor libs --&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/vendor/jquery-1.9.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/vendor/handlebars-1.0.0.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;lib/ember-1.0.1.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c">&lt;!-- testing libs --&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;lib/qunit-1.14.0.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;lib/qunit-1.14.0.css&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c">&lt;!-- mock libs --&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;lib/sinon-1.8.2.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c">&lt;!-- source codes --&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/components/lobby.component.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'><span class="nt">&lt;/head&gt;</span>
+</span><span class='line'><span class="nt">&lt;body&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;application&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;script&gt;</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">MyApp</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">rootElement</span><span class="o">:</span> <span class="s1">&#39;#application&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>    <span class="nx">MyApp</span><span class="p">.</span><span class="nx">setupForTesting</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">MyApp</span><span class="p">.</span><span class="nx">injectTestHelpers</span><span class="p">();</span>
+</span><span class='line'>  <span class="nt">&lt;/script&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c">&lt;!-- spec codes --&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;spec/lobby.spec.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'><span class="nt">&lt;/body&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Route</h3>
+
+<p>I have a lobby route.</p>
+
+<figure class='code'><figcaption><span>LobbyRoute</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">MyApp</span><span class="p">.</span><span class="nx">LobbyRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">renderTemplate</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s2">&quot;lobby&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">controller</span><span class="o">:</span> <span class="s2">&quot;lobby&quot;</span> <span class="p">}</span> <span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In QUnit we could use <code>module()</code> to group test cases. <code>test()</code> after <code>module()</code> will be grouped.
+Then we could add <code>setup</code> and <code>teardown</code> methods. They will be invoked in each test case.</p>
+
+<figure class='code'><figcaption><span>lobby.spec.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;LobbyRoute&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">setup</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">MyApp</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">teardown</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">//do something here.</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should render lobby template&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">Ember</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">route</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">__container__</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s1">&#39;route:lobby&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">sinon</span><span class="p">.</span><span class="nx">spy</span><span class="p">(</span><span class="nx">route</span><span class="p">,</span> <span class="s2">&quot;render&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">route</span><span class="p">.</span><span class="nx">renderTemplate</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">ok</span><span class="p">(</span><span class="nx">route</span><span class="p">.</span><span class="nx">render</span><span class="p">.</span><span class="nx">calledOnce</span><span class="p">,</span> <span class="s2">&quot;render should be calledOnce&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Above example uses Ember&#8217;s <code>__container__.lookup</code> to find specific component and testing it.<br/>
+But how we make sure the specified method is called?
+Use <code>sinon.spy</code> to spy a object/method and check it.</p>
+
+
+		
+		<a href="/blog/2014/03/08/unit-testing-in-emberjs/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-08T12:52:00+08:00" pubdate data-updated="true">Mar 8<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/emberjs/'>emberjs</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/03/08/unit-testing-in-emberjs/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -872,82 +1051,6 @@ I put the final result to <a href="https://gist.github.com/weichienhung/7055412"
 </div>
 	
 	<div class="comments"><a href="/blog/2013/10/19/design-pattern-in-javascript/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/13/testing/">
-		
-			Testing,Documentation and Others</a>
-	</h2>
-	<div class="entry-content">
-		<p>Past two weeks, i have studied some useful gems in rails. Here are the summary and tips.</p>
-
-<h2><a href="https://github.com/cucumber/cucumber-rails">Cucumber</a></h2>
-
-<p>Cucumber is the Behavior Driven Development(BDD). Writing testing is the most important in software development.
-Without testing case it&#8217;s hard to refactor any code in the future.</p>
-
-<p>For instance: my site provide REST API with JSON and require devise login to use.
-How to test?<br/>
-Add to Gemfile. Suggest to use rspec and factory_gril gems together.</p>
-
-<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:test</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s2">&quot;rspec-rails&quot;</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;cucumber-rails&#39;</span><span class="p">,</span> <span class="ss">:require</span> <span class="o">=&gt;</span> <span class="kp">false</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s2">&quot;factory_girl_rails&quot;</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;database_cleaner&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s2">&quot;rspec-rails&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Run <code>rails g cucumber:install</code> to initial features/ structure.</p>
-
-
-		
-		<a href="/blog/2013/10/13/testing/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-13T19:38:00+08:00" pubdate data-updated="true">Oct 13<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>rails</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/10/13/testing/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
