@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: javascript | Practice makes perfect]]></title>
+  <link href="http://weichienhung.github.io/blog/categories/javascript/atom.xml" rel="self"/>
+  <link href="http://weichienhung.github.io/"/>
+  <updated>2014-03-17T23:03:14+08:00</updated>
+  <id>http://weichienhung.github.io/</id>
+  <author>
+    <name><![CDATA[Weichien Hung]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ES6 preview]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/03/12/es6-preview/"/>
+    <updated>2014-03-12T22:23:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/03/12/es6-preview</id>
+    <content type="html"><![CDATA[<p>這篇文章用來記錄ES6的一些新功能。參考Lukehoban的<a href="https://github.com/lukehoban/es6features">版本</a>並加以中文化。
+基本上所有的example codes我都有在<a href="http://www.es6fiddle.net/">ES6 fiddle</a>或用<a href="https://github.com/google/traceur-compiler">Traceur</a>執行過。</p>
+
+<p>ES6包含這些新的功能:<br/>
+- <a href="#let--const">let + const</a><br/>
+- <a href="#enhanced-object-literals">enhanced object literals</a><br/>
+- <a href="#arrows">arrows</a><br/>
+- <a href="#classes">classes</a><br/>
+- <a href="#template-strings">template strings</a><br/>
+- <a href="#destructuring">destructuring</a><br/>
+- <a href="#default--rest--spread">default + rest + spread</a><br/>
+- <a href="#iterators--forof">iterators + for..of</a><br/>
+- <a href="#generators">generators</a><br/>
+- <a href="#comprehensions">comprehensions</a><br/>
+- <a href="#unicode">unicode</a><br/>
+- <a href="#modules">modules</a><br/>
+- <a href="#module-loaders">module loaders</a><br/>
+- <a href="#map--set--weakmap--weakset">map + set + weakmap + weakset</a><br/>
+- <a href="#proxies">proxies</a><br/>
+- <a href="#symbols">symbols</a><br/>
+- <a href="#promises">promises</a><br/>
+- <a href="#math--number--string--object-apis">math + number + string + object APIs</a><br/>
+- <a href="#binary-and-octal-literals">binary and octal literals</a><br/>
+- <a href="#reflect-api">reflect api</a><br/>
+- <a href="#tail-calls">tail calls</a></p>
+
+<h2>ECMAScript 6 Features</h2>
+
+<h3><a name=let--const></a> Let + Const</h3>
+
+<p><code>let</code>可以想成是新的<code>var</code>，建立的變數只會存活在Block scope裡。
+<code>const</code>是用來建立常數。</p>
+
+<p>``` javascript
+function x() {
+  let a = 2;
+  a = a + 3;
+  return a;
+}</p>
+
+<p>console.log(x()); //5
+console.log(a); // undefined</p>
+
+<p>let x = 44;
+let x = 55; //應該要報錯，但目前模擬器實作都不會報錯
+const b = "hello";
+b = "abc"; //應該要報錯，但目前模擬器實作都不會報錯
+```</p>
+
+<h3><a name=enhanced-object-literals></a> Enhanced Object Literals</h3>
+
+<p>增強的物件描述(Object Literal)支援在建構子設定prototype。可直接在定義的函數內呼叫父類別方法(super call)。</p>
+
+<p>```
+var foo = "i am foo";</p>
+
+<p>var obj = {
+  <strong>proto</strong>: [],</p>
+
+<p>  // 定義方法
+  getLength() {</p>
+
+<pre><code>return this.length;
+</code></pre>
+
+<p>  },</p>
+
+<p>  // 動態設定變數/方法名稱
+  //foo:foo 的縮寫
+  foo
+};</p>
+
+<p>obj.push("1");
+console.log(obj.getLength()); //1
+console.log(obj.prop_42); //"Should be 42"
+console.log(obj.foo); //"i am foo"
+```</p>
+
+<h3><a name=arrows></a> Arrows</h3>
+
+<p>箭號'=>'是一種定義函數的縮寫方式。
+同時支援函數表達式(function expression)跟函數聲明(function statement)。
+但跟傳統函數有點不一樣的是在箭號定義函數裡面的this是跟呼叫它的程式碼擁有一樣的lexical scope。</p>
+
+<p>```
+let square = x => x * x;
+let add = (a, b) => a + b;
+let pi = () => 3.1415;</p>
+
+<p>console.log(square(5)); //25
+console.log(add(3, 4)); //7
+console.log(pi()); //3.1415</p>
+
+<p>// Lexical this
+var bob = {
+  <em>name: "Bob",
+  </em>friends: ['Ken'],
+  printFriends() {</p>
+
+<pre><code>this._friends.forEach(f =&gt;
+  console.log(this._name + " knows " + f)
+);
+</code></pre>
+
+<p>  }
+}
+bob.printFriends(); //Bob knows Ken
+```</p>
+
+<h3><a name=classes></a> Classes</h3>
+
+<p>ES6類別提供一種簡單宣告方式讓class pattern更容易使用。
+類別支援繼承(inheritance)，父類別呼叫(super calls)，建構子(constructor)，個體方法(instance method)和類別方法(class method)。</p>
+
+<p>```
+class Polygon {
+  constructor(height, width) { //class constructor</p>
+
+<pre><code>this.name = 'Polygon';
+this.height = height;
+this.width = width;
+</code></pre>
+
+<p>  }</p>
+
+<p>  static doIt() {  //class method</p>
+
+<pre><code>console.log('Do it now');
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>class Square extends Polygon {
+  constructor(length) {</p>
+
+<pre><code>super(length, length); //call the parent method with super
+this.name = 'Square';
+</code></pre>
+
+<p>  }</p>
+
+<p>  get area() { //calculated attribute getter</p>
+
+<pre><code>return this.height * this.width;
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>let s = new Square(5);
+console.log(s.area); //25
+Square.doIt(); //"Do it now"
+```</p>
+
+<h3><a name=template-strings></a> Template Strings</h3>
+
+<p>Template String提供許多方便方法建立字串。
+還可以使用函式來預先處理Template String。被稱為Tagged Template String。可以避免被塞入非預期中的字串。</p>
+
+<p><code>``
+var myString =</code>In JavaScript '\n' is a line-feed.`;</p>
+
+<p>// Multiline strings
+var myString2 = <code>In JavaScript this is
+ not legal.</code>;</p>
+
+<p>var name = "Bob", time = "today";
+var myString3 = <code>Hello ${name}, how are you ${time}?</code></p>
+
+<p>console.log(myString); //"In JavaScript ' ' is a line-feed."
+console.log(myString2); //"In JavaScript this is not legal."
+console.log(myString3); //"Hello Bob, how are you today?"</p>
+
+<p>function tag(strings, ...values) {
+  if (!(strings[0] === 'a' &amp;&amp; strings[1] === 'b')) {</p>
+
+<pre><code>return 'bad';
+</code></pre>
+
+<p>  }
+  return 'good';
+}
+console.log(tag <code>a${ 123 }b</code>);  // "good"
+console.log(tag <code>c${ 123 }d</code>);  // "bad"
+```</p>
+
+<h3><a name=destructuring></a> Destructuring</h3>
+
+<p>Destructuring assignment允許使用陣列或物件pattern來自動給予值。
+Destructuring是錯誤安全(fail-soft)的。當配對不上時會給予undefined。</p>
+
+<p>```
+let [one, two, three] = [1, ,3];
+let {four, five} = {four:4, five:  5};
+console.log(two === undefined); //true
+console.log(one, two, three, four, five); // 1 3 4 5</p>
+
+<p>function today() { return { d: 11, m: 3, y: 2014 }; }
+var { m: month, y: year } = today();
+console.log(month); //3
+console.log(year); //2014</p>
+
+<p>books = [];
+books.push({ title:"hello", author:"samuel" });
+books.push({ title:"hello2", author:"samuel2" });
+books.forEach(function ({ title: t, author: a }) {
+  console.log(t, a);
+  // hello samuel
+  // hello2 samuel2
+})</p>
+
+<p>```</p>
+
+<h3><a name=default--rest--spread></a> Default + Rest + Spread</h3>
+
+<p>函數參數可設定預設值(Default)</p>
+
+<p><code>
+function f(x, y=12) {
+  // y值會是12 當呼叫者沒有傳入值或傳入值為undefined
+  return x + y;
+}
+console.log(f(3)); //15
+console.log(f(3, undefined)); //15
+console.log(f(3, null)); //3
+console.log(f(3, 4)); //7
+</code>
+不定長度函數參數(Rest Parameter)，函數傳入值當做陣列處理</p>
+
+<p><code>
+function f(x, ...y) {
+  // y 是一個陣列
+  return x * y.length;
+}
+console.log(f(3, "hello", true)); //6
+console.log(f(3, "hello", true, 444)); //9
+</code></p>
+
+<p>Spread Operator可使用陣列當做函數參數，陣列內的值會被當做相對應的參數值
+```
+function f(x, y, z) {
+  return x + y + z;
+}
+console.log(f(...[1,2,3])); //6
+console.log(f(...[1,2,3,4,5])); //6</p>
+
+<p>var x = [1, 2];
+var y = [3, 4];
+x.push(...y);<br/>
+console.log(x); //1,2,3,4
+```</p>
+
+<h3><a name=iterators--forof></a>Iterators + For..Of</h3>
+
+<p>Iterator Object讓使用者可以客製化iteration行為，就像Java的Iteratable。
+```
+//For..Of
+let arr = [1, 2, 3, 4, 5];
+let sum = 0;</p>
+
+<p>for (let v of arr) {
+  sum += v;
+}</p>
+
+<p>console.log('1 + 2 + 3 + 4 + 5 =', sum); // 1 + 2 + 3 + 4 + 5 = 15</p>
+
+<p>//Basic Iterator
+// fibonacci整個object就是iterator
+let fibonacci = {
+  <a href="">Symbol.iterator</a> {</p>
+
+<pre><code>let pre = 0, cur = 1;
+return {
+  next() {
+    [pre, cur] = [cur, pre + cur]; //每次循徊把pre值設成cur，cur值則為cur+pre
+    return { done: pre &gt; 100, value: pre } //當pre值大於100時終止
+  }
+}
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>for (var n of fibonacci) {
+  console.log(n); // 1 1 2 3 5 8 13 21 34 55 89
+}</p>
+
+<p>// Iteration相關的介面
+interface IteratorResult {
+  done: boolean;
+  value: any;
+}
+interface Iterator {
+  next(): IteratorResult;
+}
+interface Iterable {
+  <a href="">Symbol.iterator</a>: Iterator
+}</p>
+
+<p>```</p>
+
+<h3><a name=generators></a> Generators</h3>
+
+<p>Generator使用<code>function*</code>來宣告函數並且返回一個Generator實例。
+Generator實例是一種Iterator。可以透過<code>yield</code>與<code>next</code>可以一步一步執行函數內容。</p>
+
+<p>```
+function* range(start, end, step) {
+  while (start &lt; end) {</p>
+
+<pre><code>yield start;
+start += step;
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>for (let i of range(0, 10, 2)) {
+  console.log(i); // 0 2 4 6 8
+}</p>
+
+<p>//Fibonacci數列實作by Generator
+var fibonacci = function*() {
+  var pre = 0, cur = 1;
+  while (true) {</p>
+
+<pre><code>yield cur;
+var tmp = cur;
+cur += pre;
+pre = tmp;
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>f = fibonacci();
+for (var n of f) {
+  if (n > 100)</p>
+
+<pre><code>break;
+</code></pre>
+
+<p>  console.log(n); // 1 1 2 3 5 8 13 21 34 55 89
+}</p>
+
+<p>//你也可以自己使用next一步一步取值
+//可以用done這個boolean值來判斷是否已經沒有next
+f = fibonacci();
+var obj;
+while (!(obj = f.next()).done) {
+  if (obj.value > 100) {</p>
+
+<pre><code>break;
+</code></pre>
+
+<p>  }
+  console.log(obj.value);  // 1 1 2 3 5 8 13 21 34 55 89
+}</p>
+
+<p>// Generator的介面
+interface Generator extends Iterator {
+  next(value?: any): IteratorResult;
+  throw(exception: any);
+}</p>
+
+<p>```</p>
+
+<h3><a name=comprehensions></a> Comprehensions</h3>
+
+<p>Array Comprehension和Generator Comprehension提供簡單方式來處理數列</p>
+
+<p>```
+//Array Comprehension
+let arr = [1, 2, 3, 4, 5];
+let squared = [for (x of arr) x * x];</p>
+
+<p>console.log(squared); //1,4,9,16,25</p>
+
+<p>//Generator Comprehension
+let squared2 = (for (x of arr) x * x);</p>
+
+<p>for (let z of squared2) {
+  console.log(z); //1 4 9 16 25
+}</p>
+
+<p>```</p>
+
+<h3><a name=unicode></a> Unicode</h3>
+
+<p>完整21bit的Unicode支援</p>
+
+<p>```
+// same as ES5.1
+console.log("𠮷".length == 2); //true</p>
+
+<p>// new RegExp behaviour, opt-in ‘u’
+//console.log("𠮷".match(/./u)[0].length == 2); //在ES6模擬器上無法使用</p>
+
+<p>// new form
+console.log("\uD842\uDFB7" == "𠮷"); //true
+//console.log("\u{20BB7}" == "𠮷"); //在ES6模擬器上無法使用</p>
+
+<p>// new String ops
+console.log("𠮷".codePointAt(0) == 0x20BB7); //true</p>
+
+<p>//在ES6模擬器上無法使用
+// for-of iterates code points
+//for(var c of "𠮷") {
+//  console.log(c);
+//}</p>
+
+<p>```</p>
+
+<h3><a name=modules></a> Modules</h3>
+
+<p>像AMD,CommonJS一樣可以自行定義module以及彼此之間的相依性。</p>
+
+<p><code>
+// lib/math.js
+export function sum(x, y) {
+  return x + y;
+}
+export var pi = 3.141593;
+var msg2 = "Ya";
+export { msg2 as message};  
+</code>
+使用<code>module</code>語法載入math.js
+<code>
+// app.js
+module math from "lib/math";
+console.log("2π = " + math.sum(math.pi, math.pi)); //2π = 6.283186
+console.log(math.msg2); //undefined
+console.log(math.message); //Ya
+</code>
+使用<code>import</code>語法來載入sum函數和pi變數
+<code>
+// otherApp.js
+import {sum, pi} from "lib/math";
+console.log("2π = " + sum(pi, pi)); //2π = 6.283186
+console.log(message); //undefined
+</code></p>
+
+<h3><a name=module-loaders></a> Module Loaders</h3>
+
+<p>Module Loader提供動態載入(Dynamic loading)，命名空間(Namespace)，狀態獨立(State isolation)等功能
+```
+//更改預設js目錄
+System.baseURL = '/lib/';</p>
+
+<p>//動態載入math.js
+System.import('math').then(function(m) {
+  //m 是math的namespace
+  console.log("2π = " + m.sum(m.pi, m.pi)); //2π = 6.283186
+});</p>
+
+<p>//理論上可以用Loader來執行程式碼在某一個context底下
+//但模擬器找不到Loader..
+// Create execution sandboxes – new Loaders
+var loader = new Loader({
+  global: fixup(window) // replace ‘console.log’
+});
+loader.eval("console.log('hello world!');");
+```</p>
+
+<h3><a name=map--set--weakmap--weakset></a> Map+Set+Weakmap+Weakset</h3>
+
+<p>新的資料結構，由於目前模擬器都還沒有實作所以沒有親自試過。不過我相信這部份上手很快不難。</p>
+
+<p>```
+// Sets
+var s = new Set();
+s.add("hello").add("goodbye").add("hello");
+s.size === 2;
+s.has("hello") === true;</p>
+
+<p>// Maps
+var m = new Map();
+m.set("hello", 42);
+m.set(s, 34);
+m.get(s) == 34;</p>
+
+<p>// Weak Maps
+var wm = new WeakMap();
+wm.set(s, { extra: 42 });
+wm.size === undefined</p>
+
+<p>// Weak Sets
+var ws = new WeakSet();
+ws.add({ data: 42 });
+// Because the added object has no other references, it will not be held in the set
+```</p>
+
+<h3><a name=proxies></a> Proxies</h3>
+
+<p>Proxy故名思義就是讓對某一個物件(host object)的所有行為透過代理物件(proxy object)。
+方便用來logging或效能分析(profiling)。目前模擬器還沒實作。
+```
+// Proxying a normal object
+var target = {};
+var handler = {
+  get: function (receiver, name) {</p>
+
+<pre><code>return `Hello, ${name}!`;
+</code></pre>
+
+<p>  }
+};</p>
+
+<p>var p = new Proxy(target, handler);
+p.world === 'Hello, world!';
+<code>
+</code>
+// Proxying a function object
+var target = function () { return 'I am the target'; };
+var handler = {
+  apply: function (receiver, ...args) {</p>
+
+<pre><code>return 'I am the proxy';
+</code></pre>
+
+<p>  }
+};</p>
+
+<p>var p = new Proxy(target, handler);
+p() === 'I am the proxy';
+```</p>
+
+<h3><a name=symbols></a> Symbols</h3>
+
+<p>Symbol是一種新的primitive type。Symbol可以用來當做property的key值而且是唯一的。</p>
+
+<p>```
+var key = Symbol("key");</p>
+
+<p>function MyClass(privateData) {
+  this[key] = privateData;
+}</p>
+
+<p>MyClass.prototype = {
+  say: function() {</p>
+
+<pre><code>console.log(this[key]);
+</code></pre>
+
+<p>  }
+};</p>
+
+<p>var c = new MyClass("hello")
+console.log(c["key"]); //undefined 因為Symbol並不是String
+console.log(c[key]); //hello
+console.log(c.say()); //hello
+```</p>
+
+<h3><a name=promises></a> Promises</h3>
+
+<p>Promise就不用再多提，目前已經有很多現成的ES5 library有實作Promise pattern了。
+像<a href="https://github.com/tildeio/rsvp.js">RSVP.js</a>和<a href="https://github.com/kriskowal/q">Q</a>。</p>
+
+<p>```
+var promise = new Promise(function(resolve, reject) {
+  // do a thing, possibly async, then…</p>
+
+<p>  if (/<em> everything turned out fine </em>/) {</p>
+
+<pre><code>resolve("Stuff worked!");
+</code></pre>
+
+<p>  }
+  else {</p>
+
+<pre><code>reject(Error("It broke"));
+</code></pre>
+
+<p>  }
+});</p>
+
+<p>promise.then(function(result) {
+  console.log(result); // "Stuff worked!"
+}, function(err) {
+  console.log(err); // Error: "It broke"
+});
+```</p>
+
+<h3><a name=math--number--string--object-apis></a> Math+Number+String+Object APIs</h3>
+
+<p>ES6增加了許多好用的函數。底下範例在目前模擬器上尚無法完全支援。</p>
+
+<p>```
+Number.EPSILON
+Number.isInteger(Infinity) // false
+Number.isNaN("NaN") // false</p>
+
+<p>Math.acosh(3) // 1.762747174039086
+Math.hypot(3, 4) // 5
+Math.imul(Math.pow(2, 32) - 1, Math.pow(2, 32) - 2) // 2</p>
+
+<p>"abcde".contains("cd") // true
+"abc".repeat(3) // "abcabcabc"</p>
+
+<p>Array.from(document.querySelectorAll('*')) // Returns a real Array
+Array.of(1, 2, 3) // Similar to new Array(...), but without special one-arg behavior
+[0, 0, 0].fill(7, 1) // [0,7,7]
+[1,2,3].findIndex(x => x == 2) // 1
+["a", "b", "c"].entries() // iterator [0, "a"], [1,"b"], [2,"c"]
+["a", "b", "c"].keys() // iterator 0, 1, 2
+["a", "b", "c"].values() // iterator "a", "b", "c"</p>
+
+<p>//Object copying
+Object.assign(Point, { origin: new Point(0,0) })
+```</p>
+
+<h3><a name=binary-and-octal-literals></a> Binary and Octal Literals</h3>
+
+<p>新的二進位(b)和八進位(o)表示式</p>
+
+<p><code>
+console.log(0b111110111 === 503); // true
+console.log(0o767 === 503); // true
+</code></p>
+
+<h3><a name=reflect-api></a> Reflect API</h3>
+
+<p>參考<a href="http://wiki.ecmascript.org/doku.php?id=harmony:reflect_api">ECMAScript wiki</a>。</p>
+
+<h3><a name=tail-calls></a> Tail Calls</h3>
+
+<p>Tail Call最佳化讓遞迴程式call stack不會無限增加導致記憶體用完。</p>
+
+<p>```
+function factorial(n, acc = 1) {</p>
+
+<pre><code>'use strict';
+if (n &lt;= 1) return acc;
+return factorial(n - 1, n * acc);
+</code></pre>
+
+<p>}</p>
+
+<p>// 在目前的browser幾乎都會stack overflow
+// 未來ES6上面是安全的
+factorial(100000);
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

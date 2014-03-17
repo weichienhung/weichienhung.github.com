@@ -4,7 +4,7 @@
   <title><![CDATA[Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-03-08T13:51:40+08:00</updated>
+  <updated>2014-03-17T23:03:14+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,1007 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ES6 preview]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/03/12/es6-preview/"/>
+    <updated>2014-03-12T22:23:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/03/12/es6-preview</id>
+    <content type="html"><![CDATA[<p>這篇文章用來記錄ES6的一些新功能。參考Lukehoban的<a href="https://github.com/lukehoban/es6features">版本</a>並加以中文化。
+基本上所有的example codes我都有在<a href="http://www.es6fiddle.net/">ES6 fiddle</a>或用<a href="https://github.com/google/traceur-compiler">Traceur</a>執行過。</p>
+
+<p>ES6包含這些新的功能:<br/>
+- <a href="#let--const">let + const</a><br/>
+- <a href="#enhanced-object-literals">enhanced object literals</a><br/>
+- <a href="#arrows">arrows</a><br/>
+- <a href="#classes">classes</a><br/>
+- <a href="#template-strings">template strings</a><br/>
+- <a href="#destructuring">destructuring</a><br/>
+- <a href="#default--rest--spread">default + rest + spread</a><br/>
+- <a href="#iterators--forof">iterators + for..of</a><br/>
+- <a href="#generators">generators</a><br/>
+- <a href="#comprehensions">comprehensions</a><br/>
+- <a href="#unicode">unicode</a><br/>
+- <a href="#modules">modules</a><br/>
+- <a href="#module-loaders">module loaders</a><br/>
+- <a href="#map--set--weakmap--weakset">map + set + weakmap + weakset</a><br/>
+- <a href="#proxies">proxies</a><br/>
+- <a href="#symbols">symbols</a><br/>
+- <a href="#promises">promises</a><br/>
+- <a href="#math--number--string--object-apis">math + number + string + object APIs</a><br/>
+- <a href="#binary-and-octal-literals">binary and octal literals</a><br/>
+- <a href="#reflect-api">reflect api</a><br/>
+- <a href="#tail-calls">tail calls</a></p>
+
+<h2>ECMAScript 6 Features</h2>
+
+<h3><a name=let--const></a> Let + Const</h3>
+
+<p><code>let</code>可以想成是新的<code>var</code>，建立的變數只會存活在Block scope裡。
+<code>const</code>是用來建立常數。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">x</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">let</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">a</span> <span class="o">=</span> <span class="nx">a</span> <span class="o">+</span> <span class="mi">3</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">a</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">());</span> <span class="c1">//5</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span> <span class="c1">// undefined</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">let</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">44</span><span class="p">;</span>
+</span><span class='line'><span class="kd">let</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">55</span><span class="p">;</span> <span class="c1">//應該要報錯，但目前模擬器實作都不會報錯</span>
+</span><span class='line'><span class="kr">const</span> <span class="nx">b</span> <span class="o">=</span> <span class="s2">&quot;hello&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="nx">b</span> <span class="o">=</span> <span class="s2">&quot;abc&quot;</span><span class="p">;</span> <span class="c1">//應該要報錯，但目前模擬器實作都不會報錯</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=enhanced-object-literals></a> Enhanced Object Literals</h3>
+
+<p>增強的物件描述(Object Literal)支援在建構子設定prototype。可直接在定義的函數內呼叫父類別方法(super call)。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="s2">&quot;i am foo&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">__proto__</span><span class="o">:</span> <span class="p">[],</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 定義方法</span>
+</span><span class='line'>  <span class="nx">getLength</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 動態設定變數/方法名稱</span>
+</span><span class='line'>  <span class="p">[</span> <span class="s1">&#39;prop_&#39;</span> <span class="o">+</span> <span class="p">(()</span> <span class="o">=&gt;</span> <span class="mi">42</span><span class="p">)()</span> <span class="p">]</span><span class="o">:</span> <span class="s2">&quot;Should be 42&quot;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//foo:foo 的縮寫</span>
+</span><span class='line'>  <span class="nx">foo</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">obj</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">getLength</span><span class="p">());</span> <span class="c1">//1</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">prop_42</span><span class="p">);</span> <span class="c1">//&quot;Should be 42&quot;</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">foo</span><span class="p">);</span> <span class="c1">//&quot;i am foo&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=arrows></a> Arrows</h3>
+
+<p>箭號&#8217;=>&#8217;是一種定義函數的縮寫方式。
+同時支援函數表達式(function expression)跟函數聲明(function statement)。
+但跟傳統函數有點不一樣的是在箭號定義函數裡面的this是跟呼叫它的程式碼擁有一樣的lexical scope。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">let</span> <span class="nx">square</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">;</span>
+</span><span class='line'><span class="kd">let</span> <span class="nx">add</span> <span class="o">=</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
+</span><span class='line'><span class="kd">let</span> <span class="nx">pi</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="mf">3.1415</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">square</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span> <span class="c1">//25</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span> <span class="c1">//7</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">pi</span><span class="p">());</span> <span class="c1">//3.1415</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Lexical this</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">bob</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">_name</span><span class="o">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">_friends</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Ken&#39;</span><span class="p">],</span>
+</span><span class='line'>  <span class="nx">printFriends</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">_friends</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">f</span> <span class="o">=&gt;</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_name</span> <span class="o">+</span> <span class="s2">&quot; knows &quot;</span> <span class="o">+</span> <span class="nx">f</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">bob</span><span class="p">.</span><span class="nx">printFriends</span><span class="p">();</span> <span class="c1">//Bob knows Ken</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=classes></a> Classes</h3>
+
+<p>ES6類別提供一種簡單宣告方式讓class pattern更容易使用。
+類別支援繼承(inheritance)，父類別呼叫(super calls)，建構子(constructor)，個體方法(instance method)和類別方法(class method)。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">class</span> <span class="nx">Polygon</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">constructor</span><span class="p">(</span><span class="nx">height</span><span class="p">,</span> <span class="nx">width</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//class constructor</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;Polygon&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">height</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">width</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kr">static</span> <span class="nx">doIt</span><span class="p">()</span> <span class="p">{</span>  <span class="c1">//class method</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Do it now&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">class</span> <span class="nx">Square</span> <span class="kr">extends</span> <span class="nx">Polygon</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">constructor</span><span class="p">(</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kr">super</span><span class="p">(</span><span class="nx">length</span><span class="p">,</span> <span class="nx">length</span><span class="p">);</span> <span class="c1">//call the parent method with super</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;Square&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">get</span> <span class="nx">area</span><span class="p">()</span> <span class="p">{</span> <span class="c1">//calculated attribute getter</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">let</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Square</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">area</span><span class="p">);</span> <span class="c1">//25</span>
+</span><span class='line'><span class="nx">Square</span><span class="p">.</span><span class="nx">doIt</span><span class="p">();</span> <span class="c1">//&quot;Do it now&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=template-strings></a> Template Strings</h3>
+
+<p>Template String提供許多方便方法建立字串。
+還可以使用函式來預先處理Template String。被稱為Tagged Template String。可以避免被塞入非預期中的字串。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">myString</span> <span class="o">=</span> <span class="err">`</span><span class="nx">In</span> <span class="nx">JavaScript</span> <span class="s1">&#39;\n&#39;</span> <span class="nx">is</span> <span class="nx">a</span> <span class="nx">line</span><span class="o">-</span><span class="nx">feed</span><span class="p">.</span><span class="err">`</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Multiline strings</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myString2</span> <span class="o">=</span> <span class="err">`</span><span class="nx">In</span> <span class="nx">JavaScript</span> <span class="k">this</span> <span class="nx">is</span>
+</span><span class='line'> <span class="nx">not</span> <span class="nx">legal</span><span class="p">.</span><span class="err">`</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="nx">time</span> <span class="o">=</span> <span class="s2">&quot;today&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myString3</span> <span class="o">=</span> <span class="err">`</span><span class="nx">Hello</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">},</span> <span class="nx">how</span> <span class="nx">are</span> <span class="nx">you</span> <span class="nx">$</span><span class="p">{</span><span class="nx">time</span><span class="p">}</span><span class="o">?</span><span class="err">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myString</span><span class="p">);</span> <span class="c1">//&quot;In JavaScript &#39; &#39; is a line-feed.&quot;</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myString2</span><span class="p">);</span> <span class="c1">//&quot;In JavaScript this is not legal.&quot;</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myString3</span><span class="p">);</span> <span class="c1">//&quot;Hello Bob, how are you today?&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">tag</span><span class="p">(</span><span class="nx">strings</span><span class="p">,</span> <span class="p">...</span><span class="nx">values</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;a&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">strings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;b&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s1">&#39;bad&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="s1">&#39;good&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tag</span> <span class="err">`</span><span class="nx">a$</span><span class="p">{</span> <span class="mi">123</span> <span class="p">}</span><span class="nx">b</span><span class="err">`</span><span class="p">);</span>  <span class="c1">// &quot;good&quot;</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tag</span> <span class="err">`</span><span class="nx">c$</span><span class="p">{</span> <span class="mi">123</span> <span class="p">}</span><span class="nx">d</span><span class="err">`</span><span class="p">);</span>  <span class="c1">// &quot;bad&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=destructuring></a> Destructuring</h3>
+
+<p>Destructuring assignment允許使用陣列或物件pattern來自動給予值。
+Destructuring是錯誤安全(fail-soft)的。當配對不上時會給予undefined。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">let</span> <span class="p">[</span><span class="nx">one</span><span class="p">,</span> <span class="nx">two</span><span class="p">,</span> <span class="nx">three</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">,</span><span class="mi">3</span><span class="p">];</span>
+</span><span class='line'><span class="kd">let</span> <span class="p">{</span><span class="nx">four</span><span class="p">,</span> <span class="nx">five</span><span class="p">}</span> <span class="o">=</span> <span class="p">{</span><span class="nx">four</span><span class="o">:</span><span class="mi">4</span><span class="p">,</span> <span class="nx">five</span><span class="o">:</span>  <span class="mi">5</span><span class="p">};</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">two</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">);</span> <span class="c1">//true</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">one</span><span class="p">,</span> <span class="nx">two</span><span class="p">,</span> <span class="nx">three</span><span class="p">,</span> <span class="nx">four</span><span class="p">,</span> <span class="nx">five</span><span class="p">);</span> <span class="c1">// 1 3 4 5</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">today</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="p">{</span> <span class="nx">d</span><span class="o">:</span> <span class="mi">11</span><span class="p">,</span> <span class="nx">m</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="mi">2014</span> <span class="p">};</span> <span class="p">}</span>
+</span><span class='line'><span class="kd">var</span> <span class="p">{</span> <span class="nx">m</span><span class="o">:</span> <span class="nx">month</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="nx">year</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">today</span><span class="p">();</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">month</span><span class="p">);</span> <span class="c1">//3</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">year</span><span class="p">);</span> <span class="c1">//2014</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">books</span> <span class="o">=</span> <span class="p">[];</span>
+</span><span class='line'><span class="nx">books</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="nx">title</span><span class="o">:</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="nx">author</span><span class="o">:</span><span class="s2">&quot;samuel&quot;</span> <span class="p">});</span>
+</span><span class='line'><span class="nx">books</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="nx">title</span><span class="o">:</span><span class="s2">&quot;hello2&quot;</span><span class="p">,</span> <span class="nx">author</span><span class="o">:</span><span class="s2">&quot;samuel2&quot;</span> <span class="p">});</span>
+</span><span class='line'><span class="nx">books</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">({</span> <span class="nx">title</span><span class="o">:</span> <span class="nx">t</span><span class="p">,</span> <span class="nx">author</span><span class="o">:</span> <span class="nx">a</span> <span class="p">})</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">a</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">// hello samuel</span>
+</span><span class='line'>  <span class="c1">// hello2 samuel2</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=default--rest--spread></a> Default + Rest + Spread</h3>
+
+<p>函數參數可設定預設值(Default)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">f</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// y值會是12 當呼叫者沒有傳入值或傳入值為undefined</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span> <span class="c1">//15</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">));</span> <span class="c1">//15</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="kc">null</span><span class="p">));</span> <span class="c1">//3</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span> <span class="c1">//7</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>不定長度函數參數(Rest Parameter)，函數傳入值當做陣列處理</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">f</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="p">...</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// y 是一個陣列</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">y</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">));</span> <span class="c1">//6</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">444</span><span class="p">));</span> <span class="c1">//9</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Spread Operator可使用陣列當做函數參數，陣列內的值會被當做相對應的參數值</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">f</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">+</span> <span class="nx">z</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">(...[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]));</span> <span class="c1">//6</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">(...[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]));</span> <span class="c1">//6</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">];</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">];</span>
+</span><span class='line'><span class="nx">x</span><span class="p">.</span><span class="nx">push</span><span class="p">(...</span><span class="nx">y</span><span class="p">);</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span> <span class="c1">//1,2,3,4</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=iterators--forof></a>Iterators + For..Of</h3>
+
+<p>Iterator Object讓使用者可以客製化iteration行為，就像Java的Iteratable。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//For..Of</span>
+</span><span class='line'><span class="kd">let</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span>
+</span><span class='line'><span class="kd">let</span> <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">v</span> <span class="nx">of</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">sum</span> <span class="o">+=</span> <span class="nx">v</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;1 + 2 + 3 + 4 + 5 =&#39;</span><span class="p">,</span> <span class="nx">sum</span><span class="p">);</span> <span class="c1">// 1 + 2 + 3 + 4 + 5 = 15</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Basic Iterator</span>
+</span><span class='line'><span class="c1">// fibonacci整個object就是iterator</span>
+</span><span class='line'><span class="kd">let</span> <span class="nx">fibonacci</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">[</span><span class="nx">Symbol</span><span class="p">.</span><span class="nx">iterator</span><span class="p">]()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">let</span> <span class="nx">pre</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">cur</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">next</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">[</span><span class="nx">pre</span><span class="p">,</span> <span class="nx">cur</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">cur</span><span class="p">,</span> <span class="nx">pre</span> <span class="o">+</span> <span class="nx">cur</span><span class="p">];</span> <span class="c1">//每次循徊把pre值設成cur，cur值則為cur+pre</span>
+</span><span class='line'>        <span class="k">return</span> <span class="p">{</span> <span class="nx">done</span><span class="o">:</span> <span class="nx">pre</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">pre</span> <span class="p">}</span> <span class="c1">//當pre值大於100時終止</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">n</span> <span class="nx">of</span> <span class="nx">fibonacci</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span> <span class="c1">// 1 1 2 3 5 8 13 21 34 55 89</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Iteration相關的介面</span>
+</span><span class='line'><span class="kr">interface</span> <span class="nx">IteratorResult</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">done</span><span class="o">:</span> <span class="kr">boolean</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">value</span><span class="o">:</span> <span class="nx">any</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kr">interface</span> <span class="nx">Iterator</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">next</span><span class="p">()</span><span class="o">:</span> <span class="nx">IteratorResult</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kr">interface</span> <span class="nx">Iterable</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">[</span><span class="nx">Symbol</span><span class="p">.</span><span class="nx">iterator</span><span class="p">]()</span><span class="o">:</span> <span class="nx">Iterator</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=generators></a> Generators</h3>
+
+<p>Generator使用<code>function*</code>來宣告函數並且返回一個Generator實例。
+Generator實例是一種Iterator。可以透過<code>yield</code>與<code>next</code>可以一步一步執行函數內容。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span><span class="o">*</span> <span class="nx">range</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">,</span> <span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">while</span> <span class="p">(</span><span class="nx">start</span> <span class="o">&lt;</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">yield</span> <span class="nx">start</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">start</span> <span class="o">+=</span> <span class="nx">step</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="nx">of</span> <span class="nx">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> <span class="c1">// 0 2 4 6 8</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Fibonacci數列實作by Generator</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">fibonacci</span> <span class="o">=</span> <span class="kd">function</span><span class="o">*</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">pre</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">cur</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">while</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">yield</span> <span class="nx">cur</span><span class="p">;</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">tmp</span> <span class="o">=</span> <span class="nx">cur</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">cur</span> <span class="o">+=</span> <span class="nx">pre</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">pre</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">f</span> <span class="o">=</span> <span class="nx">fibonacci</span><span class="p">();</span>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">n</span> <span class="nx">of</span> <span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">n</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span> <span class="c1">// 1 1 2 3 5 8 13 21 34 55 89</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//你也可以自己使用next一步一步取值</span>
+</span><span class='line'><span class="c1">//可以用done這個boolean值來判斷是否已經沒有next</span>
+</span><span class='line'><span class="nx">f</span> <span class="o">=</span> <span class="nx">fibonacci</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">obj</span><span class="p">;</span>
+</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">obj</span> <span class="o">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">next</span><span class="p">()).</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">value</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>  <span class="c1">// 1 1 2 3 5 8 13 21 34 55 89</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Generator的介面</span>
+</span><span class='line'><span class="kr">interface</span> <span class="nx">Generator</span> <span class="kr">extends</span> <span class="nx">Iterator</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">next</span><span class="p">(</span><span class="nx">value</span><span class="o">?:</span> <span class="nx">any</span><span class="p">)</span><span class="o">:</span> <span class="nx">IteratorResult</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">throw</span><span class="p">(</span><span class="nx">exception</span><span class="o">:</span> <span class="nx">any</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=comprehensions></a> Comprehensions</h3>
+
+<p>Array Comprehension和Generator Comprehension提供簡單方式來處理數列</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//Array Comprehension</span>
+</span><span class='line'><span class="kd">let</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span>
+</span><span class='line'><span class="kd">let</span> <span class="nx">squared</span> <span class="o">=</span> <span class="p">[</span><span class="k">for</span> <span class="p">(</span><span class="nx">x</span> <span class="nx">of</span> <span class="nx">arr</span><span class="p">)</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">squared</span><span class="p">);</span> <span class="c1">//1,4,9,16,25</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Generator Comprehension</span>
+</span><span class='line'><span class="kd">let</span> <span class="nx">squared2</span> <span class="o">=</span> <span class="p">(</span><span class="k">for</span> <span class="p">(</span><span class="nx">x</span> <span class="nx">of</span> <span class="nx">arr</span><span class="p">)</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">z</span> <span class="nx">of</span> <span class="nx">squared2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">z</span><span class="p">);</span> <span class="c1">//1 4 9 16 25</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=unicode></a> Unicode</h3>
+
+<p>完整21bit的Unicode支援</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// same as ES5.1</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;𠮷&quot;</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">//true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// new RegExp behaviour, opt-in ‘u’</span>
+</span><span class='line'><span class="c1">//console.log(&quot;𠮷&quot;.match(/./u)[0].length == 2); //在ES6模擬器上無法使用</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// new form</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;\uD842\uDFB7&quot;</span> <span class="o">==</span> <span class="s2">&quot;𠮷&quot;</span><span class="p">);</span> <span class="c1">//true</span>
+</span><span class='line'><span class="c1">//console.log(&quot;\u{20BB7}&quot; == &quot;𠮷&quot;); //在ES6模擬器上無法使用</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// new String ops</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;𠮷&quot;</span><span class="p">.</span><span class="nx">codePointAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x20BB7</span><span class="p">);</span> <span class="c1">//true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//在ES6模擬器上無法使用</span>
+</span><span class='line'><span class="c1">// for-of iterates code points</span>
+</span><span class='line'><span class="c1">//for(var c of &quot;𠮷&quot;) {</span>
+</span><span class='line'><span class="c1">//  console.log(c);</span>
+</span><span class='line'><span class="c1">//}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=modules></a> Modules</h3>
+
+<p>像AMD,CommonJS一樣可以自行定義module以及彼此之間的相依性。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// lib/math.js</span>
+</span><span class='line'><span class="kr">export</span> <span class="kd">function</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kr">export</span> <span class="kd">var</span> <span class="nx">pi</span> <span class="o">=</span> <span class="mf">3.141593</span><span class="p">;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">msg2</span> <span class="o">=</span> <span class="s2">&quot;Ya&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="kr">export</span> <span class="p">{</span> <span class="nx">msg2</span> <span class="nx">as</span> <span class="nx">message</span><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>使用<code>module</code>語法載入math.js</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// app.js</span>
+</span><span class='line'><span class="nx">module</span> <span class="nx">math</span> <span class="nx">from</span> <span class="s2">&quot;lib/math&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;2π = &quot;</span> <span class="o">+</span> <span class="nx">math</span><span class="p">.</span><span class="nx">sum</span><span class="p">(</span><span class="nx">math</span><span class="p">.</span><span class="nx">pi</span><span class="p">,</span> <span class="nx">math</span><span class="p">.</span><span class="nx">pi</span><span class="p">));</span> <span class="c1">//2π = 6.283186 </span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">math</span><span class="p">.</span><span class="nx">msg2</span><span class="p">);</span> <span class="c1">//undefined</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">math</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span> <span class="c1">//Ya</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>使用<code>import</code>語法來載入sum函數和pi變數</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// otherApp.js</span>
+</span><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">sum</span><span class="p">,</span> <span class="nx">pi</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;lib/math&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;2π = &quot;</span> <span class="o">+</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">pi</span><span class="p">,</span> <span class="nx">pi</span><span class="p">));</span> <span class="c1">//2π = 6.283186</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span> <span class="c1">//undefined </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=module-loaders></a> Module Loaders</h3>
+
+<p>Module Loader提供動態載入(Dynamic loading)，命名空間(Namespace)，狀態獨立(State isolation)等功能</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//更改預設js目錄</span>
+</span><span class='line'><span class="nx">System</span><span class="p">.</span><span class="nx">baseURL</span> <span class="o">=</span> <span class="s1">&#39;/lib/&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//動態載入math.js</span>
+</span><span class='line'><span class="nx">System</span><span class="p">.</span><span class="kr">import</span><span class="p">(</span><span class="s1">&#39;math&#39;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">//m 是math的namespace</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;2π = &quot;</span> <span class="o">+</span> <span class="nx">m</span><span class="p">.</span><span class="nx">sum</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">pi</span><span class="p">,</span> <span class="nx">m</span><span class="p">.</span><span class="nx">pi</span><span class="p">));</span> <span class="c1">//2π = 6.283186</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//理論上可以用Loader來執行程式碼在某一個context底下</span>
+</span><span class='line'><span class="c1">//但模擬器找不到Loader..</span>
+</span><span class='line'><span class="c1">// Create execution sandboxes – new Loaders</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">loader</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Loader</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">global</span><span class="o">:</span> <span class="nx">fixup</span><span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="c1">// replace ‘console.log’</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">loader</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;console.log(&#39;hello world!&#39;);&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=map--set--weakmap--weakset></a> Map+Set+Weakmap+Weakset</h3>
+
+<p>新的資料結構，由於目前模擬器都還沒有實作所以沒有親自試過。不過我相信這部份上手很快不難。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// Sets</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Set</span><span class="p">();</span>
+</span><span class='line'><span class="nx">s</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">).</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;goodbye&quot;</span><span class="p">).</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">s</span><span class="p">.</span><span class="nx">size</span> <span class="o">===</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'><span class="nx">s</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span> <span class="o">===</span> <span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Maps</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="p">();</span>
+</span><span class='line'><span class="nx">m</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="mi">42</span><span class="p">);</span>
+</span><span class='line'><span class="nx">m</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="mi">34</span><span class="p">);</span>
+</span><span class='line'><span class="nx">m</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">34</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Weak Maps</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">wm</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WeakMap</span><span class="p">();</span>
+</span><span class='line'><span class="nx">wm</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="p">{</span> <span class="nx">extra</span><span class="o">:</span> <span class="mi">42</span> <span class="p">});</span>
+</span><span class='line'><span class="nx">wm</span><span class="p">.</span><span class="nx">size</span> <span class="o">===</span> <span class="kc">undefined</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Weak Sets</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">ws</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WeakSet</span><span class="p">();</span>
+</span><span class='line'><span class="nx">ws</span><span class="p">.</span><span class="nx">add</span><span class="p">({</span> <span class="nx">data</span><span class="o">:</span> <span class="mi">42</span> <span class="p">});</span>
+</span><span class='line'><span class="c1">// Because the added object has no other references, it will not be held in the set</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=proxies></a> Proxies</h3>
+
+<p>Proxy故名思義就是讓對某一個物件(host object)的所有行為透過代理物件(proxy object)。
+方便用來logging或效能分析(profiling)。目前模擬器還沒實作。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// Proxying a normal object</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="p">{};</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">handler</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">receiver</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="err">`</span><span class="nx">Hello</span><span class="p">,</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">!</span><span class="err">`</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Proxy</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">handler</span><span class="p">);</span>
+</span><span class='line'><span class="nx">p</span><span class="p">.</span><span class="nx">world</span> <span class="o">===</span> <span class="s1">&#39;Hello, world!&#39;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// Proxying a function object</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">&#39;I am the target&#39;</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">handler</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">apply</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">receiver</span><span class="p">,</span> <span class="p">...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s1">&#39;I am the proxy&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Proxy</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">handler</span><span class="p">);</span>
+</span><span class='line'><span class="nx">p</span><span class="p">()</span> <span class="o">===</span> <span class="s1">&#39;I am the proxy&#39;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=symbols></a> Symbols</h3>
+
+<p>Symbol是一種新的primitive type。Symbol可以用來當做property的key值而且是唯一的。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">Symbol</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">MyClass</span><span class="p">(</span><span class="nx">privateData</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">privateData</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">MyClass</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">say</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyClass</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">c</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]);</span> <span class="c1">//undefined 因為Symbol並不是String</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">c</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span> <span class="c1">//hello</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">say</span><span class="p">());</span> <span class="c1">//hello</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=promises></a> Promises</h3>
+
+<p>Promise就不用再多提，目前已經有很多現成的ES5 library有實作Promise pattern了。
+像<a href="https://github.com/tildeio/rsvp.js">RSVP.js</a>和<a href="https://github.com/kriskowal/q">Q</a>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// do a thing, possibly async, then…</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="cm">/* everything turned out fine */</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">resolve</span><span class="p">(</span><span class="s2">&quot;Stuff worked!&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">reject</span><span class="p">(</span><span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;It broke&quot;</span><span class="p">));</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span> <span class="c1">// &quot;Stuff worked!&quot;</span>
+</span><span class='line'><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span> <span class="c1">// Error: &quot;It broke&quot;</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=math--number--string--object-apis></a> Math+Number+String+Object APIs</h3>
+
+<p>ES6增加了許多好用的函數。底下範例在目前模擬器上尚無法完全支援。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nb">Number</span><span class="p">.</span><span class="nx">EPSILON</span>
+</span><span class='line'><span class="nb">Number</span><span class="p">.</span><span class="nx">isInteger</span><span class="p">(</span><span class="kc">Infinity</span><span class="p">)</span> <span class="c1">// false</span>
+</span><span class='line'><span class="nb">Number</span><span class="p">.</span><span class="nb">isNaN</span><span class="p">(</span><span class="s2">&quot;NaN&quot;</span><span class="p">)</span> <span class="c1">// false</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">Math</span><span class="p">.</span><span class="nx">acosh</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1">// 1.762747174039086</span>
+</span><span class='line'><span class="nb">Math</span><span class="p">.</span><span class="nx">hypot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">// 5</span>
+</span><span class='line'><span class="nb">Math</span><span class="p">.</span><span class="nx">imul</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">// 2</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&quot;abcde&quot;</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="s2">&quot;cd&quot;</span><span class="p">)</span> <span class="c1">// true</span>
+</span><span class='line'><span class="s2">&quot;abc&quot;</span><span class="p">.</span><span class="nx">repeat</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1">// &quot;abcabcabc&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">Array</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">))</span> <span class="c1">// Returns a real Array</span>
+</span><span class='line'><span class="nb">Array</span><span class="p">.</span><span class="nx">of</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">// Similar to new Array(...), but without special one-arg behavior</span>
+</span><span class='line'><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">].</span><span class="nx">fill</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">// [0,7,7]</span>
+</span><span class='line'><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">].</span><span class="nx">findIndex</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">// 1</span>
+</span><span class='line'><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">].</span><span class="nx">entries</span><span class="p">()</span> <span class="c1">// iterator [0, &quot;a&quot;], [1,&quot;b&quot;], [2,&quot;c&quot;]</span>
+</span><span class='line'><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">].</span><span class="nx">keys</span><span class="p">()</span> <span class="c1">// iterator 0, 1, 2</span>
+</span><span class='line'><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">].</span><span class="nx">values</span><span class="p">()</span> <span class="c1">// iterator &quot;a&quot;, &quot;b&quot;, &quot;c&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Object copying</span>
+</span><span class='line'><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">Point</span><span class="p">,</span> <span class="p">{</span> <span class="nx">origin</span><span class="o">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=binary-and-octal-literals></a> Binary and Octal Literals</h3>
+
+<p>新的二進位(b)和八進位(o)表示式</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">0</span><span class="nx">b111110111</span> <span class="o">===</span> <span class="mi">503</span><span class="p">);</span> <span class="c1">// true</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">0</span><span class="nx">o767</span> <span class="o">===</span> <span class="mi">503</span><span class="p">);</span> <span class="c1">// true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><a name=reflect-api></a> Reflect API</h3>
+
+<p>參考<a href="http://wiki.ecmascript.org/doku.php?id=harmony:reflect_api">ECMAScript wiki</a>。</p>
+
+<h3><a name=tail-calls></a> Tail Calls</h3>
+
+<p>Tail Call最佳化讓遞迴程式call stack不會無限增加導致記憶體用完。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">factorial</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">acc</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">acc</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">factorial</span><span class="p">(</span><span class="nx">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">acc</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 在目前的browser幾乎都會stack overflow</span>
+</span><span class='line'><span class="c1">// 未來ES6上面是安全的</span>
+</span><span class='line'><span class="nx">factorial</span><span class="p">(</span><span class="mi">100000</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Unit testing in Emberjs]]></title>
@@ -3708,104 +4709,6 @@ Pass a :separator to truncate the string at a natural break:</p>
 </span><span class='line'>
 </span><span class='line'><span class="s2">&quot;2010-07-27 23:42:00&quot;</span><span class="o">.</span><span class="n">to_time</span><span class="p">(</span><span class="ss">:utc</span><span class="p">)</span>   <span class="c1"># =&gt; Tue Jul 27 23:42:00 UTC 2010</span>
 </span><span class='line'><span class="s2">&quot;2010-07-27 23:42:00&quot;</span><span class="o">.</span><span class="n">to_time</span><span class="p">(</span><span class="ss">:local</span><span class="p">)</span> <span class="c1"># =&gt; Tue Jul 27 23:42:00 +0200 2010</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ckeditor with Rails4 on heroku]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku/"/>
-    <updated>2013-09-09T22:32:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/09/rails-and-heroku</id>
-    <content type="html"><![CDATA[<p>I push <a href="https://github.com/weichienhung/rails101_groupme">rails101_groupme</a> to <a href="http://weichien-groupme.herokuapp.com/">heroku</a> today.
-The project doesn&#8217;t have access control and i18n. I use cancan gem to do access authorization and default i18n mechanism.
-Besides, i also upgrade twitter bootstrap to 3.0.0.</p>
-
-<!-- more -->
-
-
-<p>When i push to heroku, i get stuck in ckeditor&#8217;s rails 4 compatibility and git issue. After googling i solve it finally.</p>
-
-<h3>Fail to fetch gem from git</h3>
-
-<p>Error message like this</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Fetching git@github.com:Compass/compass-rails.git
-</span><span class='line'>Host key verification failed.
-</span><span class='line'>fatal: The remote end hung up unexpectedly
-</span><span class='line'>Git error: command `git clone 'git@github.com:Compass/compass-rails.git' "/tmp/build_1xa9</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Because git@github.com use SSH to communication, it requires authentication.
-Your gemfile may contain some gems like</p>
-
-<figure class='code'><figcaption><span>Old</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s2">&quot;compass-rails&quot;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s2">&quot;git@github.com:Compass/compass-rails.git&quot;</span><span class="p">,</span> <span class="ss">:branch</span> <span class="o">=&gt;</span> <span class="s2">&quot;rails4&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Change to</p>
-
-<figure class='code'><figcaption><span>New</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s2">&quot;compass-rails&quot;</span><span class="p">,</span> <span class="ss">:github</span> <span class="o">=&gt;</span> <span class="s2">&quot;Compass/compass-rails&quot;</span><span class="p">,</span> <span class="ss">:branch</span> <span class="o">=&gt;</span> <span class="s2">&quot;rails4&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Miss assets in rails 4</h3>
-
-<p>Very helpful <a href="http://theotherzach.com/writes/2013/3/13/rails-4-and-heroku-missing-assets">link</a>. Put below in your production.rb</p>
-
-<figure class='code'><figcaption><span>production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">serve_static_assets</span> <span class="o">=</span> <span class="kp">true</span>
-</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Ckeditor doesn&#8217;t show correctly</h3>
-
-<p>Reference to <a href="http://www.cnblogs.com/lmei/p/3306643.html">link</a> and <a href="http://dev.mensfeld.pl/2013/07/upgrading-to-rails-4-0-from-rails-3-2-test-case-part-ii-assets-models/">link2</a>.
-Because ckeditor will read the assets file without digest postfix. My solution is<br/>
-Add a rake file to create nondigest file of all ckeditor assets.</p>
-
-<figure class='code'><figcaption><span>ckeditor.rake</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;fileutils&#39;</span>
-</span><span class='line'><span class="n">desc</span> <span class="s2">&quot;Create nondigest versions of all ckeditor digest assets&quot;</span>
-</span><span class='line'><span class="n">task</span> <span class="ss">ckeditor</span><span class="p">:</span> <span class="ss">:environment</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">fingerprint</span> <span class="o">=</span> <span class="sr">/\-[0-9a-f]{32}\./</span>
-</span><span class='line'>  <span class="k">for</span> <span class="n">file</span> <span class="k">in</span> <span class="no">Dir</span><span class="o">[</span><span class="s2">&quot;public/assets/ckeditor/**/*&quot;</span><span class="o">]</span>
-</span><span class='line'>    <span class="k">next</span> <span class="k">unless</span> <span class="n">file</span> <span class="o">=~</span> <span class="n">fingerprint</span>
-</span><span class='line'>    <span class="n">nondigest</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">sub</span> <span class="n">fingerprint</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span>
-</span><span class='line'>    <span class="no">FileUtils</span><span class="o">.</span><span class="n">cp</span> <span class="n">file</span><span class="p">,</span> <span class="n">nondigest</span><span class="p">,</span> <span class="ss">verbose</span><span class="p">:</span> <span class="kp">true</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Execute <code>rake ckeditor</code> after <code>rake assets:precompile</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake assets:precompile
-</span><span class='line'>rake ckeditor
 </span></code></pre></td></tr></table></div></figure>
 
 
