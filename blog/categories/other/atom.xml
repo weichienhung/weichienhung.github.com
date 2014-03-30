@@ -4,7 +4,7 @@
   <title><![CDATA[Category: other | Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/blog/categories/other/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-03-17T23:03:14+08:00</updated>
+  <updated>2014-03-30T10:05:23+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -73,7 +73,6 @@ Use <code>Package Control</code> > <code>Install Package</code> > <code>All Auto
 
 <p><code>Preferences</code> > <code>Settings -&gt; Default</code>
 ``` json
-...
 //Change tab to spaces and set size
 "tab_size": 2,
 "translate_tabs_to_spaces": true,</p>
@@ -87,8 +86,32 @@ Use <code>Package Control</code> > <code>Install Package</code> > <code>All Auto
 <p>// bold the folder
 "bold_folder_labels": true,</p>
 
-<p>...
+<p>// Additional spacing at the top of each line, in pixels
+"line_padding_top": 1,</p>
+
+<p>// Additional spacing at the bottom of each line, in pixels
+"line_padding_bottom": 1
 ```</p>
+
+<p>Updated in 2014/3/21</p>
+
+<h3>7. Color Highlighter</h3>
+
+<p>直接在Sublime裡顯示CSS顏色碼(例如：#4210F2)的顏色。<br/>
+Use <code>Package Control</code> > <code>Install Package</code> > <code>Color Highlighter</code></p>
+
+<h3>8. Expand selection to quotes</h3>
+
+<p>按<code>ctrl</code>+<code>'</code>直接圈選整個引用('')裡面的內容。
+Use <code>Package Control</code> > <code>Install Package</code> > <code>Expand Selection to Quotes</code></p>
+
+<h3>9. CleanCSS</h3>
+
+<p>整理CSS的格式。在<code>Preference</code> > <code>Keybinding - User</code>裡增加shortcut
+<code>json
+{ "keys": ["alt+ctrl+c"], "command": "clean_css" }
+</code>
+Use <code>Package Control</code> > <code>Install Package</code> > <code>Clean CSS</code></p>
 ]]></content>
   </entry>
   

@@ -7,11 +7,9 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="這篇文章用來記錄ES6的一些新功能。參考Lukehoban的版本並加以中文化。
-基本上所有的example codes我都有在ES6 fiddle或用Traceur執行過。 ES6包含這些新的功能:
-- let + const
-- enhanced object literals
-- &hellip;">
+	<meta name="description" content="There&#8217;s the old post about how to create a ruby gem.
+This post is focus on how to add testing to gem.
+First, add rspec into your gem &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -94,6 +92,165 @@
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/03/30/add-testing-to-your-gem/">
+		
+			Add Testing to Your Gem</a>
+	</h2>
+	<div class="entry-content">
+		<p>There&#8217;s the old <a href="http://weichienhung.github.io/blog/2013/09/28/rails-generator-in-gem/">post</a> about how to create a ruby gem.
+This post is focus on how to add testing to gem.<br/>
+First, add rspec into your gem dependency. I like to use rspec as my testing framework.
+Here i also use webmock to mock my http request during spec testing.</p>
+
+<figure class='code'><figcaption><span>your_gem.gemspec</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">Gem</span><span class="p">:</span><span class="ss">:Specification</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">spec</span><span class="o">|</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="s1">&#39;rspec&#39;</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="s1">&#39;webmock&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create a rake task to run rspec. I create <code>rspec.rake</code> under <code>{gem_root_folder}/tasks/</code>.
+Set the default task to <code>:spec</code> then i can just type <code>rake</code> to run testing.
+In the meantime i set <code>--color -f d</code> to output result with color and document format.</p>
+
+<figure class='code'><figcaption><span>rspec.rake</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;rspec/core/rake_task&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">desc</span> <span class="s1">&#39;Default: run specs.&#39;</span>
+</span><span class='line'><span class="n">task</span> <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="ss">:spec</span>
+</span><span class='line'>
+</span><span class='line'><span class="ss">RSpec</span><span class="p">:</span><span class="ss">:Core</span><span class="o">::</span><span class="no">RakeTask</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">task</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">task</span><span class="o">.</span><span class="n">rspec_opts</span> <span class="o">=</span> <span class="s1">&#39;--color -f d&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In order to exec our rspec.rake. Import all .rake file under tasks folder to Rakefile.</p>
+
+<figure class='code'><figcaption><span>Rakefile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;bundler/gem_tasks&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;tasks/**/*.rake&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="nb">method</span><span class="p">(</span><span class="ss">:import</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we could start to write testing.<br/>
+Create <code>{gem_root_folder}/spec/</code> folder and <code>spec_helper.rb</code> under it.</p>
+
+<figure class='code'><figcaption><span>spec_helper.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># require webmock/rspec to use webmock in rspec testing framework</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;webmock/rspec&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># mvn_utils is the target class to be test</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;mvn_utils&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create <code>mvn_utils_spec.rb</code> under <code>{gem_root_folder}/spec/</code> and require <code>spec_helper</code>.
+We could require all targets in <code>spec_helper.rb</code> and each spec.rb file just require <code>spec_helper</code>.</p>
+
+<figure class='code'><figcaption><span>mvn_utils_spec.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;spec_helper&#39;</span>
+</span><span class='line'><span class="n">describe</span> <span class="no">MvnUtils</span> <span class="k">do</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">let</span><span class="p">(</span><span class="ss">:mvn_base</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&quot;mvn.example.net/service/local/repositories/&quot;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">let</span><span class="p">(</span><span class="ss">:header_hash</span><span class="p">)</span> <span class="p">{</span> <span class="p">{</span><span class="s1">&#39;Accept&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;*/*&#39;</span><span class="p">,</span> <span class="s1">&#39;Accept-Encoding&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;gzip;q=1.0,deflate;q=0.6,identity;q=0.3&#39;</span><span class="p">,</span> <span class="s1">&#39;User-Agent&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Ruby&#39;</span><span class="p">}</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">describe</span> <span class="s1">&#39;should find the latest version&#39;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">let</span><span class="p">(</span><span class="ss">:response_xml</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&quot;&lt;metadata&gt;&lt;groupId&gt;a.b&lt;/groupId&gt;&lt;artifactId&gt;x.y&lt;/artifactId&gt;&lt;versioning&gt;&quot;</span> <span class="o">+</span>
+</span><span class='line'>                         <span class="s2">&quot;&lt;release&gt;1.0.100&lt;/release&gt;&lt;versions&gt;&lt;version&gt;1.0.98&lt;/version&gt;&quot;</span> <span class="o">+</span>
+</span><span class='line'>                         <span class="s2">&quot;&lt;version&gt;1.0.99&lt;/version&gt;&lt;/versions&gt;&lt;/versioning&gt;&lt;/metadata&gt;&quot;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">it</span> <span class="s1">&#39;find_latest_version&#39;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">stub_request</span><span class="p">(</span><span class="ss">:get</span><span class="p">,</span> <span class="s2">&quot;http://</span><span class="si">#{</span><span class="n">mvn_base</span><span class="si">}</span><span class="s2">a/b/x/y/maven-metadata.xml&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">with</span><span class="p">(</span><span class="ss">:headers</span> <span class="o">=&gt;</span> <span class="n">header_hash</span><span class="p">)</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">to_return</span><span class="p">(</span><span class="ss">:status</span> <span class="o">=&gt;</span> <span class="mi">200</span><span class="p">,</span> <span class="ss">:body</span> <span class="o">=&gt;</span> <span class="n">response_xml</span><span class="p">,</span> <span class="ss">:headers</span> <span class="o">=&gt;</span> <span class="p">{})</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">expect</span><span class="p">(</span><span class="no">MvnUtils</span><span class="o">.</span><span class="n">find_latest_version</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="s1">&#39;1.0.100&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the above example, i test <code>MvnUtils.find_latest_version</code> and expect the value should be <code>1.0.100</code>.
+This function will inovke http request to mvn server but i use stub request here to prevent real http connection.
+With stub request i could control the returned xml data.</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-30T00:31:00+08:00" pubdate data-updated="true">Mar 30<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ruby/'>ruby</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/03/30/add-testing-to-your-gem/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -1996,53 +2153,6 @@ Here are some examples i think they are good.</p>
 </div>
 	
 	<div class="comments"><a href="/blog/2013/11/03/open-source-projects-studying/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/25/mongodb-in-rails/">
-		
-			Mongodb in Rails4</a>
-	</h2>
-	<div class="entry-content">
-		<p>In the past week i had tried <a href="http://www.mongodb.org">mongodb</a> in rails.
-I rewrite my previous project <a href="https://github.com/weichienhung/money">money</a> to use mongodb instead of active record.
-The source code is in branch <a href="https://github.com/weichienhung/money/tree/mongodb">money-mongodb</a>.
-Here i record the steps of changing active record to mongodb</p>
-
-
-		
-		<a href="/blog/2013/10/25/mongodb-in-rails/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-25T23:53:00+08:00" pubdate data-updated="true">Oct 25<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>rails</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/10/25/mongodb-in-rails/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
