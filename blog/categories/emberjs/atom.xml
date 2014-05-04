@@ -4,7 +4,7 @@
   <title><![CDATA[Category: emberjs | Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/blog/categories/emberjs/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-05-04T10:28:44+08:00</updated>
+  <updated>2014-05-04T10:32:08+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,95 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Dependency Injection in Emberjs]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/05/04/dependency-injection-in-emberjs/"/>
+    <updated>2014-05-04T09:47:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/05/04/dependency-injection-in-emberjs</id>
+    <content type="html"><![CDATA[<p>I read some articles about Emberjs Dependency Injection(DI) and try to upgrade my old project <a href="https://github.com/weichienhung/food-ntpc">food_ntpc</a>
+to use DI. The pros of DI is to reduce gobal object and make code clean, testing easily.
+There are few changes.</p>
+
+<h3>before</h3>
+
+<p>I create a <code>CategoryManager</code> and put in <code>FoodNtpc</code> App.
+``` coffeescript category.js.coffee
+class CategoryManager
+  categorys: -></p>
+
+<pre><code>return categorys
+</code></pre>
+
+<p>  ...</p>
+
+<p>FoodNtpc.CategoryManager = new CategoryManager
+<code>
+It's very easy to access through `FoodNtpc.CategoryManager` everywhere. BUT it makes testing hardly and more coupling.
+</code> coffeescript index_route.js.coffee
+FoodNtpc.IndexRoute = Ember.Route.extend
+  model: -></p>
+
+<pre><code>return FoodNtpc.CategoryManager.categorys()
+</code></pre>
+
+<p>```</p>
+
+<h3>after</h3>
+
+<p>Only the <em>Ember.Object</em> class can be registered. I change <code>class CategoryManager</code> to <code>CategoryManager = Ember.Object.extend</code>.
+Then create an <code>initializer</code> to register the <code>CategoryManager</code> in <code>foodntpc:categoryManager</code> naming. Set singleton to true because i want only one CategoryManager in system.
+``` coffeescript category.js.coffee</p>
+
+<h1>class CategoryManager</h1>
+
+<p>CategoryManager = Ember.Object.extend
+  categorys: -></p>
+
+<pre><code>return categorys
+</code></pre>
+
+<p>  ...</p>
+
+<h1>FoodNtpc.CategoryManager = new CategoryManager</h1>
+
+<p>Ember.Application.initializer
+  name: 'categoryManager'
+  initialize: (container, application) -></p>
+
+<pre><code>console.log 'register categoryManager'
+container.register('foodntpc:categoryManager', CategoryManager, {singleton: true})
+</code></pre>
+
+<p><code>
+Next, create another initializer to inject those dependency. We can use `after` or `before` to adjust initializer sequence.  
+In `application.js` line 6 means `foodntpc:categoryManager` is injected to IndexRoute and use `CategoryManager` reference.
+In line 7 means inject into all controller.
+</code> javascript application.js
+Ember.Application.initializer({
+  name: 'injectModelManager',
+  after: 'categoryManager',</p>
+
+<p>  initialize: function(container, application) {</p>
+
+<pre><code>application.inject('route:index', 'CategoryManager', 'foodntpc:categoryManager');
+application.inject('controller', 'CategoryManager', 'foodntpc:categoryManager');
+</code></pre>
+
+<p>  }
+});
+<code>
+In IndexRoute, we use `this.CategoryManager` to access it.
+</code> coffeescript index_route.js.coffee
+FoodNtpc.IndexRoute = Ember.Route.extend
+  model: -></p>
+
+<pre><code>return @CategoryManager.categorys()
+</code></pre>
+
+<p>```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Unit testing in Emberjs]]></title>
@@ -533,18 +622,6 @@ So i use EmberJS,HighchartJS and Rails to build this simple web app. I always le
 <p><img src="/images/posts/0922-trend.png" width="500" height="500" title="trend-image" alt="trend"></p>
 
 <p>I won't describe studying notes here but write them in other posts.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[First ember_rails project]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/03/first-ember-rails-project/"/>
-    <updated>2013-09-03T23:57:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/03/first-ember-rails-project</id>
-    <content type="html"><![CDATA[<p>Last time i said i want to make an ember-rails project(<a href="http://127.0.0.1:4000/blog/2013/08/25/rails-and-ember-study/">post</a>).
-Today I push my first Ember-Rails(food-ntpc) project to <a href="https://github.com/weichienhung/food-ntpc">github</a> and <a href="http://food-ntpc.herokuapp.com/">heroku</a>.
-It takes me more time to finish it because i am not familiar with coffee script. I also create a new <a href="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/">post</a> for coffee script memo.
-During practicing i use Emberjs 1.0.0.rc7. But Emberjs 1.0.0 was released few days ago and i upgrade it to 1.0.0.</p>
 ]]></content>
   </entry>
   
