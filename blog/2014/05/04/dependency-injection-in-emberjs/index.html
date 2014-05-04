@@ -1,0 +1,281 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Dependency Injection in Emberjs - Practice makes perfect</title>
+	<meta name="author" content="Weichien Hung">
+
+	
+	<meta name="description" content="I read some articles about Emberjs Dependency Injection(DI) and try to upgrade my old project food_ntpc
+to use DI. The pros of DI is to reduce gobal &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Practice makes perfect" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><a class="myheader-avatar" href="/"><img src="/images/samuel.jpg"></a>
+<div class="myheader-slogan">
+<h1><a href="/">Practice makes perfect</a></h1>
+<h2>...</h2>
+</div>
+<nav id="main-nav"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Tags</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a id="menu-btn" class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Tags</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:weichienhung.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		<a class="facebook" href="http://www.facebook.com/weichien.hung" title="Facebook">Facebook</a>
+		
+		
+		<a class="google" href="https://plus.google.com/113676445086645352045?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/HungWeichien" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/weichienhung" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		<!-- 
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		 -->
+    
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:weichienhung.github.io">
+	</form>
+</nav>
+
+</header>
+<!-- 	
+		
+	 -->
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Dependency Injection in Emberjs</h2>
+	<div class="entry-content"><p>I read some articles about Emberjs Dependency Injection(DI) and try to upgrade my old project <a href="https://github.com/weichienhung/food-ntpc">food_ntpc</a>
+to use DI. The pros of DI is to reduce gobal object and make code clean, testing easily.
+There are few changes.</p>
+
+<h3>before</h3>
+
+<p>I create a <code>CategoryManager</code> and put in <code>FoodNtpc</code> App.</p>
+
+<figure class='code'><figcaption><span>category.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">CategoryManager</span>
+</span><span class='line'>  <span class="nv">categorys: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">categorys</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">FoodNtpc.CategoryManager = </span><span class="k">new</span> <span class="nx">CategoryManager</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s very easy to access through <code>FoodNtpc.CategoryManager</code> everywhere. BUT it makes testing hardly and more coupling.</p>
+
+<figure class='code'><figcaption><span>index_route.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">FoodNtpc.IndexRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">FoodNtpc</span><span class="p">.</span><span class="nx">CategoryManager</span><span class="p">.</span><span class="nx">categorys</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>after</h3>
+
+<p>Only the <em>Ember.Object</em> class can be registered. I change <code>class CategoryManager</code> to <code>CategoryManager = Ember.Object.extend</code>.
+Then create an <code>initializer</code> to register the <code>CategoryManager</code> in <code>foodntpc:categoryManager</code> naming. Set singleton to true because i want only one CategoryManager in system.</p>
+
+<figure class='code'><figcaption><span>category.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="c1">#class CategoryManager </span>
+</span><span class='line'><span class="nv">CategoryManager = </span><span class="nx">Ember</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">categorys: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">categorys</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#FoodNtpc.CategoryManager = new CategoryManager</span>
+</span><span class='line'><span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">initializer</span>
+</span><span class='line'>  <span class="nv">name: </span><span class="s">&#39;categoryManager&#39;</span>
+</span><span class='line'>  <span class="nv">initialize: </span><span class="nf">(container, application) -&gt;</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;register categoryManager&#39;</span>
+</span><span class='line'>    <span class="nx">container</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="s">&#39;foodntpc:categoryManager&#39;</span><span class="p">,</span> <span class="nx">CategoryManager</span><span class="p">,</span> <span class="p">{</span><span class="nv">singleton: </span><span class="kc">true</span><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, create another initializer to inject those dependency. We can use <code>after</code> or <code>before</code> to adjust initializer sequence.<br/>
+In <code>application.js</code> line 6 means <code>foodntpc:categoryManager</code> is injected to IndexRoute and use <code>CategoryManager</code> reference.
+In line 7 means inject into all controller.</p>
+
+<figure class='code'><figcaption><span>application.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">initializer</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;injectModelManager&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">after</span><span class="o">:</span> <span class="s1">&#39;categoryManager&#39;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">application</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">application</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="s1">&#39;route:index&#39;</span><span class="p">,</span> <span class="s1">&#39;CategoryManager&#39;</span><span class="p">,</span> <span class="s1">&#39;foodntpc:categoryManager&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">application</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="s1">&#39;controller&#39;</span><span class="p">,</span> <span class="s1">&#39;CategoryManager&#39;</span><span class="p">,</span> <span class="s1">&#39;foodntpc:categoryManager&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In IndexRoute, we use <code>this.CategoryManager</code> to access it.</p>
+
+<figure class='code'><figcaption><span>index_route.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">FoodNtpc.IndexRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">@CategoryManager</span><span class="p">.</span><span class="nx">categorys</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-04T09:47:00+08:00" pubdate data-updated="true">May 4<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    Weichien Hung
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $(document).ready(function(){
+    $('.fancybox').fancybox();
+  })
+})(jQuery);
+</script> 
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'weichienhung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2014/05/04/dependency-injection-in-emberjs/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2014/05/04/dependency-injection-in-emberjs/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

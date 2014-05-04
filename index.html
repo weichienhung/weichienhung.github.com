@@ -7,9 +7,8 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="There&#8217;s the old post about how to create a ruby gem.
-This post is focus on how to add testing to gem.
-First, add rspec into your gem &hellip;">
+	<meta name="description" content="I read some articles about Emberjs Dependency Injection(DI) and try to upgrade my old project food_ntpc
+to use DI. The pros of DI is to reduce gobal &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -92,6 +91,145 @@ First, add rspec into your gem &hellip;">
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/05/04/dependency-injection-in-emberjs/">
+		
+			Dependency Injection in Emberjs</a>
+	</h2>
+	<div class="entry-content">
+		<p>I read some articles about Emberjs Dependency Injection(DI) and try to upgrade my old project <a href="https://github.com/weichienhung/food-ntpc">food_ntpc</a>
+to use DI. The pros of DI is to reduce gobal object and make code clean, testing easily.
+There are few changes.</p>
+
+<h3>before</h3>
+
+<p>I create a <code>CategoryManager</code> and put in <code>FoodNtpc</code> App.</p>
+
+<figure class='code'><figcaption><span>category.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">CategoryManager</span>
+</span><span class='line'>  <span class="nv">categorys: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">categorys</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">FoodNtpc.CategoryManager = </span><span class="k">new</span> <span class="nx">CategoryManager</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s very easy to access through <code>FoodNtpc.CategoryManager</code> everywhere. BUT it makes testing hardly and more coupling.</p>
+
+<figure class='code'><figcaption><span>index_route.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">FoodNtpc.IndexRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">FoodNtpc</span><span class="p">.</span><span class="nx">CategoryManager</span><span class="p">.</span><span class="nx">categorys</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>after</h3>
+
+<p>Only the <em>Ember.Object</em> class can be registered. I change <code>class CategoryManager</code> to <code>CategoryManager = Ember.Object.extend</code>.
+Then create an <code>initializer</code> to register the <code>CategoryManager</code> in <code>foodntpc:categoryManager</code> naming. Set singleton to true because i want only one CategoryManager in system.</p>
+
+<figure class='code'><figcaption><span>category.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="c1">#class CategoryManager </span>
+</span><span class='line'><span class="nv">CategoryManager = </span><span class="nx">Ember</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">categorys: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">categorys</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#FoodNtpc.CategoryManager = new CategoryManager</span>
+</span><span class='line'><span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">initializer</span>
+</span><span class='line'>  <span class="nv">name: </span><span class="s">&#39;categoryManager&#39;</span>
+</span><span class='line'>  <span class="nv">initialize: </span><span class="nf">(container, application) -&gt;</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;register categoryManager&#39;</span>
+</span><span class='line'>    <span class="nx">container</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="s">&#39;foodntpc:categoryManager&#39;</span><span class="p">,</span> <span class="nx">CategoryManager</span><span class="p">,</span> <span class="p">{</span><span class="nv">singleton: </span><span class="kc">true</span><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, create another initializer to inject those dependency. We can use <code>after</code> or <code>before</code> to adjust initializer sequence.<br/>
+In <code>application.js</code> line 6 means <code>foodntpc:categoryManager</code> is injected to IndexRoute and use <code>CategoryManager</code> reference.
+In line 7 means inject into all controller.</p>
+
+<figure class='code'><figcaption><span>application.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">initializer</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;injectModelManager&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">after</span><span class="o">:</span> <span class="s1">&#39;categoryManager&#39;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">application</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">application</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="s1">&#39;route:index&#39;</span><span class="p">,</span> <span class="s1">&#39;CategoryManager&#39;</span><span class="p">,</span> <span class="s1">&#39;foodntpc:categoryManager&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">application</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="s1">&#39;controller&#39;</span><span class="p">,</span> <span class="s1">&#39;CategoryManager&#39;</span><span class="p">,</span> <span class="s1">&#39;foodntpc:categoryManager&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In IndexRoute, we use <code>this.CategoryManager</code> to access it.</p>
+
+<figure class='code'><figcaption><span>index_route.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">FoodNtpc.IndexRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">@CategoryManager</span><span class="p">.</span><span class="nx">categorys</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-04T09:47:00+08:00" pubdate data-updated="true">May 4<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/05/04/dependency-injection-in-emberjs/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -2065,94 +2203,6 @@ I can study new stuff when i practice rails each time. I try to write down here.
 </div>
 	
 	<div class="comments"><a href="/blog/2013/11/30/new-practicing-rails-project/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/11/03/open-source-projects-studying/">
-		
-			Open Source Project Studying</a>
-	</h2>
-	<div class="entry-content">
-		<p>I study the open source project <a href="https://github.com/gitlabhq/gitlabhq">gitlab</a>. It&#8217;s a well coding rails structure.
-Here are some examples i think they are good.</p>
-
-<h3>Don&#8217;t query data in View/Helper</h3>
-
-<p>Avoid perform query in view/helper in Xdite&#8217;s <a href="http://blog.xdite.net/posts/2013/10/31/maintainable-rails-view-6">Maintainable Rails View</a>.</p>
-
-<figure class='code'><figcaption><span>dashboard_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
-</span><span class='line'>  <span class="vi">@projects_limit</span> <span class="o">=</span> <span class="mi">30</span>
-</span><span class='line'>  <span class="vi">@groups</span> <span class="o">=</span> <span class="n">current_user</span><span class="o">.</span><span class="n">authorized_groups</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:human_name</span><span class="p">)</span>
-</span><span class='line'>  <span class="vi">@has_authorized_projects</span> <span class="o">=</span> <span class="vi">@projects</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="vi">@projects_count</span> <span class="o">=</span> <span class="vi">@projects</span><span class="o">.</span><span class="n">count</span>
-</span><span class='line'>  <span class="vi">@projects</span> <span class="o">=</span> <span class="vi">@projects</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="vi">@projects_limit</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="vi">@events</span> <span class="o">=</span> <span class="no">Event</span><span class="o">.</span><span class="n">in_projects</span><span class="p">(</span><span class="n">current_user</span><span class="o">.</span><span class="n">authorized_projects</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">))</span>
-</span><span class='line'>  <span class="vi">@events</span> <span class="o">=</span> <span class="vi">@event_filter</span><span class="o">.</span><span class="n">apply_filter</span><span class="p">(</span><span class="vi">@events</span><span class="p">)</span>
-</span><span class='line'>  <span class="vi">@events</span> <span class="o">=</span> <span class="vi">@events</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:offset</span><span class="o">]</span> <span class="o">||</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="vi">@last_push</span> <span class="o">=</span> <span class="n">current_user</span><span class="o">.</span><span class="n">recent_push</span>
-</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">html</span>
-</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">js</span>
-</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">atom</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">layout</span><span class="p">:</span> <span class="kp">false</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-		
-		<a href="/blog/2013/11/03/open-source-projects-studying/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-03T09:57:00+08:00" pubdate data-updated="true">Nov 3<span>rd</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>rails</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/11/03/open-source-projects-studying/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

@@ -4,7 +4,7 @@
   <title><![CDATA[Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-03-30T10:05:23+08:00</updated>
+  <updated>2014-05-04T10:28:44+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,115 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Dependency Injection in Emberjs]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/05/04/dependency-injection-in-emberjs/"/>
+    <updated>2014-05-04T09:47:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/05/04/dependency-injection-in-emberjs</id>
+    <content type="html"><![CDATA[<p>I read some articles about Emberjs Dependency Injection(DI) and try to upgrade my old project <a href="https://github.com/weichienhung/food-ntpc">food_ntpc</a>
+to use DI. The pros of DI is to reduce gobal object and make code clean, testing easily.
+There are few changes.</p>
+
+<h3>before</h3>
+
+<p>I create a <code>CategoryManager</code> and put in <code>FoodNtpc</code> App.</p>
+
+<figure class='code'><figcaption><span>category.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">CategoryManager</span>
+</span><span class='line'>  <span class="nv">categorys: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">categorys</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">FoodNtpc.CategoryManager = </span><span class="k">new</span> <span class="nx">CategoryManager</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s very easy to access through <code>FoodNtpc.CategoryManager</code> everywhere. BUT it makes testing hardly and more coupling.</p>
+
+<figure class='code'><figcaption><span>index_route.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">FoodNtpc.IndexRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">FoodNtpc</span><span class="p">.</span><span class="nx">CategoryManager</span><span class="p">.</span><span class="nx">categorys</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>after</h3>
+
+<p>Only the <em>Ember.Object</em> class can be registered. I change <code>class CategoryManager</code> to <code>CategoryManager = Ember.Object.extend</code>.
+Then create an <code>initializer</code> to register the <code>CategoryManager</code> in <code>foodntpc:categoryManager</code> naming. Set singleton to true because i want only one CategoryManager in system.</p>
+
+<figure class='code'><figcaption><span>category.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="c1">#class CategoryManager </span>
+</span><span class='line'><span class="nv">CategoryManager = </span><span class="nx">Ember</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">categorys: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">categorys</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#FoodNtpc.CategoryManager = new CategoryManager</span>
+</span><span class='line'><span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">initializer</span>
+</span><span class='line'>  <span class="nv">name: </span><span class="s">&#39;categoryManager&#39;</span>
+</span><span class='line'>  <span class="nv">initialize: </span><span class="nf">(container, application) -&gt;</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;register categoryManager&#39;</span>
+</span><span class='line'>    <span class="nx">container</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="s">&#39;foodntpc:categoryManager&#39;</span><span class="p">,</span> <span class="nx">CategoryManager</span><span class="p">,</span> <span class="p">{</span><span class="nv">singleton: </span><span class="kc">true</span><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, create another initializer to inject those dependency. We can use <code>after</code> or <code>before</code> to adjust initializer sequence.<br/>
+In <code>application.js</code> line 6 means <code>foodntpc:categoryManager</code> is injected to IndexRoute and use <code>CategoryManager</code> reference.
+In line 7 means inject into all controller.</p>
+
+<figure class='code'><figcaption><span>application.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Ember</span><span class="p">.</span><span class="nx">Application</span><span class="p">.</span><span class="nx">initializer</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;injectModelManager&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">after</span><span class="o">:</span> <span class="s1">&#39;categoryManager&#39;</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">application</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">application</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="s1">&#39;route:index&#39;</span><span class="p">,</span> <span class="s1">&#39;CategoryManager&#39;</span><span class="p">,</span> <span class="s1">&#39;foodntpc:categoryManager&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">application</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="s1">&#39;controller&#39;</span><span class="p">,</span> <span class="s1">&#39;CategoryManager&#39;</span><span class="p">,</span> <span class="s1">&#39;foodntpc:categoryManager&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In IndexRoute, we use <code>this.CategoryManager</code> to access it.</p>
+
+<figure class='code'><figcaption><span>index_route.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">FoodNtpc.IndexRoute = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">model: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">@CategoryManager</span><span class="p">.</span><span class="nx">categorys</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Add testing to your gem]]></title>
@@ -4309,182 +4418,6 @@ So i use EmberJS,HighchartJS and Rails to build this simple web app. I always le
 <p><img src="http://weichienhung.github.io/images/posts/0922-trend.png" width="500" height="500" title="trend-image" alt="trend"></p>
 
 <p>I won&#8217;t describe studying notes here but write them in other posts.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ActionSupport in Rails4 part2]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/13/actionsupport-in-rails4-part2/"/>
-    <updated>2013-09-13T21:42:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/13/actionsupport-in-rails4-part2</id>
-    <content type="html"><![CDATA[<p>Continue ActionSupport useful record</p>
-
-<h3>Extensions to Numeric</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/numeric/bytes.rb.</p>
-
-<h4>Bytes</h4>
-
-<p>All number respond to these methods</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">kilobytes</span>   <span class="c1"># =&gt; 2048</span>
-</span><span class='line'><span class="mi">3</span><span class="o">.</span><span class="n">megabytes</span>   <span class="c1"># =&gt; 3145728</span>
-</span><span class='line'><span class="mi">3</span><span class="o">.</span><span class="mi">5</span><span class="o">.</span><span class="n">gigabytes</span> <span class="c1"># =&gt; 3758096384</span>
-</span><span class='line'><span class="o">-</span><span class="mi">4</span><span class="o">.</span><span class="n">exabytes</span>   <span class="c1"># =&gt; -4611686018427387904</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<!-- more-->
-
-
-<hr />
-
-<p>Defined in active_support/core_ext/numeric/time.rb.</p>
-
-<h4>Time</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># equivalent to Time.current.advance(months: 1)</span>
-</span><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">from_now</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># equivalent to Time.current.advance(years: 2)</span>
-</span><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">from_now</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># equivalent to Time.current.advance(months: 4, years: 5)</span>
-</span><span class='line'><span class="p">(</span><span class="mi">4</span><span class="o">.</span><span class="n">months</span> <span class="o">+</span> <span class="mi">5</span><span class="o">.</span><span class="n">years</span><span class="p">)</span><span class="o">.</span><span class="n">from_now</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Extensions to Integer</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/integer/multiple.rb.</p>
-
-<h4>multiple_of</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">2</span><span class="o">.</span><span class="n">multiple_of?</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
-</span><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">multiple_of?</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; false</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Extensions to Enumerable</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/enumerable.rb.</p>
-
-<h4>sum</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">].</span><span class="n">sum</span> <span class="c1"># =&gt; 6</span>
-</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span>  <span class="c1"># =&gt; 5050</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If a block is given, sum becomes an iterator that yields the elements of the collection and sums the returned values:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span> <span class="p">{</span><span class="o">|</span><span class="n">n</span><span class="o">|</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">}</span> <span class="c1"># =&gt; 30</span>
-</span><span class='line'><span class="o">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="o">].</span><span class="n">sum</span>    <span class="c1"># =&gt; 30</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>many?</h4>
-
-<p>The method many? is shorthand for collection.size > 1:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% if </span><span class="n">pages</span><span class="o">.</span><span class="n">many?</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">  &lt;%= pagination_links %&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Extensions to Array</h3>
-
-<hr />
-
-<p>Defined in active_support/core_ext/array/access.rb.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w(a b c d)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; %w(a b c)</span>
-</span><span class='line'><span class="o">[].</span><span class="n">to</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>          <span class="c1"># =&gt; []</span>
-</span><span class='line'><span class="sx">%w(a b c d)</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># =&gt; %w(c d)</span>
-</span><span class='line'><span class="sx">%w(a b c d)</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># =&gt; []</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<hr />
-
-<p>Defined in active_support/core_ext/array/prepend_and_append.rb.</p>
-
-<h4>prepend and append</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w(a b c d)</span><span class="o">.</span><span class="n">prepend</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>  <span class="c1"># =&gt; %w(e a b c d)</span>
-</span><span class='line'><span class="o">[].</span><span class="n">prepend</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>            <span class="c1"># =&gt; [10]</span>
-</span><span class='line'><span class="sx">%w(a b c d)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>  <span class="c1"># =&gt; %w(a b c d e)</span>
-</span><span class='line'><span class="o">[].</span><span class="n">append</span><span class="p">(</span><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>         <span class="c1"># =&gt; [[1,2]]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<hr />
-
-<p>Defined in active_support/core_ext/array/grouping.rb</p>
-
-<h4>in_groups_of(number, fill_with = nil)</h4>
-
-<p>The method in_groups_of splits an array into consecutive groups of a certain size.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">].</span><span class="n">in_groups_of</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; [[1, 2], [3, nil]]</span>
-</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">].</span><span class="n">in_groups_of</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kp">false</span><span class="p">)</span> <span class="c1"># =&gt; [[1, 2], [3]]</span>
-</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">].</span><span class="n">in_groups_of</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># =&gt; [[1, 2], [3, 0]]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>in_groups(number, fill_with = nil)</h4>
-
-<p>The method in_groups splits an array into a certain number of groups.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w(1 2 3 4 5 6 7)</span><span class="o">.</span><span class="n">in_groups</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-</span><span class='line'><span class="c1"># =&gt; [[&quot;1&quot;, &quot;2&quot;, &quot;3&quot;], [&quot;4&quot;, &quot;5&quot;, nil], [&quot;6&quot;, &quot;7&quot;, nil]]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
 ]]></content>
   </entry>
   
