@@ -4,7 +4,7 @@
   <title><![CDATA[Category: emberjs | Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/blog/categories/emberjs/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-05-04T10:32:08+08:00</updated>
+  <updated>2014-05-15T21:10:06+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Invoke Route from Controller in Emberjs]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/05/15/invoke-route-from-controller-in-emberjs/"/>
+    <updated>2014-05-15T20:47:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/05/15/invoke-route-from-controller-in-emberjs</id>
+    <content type="html"><![CDATA[<p>Emberjs official document doesn't describe how to invoke route method/event from controller. Why we need this?<br/>
+Some methods(like <code>render</code>,<code>controllerFor</code>) only exist in Route scope.
+``` javascript PostRoute
+App.PostRoute = Ember.Route.extend({
+  events: {</p>
+
+<pre><code>showWarn: {
+  this.render('warn', { "outlet": "msgView", "into": "post" })
+}
+</code></pre>
+
+<p>  }
+});
+<code>
+Use `this.get('target').send` to trigger Route event.
+</code> javascript PostController
+App.PostController = Ember.Controller.extend({
+  actions: {</p>
+
+<pre><code>showMessage: {
+  //some process here
+  if (need_render) {
+    this.get('target').send('showWarn');
+  }
+}
+</code></pre>
+
+<p>  }
+});
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Dependency Injection in Emberjs]]></title>
@@ -591,37 +629,6 @@ SummaryView = Ember.View.extend
 </code></pre>
 
 <p>```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Use HighchartJS to visual data]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/22/use-highchartjs-to-visual/"/>
-    <updated>2013-09-22T17:16:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/22/use-highchartjs-to-visual</id>
-    <content type="html"><![CDATA[<p>I just push a new project to <a href="https://github.com/weichienhung/money">github</a> and <a href="http://weichien-money.herokuapp.com/">heroku</a>.
-This project is derived from my iOS App <a href="https://itunes.apple.com/tw/app/monny/id590327036?mt=8">Monny</a>.
-The App I used it to record my daily expense. The free version doesn't have visual graph to show summary data.
-So i use EmberJS,HighchartJS and Rails to build this simple web app. I always learned new knowledge during coding.</p>
-
-<p>I take few snaphots of this probject.</p>
-
-<!-- more -->
-
-
-<h3>List every record</h3>
-
-<p><img src="/images/posts/0922-list.png" width="500" height="500" title="list-image" alt="list"></p>
-
-<h3>Category summary</h3>
-
-<p><img src="/images/posts/0922-summary.png" width="500" height="500" title="summary-image" alt="summary"></p>
-
-<h3>Year trend</h3>
-
-<p><img src="/images/posts/0922-trend.png" width="500" height="500" title="trend-image" alt="trend"></p>
-
-<p>I won't describe studying notes here but write them in other posts.</p>
 ]]></content>
   </entry>
   

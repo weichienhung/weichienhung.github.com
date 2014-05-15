@@ -4,7 +4,7 @@
   <title><![CDATA[Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-05-04T10:32:08+08:00</updated>
+  <updated>2014-05-15T21:10:06+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,117 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Invoke Route from Controller in Emberjs]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/05/15/invoke-route-from-controller-in-emberjs/"/>
+    <updated>2014-05-15T20:47:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/05/15/invoke-route-from-controller-in-emberjs</id>
+    <content type="html"><![CDATA[<p>Emberjs official document doesn&#8217;t describe how to invoke route method/event from controller. Why we need this?<br/>
+Some methods(like <code>render</code>,<code>controllerFor</code>) only exist in Route scope.</p>
+
+<figure class='code'><figcaption><span>PostRoute</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">PostRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">events</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">showWarn</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;warn&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;outlet&quot;</span><span class="o">:</span> <span class="s2">&quot;msgView&quot;</span><span class="p">,</span> <span class="s2">&quot;into&quot;</span><span class="o">:</span> <span class="s2">&quot;post&quot;</span> <span class="p">})</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Use <code>this.get('target').send</code> to trigger Route event.</p>
+
+<figure class='code'><figcaption><span>PostController</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">PostController</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">actions</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">showMessage</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">//some process here</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">need_render</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">).</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;showWarn&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CSS property pointer-events]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/05/15/css-property-pointer-events/"/>
+    <updated>2014-05-15T20:32:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/05/15/css-property-pointer-events</id>
+    <content type="html"><![CDATA[<p>The CSS property <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events">pointer-events</a> could control mouse/touch event fired or not. The default value is <code>auto</code> and you can set <code>none</code> to disable event firing. For example:<br/>
+You have a Sign-in button.</p>
+
+<figure class='code'><figcaption><span>HTML file</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;signin&quot;</span> <span class="na">class=</span><span class="s">&quot;signin-btn&quot;</span><span class="nt">&gt;</span>Signin<span class="nt">&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The traditional way to prevent user clicks multiple times.</p>
+
+<figure class='code'><figcaption><span>JS</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signin&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">is_signin_process</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span><span class="p">;</span> <span class="c1">//prevent multiple click during signin flow.</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">//doing signin flow</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you could just add a <code>processing</code> className to prevent multiple click events.
+No more click event firing after set <code>pointer-events: none;</code></p>
+
+<figure class='code'><figcaption><span>CSS file</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.signin-btn.processing</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">pointer</span><span class="o">-</span><span class="n">events</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>JS</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signin&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signin&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;processing&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">//doing signin flow</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Dependency Injection in Emberjs]]></title>
@@ -4263,161 +4374,6 @@ Directive <code>copy_file</code> copy my custom application.js<em>(in templates/
 </span><span class='line'>gem push railsone-0.0.1.gem
 </span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Async in Emberjs]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/22/async-in-emberjs/"/>
-    <updated>2013-09-22T17:40:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/22/async-in-emberjs</id>
-    <content type="html"><![CDATA[<h2>Async Routing</h2>
-
-<p>Reference to <a href="http://emberjs.com/guides/routing/asynchronous-routing/">ember guide</a>.<br/>
-If you want to make sure model is ready before entering the target route. You could use async routing. How?<br/>
-Make your model as Promise object in route&#8217;s model function.
-For example: In year route i return a model that comes from <code>ModelMgr.listMonth(params.year_id)</code>.
-Because model is Promise object, i add a <code>then</code> method to set id attribute to model(resolve will be model here)</p>
-
-<figure class='code'><figcaption><span>YearRoute</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">model: </span><span class="nf">(params) -&gt;</span>
-</span><span class='line'>  <span class="nv">model = </span><span class="nx">ModelMgr</span><span class="p">.</span><span class="nx">listMonth</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">year_id</span><span class="p">)</span>
-</span><span class='line'>    <span class="nx">model</span><span class="p">.</span><span class="nx">then</span> <span class="nf">(resolve, reject)-&gt;</span>
-</span><span class='line'>      <span class="nx">resolve</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">year_id</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">model</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In <code>ModelMgr.listMonth</code> method, use <code>Ember.RSVP.Promise</code> to wrap your function. Because i don&#8217;t return anything in the last line of function.
-CoffeeScript will return the promise object automatically. <code>months</code> will be the real model object.</p>
-
-<figure class='code'><figcaption><span>ModelMgr</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">listMonth: </span><span class="nf">(year) -&gt;</span>
-</span><span class='line'>  <span class="nv">months = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">ArrayProxy</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span><span class="nx">content</span><span class="o">:</span><span class="p">[]})</span>
-</span><span class='line'>  <span class="k">new</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">RSVP</span><span class="p">.</span><span class="nx">Promise</span> <span class="nf">(resolve) -&gt;</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span> <span class="s">&#39;/api/list&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nv">type: </span><span class="s">&#39;GET&#39;</span>
-</span><span class='line'>    <span class="nv">dataType: </span><span class="s">&#39;json&#39;</span>
-</span><span class='line'>    <span class="nv">data: </span><span class="s">&#39;y=&#39;</span><span class="o">+</span><span class="nx">year</span>
-</span><span class='line'>    <span class="nv">success: </span><span class="nf">(data, textStatus, jqXHR) -&gt;</span>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">raw</span> <span class="k">in</span> <span class="nx">data</span>
-</span><span class='line'>        <span class="nx">months</span><span class="p">.</span><span class="nx">addObject</span> <span class="nx">raw</span>
-</span><span class='line'>      <span class="nx">months</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;isReady&#39;</span><span class="p">,</span> <span class="kc">true</span>
-</span><span class='line'>      <span class="nx">resolve</span><span class="p">(</span><span class="nx">months</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Wait multiple function call ready</h2>
-
-<p>Sometimes you will use 3rd party library and it requires element existed in the DOM tree.
-For example: I use highchartJS to draw diagram.<br/>
-In the route it queries two models to finish the whole scenarios.
-<code>model</code> is the result from <code>ModelMgr.listMonth</code> and <code>modelForTrend</code> is the result from <code>ModelMgr.queryTrend</code>.
-The models all have attributes called <code>isReady</code> with false default. After <code>ModelMgr</code> get the data, it will set to true.</p>
-
-<figure class='code'><figcaption><span>SummaryRoute</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'>  <span class="nv">model: </span><span class="nf">(params)-&gt;</span>
-</span><span class='line'>    <span class="nv">model = </span><span class="nx">ModelMgr</span><span class="p">.</span><span class="nx">listMonth</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">year_id</span><span class="p">)</span>
-</span><span class='line'>    <span class="nv">model.year = </span><span class="nx">params</span><span class="p">.</span><span class="nx">year_id</span> <span class="c1">#For queryTrend needs year as parameter</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">model</span>
-</span><span class='line'>  <span class="nv">setupController: </span><span class="nf">(controller, model)-&gt;</span>
-</span><span class='line'>    <span class="nv">modelForTrend = </span><span class="nx">ModelMgr</span><span class="p">.</span><span class="nx">queryTrend</span><span class="p">(</span><span class="nx">model</span><span class="p">.</span><span class="nx">year</span><span class="p">)</span>
-</span><span class='line'>    <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;model&#39;</span><span class="p">,</span> <span class="nx">model</span>
-</span><span class='line'>    <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;modelForTrend&#39;</span><span class="p">,</span> <span class="nx">modelForTrend</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We have two attribute bindings to model&#8217;s attributes in controller.</p>
-
-<figure class='code'><figcaption><span>SummaryController</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">SummaryController = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">ObjectController</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>  <span class="nv">dataReadyBinding: </span><span class="s">&#39;model.isReady&#39;</span>
-</span><span class='line'>  <span class="nv">trendDataReadyBinding: </span><span class="s">&#39;modelForTrend.isReady&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Create a method to observe all attributes we care about. View shouldn&#8217;t connect to Model directly.
-So i make <code>drawLineChart</code> method to observe controller&#8217;s attribute.</p>
-
-<figure class='code'><figcaption><span>SummaryView</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">SummaryView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>  <span class="nv">elementReady: </span><span class="kc">false</span>
-</span><span class='line'>  <span class="nv">drawLineChart: </span><span class="p">(</span> <span class="nf">-&gt;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;controller.dataReady&#39;</span><span class="p">)</span> <span class="o">and</span> <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;controller.trendDataReady&#39;</span><span class="p">)</span> <span class="o">and</span> <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;elementReady&#39;</span><span class="p">)</span>
-</span><span class='line'>      <span class="nv">content = </span><span class="nx">@get</span> <span class="s">&#39;controller.model.content&#39;</span> <span class="c1"># content is ready</span>
-</span><span class='line'>      <span class="nv">contentForTrend = </span><span class="nx">@get</span> <span class="s">&#39;controller.modelForTrend.content&#39;</span> <span class="c1"># contentForTrend is ready</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#myTrend&#39;</span><span class="p">).</span><span class="nx">highcharts</span><span class="p">(</span> <span class="p">...</span> <span class="p">)</span> <span class="c1"># element is ready.</span>
-</span><span class='line'>      <span class="c1"># do something here...</span>
-</span><span class='line'>  <span class="p">).</span><span class="nx">observes</span><span class="p">(</span><span class="s">&#39;controller.dataReady&#39;</span><span class="p">,</span> <span class="s">&#39;elementReady&#39;</span><span class="p">,</span> <span class="s">&#39;controller.trendDataReady&#39;</span><span class="p">)</span>
-</span><span class='line'>  <span class="nv">didInsertElement: </span><span class="nf">-&gt;</span>
-</span><span class='line'>    <span class="nx">@set</span> <span class="s">&#39;elementReady&#39;</span><span class="p">,</span> <span class="kc">true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Use HighchartJS to visual data]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/22/use-highchartjs-to-visual/"/>
-    <updated>2013-09-22T17:16:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/22/use-highchartjs-to-visual</id>
-    <content type="html"><![CDATA[<p>I just push a new project to <a href="https://github.com/weichienhung/money">github</a> and <a href="http://weichien-money.herokuapp.com/">heroku</a>.
-This project is derived from my iOS App <a href="https://itunes.apple.com/tw/app/monny/id590327036?mt=8">Monny</a>.
-The App I used it to record my daily expense. The free version doesn&#8217;t have visual graph to show summary data.
-So i use EmberJS,HighchartJS and Rails to build this simple web app. I always learned new knowledge during coding.</p>
-
-<p>I take few snaphots of this probject.</p>
-
-<!-- more -->
-
-
-<h3>List every record</h3>
-
-<p><img src="http://weichienhung.github.io/images/posts/0922-list.png" width="500" height="500" title="list-image" alt="list"></p>
-
-<h3>Category summary</h3>
-
-<p><img src="http://weichienhung.github.io/images/posts/0922-summary.png" width="500" height="500" title="summary-image" alt="summary"></p>
-
-<h3>Year trend</h3>
-
-<p><img src="http://weichienhung.github.io/images/posts/0922-trend.png" width="500" height="500" title="trend-image" alt="trend"></p>
-
-<p>I won&#8217;t describe studying notes here but write them in other posts.</p>
 ]]></content>
   </entry>
   

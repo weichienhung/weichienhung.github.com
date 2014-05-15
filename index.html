@@ -7,8 +7,8 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="I read some articles about Emberjs Dependency Injection(DI) and try to upgrade my old project food_ntpc
-to use DI. The pros of DI is to reduce gobal &hellip;">
+	<meta name="description" content="Emberjs official document doesn&#8217;t describe how to invoke route method/event from controller. Why we need this?
+Some methods(like render, &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -91,6 +91,185 @@ to use DI. The pros of DI is to reduce gobal &hellip;">
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/05/15/invoke-route-from-controller-in-emberjs/">
+		
+			Invoke Route From Controller in Emberjs</a>
+	</h2>
+	<div class="entry-content">
+		<p>Emberjs official document doesn&#8217;t describe how to invoke route method/event from controller. Why we need this?<br/>
+Some methods(like <code>render</code>,<code>controllerFor</code>) only exist in Route scope.</p>
+
+<figure class='code'><figcaption><span>PostRoute</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">PostRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">events</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">showWarn</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;warn&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;outlet&quot;</span><span class="o">:</span> <span class="s2">&quot;msgView&quot;</span><span class="p">,</span> <span class="s2">&quot;into&quot;</span><span class="o">:</span> <span class="s2">&quot;post&quot;</span> <span class="p">})</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Use <code>this.get('target').send</code> to trigger Route event.</p>
+
+<figure class='code'><figcaption><span>PostController</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">PostController</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">actions</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">showMessage</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">//some process here</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">need_render</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">).</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;showWarn&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-15T20:47:00+08:00" pubdate data-updated="true">May 15<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/emberjs/'>emberjs</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/05/15/invoke-route-from-controller-in-emberjs/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/05/15/css-property-pointer-events/">
+		
+			CSS Property Pointer-events</a>
+	</h2>
+	<div class="entry-content">
+		<p>The CSS property <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events">pointer-events</a> could control mouse/touch event fired or not. The default value is <code>auto</code> and you can set <code>none</code> to disable event firing. For example:<br/>
+You have a Sign-in button.</p>
+
+<figure class='code'><figcaption><span>HTML file</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;signin&quot;</span> <span class="na">class=</span><span class="s">&quot;signin-btn&quot;</span><span class="nt">&gt;</span>Signin<span class="nt">&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The traditional way to prevent user clicks multiple times.</p>
+
+<figure class='code'><figcaption><span>JS</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signin&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">is_signin_process</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span><span class="p">;</span> <span class="c1">//prevent multiple click during signin flow.</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">//doing signin flow</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you could just add a <code>processing</code> className to prevent multiple click events.
+No more click event firing after set <code>pointer-events: none;</code></p>
+
+<figure class='code'><figcaption><span>CSS file</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.signin-btn.processing</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">pointer</span><span class="o">-</span><span class="n">events</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>JS</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signin&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signin&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;processing&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">//doing signin flow</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-15T20:32:00+08:00" pubdate data-updated="true">May 15<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/css/'>css</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/05/15/css-property-pointer-events/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -2082,131 +2261,6 @@ Because we assume your server is running. Use <code>selenium</code> as <code>dri
 </div>
 	
 	<div class="comments"><a href="/blog/2013/12/28/ui-automation/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/12/14/utility-tool-by-ruby/">
-		
-			Useful Methods in Ruby</a>
-	</h2>
-	<div class="entry-content">
-		<p>This week i write automatic utility tools for colleague.
-It saves time and reduce trivial works. Learn useful ruby built-in methods.</p>
-
-<h3>List all under a folder</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># lists all files and folders under target/ folder</span>
-</span><span class='line'><span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;target/**/**&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">select</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
-</span><span class='line'>  <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">directory?</span> <span class="n">f</span>
-</span><span class='line'>    <span class="c1"># do something</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="c1"># do something</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># ONLY list all in target/ , doesn&#39;t list subfolders like target/subfolders/</span>
-</span><span class='line'><span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;target/**&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">select</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-		
-		<a href="/blog/2013/12/14/utility-tool-by-ruby/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-14T21:14:00+08:00" pubdate data-updated="true">Dec 14<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/ruby/'>ruby</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/12/14/utility-tool-by-ruby/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/11/30/new-practicing-rails-project/">
-		
-			New Rails Project for Fun</a>
-	</h2>
-	<div class="entry-content">
-		<p>Today i push a new rails project to <a href="http://weichien-lunch.herokuapp.com/">heroku</a> called lunch.
-I also push to <a href="https://github.com/weichienhung/lunch">github</a>.
-Every week day i and colleague have to discuss which lunch to eat.
-It will be very helpful if a site can random pick a lunch restaurant for us. So i create a new rails project for this purpose.
-The basic idea is simple, everybody can share a restaurant and add others&#8217; restaurants to favorites list. Then site pick a restaurant for you.
-I can study new stuff when i practice rails each time. I try to write down here.</p>
-
-
-		
-		<a href="/blog/2013/11/30/new-practicing-rails-project/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-30T20:16:00+08:00" pubdate data-updated="true">Nov 30<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>rails</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/11/30/new-practicing-rails-project/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

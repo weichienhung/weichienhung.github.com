@@ -4,7 +4,7 @@
   <title><![CDATA[Category: css | Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/blog/categories/css/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-05-04T10:32:08+08:00</updated>
+  <updated>2014-05-15T21:10:06+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CSS property pointer-events]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/05/15/css-property-pointer-events/"/>
+    <updated>2014-05-15T20:32:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/05/15/css-property-pointer-events</id>
+    <content type="html"><![CDATA[<p>The CSS property <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events">pointer-events</a> could control mouse/touch event fired or not. The default value is <code>auto</code> and you can set <code>none</code> to disable event firing. For example:<br/>
+You have a Sign-in button.
+``` html HTML file</p>
+
+<div>
+  <div id="signin" class="signin-btn">Signin</div>
+</div>
+
+
+<p><code>
+The traditional way to prevent user clicks multiple times.
+</code> javascript JS
+$('#signin').on('click', function(event){
+  if (is_signin_process) {</p>
+
+<pre><code>return; //prevent multiple click during signin flow.
+</code></pre>
+
+<p>  }
+  //doing signin flow
+});
+<code>
+Now you could just add a `processing` className to prevent multiple click events.
+No more click event firing after set `pointer-events: none;`
+</code> css CSS file
+.signin-btn.processing {
+  pointer-events: none;
+}
+<code>
+</code> javascript JS
+$('#signin').on('click', function(event){
+  $('#signin').addClass('processing');
+  //doing signin flow
+});
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[animated on media query]]></title>

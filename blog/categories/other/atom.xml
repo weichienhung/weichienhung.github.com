@@ -4,7 +4,7 @@
   <title><![CDATA[Category: other | Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/blog/categories/other/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-05-04T10:32:08+08:00</updated>
+  <updated>2014-05-15T21:10:06+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -71,8 +71,14 @@ Use <code>Package Control</code> > <code>Install Package</code> > <code>All Auto
 
 <h3>6. Better your default setting</h3>
 
-<p><code>Preferences</code> > <code>Settings -&gt; Default</code>
+<p><code>Preferences</code> > <code>Settings -&gt; User</code>
 ``` json
+"font_face": "consolas",
+"font_size": 20,</p>
+
+<p><code>
+`Preferences` &gt; `Settings -&gt; Default`
+</code> json
 //Change tab to spaces and set size
 "tab_size": 2,
 "translate_tabs_to_spaces": true,</p>
@@ -102,16 +108,20 @@ Use <code>Package Control</code> > <code>Install Package</code> > <code>Color Hi
 
 <h3>8. Expand selection to quotes</h3>
 
-<p>按<code>ctrl</code>+<code>'</code>直接圈選整個引用('')裡面的內容。
-Use <code>Package Control</code> > <code>Install Package</code> > <code>Expand Selection to Quotes</code></p>
+<p>按<code>ctrl</code>+<code>'</code>直接圈選整個引用('')裡面的內容。<br/>
+Use <code>Package Control</code> > <code>Install Package</code> > <code>Expand Selection to Quotes</code>
+<code>Preferences</code> > <code>Key Bindings - User</code>
+<code>json
+{ "keys": ["ctrl+quote"], "command": "select_quoted" }
+</code></p>
 
 <h3>9. CleanCSS</h3>
 
-<p>整理CSS的格式。在<code>Preference</code> > <code>Keybinding - User</code>裡增加shortcut
+<p>Use <code>Package Control</code> > <code>Install Package</code> > <code>Clean CSS</code><br/>
+整理CSS的格式。在<code>Preference</code> > <code>Keybinding - User</code>
 <code>json
 { "keys": ["alt+ctrl+c"], "command": "clean_css" }
-</code>
-Use <code>Package Control</code> > <code>Install Package</code> > <code>Clean CSS</code></p>
+</code></p>
 ]]></content>
   </entry>
   

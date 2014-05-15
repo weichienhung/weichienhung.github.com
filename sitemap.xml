@@ -90,7 +90,7 @@
     </url>
     <url>
         <loc>http://weichienhung.github.io/blog/2013/08/19/improve-sublime/</loc>
-        <lastmod>2014-03-30T00:58:59+08:00</lastmod>
+        <lastmod>2014-05-11T01:19:06+08:00</lastmod>
     </url>
     <url>
         <loc>http://weichienhung.github.io/blog/2013/08/25/rails-and-ember-study/</loc>
@@ -203,12 +203,22 @@
         <lastmod>2014-05-04T10:32:02+08:00</lastmod>
     </url>
     <url>
+        <loc>http://weichienhung.github.io/blog/2014/05/15/css-property-pointer-events/</loc>
+        <lastmod>2014-05-15T20:44:45+08:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://weichienhung.github.io/blog/2014/05/15/invoke-route-from-controller-in-emberjs/
+        </loc>
+        <lastmod>2014-05-15T21:09:12+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://weichienhung.github.io/about/</loc>
         <lastmod>2013-10-27T00:12:27+08:00</lastmod>
     </url>
     <url>
         <loc>http://weichienhung.github.io/blog/archives/</loc>
-        <lastmod>2014-05-04T10:32:02+08:00</lastmod>
+        <lastmod>2014-05-15T21:09:12+08:00</lastmod>
     </url>
     <url>
         <loc>http://weichienhung.github.io/blog/categories/</loc>
@@ -216,7 +226,7 @@
     </url>
     <url>
         <loc>http://weichienhung.github.io/</loc>
-        <lastmod>2014-05-04T10:32:02+08:00</lastmod>
+        <lastmod>2014-05-15T21:09:12+08:00</lastmod>
     </url>
     <url>
         <loc>http://weichienhung.github.io/robots.txt</loc>

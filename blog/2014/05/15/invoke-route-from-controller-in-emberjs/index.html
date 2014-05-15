@@ -1,0 +1,228 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Invoke Route from Controller in Emberjs - Practice makes perfect</title>
+	<meta name="author" content="Weichien Hung">
+
+	
+	<meta name="description" content="Emberjs official document doesn&#8217;t describe how to invoke route method/event from controller. Why we need this?
+Some methods(like render, &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Practice makes perfect" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><a class="myheader-avatar" href="/"><img src="/images/samuel.jpg"></a>
+<div class="myheader-slogan">
+<h1><a href="/">Practice makes perfect</a></h1>
+<h2>...</h2>
+</div>
+<nav id="main-nav"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Tags</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a id="menu-btn" class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<!-- <li><a href="/">Blog</a></li> -->
+	<li><a href="/about">About</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories">Tags</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:weichienhung.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		<a class="facebook" href="http://www.facebook.com/weichien.hung" title="Facebook">Facebook</a>
+		
+		
+		<a class="google" href="https://plus.google.com/113676445086645352045?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/HungWeichien" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/weichienhung" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		<!-- 
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		 -->
+    
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:weichienhung.github.io">
+	</form>
+</nav>
+
+</header>
+<!-- 	
+		
+	 -->
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Invoke Route From Controller in Emberjs</h2>
+	<div class="entry-content"><p>Emberjs official document doesn&#8217;t describe how to invoke route method/event from controller. Why we need this?<br/>
+Some methods(like <code>render</code>,<code>controllerFor</code>) only exist in Route scope.</p>
+
+<figure class='code'><figcaption><span>PostRoute</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">PostRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">events</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">showWarn</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;warn&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;outlet&quot;</span><span class="o">:</span> <span class="s2">&quot;msgView&quot;</span><span class="p">,</span> <span class="s2">&quot;into&quot;</span><span class="o">:</span> <span class="s2">&quot;post&quot;</span> <span class="p">})</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Use <code>this.get('target').send</code> to trigger Route event.</p>
+
+<figure class='code'><figcaption><span>PostController</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">PostController</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">actions</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">showMessage</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">//some process here</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">need_render</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">).</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;showWarn&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-15T20:47:00+08:00" pubdate data-updated="true">May 15<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/emberjs/'>emberjs</a>
+
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    Weichien Hung
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $(document).ready(function(){
+    $('.fancybox').fancybox();
+  })
+})(jQuery);
+</script> 
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'weichienhung';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2014/05/15/invoke-route-from-controller-in-emberjs/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2014/05/15/invoke-route-from-controller-in-emberjs/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

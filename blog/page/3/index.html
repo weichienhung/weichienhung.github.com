@@ -7,7 +7,8 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="Continue ActionSupport useful record Extensions to Numeric Defined in active_support/core_ext/numeric/bytes.rb. Bytes All number respond to these &hellip;">
+	<meta name="description" content="Async Routing Reference to ember guide.
+If you want to make sure model is ready before entering the target route. You could use async routing. How? &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +91,213 @@
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/09/22/async-in-emberjs/">
+		
+			Async in Emberjs</a>
+	</h2>
+	<div class="entry-content">
+		<h2>Async Routing</h2>
+
+<p>Reference to <a href="http://emberjs.com/guides/routing/asynchronous-routing/">ember guide</a>.<br/>
+If you want to make sure model is ready before entering the target route. You could use async routing. How?<br/>
+Make your model as Promise object in route&#8217;s model function.
+For example: In year route i return a model that comes from <code>ModelMgr.listMonth(params.year_id)</code>.
+Because model is Promise object, i add a <code>then</code> method to set id attribute to model(resolve will be model here)</p>
+
+<figure class='code'><figcaption><span>YearRoute</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">model: </span><span class="nf">(params) -&gt;</span>
+</span><span class='line'>  <span class="nv">model = </span><span class="nx">ModelMgr</span><span class="p">.</span><span class="nx">listMonth</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">year_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">model</span><span class="p">.</span><span class="nx">then</span> <span class="nf">(resolve, reject)-&gt;</span>
+</span><span class='line'>      <span class="nx">resolve</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">year_id</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">model</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In <code>ModelMgr.listMonth</code> method, use <code>Ember.RSVP.Promise</code> to wrap your function. Because i don&#8217;t return anything in the last line of function.
+CoffeeScript will return the promise object automatically. <code>months</code> will be the real model object.</p>
+
+<figure class='code'><figcaption><span>ModelMgr</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">listMonth: </span><span class="nf">(year) -&gt;</span>
+</span><span class='line'>  <span class="nv">months = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">ArrayProxy</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span><span class="nx">content</span><span class="o">:</span><span class="p">[]})</span>
+</span><span class='line'>  <span class="k">new</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">RSVP</span><span class="p">.</span><span class="nx">Promise</span> <span class="nf">(resolve) -&gt;</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span> <span class="s">&#39;/api/list&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">type: </span><span class="s">&#39;GET&#39;</span>
+</span><span class='line'>    <span class="nv">dataType: </span><span class="s">&#39;json&#39;</span>
+</span><span class='line'>    <span class="nv">data: </span><span class="s">&#39;y=&#39;</span><span class="o">+</span><span class="nx">year</span>
+</span><span class='line'>    <span class="nv">success: </span><span class="nf">(data, textStatus, jqXHR) -&gt;</span>
+</span><span class='line'>      <span class="k">for</span> <span class="nx">raw</span> <span class="k">in</span> <span class="nx">data</span>
+</span><span class='line'>        <span class="nx">months</span><span class="p">.</span><span class="nx">addObject</span> <span class="nx">raw</span>
+</span><span class='line'>      <span class="nx">months</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;isReady&#39;</span><span class="p">,</span> <span class="kc">true</span>
+</span><span class='line'>      <span class="nx">resolve</span><span class="p">(</span><span class="nx">months</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Wait multiple function call ready</h2>
+
+<p>Sometimes you will use 3rd party library and it requires element existed in the DOM tree.
+For example: I use highchartJS to draw diagram.<br/>
+In the route it queries two models to finish the whole scenarios.
+<code>model</code> is the result from <code>ModelMgr.listMonth</code> and <code>modelForTrend</code> is the result from <code>ModelMgr.queryTrend</code>.
+The models all have attributes called <code>isReady</code> with false default. After <code>ModelMgr</code> get the data, it will set to true.</p>
+
+<figure class='code'><figcaption><span>SummaryRoute</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'>  <span class="nv">model: </span><span class="nf">(params)-&gt;</span>
+</span><span class='line'>    <span class="nv">model = </span><span class="nx">ModelMgr</span><span class="p">.</span><span class="nx">listMonth</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">year_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="nv">model.year = </span><span class="nx">params</span><span class="p">.</span><span class="nx">year_id</span> <span class="c1">#For queryTrend needs year as parameter</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">model</span>
+</span><span class='line'>  <span class="nv">setupController: </span><span class="nf">(controller, model)-&gt;</span>
+</span><span class='line'>    <span class="nv">modelForTrend = </span><span class="nx">ModelMgr</span><span class="p">.</span><span class="nx">queryTrend</span><span class="p">(</span><span class="nx">model</span><span class="p">.</span><span class="nx">year</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;model&#39;</span><span class="p">,</span> <span class="nx">model</span>
+</span><span class='line'>    <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;modelForTrend&#39;</span><span class="p">,</span> <span class="nx">modelForTrend</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We have two attribute bindings to model&#8217;s attributes in controller.</p>
+
+<figure class='code'><figcaption><span>SummaryController</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">SummaryController = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">ObjectController</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">dataReadyBinding: </span><span class="s">&#39;model.isReady&#39;</span>
+</span><span class='line'>  <span class="nv">trendDataReadyBinding: </span><span class="s">&#39;modelForTrend.isReady&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create a method to observe all attributes we care about. View shouldn&#8217;t connect to Model directly.
+So i make <code>drawLineChart</code> method to observe controller&#8217;s attribute.</p>
+
+<figure class='code'><figcaption><span>SummaryView</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">SummaryView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">elementReady: </span><span class="kc">false</span>
+</span><span class='line'>  <span class="nv">drawLineChart: </span><span class="p">(</span> <span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;controller.dataReady&#39;</span><span class="p">)</span> <span class="o">and</span> <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;controller.trendDataReady&#39;</span><span class="p">)</span> <span class="o">and</span> <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;elementReady&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="nv">content = </span><span class="nx">@get</span> <span class="s">&#39;controller.model.content&#39;</span> <span class="c1"># content is ready</span>
+</span><span class='line'>      <span class="nv">contentForTrend = </span><span class="nx">@get</span> <span class="s">&#39;controller.modelForTrend.content&#39;</span> <span class="c1"># contentForTrend is ready</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#myTrend&#39;</span><span class="p">).</span><span class="nx">highcharts</span><span class="p">(</span> <span class="p">...</span> <span class="p">)</span> <span class="c1"># element is ready.</span>
+</span><span class='line'>      <span class="c1"># do something here...</span>
+</span><span class='line'>  <span class="p">).</span><span class="nx">observes</span><span class="p">(</span><span class="s">&#39;controller.dataReady&#39;</span><span class="p">,</span> <span class="s">&#39;elementReady&#39;</span><span class="p">,</span> <span class="s">&#39;controller.trendDataReady&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nv">didInsertElement: </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="nx">@set</span> <span class="s">&#39;elementReady&#39;</span><span class="p">,</span> <span class="kc">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-22T17:40:00+08:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/emberjs/'>emberjs</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2013/09/22/async-in-emberjs/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/09/22/use-highchartjs-to-visual/">
+		
+			Use HighchartJS to Visual Data</a>
+	</h2>
+	<div class="entry-content">
+		<p>I just push a new project to <a href="https://github.com/weichienhung/money">github</a> and <a href="http://weichien-money.herokuapp.com/">heroku</a>.
+This project is derived from my iOS App <a href="https://itunes.apple.com/tw/app/monny/id590327036?mt=8">Monny</a>.
+The App I used it to record my daily expense. The free version doesn&#8217;t have visual graph to show summary data.
+So i use EmberJS,HighchartJS and Rails to build this simple web app. I always learned new knowledge during coding.</p>
+
+<p>I take few snaphots of this probject.</p>
+
+
+		
+		<a href="/blog/2013/09/22/use-highchartjs-to-visual/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-22T17:16:00+08:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/emberjs/'>emberjs</a>, <a class='category' href='/blog/categories/rails/'>rails</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2013/09/22/use-highchartjs-to-visual/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -595,104 +803,6 @@ Add</p>
 </div>
 	
 	<div class="comments"><a href="/blog/2013/08/19/improve-sublime/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/08/15/rails-on-heroku/">
-		
-			Rails on Heroku</a>
-	</h2>
-	<div class="entry-content">
-		<p>I pushed <a href="https://github.com/weichienhung/bookmarks-rails">bookmarks-rails</a> project to <a href="https://www.heroku.com/">Heroku</a> yesterday.
-Thanks to <a href="http://railsapps.github.io/rails-heroku-tutorial.html">tutorial</a> i don&#8217;t have too many troblem during upload to Heroku.
-Some parts of doc are out of dated and here i write down the steps for reference myself in the future.</p>
-
-
-		
-		<a href="/blog/2013/08/15/rails-on-heroku/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-15T10:39:00+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>rails</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/08/15/rails-on-heroku/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/08/11/rails-practice/">
-		
-			Rails Practice</a>
-	</h2>
-	<div class="entry-content">
-		<p>I push my first rails project <a href="https://github.com/weichienhung/bookmarks-rails">bookmarks-rails</a> to github today. It&#8217;s a very small project for practicing rails framework.
-The web provide user a very simple interface to create a bookmark and basic authentication. I take free time after work to finish this project.
-Thanks to ihower&#8217;s <a href="http://ihower.tw/rails3/index.html">Ruby on Rails實戰聖經</a>,Yangtheman&#8217;s <a href="http://blog.yangtheman.com/2012/02/09/facebook-connect-with-rails-omniauth-devise/">post</a> and <a href="https://www.codeschool.com/">Code school</a>, it helps me a lot.<br/>
-I try skills in this projects<br/>
-1. Twitter Bootstrap 3.0.0.rc1<br/>
-2. devise account system<br/>
-3. omniauth with facebook login<br/>
-4. rails REST<br/>
-5. RSpec<br/>
-6. Capybara</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-11T12:36:00+08:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>rails</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/08/11/rails-practice/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
