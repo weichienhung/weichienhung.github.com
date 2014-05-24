@@ -7,8 +7,8 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="This week i write automatic utility tools for colleague.
-It saves time and reduce trivial works. Learn useful ruby built-in methods. List all under &hellip;">
+	<meta name="description" content="This article is the last one in 2013. In the rails project we use capybara to do UI testing.
+Like click a button/link or fill the form. But i will &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -91,6 +91,86 @@ It saves time and reduce trivial works. Learn useful ruby built-in methods. List
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/12/28/ui-automation/">
+		
+			UI Automation</a>
+	</h2>
+	<div class="entry-content">
+		<p>This article is the last one in 2013. In the rails project we use capybara to do UI testing.
+Like click a button/link or fill the form. But i will show how to use capybara without rails in UI automation today.</p>
+
+<p>Sometimes we have to repeat trivial works and these require user to interactive with browser.
+For instance, upload file to server or input necessary data.</p>
+
+<p>Install below gems and Firefox</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem install capybara
+</span><span class='line'>gem install selenium-webdriver
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In orer to use capybara without rails. You need to require <code>capybara</code> manually.
+In default capybara will launch rack server, change <code>run_server</code> to <code>false</code>.
+Because we assume your server is running. Use <code>selenium</code> as <code>driver</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;capybara&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;capybara/dsl&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Capybara</span><span class="o">.</span><span class="n">run_server</span> <span class="o">=</span> <span class="kp">false</span>
+</span><span class='line'><span class="no">Capybara</span><span class="o">.</span><span class="n">current_driver</span> <span class="o">=</span> <span class="ss">:selenium</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># it will open the browser to 127.0.0.1:8888/admin</span>
+</span><span class='line'><span class="no">Capybara</span><span class="o">.</span><span class="n">app_host</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8888/admin&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+		
+		<a href="/blog/2013/12/28/ui-automation/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-28T15:47:00+08:00" pubdate data-updated="true">Dec 28<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ruby/'>ruby</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2013/12/28/ui-automation/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -684,55 +764,6 @@ I feel whole site becomes beatiful and clear.</p>
 </div>
 	
 	<div class="comments"><a href="/blog/2013/09/28/string-thing-in-ruby/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/09/28/rails-generator-in-gem/">
-		
-			Rails Generator and Gem</a>
-	</h2>
-	<div class="entry-content">
-		<p>Recently i created two emberjs-rails projects.(<a href="https://github.com/weichienhung/money">money</a>,<a href="https://github.com/weichienhung/food-ntpc">food-ntpc</a>).
-Everytime i have to create a new rails project and add gems(ember-rails,twitter-bootstrap,thin&#8230;) repeatedly. Based on DRY principle i try to write a gem to solve trivials.<br/>
-Finally, my first gem <a href="http://rubygems.org/gems/railsone">railsone</a> is out and push to RubyGems. There are many Rail proper nouns like Generator,Template,Plugins,Engine.
-In the beginning it&#8217;s very confuse to me but i have solved them luckly :)</p>
-
-<h3>How to make gem and generator?</h3>
-
-
-		
-		<a href="/blog/2013/09/28/rails-generator-in-gem/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-28T20:52:00+08:00" pubdate data-updated="true">Sep 28<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>rails</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/09/28/rails-generator-in-gem/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

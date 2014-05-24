@@ -4,7 +4,7 @@
   <title><![CDATA[Category: css | Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/blog/categories/css/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-05-15T21:10:06+08:00</updated>
+  <updated>2014-05-24T21:00:37+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,32 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Use :target pseudo-selector]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/05/24/use-target-pseudo-selector/"/>
+    <updated>2014-05-24T20:26:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/05/24/use-target-pseudo-selector</id>
+    <content type="html"><![CDATA[<p>Read a <a href="http://nerd.vasilis.nl/using-target-pseudo-selector-alternative-layouts/">article</a> and found
+css selector <code>:target</code> interested. I apply it to my blog.
+Please click the below link to see the difference.<br/>
+<a href="#try--me">To anchor</a></p>
+
+<h3><a name=try--me>Try me</a></h3>
+
+<p>I set the css selector to change the word color to blue when anchor is become targeted.
+``` css sass
+h3 {
+  a:target {</p>
+
+<pre><code>color: blue;
+</code></pre>
+
+<p>  }
+}
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[CSS property pointer-events]]></title>

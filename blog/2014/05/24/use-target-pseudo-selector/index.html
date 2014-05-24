@@ -3,12 +3,14 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Practice makes perfect</title>
+	<title>Use :target pseudo-selector - Practice makes perfect</title>
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="剛安裝完octopress連 category, comment, about都沒有&#8230;XD
-快速網上查找了一下發現了底下這幾篇文章教人怎麼設置，實在是太感謝~~ category comment about a category page 剩下的功能就改天再研究吧 Jan 25th &hellip;">
+	<meta name="description" content="Read a article and found
+css selector :target interested. I apply it to my blog.
+Please click the below link to see the difference.
+To anchor Try me &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,33 +92,30 @@
 <!-- 	
 		
 	 -->
-	<div id="content" class="inner">
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Use :target Pseudo-selector</h2>
+	<div class="entry-content"><p>Read a <a href="http://nerd.vasilis.nl/using-target-pseudo-selector-alternative-layouts/">article</a> and found
+css selector <code>:target</code> interested. I apply it to my blog.
+Please click the below link to see the difference.<br/>
+<a href="#try--me">To anchor</a></p>
 
+<h3><a name=try--me>Try me</a></h3>
 
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/">
-		
-			前人種樹後人乘涼</a>
-	</h2>
-	<div class="entry-content">
-		<p>
-剛安裝完octopress連 category, comment, about都沒有&#8230;XD</br>
-快速網上查找了一下發現了底下這幾篇文章教人怎麼設置，實在是太感謝~~</br>
-<ul>
-    <li><a href="http://gibuloto.com/blog/octopress-categories-tag-cloud/">category</a></li>
-    <li><a href="http://blog.rx836.tw/blog/octopress-notes-1/">comment</a></li>
-    <li><a href="http://gangmax.me/blog/2012/05/04/add-about-page-in-octopress/">about</a></li>
-  <li><a href="http://vigodome.com/blog/2011/12/22/show-categories-and-post-count-in-octopress/">a category page</a></li>
-</ul>
-剩下的功能就改天再研究吧
-</p>
+<p>I set the css selector to change the word color to blue when anchor is become targeted.</p>
 
+<figure class='code'><figcaption><span>sass</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nt">h3</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">a</span><span class="o">:</span><span class="n">target</span> <span class="err">{</span>
+</span><span class='line'>    <span class="k">color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="err">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-		
-		
-	</div>
+</div>
 
 
 <div class="meta">
@@ -132,78 +131,42 @@
   
 
 
-<time datetime="2013-01-25T21:57:00+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time></div>
+<time datetime="2014-05-24T20:26:00+08:00" pubdate data-updated="true">May 24<span>th</span>, 2014</time></div>
 	<div class="tags">
 
 
-	<a class='category' href='/blog/categories/octopress/'>octopress</a>
+	<a class='category' href='/blog/categories/css/'>css</a>
 
 
 </div>
 	
-	<div class="comments"><a href="/blog/2013/01/25/qian-ren-zhong-shu-hou-ren-cheng-liang/#disqus_thread">Comments</a></div>
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
 		
-		<a href="/blog/2013/01/25/first/">
 		
-			First Post</a>
-	</h2>
-	<div class="entry-content">
-		<p>
-自從N年前Microsoft的Myspace掛點後就不再寫blog了<br/>
-今天忽然一時興趣就簡單找了一下快速弄blog的solution<br/>
-找到了github + octopress,使用起來實在是相當方便，快速，免費！<br/>
-以後就在上面寫點東西囉<br/>
-</p>
-
-
-
-
+		<a class="addthis_button_tweet"></a>
+		
+		
+		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
 		
 		
 	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-25T20:42:00+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/other/'>other</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/01/25/first/#disqus_thread">Comments</a></div>
 	
 </div>
-</article>
 
-<nav id="pagenavi">
-    
-        <a href="/blog/page/5/" class="prev">New</a>
-    
-    
-    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
-</nav></div>
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
 	<footer id="footer" class="inner">Copyright &copy; 2014
 
     Weichien Hung
@@ -224,7 +187,10 @@
       var disqus_shortname = 'weichienhung';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2014/05/24/use-target-pseudo-selector/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2014/05/24/use-target-pseudo-selector/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

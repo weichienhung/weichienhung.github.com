@@ -7,9 +7,7 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="I pushed bookmarks-rails project to Heroku yesterday.
-Thanks to tutorial i don&#8217;t have too many troblem during upload to Heroku.
-Some parts of &hellip;">
+	<meta name="description" content="I install new Color Schemes,Theme,package to sublime and make it&#8217;s look and feel better. Here is the list i have added. 1.indent Guide Make &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -92,6 +90,87 @@ Some parts of &hellip;">
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/08/19/improve-sublime/">
+		
+			Improve Sublime</a>
+	</h2>
+	<div class="entry-content">
+		<p>I install new Color Schemes,Theme,package to sublime and make it&#8217;s look and feel better. Here is the list i have added.</p>
+
+<h3>1.indent Guide</h3>
+
+<p>Make your current indent with different color. Open <code>Preferences</code> > <code>Settings - Default</code> and add <code>draw_active</code> to <code>indent_guide_options</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">...</span>
+</span><span class='line'><span class="s2">&quot;indent_guide_options&quot;</span><span class="err">:</span> <span class="p">[</span><span class="s2">&quot;draw_normal&quot;</span><span class="p">,</span><span class="s2">&quot;draw_active&quot;</span><span class="p">]</span><span class="err">,</span>
+</span><span class='line'><span class="err">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You could change the color of draw_active. Open your current color scheme setting file.
+Add</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;key&gt;</span>settings<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>    ...
+</span><span class='line'>    ...
+</span><span class='line'>    <span class="nt">&lt;key&gt;</span>activeGuide<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;string&gt;</span>#CED418<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dict&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dict&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+		
+		<a href="/blog/2013/08/19/improve-sublime/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-19T23:16:00+08:00" pubdate data-updated="true">Aug 19<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/other/'>other</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2013/08/19/improve-sublime/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -572,73 +651,6 @@ Block complete! Back in the method.
 </div>
 	
 	<div class="comments"><a href="/blog/2013/03/02/ruby-is-deligight/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/03/01/ruby-study/">
-		
-			Ruby Study</a>
-	</h2>
-	<div class="entry-content">
-		<p>最近都在看CSS沒什麼時間繼續看Ruby,今天上codecademy練習ruby。
-在這裡紀錄一下之前沒看過的語法。</p>
-
-<h3>Multiple comments</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="cm">=begin</span>
-</span><span class='line'><span class="cm">this is comment,</span>
-</span><span class='line'><span class="cm">i am comment too.</span>
-</span><span class='line'><span class="cm">=end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Get input from console</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">print</span> <span class="s2">&quot;Integer please: &quot;</span>
-</span><span class='line'><span class="n">user_num</span> <span class="o">=</span> <span class="nb">Integer</span><span class="p">(</span><span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-		
-		<a href="/blog/2013/03/01/ruby-study/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-01T23:39:00+08:00" pubdate data-updated="true">Mar 1<span>st</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/ruby/'>ruby</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/03/01/ruby-study/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
