@@ -7,7 +7,8 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="I install new Color Schemes,Theme,package to sublime and make it&#8217;s look and feel better. Here is the list i have added. 1.indent Guide Make &hellip;">
+	<meta name="description" content="I pushed two project(rails101-groupme,project101)to github yesterday.
+I bought the ebook rails101 and make rails101-groupme project by follow &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +91,59 @@
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/08/25/rails-and-ember-study/">
+		
+			Rails and Ember Study</a>
+	</h2>
+	<div class="entry-content">
+		<p>I pushed two project(<a href="https://github.com/weichienhung/rails101_groupme">rails101-groupme</a>,<a href="https://github.com/weichienhung/project101">project101</a>)to github yesterday.
+I bought the ebook <a href="http://rails-101.logdown.com/">rails101</a> and make rails101-groupme project by follow instructions of book.
+Besides i add some features into rails101-groupme.<br/>
+1.Every user could reply the post<br/>
+2.Rich text editor, CKeditor</p>
+
+<p><a href="https://github.com/weichienhung/project101">project101</a> is the old project i practiced emberjs. It retrieves data from <a href="http://data.taipei.gov.tw/">open data Taipei</a> and show on table.
+This project was made because inspired by yunglinho&#8217;s <a href="http://blog.yunglinho.com/blog/2011/11/15/">post</a>. I study google map API and add into it recently.
+Most of locations could be show on google map. Somes are not because can&#8217;t be geocode to <a href="https://developers.google.com/maps/documentation/javascript/reference#LatLng">LatLng</a>.
+There&#8217;s a disadvantage here. Geocode needs to send requests to google but google will block it if you use API frequently. Implement it on clide side is not a good idea.
+I am planing to have a new project that use Rails and Emberjs. I could add my json API and store LatLng in database to prevent too many requests to google.</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-25T07:13:00+08:00" pubdate data-updated="true">Aug 25<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/emberjs/'>emberjs</a>, <a class='category' href='/blog/categories/rails/'>rails</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2013/08/25/rails-and-ember-study/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -554,103 +608,6 @@ After this I decide to write the post in English from now.</p>
 </div>
 	
 	<div class="comments"><a href="/blog/2013/07/07/hello-again/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/03/02/ruby-is-deligight/">
-		
-			Ruby Is Elegance</a>
-	</h2>
-	<div class="entry-content">
-		<p>今天持續Ruby study,紀錄一下學習到的東西</p>
-
-<h3>Yield</h3>
-
-<p>讓自定義的method可以接受block, 在yield之後的code會等block內容跑完才接著跑</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">block_test</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;We&#39;re in the method!&quot;</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Yielding to the block...&quot;</span>
-</span><span class='line'>  <span class="k">yield</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;We&#39;re back in the method!&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">block_test</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;&gt;&gt;&gt; We&#39;re in the block!&quot;</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">#you can pass parameter too</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">yield_name</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;In the method! Let&#39;s yield.&quot;</span>
-</span><span class='line'>  <span class="k">yield</span> <span class="nb">name</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Block complete! Back in the method.&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">yield_name</span><span class="p">(</span><span class="s2">&quot;samuel&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;My name is </span><span class="si">#{</span><span class="n">a</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The output is</p>
-
-<pre><code>We're in the method!
-Yielding to the block...
-&gt;&gt;&gt; We're in the block!
-We're back in the method!
-
-In the method! Let's yield.
-My name is samuel.
-Block complete! Back in the method.
-</code></pre>
-
-
-		
-		<a href="/blog/2013/03/02/ruby-is-deligight/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-02T14:08:00+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/ruby/'>ruby</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/03/02/ruby-is-deligight/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

@@ -4,7 +4,7 @@
   <title><![CDATA[Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-05-24T21:00:37+08:00</updated>
+  <updated>2014-06-02T12:11:31+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[convert file format by cloudconvert]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/06/02/convert-file-format-by-cloudconvert/"/>
+    <updated>2014-06-02T11:09:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/06/02/convert-file-format-by-cloudconvert</id>
+    <content type="html"><![CDATA[<p>前陣子無意間看到<a href="https://cloudconvert.org/">cloudconvert</a>這個beta service有提供API讓開發者
+進行線上的轉檔並且支持AWS S3。過去常常需要轉檔時才在找有沒有軟體或線上服務，想想這次索性自己開發
+一個簡單的web site然後使用別人的API來進行轉檔工作。<br/>
+我已經在Github上開了一個project <a href="https://github.com/weichienhung/myconverter">myconverter</a>
+並且也放上Heroku <a href="http://weichien-myconverter.herokuapp.com/">weichien-myconverter</a>。<br/>
+一開始我使用<code>aws-s3</code>這個gem來做S3的操作，但不知道為什麼在放上heroku後它卻無法使用。只好緊急改
+回用<code>aws-sdk</code>。</p>
+
+<p>在實作過程中的一些學習<br/>
+1. 不要隨意操作Tempfile. 本來是想要在不同的controller之間操作的User upload的Tempfile. 但查了<a href="http://stackoverflow.com/questions/20248520/how-to-persist-a-tempfile-between-two-actions">SO</a>得到的建議是不要，最好在第一個接到request的那個controller就把Tempfile先寫進一個storage.<br/>
+2. ActiveSupport Notification的使用. <a href="https://speakerdeck.com/nextmat/digging-deep-with-activesupportnotifications">Reference</a><br/>
+3. 直接下載在S3上的檔案. <a href="http://stackoverflow.com/questions/12279056/rails-allow-download-of-files-stored-on-s3-without-showing-the-actual-s3-url-to">Reference</a><br/>
+4. gem &#8216;browserlog&#8217; <a href="https://github.com/dieb/browserlog">github link</a> 直接在browser上看log，對開發上很有幫助。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Use :target pseudo-selector]]></title>
@@ -4136,86 +4157,6 @@ I also do a little modification. like<br/>
 3. Add <em>About</em> page and remove <em>Blog</em> page in the navigation header.<br/>
 4. Modify CSS to fit mobile browing.<br/>
 I feel whole site becomes beatiful and clear.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[String things in ruby]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/09/28/string-thing-in-ruby/"/>
-    <updated>2013-09-28T22:21:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/09/28/string-thing-in-ruby</id>
-    <content type="html"><![CDATA[<p>String alternatives in ruby</p>
-
-<h3>%Q</h3>
-
-<p>Alternative for double-quoted strings. Below are equivalent</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">name_of_object</span> <span class="o">=</span> <span class="s2">&quot;John&quot;</span>
-</span><span class='line'><span class="nb">puts</span> <span class="sx">%Q(Hello World </span><span class="si">#{</span><span class="n">name_of_object</span><span class="si">}</span><span class="sx">)</span>
-</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Hello World John&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You could replace <code>(</code> and <code>)</code> with non-alphanumeric characters.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="sx">%Q!Hello World!</span>
-</span><span class='line'><span class="nb">puts</span> <span class="sx">%Q[Hello World]</span>
-</span><span class='line'><span class="nb">puts</span> <span class="sx">%Q+Hello World+</span>
-</span><span class='line'><span class="nb">puts</span> <span class="sx">%/Hello World/</span> <span class="c1"># you can use also.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<!-- more -->
-
-
-<h3>%q</h3>
-
-<p>Alternative for single-quoted strings. But it can&#8217;t do expression substitution</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="sx">%q(Hello World #{name_of_object})</span> <span class="c1"># output: Hello World #{name_of_object}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>%W</h3>
-
-<p>Used for double-quoted array.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">world</span> <span class="o">=</span> <span class="s2">&quot;World&quot;</span>
-</span><span class='line'><span class="sx">%W(Hello </span><span class="si">#{</span><span class="n">world</span><span class="si">}</span><span class="sx"> John\ Smile)</span> <span class="c1"># output: [&quot;Hello&quot;, &quot;World&quot;, &quot;John Smile&quot;]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>%w</h3>
-
-<p>Used for single-quoted array. No expression substitution</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w(Hello #{world} Good)</span> <span class="c1"># output: [&quot;Hello&quot;, &quot;#{world}&quot;, &quot;Good&quot;]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>%s</h3>
-
-<p>Used for symbols. No expression substitution.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%s(foo)</span> <span class="c1"># output: :foo</span>
-</span><span class='line'><span class="sx">%s(foo bar)</span> <span class="c1"># output: :&quot;foo bar&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   

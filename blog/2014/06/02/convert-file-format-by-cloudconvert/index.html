@@ -3,11 +3,13 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>categories - Practice makes perfect</title>
+	<title>convert file format by cloudconvert - Practice makes perfect</title>
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content=" Other [ 5 ] Octopress [ 7 ] Emberjs [ 13 ] Ruby [ 8 ] Linux [ 3 ] Css [ 4 ] Rails [ 14 ] Coffeescript [ 2 ] Javascript [ 1 ] ">
+	<meta name="description" content="前陣子無意間看到cloudconvert這個beta service有提供API讓開發者
+進行線上的轉檔並且支持AWS S3。過去常常需要轉檔時才在找有沒有軟體或線上服務，想想這次索性自己開發
+一個簡單的web site然後使用別人的API來進行轉檔工作。 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -89,32 +91,48 @@
 <!-- 	
 		
 	 -->
-	<div id="content" class="inner"><article class="page">
-    
-    <h1 class="title">Categories</h1>
-    
-    <div class="entry-content"><ul class="category-list">
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Convert File Format by Cloudconvert</h2>
+	<div class="entry-content"><p>前陣子無意間看到<a href="https://cloudconvert.org/">cloudconvert</a>這個beta service有提供API讓開發者
+進行線上的轉檔並且支持AWS S3。過去常常需要轉檔時才在找有沒有軟體或線上服務，想想這次索性自己開發
+一個簡單的web site然後使用別人的API來進行轉檔工作。<br/>
+我已經在Github上開了一個project <a href="https://github.com/weichienhung/myconverter">myconverter</a>
+並且也放上Heroku <a href="http://weichien-myconverter.herokuapp.com/">weichien-myconverter</a>。<br/>
+一開始我使用<code>aws-s3</code>這個gem來做S3的操作，但不知道為什麼在放上heroku後它卻無法使用。只好緊急改
+回用<code>aws-sdk</code>。</p>
 
-    <li><a href="/blog/categories/other/">Other</a> [ 5 ]</li>
+<p>在實作過程中的一些學習<br/>
+1. 不要隨意操作Tempfile. 本來是想要在不同的controller之間操作的User upload的Tempfile. 但查了<a href="http://stackoverflow.com/questions/20248520/how-to-persist-a-tempfile-between-two-actions">SO</a>得到的建議是不要，最好在第一個接到request的那個controller就把Tempfile先寫進一個storage.<br/>
+2. ActiveSupport Notification的使用. <a href="https://speakerdeck.com/nextmat/digging-deep-with-activesupportnotifications">Reference</a><br/>
+3. 直接下載在S3上的檔案. <a href="http://stackoverflow.com/questions/12279056/rails-allow-download-of-files-stored-on-s3-without-showing-the-actual-s3-url-to">Reference</a><br/>
+4. gem &#8216;browserlog&#8217; <a href="https://github.com/dieb/browserlog">github link</a> 直接在browser上看log，對開發上很有幫助。</p>
+</div>
 
-    <li><a href="/blog/categories/octopress/">Octopress</a> [ 7 ]</li>
 
-    <li><a href="/blog/categories/emberjs/">Emberjs</a> [ 13 ]</li>
+<div class="meta">
+	<div class="date">
 
-    <li><a href="/blog/categories/ruby/">Ruby</a> [ 8 ]</li>
 
-    <li><a href="/blog/categories/linux/">Linux</a> [ 3 ]</li>
 
-    <li><a href="/blog/categories/css/">Css</a> [ 4 ]</li>
 
-    <li><a href="/blog/categories/rails/">Rails</a> [ 14 ]</li>
 
-    <li><a href="/blog/categories/coffeescript/">Coffeescript</a> [ 2 ]</li>
 
-    <li><a href="/blog/categories/javascript/">Javascript</a> [ 1 ]</li>
 
-</ul>
 
+  
+
+
+<time datetime="2014-06-02T11:09:00+08:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/rails/'>rails</a>
+
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
 </div>
 </article>
 
@@ -134,6 +152,11 @@
 
 
 
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
 </div>
 	<footer id="footer" class="inner">Copyright &copy; 2014
 
@@ -156,8 +179,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://weichienhung.github.io/blog/categories/index.html';
-        var disqus_url = 'http://weichienhung.github.io/blog/categories/index.html';
+        var disqus_identifier = 'http://weichienhung.github.io/blog/2014/06/02/convert-file-format-by-cloudconvert/';
+        var disqus_url = 'http://weichienhung.github.io/blog/2014/06/02/convert-file-format-by-cloudconvert/';
         var disqus_script = 'embed.js';
       
     (function () {

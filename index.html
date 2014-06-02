@@ -7,10 +7,9 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="Read a article and found
-css selector :target interested. I apply it to my blog.
-Please click the below link to see the difference.
-To anchor Try me &hellip;">
+	<meta name="description" content="前陣子無意間看到cloudconvert這個beta service有提供API讓開發者
+進行線上的轉檔並且支持AWS S3。過去常常需要轉檔時才在找有沒有軟體或線上服務，想想這次索性自己開發
+一個簡單的web site然後使用別人的API來進行轉檔工作。 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +92,61 @@ To anchor Try me &hellip;">
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/06/02/convert-file-format-by-cloudconvert/">
+		
+			Convert File Format by Cloudconvert</a>
+	</h2>
+	<div class="entry-content">
+		<p>前陣子無意間看到<a href="https://cloudconvert.org/">cloudconvert</a>這個beta service有提供API讓開發者
+進行線上的轉檔並且支持AWS S3。過去常常需要轉檔時才在找有沒有軟體或線上服務，想想這次索性自己開發
+一個簡單的web site然後使用別人的API來進行轉檔工作。<br/>
+我已經在Github上開了一個project <a href="https://github.com/weichienhung/myconverter">myconverter</a>
+並且也放上Heroku <a href="http://weichien-myconverter.herokuapp.com/">weichien-myconverter</a>。<br/>
+一開始我使用<code>aws-s3</code>這個gem來做S3的操作，但不知道為什麼在放上heroku後它卻無法使用。只好緊急改
+回用<code>aws-sdk</code>。</p>
+
+<p>在實作過程中的一些學習<br/>
+1. 不要隨意操作Tempfile. 本來是想要在不同的controller之間操作的User upload的Tempfile. 但查了<a href="http://stackoverflow.com/questions/20248520/how-to-persist-a-tempfile-between-two-actions">SO</a>得到的建議是不要，最好在第一個接到request的那個controller就把Tempfile先寫進一個storage.<br/>
+2. ActiveSupport Notification的使用. <a href="https://speakerdeck.com/nextmat/digging-deep-with-activesupportnotifications">Reference</a><br/>
+3. 直接下載在S3上的檔案. <a href="http://stackoverflow.com/questions/12279056/rails-allow-download-of-files-stored-on-s3-without-showing-the-actual-s3-url-to">Reference</a><br/>
+4. gem &#8216;browserlog&#8217; <a href="https://github.com/dieb/browserlog">github link</a> 直接在browser上看log，對開發上很有幫助。</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-02T11:09:00+08:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/rails/'>rails</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/06/02/convert-file-format-by-cloudconvert/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -2146,106 +2200,6 @@ Write down the useful nginx configuration examples here.</p>
 </div>
 	
 	<div class="comments"><a href="/blog/2014/01/25/nginx-configuration/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/01/11/emberjs-data-trying/">
-		
-			Emberjs-data Trying</a>
-	</h2>
-	<div class="entry-content">
-		<p>In my old emberjs project(<a href="https://github.com/weichienhung/money">money</a>,<a href="https://github.com/weichienhung/food-ntpc">food-ntpc</a>)
-i didn&#8217;t use <a href="https://github.com/emberjs/data">ember-data</a> to handle data processing with backend server.
-The ember-data is closed to 1.0.0(now is 1.0.0.beta4) so i give it a try.
-The official document is quite less and some posts in StackOverflow are out of date.
-Checkout their source code is the quickest way to understand how they work and do customized.
-I write down tips here for my reference in the future.</p>
-
-<p>Define your store to use ember-data</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyAdapter = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">RESTAdapter</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">MyApp.Store = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">Store</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>  <span class="nv">revision: </span><span class="mi">11</span>
-</span><span class='line'>  <span class="nv">adapter: </span><span class="nx">MyAdapter</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Assume your have a <code>record</code> object and json format is</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="nt">&quot;record&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;dinner&quot;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Define your model object.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">MyApp.Record = </span><span class="nx">DS</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>  <span class="nv">category_id: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span> <span class="s">&#39;number&#39;</span>
-</span><span class='line'>  <span class="nv">amount: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span> <span class="s">&#39;number&#39;</span>
-</span><span class='line'>  <span class="nv">description: </span><span class="nx">DS</span><span class="p">.</span><span class="nx">attr</span> <span class="s">&#39;string&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-
-		
-		<a href="/blog/2014/01/11/emberjs-data-trying/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-11T11:05:00+08:00" pubdate data-updated="true">Jan 11<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/emberjs/'>emberjs</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2014/01/11/emberjs-data-trying/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
