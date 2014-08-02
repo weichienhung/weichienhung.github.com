@@ -7,9 +7,8 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="In my old emberjs project(money,food-ntpc)
-i didn&#8217;t use ember-data to handle data processing with backend server.
-The ember-data is closed to &hellip;">
+	<meta name="description" content="As a web developer, nginx is often used in deployment architecture.
+Write down the useful nginx configuration examples here. Intall nginx is very &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -92,6 +91,200 @@ The ember-data is closed to &hellip;">
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/25/nginx-configuration/">
+		
+			Nginx Configuration</a>
+	</h2>
+	<div class="entry-content">
+		<p>As a web developer, nginx is often used in deployment architecture.
+Write down the useful nginx configuration examples here.</p>
+
+<p>Intall nginx is very easy and not describe here. Configuration good reference <a href="https://calomel.org/nginx.html">here</a></p>
+
+<p>底下的設定值是用最基本的nginx install, 沒有額外的module</p>
+
+<h3>Basic configuration</h3>
+
+<figure class='code'><figcaption><span>/etc/nginx/nginx.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># 最基本的設定,不詳述</span>
+</span><span class='line'>user  nginx;
+</span><span class='line'>worker_processes  1;
+</span><span class='line'>pid        /var/run/nginx.pid;
+</span><span class='line'>
+</span><span class='line'>events <span class="o">{</span>
+</span><span class='line'>  worker_connections  1024;
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>http <span class="o">{</span>
+</span><span class='line'>  <span class="c"># 載入支援的mime type</span>
+</span><span class='line'>  include       /etc/nginx/mime.types;
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># 當有不認識的mime type時就用octet-stream當一般binary檔案處理</span>
+</span><span class='line'>  default_type  application/octet-stream;
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># 定義自己的log format</span>
+</span><span class='line'>  log_format  main  <span class="s1">&#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;</span>
+</span><span class='line'>                    <span class="s1">&#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;</span>
+</span><span class='line'>                    <span class="s1">&#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;</span>;
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># access log存放位置並且使用 main 這個log format,也就是上述定義的格式</span>
+</span><span class='line'>  <span class="c"># buffer=8k 表示不會一直寫log到disk,等到buffer滿了才寫,避免I/O過重</span>
+</span><span class='line'>  access_log  /var/log/nginx/access.log main <span class="nv">buffer</span><span class="o">=</span>8k;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="c">## Size Limits</span>
+</span><span class='line'>  <span class="c"># 當request body超過這個body size時會被先寫進暫存檔處理</span>
+</span><span class='line'>  client_body_buffer_size   8k;
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># 限制http header的大小</span>
+</span><span class='line'>  client_header_buffer_size 1k;
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># 限制request body大小，超過server會回傳413(Request Entity Too Large)</span>
+</span><span class='line'>  client_max_body_size      1m;
+</span><span class='line'>
+</span><span class='line'>  <span class="c">## Timeouts, do not keep connections open longer then necessary to reduce</span>
+</span><span class='line'>  <span class="c"># 讀取request body timeout時間,超過時間會回傳408(Request time out)</span>
+</span><span class='line'>  client_body_timeout     4s;
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># 讀取request header timeout時間(e.g GET HTTP/1.1),超過時間回傳408(Request time out)</span>
+</span><span class='line'>  client_header_timeout   2s;
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># HTTP 1.1 keepalive的timeout時間, 各家browser各有不同時間.</span>
+</span><span class='line'>  keepalive_timeout       65s;
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># 送資料給client的timeout時間(指得是兩次資料讀取時間), 降低這個值可以避免Slowloris DoS attack</span>
+</span><span class='line'>  send_timeout            5s;
+</span><span class='line'>
+</span><span class='line'>  <span class="c">## General Options</span>
+</span><span class='line'>  <span class="c"># 設定值 &gt;=1 的話讓NGINX支持下載部份檔。 如果你的server有要讓人下載大檔續傳的話..</span>
+</span><span class='line'>  max_ranges 0;
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># keepalive的連線最大數量</span>
+</span><span class='line'>  keepalive_requests        5;
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># Browder cache 失效時間, 負值的話表示不要有任何cache.</span>
+</span><span class='line'>  expires 1d;
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># Request limits</span>
+</span><span class='line'>  <span class="c"># 限制一個IP在1秒內只處理5個requests</span>
+</span><span class='line'>  <span class="c"># myzone是自行定義的名稱,用來存放IP, 2m表示最大不超過2M記憶體</span>
+</span><span class='line'>  limit_req_zone  <span class="nv">$binary_remote_addr</span>  <span class="nv">zone</span><span class="o">=</span>myzone:2m  <span class="nv">rate</span><span class="o">=</span>5r/s;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># 載入其它設定檔</span>
+</span><span class='line'>  include /etc/nginx/conf.d/*.conf;
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>How to reverse proxy?</h3>
+
+
+		
+		<a href="/blog/2014/01/25/nginx-configuration/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-25T10:04:00+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/linux/'>linux</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/01/25/nginx-configuration/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -744,55 +937,6 @@ For example: add width transition to my avatar.</p>
 </div>
 	
 	<div class="comments"><a href="/blog/2013/10/12/animated-on-media-query/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/09/29/apply-octopress-new-theme/">
-		
-			Apply Octopress New Theme</a>
-	</h2>
-	<div class="entry-content">
-		<p>I change octopress theme to <a href="http://zespia.tw/Octopress-Theme-Slash/index_tw.html">slash</a>.
-I also do a little modification. like<br/>
-1. Add avatar<br/>
-2. Show site&#8217;s subtitle<br/>
-3. Add <em>About</em> page and remove <em>Blog</em> page in the navigation header.<br/>
-4. Modify CSS to fit mobile browing.<br/>
-I feel whole site becomes beatiful and clear.</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-29T15:04:00+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/octopress/'>octopress</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/09/29/apply-octopress-new-theme/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

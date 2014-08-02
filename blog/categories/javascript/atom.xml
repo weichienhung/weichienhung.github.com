@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javascript | Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-06-02T12:11:31+08:00</updated>
+  <updated>2014-08-02T11:31:33+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,309 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[js/css build optimize flow]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/08/02/js-slash-css-build-optimize-flow/"/>
+    <updated>2014-08-02T09:58:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/08/02/js-slash-css-build-optimize-flow</id>
+    <content type="html"><![CDATA[<p>I changed the my work frontend module build optimize flow few day ago.
+The original build flow is use <a href="https://code.google.com/p/wro4j/wiki/MavenPlugin">wro4j plugin</a> and my buildhelper. The cons is that there're many trivial steps when adding a new page.
+I decide to update it with new way. I study the <a href="http://yeoman.io">YEOMAN</a> build flow and apply it in my module. The result is good.</p>
+
+<p>YEOMAN uses nodejs and <a href="http://gruntjs.com">Grunt</a> to do optimize.
+But the company module system is using Maven. The first step is to find a maven plugin to run grunt. I choose <a href="https://github.com/allegro/grunt-maven-plugin">grunt-maven-plugin</a> and it's easy to integrate.</p>
+
+<!-- more -->
+
+
+<p>See my snippet code from pom.xml. I copy all files from <code>src/main/webapp</code> to <code>${project.build.directory}/original</code> and run grunt in prepare package phase. I don't want to let grunt access <code>src/main/webapp</code> so the <code>${project.build.directory}/original</code> will be my grunt project source folder.
+``` xml pom.xml
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-resources-plugin</artifactId>
+  <version>2.6</version>
+  <executions></p>
+
+<pre><code>&lt;!-- copy webapp to target folder --&gt;         
+&lt;execution&gt;
+  &lt;id&gt;copy-webapp&lt;/id&gt;
+  &lt;phase&gt;process-resources&lt;/phase&gt;
+  &lt;goals&gt;
+    &lt;goal&gt;copy-resources&lt;/goal&gt;
+  &lt;/goals&gt;
+  &lt;configuration&gt;
+    &lt;outputDirectory&gt;${project.build.directory}/original&lt;/outputDirectory&gt;
+    &lt;resources&gt;          
+      &lt;resource&gt;
+        &lt;directory&gt;src/main/webapp/&lt;/directory&gt;
+      &lt;/resource&gt;
+    &lt;/resources&gt;
+  &lt;/configuration&gt;  
+&lt;/execution&gt;
+</code></pre>
+
+<p>  </executions>
+</plugin></p>
+
+<p><plugin>
+  <groupId>pl.allegro</groupId>
+  <artifactId>grunt-maven-plugin</artifactId>
+  <version>1.2.1</version>
+  <configuration></p>
+
+<pre><code>&lt;showColors&gt;true&lt;/showColors&gt;
+</code></pre>
+
+<p>  </configuration>
+  <executions></p>
+
+<pre><code>&lt;execution&gt;
+  &lt;id&gt;grunt-build&lt;/id&gt;
+  &lt;phase&gt;prepare-package&lt;/phase&gt;
+  &lt;goals&gt;
+    &lt;goal&gt;npm&lt;/goal&gt;
+    &lt;goal&gt;grunt&lt;/goal&gt;
+  &lt;/goals&gt;
+&lt;/execution&gt;
+</code></pre>
+
+<p>  </executions>
+</plugin>
+```</p>
+
+<p>Here i will skip the installation of yeoman. Let's see how yeoman build flow work.
+I set the <code>gamenow.app</code> to <code>target/original</code> that is the folder copy from <code>src/main/webapp</code>. <code>gamenow.dist</code> will be <code>target/storefront</code> and this folder will be packaged to WAR file in maven build.
+``` javascript Gruntfile.js
+module.exports = function (grunt) {
+  // Load grunt tasks automatically
+  require('load-grunt-tasks')(grunt);</p>
+
+<p>  // Time how long tasks take. Can help when optimizing build times
+  require('time-grunt')(grunt);</p>
+
+<p>  grunt.initConfig({</p>
+
+<pre><code>gamenow: {
+  // Configurable paths
+  app: 'target/original',
+  dist: 'target/storefront'
+},
+
+....
+</code></pre>
+
+<p>  });
+<code>
+YEOMAN uses usemin grunt plugin to create concat,minify,rewrite. In `useminPrepare` setting i set the html sources in `&lt;%= gamenow.app %&gt;/*.html`. It means usemin plugin will search all .html files and find the build block description to create configuration automatically. You will see how to set build block description in html later. The `flow.steps` enables us to add/modify step ourselves. Here i add a new step `copy` and it only executes `concat`. The `js` and `css` steps are default.  
+In `usemin` setting i add a `copy` function definition in `blockReplacements`. The function is quite simple. We need to set html and css folders too because usemin plugin needs to find files to modify in these folders.
+</code>
+  useminPrepare: {</p>
+
+<pre><code>options: {
+  dest: '&lt;%= gamenow.dist %&gt;',
+  flow: {
+    steps: {
+      js: ['concat','uglifyjs'],
+      css: ['concat','cssmin'],
+      copy: ['concat']
+    },
+    post: {}
+  }
+},
+html: '&lt;%= gamenow.app %&gt;/*.html'
+</code></pre>
+
+<p>  },</p>
+
+<p>  usemin: {</p>
+
+<pre><code>options: {
+  assetsDirs: ['&lt;%= gamenow.dist %&gt;'],
+  blockReplacements: {
+    copy: function(block) {
+      return '&lt;script src="' + block.dest + '"&gt;&lt;/script&gt;';
+    }
+  }
+},
+html: ['&lt;%= gamenow.dist %&gt;/*.html'],
+</code></pre>
+
+<p>  },
+<code>
+Let's take a look at sample.html. Use `&lt;!-- build:step path --&gt;` to wrap your css. Here the step is `css` and path is `css/all.css`. The usemin plugin will use `concat` to merge all css files to `css/all.css` and `cssmin` plugin to minify it.  
+Use `&lt;!-- build:js path --&gt;` to optimize your JS. The `js` step will do `concat` and `ugilfy` in defult.
+Use `&lt;!-- build:copy --&gt;` to only concat file without ugilfy. Because i want config file could be modified manually. Obfuscated file makes hard to modify.
+</code> html sample.html
+  <!-- build:css css/all.css -->
+  <link rel="stylesheet" href="css/basics/normalize.css"  />
+  <link rel="stylesheet" href="css/desktop/1.css"  />
+  <link rel="stylesheet" href="css/desktop/2.css"  />
+  <!-- endbuild --></p>
+
+<p>  <!-- build:js js/build/vendor.js -->
+  <script src="js/vendor/jquery-1.9.1.min.js"></script>
+  <script src="js/vendor/jquery.scrollTo-1.4.3.1.js"></script>
+  <script src="js/vendor/handlebars-v1.3.0.js"></script>
+  <!-- endbuild --></p>
+
+<p>  <!-- build:copy js/config.js -->
+  <script src="js/settings/config.js"></script>
+  <!-- endbuild -->
+<code>
+If you want to overwrite the default `cssmin` and `concat` settings you could just add the block in config. I overwrite the original concat process function. Because the css url path will be wrong if your source css and merged css are in different folder. See my comment inside function.
+</code> javascript Gruntfile.js
+  cssmin: {</p>
+
+<pre><code>options: {
+  noAdvanced: true
+}
+</code></pre>
+
+<p>  },</p>
+
+<p>  concat: {</p>
+
+<pre><code>options: {
+  separator: '\n',
+  process: function(src, filepath) {
+    var cssPatt = new RegExp('(\/.*\/).*\.css$');
+    var file = cssPatt.exec(filepath);
+
+    if (file) {
+      // rewrite the url in css file.
+      // url(../../img/bluebg.jpg) -&gt; url(../img/bluebg.jpg)
+      // url(../../../img/bluebg2.jpg) -&gt; url(../img/bluebg.2jpg)
+
+      var urlPatt = /url\((\.\.\/){1,}(.*)\)/g;
+      return src.replace(urlPatt, function(match, p1, p2) {
+        var replacedUrl = 'url(../' + p2 + ')';
+        return replacedUrl;
+      });
+    }
+
+    return src;
+  }
+}
+</code></pre>
+
+<p>  }
+```</p>
+
+<p>To prevent browser cache the js/css files need to change file name when the content are different. We use <code>rev</code> plugin to add <code>md5</code> in file name. Don't worry about the filename changed because <code>usemin</code> is smart enough to search files in <code>assetsDirs: ['&lt;%= gamenow.dist %&gt;']</code>.
+``` javascript Gruntfile.js
+  rev: {</p>
+
+<pre><code>dist: {
+  files: {
+    src: [
+      '&lt;%= gamenow.dist %&gt;/js/*.js',
+      '&lt;%= gamenow.dist %&gt;/js/build/*.js',
+      '&lt;%= gamenow.dist %&gt;/css/*.css',
+    ]
+  }
+}
+</code></pre>
+
+<p>  },
+<code>
+In my module i also want to keep the originl .html file for debug. I add a task `debugHtml` to get it. I copy .html files to dist folder with `-dev` filename. Task `nonOptimizeFiles` is to copy the rest files.
+</code>
+  copy: {</p>
+
+<pre><code>filesNeedRewrite: {
+  files: [{
+    expand: true,
+    dot: true,
+    cwd: '&lt;%= gamenow.app %&gt;',
+    dest: '&lt;%= gamenow.dist %&gt;',
+    src: ['*.html']
+  }]
+},
+debugHtml: {
+  files: [{
+    expand: true,
+    src: '&lt;%= gamenow.app %&gt;/*.html',
+    dest: '&lt;%= gamenow.dist %&gt;/',
+    rename: function(dest, src) {
+      //rename *.html to *-dev.html
+      var filename = path.basename(src, '.html');
+      var extname = path.extname(src);
+      return dest + filename + "-dev" + extname;
+    }
+  }]
+},
+nonOptimizeFiles: {
+  files: [{
+    expand: true,
+    dot: true,
+    cwd: '&lt;%= gamenow.app %&gt;',
+    dest: '&lt;%= gamenow.dist %&gt;',
+    src: [
+      '*.{ico,png,xml,jsp,json}',
+      '.htaccess',
+      'WEB-INF/**',
+      'img/**',
+
+      //copy original js,css files for debug
+      'js/*/**',
+      'css/*/**'
+    ]
+  }]
+} 
+</code></pre>
+
+<p>  }
+<code>
+The final optimized sample.html would be like
+</code> html sample.html
+  <link rel="stylesheet" href="css/46d81h87.all.css"  />
+  <script src="js/build/xh64yr8d.vendor.js"></script>
+  <script src="js/2sd4fgcv.config.js"></script>
+```</p>
+
+<p>The grunt build task sequence.
+```
+  grunt.registerTask('build', [</p>
+
+<pre><code>'useminPrepare',
+'concat',
+'cssmin',
+'uglify',
+'copy:filesNeedRewrite',
+'rev',
+'usemin',
+'copy:debugHtml',
+'copy:nonOptimizeFiles'
+</code></pre>
+
+<p>  ]);
+<code>
+My package.json
+</code> json package.json
+{
+  "name": "ugamenow",
+  "version": "0.0.0",
+  "devDependencies": {</p>
+
+<pre><code>"grunt": "~0.4.1",
+"load-grunt-tasks": "~0.2.0",
+"time-grunt": "~0.2.0",
+
+"grunt-contrib-clean": "~0.5.0",
+"grunt-contrib-concat": "~0.3.0",
+"grunt-contrib-cssmin": "~0.10.0",
+"grunt-contrib-copy": "~0.5.0",
+"grunt-contrib-uglify": "~0.2.0",
+"grunt-rev": "~0.1.0",
+"grunt-usemin": "~2.3.0"
+</code></pre>
+
+<p>  }
+}
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ES6 preview]]></title>
