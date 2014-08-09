@@ -4,7 +4,7 @@
   <title><![CDATA[Category: css | Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/blog/categories/css/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-08-02T11:31:33+08:00</updated>
+  <updated>2014-08-10T00:18:26+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,68 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Modal Dialog with only CSS]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/08/09/modal-dialog-with-only-css/"/>
+    <updated>2014-08-09T23:55:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/08/09/modal-dialog-with-only-css</id>
+    <content type="html"><![CDATA[<p>Use CSS to create Modal Dialog. It's fun. <a href="#samplemodal">Click me</a> to see it.</p>
+
+<div id="samplemodal" class="modal-contain">    
+  <div class="modal">        
+    <a href="#">X</a>       
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  </div>
+</div>
+
+
+<p>Put your elements inside <code>div.modal</code>
+``` html</p>
+
+<div id="samplemodal" class="modal-contain">    
+  <div class="modal">        
+    <a href="#">X</a>       
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  </div>
+</div>
+
+
+<p><code>
+Let's see how css work.
+</code> css
+//Hide the modal when nothing happen
+.modal-contain {  <br/>
+  display: none;
+}</p>
+
+<p>//When modal-contain is targeted. Show it
+.modal-contain:target {
+  display: block;  <br/>
+  position: fixed;  <br/>
+  z-index: 10;
+  top: 0;  <br/>
+  left: 0;  <br/>
+  width: 100%;  <br/>
+  height: 100%;  <br/>
+  background: rgba(0,0,0,.75);
+}</p>
+
+<p>//In order to vertical and horizon align
+.modal {  <br/>
+  position: absolute;  <br/>
+  top: 50%;  <br/>
+  left: 0;  <br/>
+  right: 0;  <br/>
+  transform: translateY(-50%); <br/>
+  margin: 0 auto;  <br/>
+  width: 25em;  <br/>
+  padding: 1em;  <br/>
+  background: #fff;
+}
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Use :target pseudo-selector]]></title>

@@ -4,7 +4,7 @@
   <title><![CDATA[Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-08-02T11:31:33+08:00</updated>
+  <updated>2014-08-10T00:18:26+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,103 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Modal Dialog with only CSS]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/08/09/modal-dialog-with-only-css/"/>
+    <updated>2014-08-09T23:55:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/08/09/modal-dialog-with-only-css</id>
+    <content type="html"><![CDATA[<p>Use CSS to create Modal Dialog. It&#8217;s fun. <a href="#samplemodal">Click me</a> to see it.</p>
+
+<div id="samplemodal" class="modal-contain">    
+  <div class="modal">        
+    <a href="#">X</a>       
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  </div>
+</div>
+
+
+<p>Put your elements inside <code>div.modal</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;samplemodal&quot;</span> <span class="na">class=</span><span class="s">&quot;modal-contain&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;modal&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>X<span class="nt">&lt;/a&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Let&#8217;s see how css work.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="o">//</span><span class="nt">Hide</span> <span class="nt">the</span> <span class="nt">modal</span> <span class="nt">when</span> <span class="nt">nothing</span> <span class="nt">happen</span>
+</span><span class='line'><span class="nc">.modal-contain</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">//</span><span class="nt">When</span> <span class="nt">modal-contain</span> <span class="nt">is</span> <span class="nt">targeted</span><span class="o">.</span> <span class="nt">Show</span> <span class="nt">it</span>
+</span><span class='line'><span class="nc">.modal-contain</span><span class="nd">:target</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">position</span><span class="o">:</span> <span class="k">fixed</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">z-index</span><span class="o">:</span> <span class="m">10</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">top</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">100</span><span class="o">%</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">height</span><span class="o">:</span> <span class="m">100</span><span class="o">%</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">background</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">75</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">//</span><span class="nt">In</span> <span class="nt">order</span> <span class="nt">to</span> <span class="nt">vertical</span> <span class="nt">and</span> <span class="nt">horizon</span> <span class="nt">align</span>
+</span><span class='line'><span class="nc">.modal</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">top</span><span class="o">:</span> <span class="m">50</span><span class="o">%</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">transform</span><span class="o">:</span> <span class="n">translateY</span><span class="p">(</span><span class="m">-50</span><span class="o">%</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">25em</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">padding</span><span class="o">:</span> <span class="m">1em</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">background</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[js/css build optimize flow]]></title>
@@ -4580,65 +4677,6 @@ column name is the same with the active record you defined.</p>
 
 
 <p>Yard supports markdown syntax in describe your method. <code>_id_</code> is the italic word in markdown.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[animated on media query]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/10/12/animated-on-media-query/"/>
-    <updated>2013-10-12T14:44:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/10/12/animated-on-media-query</id>
-    <content type="html"><![CDATA[<p>I see a post <a href="http://css-tricks.com/animated-media-queries/?utm_source=dlvr.it&amp;utm_medium=twitter">animated on media query</a> today.
-It&#8217;s very interest to put CSS transition on media query changed. It&#8217;s a simple skill and i just try it on my blog.
-You could resize my blog to check it.<br/>
-For example: add width transition to my avatar.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.myheader-avatar</span> <span class="o">&gt;</span> <span class="nt">img</span><span class="p">{</span>
-</span><span class='line'>  <span class="k">height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-</span><span class='line'>  <span class="o">@</span><span class="n">include</span> <span class="n">high_z_index</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c">/* New line. */</span>
-</span><span class='line'>  <span class="n">transition</span><span class="o">:</span> <span class="k">width</span> <span class="m">1.5s</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@media</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">700px</span><span class="o">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nc">.myheader-avatar</span> <span class="o">&gt;</span> <span class="nt">img</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c">/* When devie max-width under 700px, change width to 0 */</span>
-</span><span class='line'>    <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c">/* transition can&#39;t put on display. So i change it to set width=0 */</span>
-</span><span class='line'>    <span class="c">/* display: none; */</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Originally i use <code>display:none</code> to hide avatar but it doesn&#8217;t work with transition. I use <code>width=0</code> insteadly.</p>
 ]]></content>
   </entry>
   

@@ -7,11 +7,8 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="I change octopress theme to slash.
-I also do a little modification. like
-1. Add avatar
-2. Show site&#8217;s subtitle
-3. Add About page and remove &hellip;">
+	<meta name="description" content="I see a post animated on media query today.
+It&#8217;s very interest to put CSS transition on media query changed. It&#8217;s a simple skill and i &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -94,6 +91,99 @@ I also do a little modification. like
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/10/12/animated-on-media-query/">
+		
+			Animated on Media Query</a>
+	</h2>
+	<div class="entry-content">
+		<p>I see a post <a href="http://css-tricks.com/animated-media-queries/?utm_source=dlvr.it&amp;utm_medium=twitter">animated on media query</a> today.
+It&#8217;s very interest to put CSS transition on media query changed. It&#8217;s a simple skill and i just try it on my blog.
+You could resize my blog to check it.<br/>
+For example: add width transition to my avatar.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.myheader-avatar</span> <span class="o">&gt;</span> <span class="nt">img</span><span class="p">{</span>
+</span><span class='line'>  <span class="k">height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+</span><span class='line'>  <span class="o">@</span><span class="n">include</span> <span class="n">high_z_index</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c">/* New line. */</span>
+</span><span class='line'>  <span class="n">transition</span><span class="o">:</span> <span class="k">width</span> <span class="m">1.5s</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@media</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">700px</span><span class="o">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nc">.myheader-avatar</span> <span class="o">&gt;</span> <span class="nt">img</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c">/* When devie max-width under 700px, change width to 0 */</span>
+</span><span class='line'>    <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c">/* transition can&#39;t put on display. So i change it to set width=0 */</span>
+</span><span class='line'>    <span class="c">/* display: none; */</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Originally i use <code>display:none</code> to hide avatar but it doesn&#8217;t work with transition. I use <code>width=0</code> insteadly.</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-12T14:44:00+08:00" pubdate data-updated="true">Oct 12<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/css/'>css</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2013/10/12/animated-on-media-query/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -686,116 +776,6 @@ During practicing i use Emberjs 1.0.0.rc7. But Emberjs 1.0.0 was released few da
 </div>
 	
 	<div class="comments"><a href="/blog/2013/09/03/first-ember-rails-project/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/09/01/multiple-model-in-a-view/">
-		
-			Multiple Models in a View</a>
-	</h2>
-	<div class="entry-content">
-		<p>How to use multiple models in a view?
-Retrieve another data and set to controller in Route&#8217;s setupController method.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">model: </span><span class="nf">-&gt;</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">Place</span><span class="p">.</span><span class="nx">places</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">setupController: </span><span class="nf">(controller, model) -&gt;</span>
-</span><span class='line'>  <span class="c1">#model is the result of Place.places()</span>
-</span><span class='line'>  <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;content&#39;</span><span class="p">,</span> <span class="nx">model</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">#another data</span>
-</span><span class='line'>  <span class="nv">categorys = </span><span class="nx">Category</span><span class="p">.</span><span class="nx">categorys</span><span class="p">()</span>
-</span><span class='line'>  <span class="nx">controller</span><span class="p">.</span><span class="nx">set</span> <span class="s">&#39;categorys&#39;</span><span class="p">,</span> <span class="nx">categorys</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I create CategoryView and bind data to it in template</p>
-
-<pre>
-&#123;{#each category in categorys}}
-  &#123;{#view CategoryView contentBinding="category"}}
-    &#123;{category.name}}
-  &#123;{/view}}
-&#123;{/each}}
-
-&#123;{#each place in content}}
-  &#123;{place.name}}
-&#123;{/each}}
-</pre>
-
-
-<p>CategoryView code:
-I use classNameBinding to auto update class when status is changed.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">CategoryView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>  <span class="nv">classNameBindings: </span><span class="p">[</span><span class="s">&#39;getClass&#39;</span><span class="p">]</span>
-</span><span class='line'>  <span class="nv">status: </span><span class="kc">true</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">getClass: </span><span class="p">(</span> <span class="nf">-&gt;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">return</span> <span class="s">&quot;btn-info&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="k">return</span> <span class="s">&quot;btn-default&quot;</span>
-</span><span class='line'>  <span class="p">).</span><span class="nx">property</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-01T20:29:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/emberjs/'>emberjs</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/09/01/multiple-model-in-a-view/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

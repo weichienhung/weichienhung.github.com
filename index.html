@@ -7,8 +7,7 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="I changed the my work frontend module build optimize flow few day ago.
-The original build flow is use wro4j plugin and my buildhelper. The cons is &hellip;">
+	<meta name="description" content="Use CSS to create Modal Dialog. It&#8217;s fun. Click me to see it. X Lorem ipsum dolor sit amet, consectetur adipiscing elit. Put your elements &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -91,6 +90,137 @@ The original build flow is use wro4j plugin and my buildhelper. The cons is &hel
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/08/09/modal-dialog-with-only-css/">
+		
+			Modal Dialog With Only CSS</a>
+	</h2>
+	<div class="entry-content">
+		<p>Use CSS to create Modal Dialog. It&#8217;s fun. <a href="#samplemodal">Click me</a> to see it.</p>
+
+<div id="samplemodal" class="modal-contain">    
+  <div class="modal">        
+    <a href="#">X</a>       
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  </div>
+</div>
+
+
+<p>Put your elements inside <code>div.modal</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;samplemodal&quot;</span> <span class="na">class=</span><span class="s">&quot;modal-contain&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;modal&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>X<span class="nt">&lt;/a&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Let&#8217;s see how css work.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="o">//</span><span class="nt">Hide</span> <span class="nt">the</span> <span class="nt">modal</span> <span class="nt">when</span> <span class="nt">nothing</span> <span class="nt">happen</span>
+</span><span class='line'><span class="nc">.modal-contain</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">//</span><span class="nt">When</span> <span class="nt">modal-contain</span> <span class="nt">is</span> <span class="nt">targeted</span><span class="o">.</span> <span class="nt">Show</span> <span class="nt">it</span>
+</span><span class='line'><span class="nc">.modal-contain</span><span class="nd">:target</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">position</span><span class="o">:</span> <span class="k">fixed</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">z-index</span><span class="o">:</span> <span class="m">10</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">top</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">100</span><span class="o">%</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">height</span><span class="o">:</span> <span class="m">100</span><span class="o">%</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">background</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">75</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">//</span><span class="nt">In</span> <span class="nt">order</span> <span class="nt">to</span> <span class="nt">vertical</span> <span class="nt">and</span> <span class="nt">horizon</span> <span class="nt">align</span>
+</span><span class='line'><span class="nc">.modal</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">top</span><span class="o">:</span> <span class="m">50</span><span class="o">%</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">transform</span><span class="o">:</span> <span class="n">translateY</span><span class="p">(</span><span class="m">-50</span><span class="o">%</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">25em</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">padding</span><span class="o">:</span> <span class="m">1em</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">background</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-09T23:55:00+08:00" pubdate data-updated="true">Aug 9<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/css/'>css</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/08/09/modal-dialog-with-only-css/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -1950,110 +2080,6 @@ Use <code>sinon.spy</code> to spy a object/method and check it.</p>
 </div>
 	
 	<div class="comments"><a href="/blog/2014/03/08/unit-testing-in-emberjs/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/02/22/refactor-ruby-code-by-meta-programming/">
-		
-			Refactor Ruby Code by Meta Programming</a>
-	</h2>
-	<div class="entry-content">
-		<p>最近重構了一些自動化部署的程式碼，因為發現程式碼裡面大部份的邏輯是一樣的。
-決定使用meta programming來重構這些程式碼順便學習ruby的meta programming。</p>
-
-<h3>dynamic define method</h3>
-
-<p>看看底下的程式碼，想取得使用者輸入的版號來進行自動部署。</p>
-
-<figure class='code'><figcaption><span>before_refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">get_gc_version_from_user</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the latest gc:&quot;</span>
-</span><span class='line'>    <span class="vi">@gc_version</span> <span class="o">=</span> <span class="n">get_user_input</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">get_gv_version_from_user</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">unless</span> <span class="vi">@config</span><span class="o">[</span><span class="ss">:import_gv</span><span class="o">]</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the latest gv:&quot;</span>
-</span><span class='line'>    <span class="vi">@gv_version</span> <span class="o">=</span> <span class="n">get_user_input</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">get_game_combo_version_from_user</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">unless</span> <span class="vi">@config</span><span class="o">[</span><span class="ss">:import_game_combo</span><span class="o">]</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the latest game combo:&quot;</span>
-</span><span class='line'>    <span class="vi">@game_combo_version</span> <span class="o">=</span> <span class="n">get_user_input</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After refactor, use array to create methods. <code>define_method</code> is used to define new methods dynamically.
-<code>do |argument|</code> means your could pass parameters in. <code>instance_variable_set</code> is used to set a instance varaible</p>
-
-<figure class='code'><figcaption><span>after_refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="o">[</span><span class="s1">&#39;gc&#39;</span><span class="p">,</span><span class="s1">&#39;gv&#39;</span><span class="p">,</span><span class="s1">&#39;game_combo&#39;</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;get_</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version_from_user&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">argument</span><span class="o">|</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">unless</span> <span class="n">argument</span>
-</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the </span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'>      <span class="nb">instance_variable_set</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version&quot;</span><span class="p">,</span> <span class="n">get_user_input</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-		
-		<a href="/blog/2014/02/22/refactor-ruby-code-by-meta-programming/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-22T12:52:00+08:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/ruby/'>ruby</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2014/02/22/refactor-ruby-code-by-meta-programming/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

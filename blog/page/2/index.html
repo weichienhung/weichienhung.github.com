@@ -7,8 +7,8 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="As a web developer, nginx is often used in deployment architecture.
-Write down the useful nginx configuration examples here. Intall nginx is very &hellip;">
+	<meta name="description" content="最近重構了一些自動化部署的程式碼，因為發現程式碼裡面大部份的邏輯是一樣的。
+決定使用meta programming來重構這些程式碼順便學習ruby的meta programming。 dynamic define method 看看底下的程式碼，想取得使用者輸入的版號來進行自動部署。 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -91,6 +91,110 @@ Write down the useful nginx configuration examples here. Intall nginx is very &h
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/02/22/refactor-ruby-code-by-meta-programming/">
+		
+			Refactor Ruby Code by Meta Programming</a>
+	</h2>
+	<div class="entry-content">
+		<p>最近重構了一些自動化部署的程式碼，因為發現程式碼裡面大部份的邏輯是一樣的。
+決定使用meta programming來重構這些程式碼順便學習ruby的meta programming。</p>
+
+<h3>dynamic define method</h3>
+
+<p>看看底下的程式碼，想取得使用者輸入的版號來進行自動部署。</p>
+
+<figure class='code'><figcaption><span>before_refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">get_gc_version_from_user</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the latest gc:&quot;</span>
+</span><span class='line'>    <span class="vi">@gc_version</span> <span class="o">=</span> <span class="n">get_user_input</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">get_gv_version_from_user</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">unless</span> <span class="vi">@config</span><span class="o">[</span><span class="ss">:import_gv</span><span class="o">]</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the latest gv:&quot;</span>
+</span><span class='line'>    <span class="vi">@gv_version</span> <span class="o">=</span> <span class="n">get_user_input</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">get_game_combo_version_from_user</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">unless</span> <span class="vi">@config</span><span class="o">[</span><span class="ss">:import_game_combo</span><span class="o">]</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the latest game combo:&quot;</span>
+</span><span class='line'>    <span class="vi">@game_combo_version</span> <span class="o">=</span> <span class="n">get_user_input</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After refactor, use array to create methods. <code>define_method</code> is used to define new methods dynamically.
+<code>do |argument|</code> means your could pass parameters in. <code>instance_variable_set</code> is used to set a instance varaible</p>
+
+<figure class='code'><figcaption><span>after_refactor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="o">[</span><span class="s1">&#39;gc&#39;</span><span class="p">,</span><span class="s1">&#39;gv&#39;</span><span class="p">,</span><span class="s1">&#39;game_combo&#39;</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;get_</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version_from_user&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">argument</span><span class="o">|</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">unless</span> <span class="n">argument</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Type a version d.d.d or leave blank to get the </span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="nb">instance_variable_set</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">_version&quot;</span><span class="p">,</span> <span class="n">get_user_input</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+		
+		<a href="/blog/2014/02/22/refactor-ruby-code-by-meta-programming/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-22T12:52:00+08:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ruby/'>ruby</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/02/22/refactor-ruby-code-by-meta-programming/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -844,99 +948,6 @@ Add to Gemfile. Suggest to use rspec and factory_gril gems together.</p>
 </div>
 	
 	<div class="comments"><a href="/blog/2013/10/13/testing/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/12/animated-on-media-query/">
-		
-			Animated on Media Query</a>
-	</h2>
-	<div class="entry-content">
-		<p>I see a post <a href="http://css-tricks.com/animated-media-queries/?utm_source=dlvr.it&amp;utm_medium=twitter">animated on media query</a> today.
-It&#8217;s very interest to put CSS transition on media query changed. It&#8217;s a simple skill and i just try it on my blog.
-You could resize my blog to check it.<br/>
-For example: add width transition to my avatar.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.myheader-avatar</span> <span class="o">&gt;</span> <span class="nt">img</span><span class="p">{</span>
-</span><span class='line'>  <span class="k">height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-</span><span class='line'>  <span class="o">@</span><span class="n">include</span> <span class="n">high_z_index</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c">/* New line. */</span>
-</span><span class='line'>  <span class="n">transition</span><span class="o">:</span> <span class="k">width</span> <span class="m">1.5s</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@media</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">700px</span><span class="o">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nc">.myheader-avatar</span> <span class="o">&gt;</span> <span class="nt">img</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c">/* When devie max-width under 700px, change width to 0 */</span>
-</span><span class='line'>    <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c">/* transition can&#39;t put on display. So i change it to set width=0 */</span>
-</span><span class='line'>    <span class="c">/* display: none; */</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Originally i use <code>display:none</code> to hide avatar but it doesn&#8217;t work with transition. I use <code>width=0</code> insteadly.</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-12T14:44:00+08:00" pubdate data-updated="true">Oct 12<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/css/'>css</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/10/12/animated-on-media-query/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
