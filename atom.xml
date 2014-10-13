@@ -4,7 +4,7 @@
   <title><![CDATA[Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-08-10T00:18:26+08:00</updated>
+  <updated>2014-10-13T22:58:40+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,60 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[jsdc_2014]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/10/13/jsdc-2014/"/>
+    <updated>2014-10-13T22:51:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/10/13/jsdc-2014</id>
+    <content type="html"><![CDATA[<p>剛參加完JSDC 2014, 做筆紀</p>
+
+<h3><a href="http://browserify.org/">Browserify</a></h3>
+
+<p>將原本跑在nodejs的javascript code以及dependencies打包後產生可以跑在browser上面的code. 很酷的是主講者還自己做了minecraft的Taipei 101版本.<br/>
+主講者<a href="https://github.com/maxogden">Github link</a></p>
+
+<h3><a href="http://zeromq.org/">ZeroMQ</a></h3>
+
+<p>有兩個主題都跟ZeroMQ有關. 第一天的Casear簡單地介紹了在使用ZeroMQ遇到的一些問題,像是Security, Auth. 並且自己寫了一個ZeroMQ-SOA的module <a href="https://github.com/Casear/zmq-soa">zmq-soa</a><br/>
+第二天的主講者則是介紹了ZeroMQ訊息機制. PUSH/PULL, Pub/Sub. 以及在message queue滿了之後的MUTE機制. 該Block或Drop</p>
+
+<h3>HTML Accessibility</h3>
+
+<p>講者提到幾乎沒人注重的Accessibility並且用Mac safari裡的voice over功能演示去瀏覽有提供Accessibilty的網站時, 盲人也能夠透過語音導覽協助來使用網站. 作者web site <a href="https://yuehu.io/">閱乎</a></p>
+
+<h3>Functional programming in javascript</h3>
+
+<p>很硬. 聽不太懂. 有提到Haskell及Monad</p>
+
+<h3><a href="http://reactive-extensions.github.io/RxJS/">RxJS</a></h3>
+
+<p>主要是一個來解決非同步式問題的library. (Async is hard) 用裡面現成許多寫法的函數可以有效來處理非同步式問題.</p>
+
+<h3><a href="https://github.com/google/leveldb">leveldb</a></h3>
+
+<p>一種微型資料庫(micro database). 主要是由google開發. 方便在做一些小型project. 本身是key-value based所以也不會有什麼SQL support</p>
+
+<h3><a href="https://github.com/google/leveldb">KOA</a></h3>
+
+<p>一個架構在Express之上的nodejs web framework. 用ES6 generator的寫法來寫middleware並加進request flow裡面. 官網有example描述如何在不改動原本的程式碼之下log每一個request process time及增加response header</p>
+
+<h3>Teaching Git and GitHub with Node.js</h3>
+
+<p>主講者介紹她如何製作互動式教學教人使用Github. 用的工具是用<a href="http://nodeschool.io/">nodeschool</a>裡面製作課程的工具相同. 這是她的project <a href="https://github.com/jlord/git-it">Git-it</a></p>
+
+<h3>大型互聯網公司前端團隊的那些事兒</h3>
+
+<p>這個就跟技術沒有太多關係,主要是講管理一個團隊遇到的一些事情.</p>
+
+<h3>Node.js, p2p and MAD SCIENCE</h3>
+
+<p>主講者用javascript來實作p2p protocol並且還自己寫了幾種應用<br/>
+1. <a href="https://github.com/mafintosh/torrent-stream">torrent-stream</a> p2p stream data<br/>
+2. <a href="https://github.com/mafintosh/peerflix">peerflix</a> stream data to VLC<br/>
+3. <a href="https://github.com/mafintosh/torrent-mount">torrent-mount</a> mount a virtual file using p2p.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Modal Dialog with only CSS]]></title>
@@ -4389,294 +4443,6 @@ Error log like below.</p>
 There&#8217;re code examples in the book and i try to re-write it by coffeescript.
 It helps me understand pattern more and clear. During writing i found a good coffeescript <a href="http://coffeescriptcookbook.com">cookbook</a> and very helpful.
 I put the final result to <a href="https://gist.github.com/weichienhung/7055412">gist</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Testing,Documentation and others]]></title>
-    <link href="http://weichienhung.github.io/blog/2013/10/13/testing/"/>
-    <updated>2013-10-13T19:38:00+08:00</updated>
-    <id>http://weichienhung.github.io/blog/2013/10/13/testing</id>
-    <content type="html"><![CDATA[<p>Past two weeks, i have studied some useful gems in rails. Here are the summary and tips.</p>
-
-<h2><a href="https://github.com/cucumber/cucumber-rails">Cucumber</a></h2>
-
-<p>Cucumber is the Behavior Driven Development(BDD). Writing testing is the most important in software development.
-Without testing case it&#8217;s hard to refactor any code in the future.</p>
-
-<p>For instance: my site provide REST API with JSON and require devise login to use.
-How to test?<br/>
-Add to Gemfile. Suggest to use rspec and factory_gril gems together.</p>
-
-<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:test</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s2">&quot;rspec-rails&quot;</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;cucumber-rails&#39;</span><span class="p">,</span> <span class="ss">:require</span> <span class="o">=&gt;</span> <span class="kp">false</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s2">&quot;factory_girl_rails&quot;</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;database_cleaner&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">gem</span> <span class="s2">&quot;rspec-rails&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Run <code>rails g cucumber:install</code> to initial features/ structure.</p>
-
-<!--more-->
-
-
-<p>Modify <em>config/initializers/devise.rb</em> if you use devise and need to test sign_out function.</p>
-
-<figure class='code'><figcaption><span>devise.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">sign_out_via</span> <span class="o">=</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">test?</span> <span class="p">?</span> <span class="ss">:get</span> <span class="p">:</span> <span class="ss">:delete</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Create <em>api.feature</em> in features/. You should describe your feature by plain english.</p>
-
-<figure class='code'><figcaption><span>api.feature</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">Feature</span><span class="p">:</span> <span class="no">Provide</span> <span class="no">API</span>
-</span><span class='line'>  <span class="no">In</span> <span class="n">order</span> <span class="n">to</span> <span class="n">show</span> <span class="n">list</span>
-</span><span class='line'>  <span class="no">As</span> <span class="n">an</span> <span class="no">Frontend</span> <span class="n">javascript</span>
-</span><span class='line'>  <span class="no">Should</span> <span class="n">be</span> <span class="n">able</span> <span class="n">to</span> <span class="n">retrieve</span> <span class="n">data</span> <span class="n">through</span> <span class="no">REST</span> <span class="no">API</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="ss">Scenario</span><span class="p">:</span> <span class="n">list</span> <span class="n">category</span> <span class="n">through</span> <span class="no">REST</span> <span class="no">API</span>
-</span><span class='line'>    <span class="no">Given</span> <span class="n">I</span> <span class="n">exist</span> <span class="n">as</span> <span class="n">a</span> <span class="n">user</span> <span class="ow">and</span> <span class="n">logged</span> <span class="k">in</span>
-</span><span class='line'>      <span class="no">And</span> <span class="n">the</span> <span class="nb">system</span> <span class="n">knows</span> <span class="n">about</span> <span class="n">the</span> <span class="n">following</span> <span class="n">category</span>
-</span><span class='line'>       <span class="o">|</span> <span class="mi">1</span> <span class="o">|</span> <span class="err">食</span> <span class="o">|</span>
-</span><span class='line'>       <span class="o">|</span> <span class="mi">2</span> <span class="o">|</span> <span class="err">交際娛樂</span> <span class="o">|</span>
-</span><span class='line'>       <span class="o">|</span> <span class="mi">3</span> <span class="o">|</span> <span class="err">交通</span> <span class="o">|</span>
-</span><span class='line'>    <span class="no">When</span> <span class="n">I</span> <span class="nb">send</span> <span class="n">a</span> <span class="no">GET</span> <span class="n">request</span> <span class="n">to</span> <span class="n">category</span> <span class="n">api</span>
-</span><span class='line'>    <span class="no">Then</span> <span class="n">should</span> <span class="n">response</span> <span class="n">correct</span> <span class="n">category</span> <span class="no">JSON</span> <span class="n">data</span>
-</span><span class='line'>      <span class="s2">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="s2">      {&quot;</span><span class="n">monny</span><span class="s2">&quot;:[{&quot;</span><span class="n">cid</span><span class="s2">&quot;:1,&quot;</span><span class="nb">name</span><span class="s2">&quot;:&quot;</span><span class="err">食</span><span class="s2">&quot;},</span>
-</span><span class='line'><span class="s2">      {&quot;</span><span class="n">cid</span><span class="s2">&quot;:2,&quot;</span><span class="nb">name</span><span class="s2">&quot;:&quot;</span><span class="err">交際娛樂</span><span class="s2">&quot;},</span>
-</span><span class='line'><span class="s2">      {&quot;</span><span class="n">cid</span><span class="s2">&quot;:3,&quot;</span><span class="nb">name</span><span class="s2">&quot;:&quot;</span><span class="err">交通</span><span class="s2">&quot;}]}</span>
-</span><span class='line'><span class="s2">      &quot;&quot;&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Create <em>api_steps.rb</em> in features/step_definitions/ and <em>users.rb</em> in spec/factories/.</p>
-
-<figure class='code'><figcaption><span>api_steps.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create_user</span>
-</span><span class='line'>  <span class="vi">@user</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">sign_in</span>
-</span><span class='line'>  <span class="n">visit</span> <span class="s1">&#39;/users/sign_in&#39;</span>
-</span><span class='line'>  <span class="n">fill_in</span> <span class="s2">&quot;user_email&quot;</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="vi">@user</span><span class="o">[</span><span class="ss">:email</span><span class="o">]</span>
-</span><span class='line'>  <span class="n">fill_in</span> <span class="s2">&quot;user_password&quot;</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="vi">@user</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span>
-</span><span class='line'>  <span class="n">click_button</span> <span class="s2">&quot;Sign in&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Given</span> <span class="sr">/^I exist as a user and logged in$/</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">create_user</span>
-</span><span class='line'>  <span class="n">sign_in</span>
-</span><span class='line'>  <span class="n">page</span><span class="o">.</span><span class="n">should</span> <span class="n">have_content</span> <span class="s2">&quot;Signed in successfully.&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">And</span> <span class="sr">/^the system knows about the following category$/</span> <span class="k">do</span> <span class="o">|</span><span class="n">table</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">table</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">cid</span><span class="p">,</span> <span class="nb">name</span><span class="o">|</span>
-</span><span class='line'>    <span class="no">Category</span><span class="o">.</span><span class="n">create</span><span class="p">({</span><span class="ss">cid</span><span class="p">:</span> <span class="n">cid</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="nb">name</span><span class="p">})</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">When</span> <span class="sr">/^I send a GET request to category api$/</span> <span class="k">do</span>
-</span><span class='line'>  <span class="vi">@response</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get</span> <span class="n">api_category_path</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Then</span> <span class="sr">/^should response correct category JSON data$/</span> <span class="k">do</span> <span class="o">|</span><span class="n">expect</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">actual</span> <span class="o">=</span> <span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="vi">@response</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">expect</span> <span class="o">=</span> <span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">expect</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">expect</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="n">value</span><span class="p">,</span> <span class="n">actual</span><span class="o">[</span><span class="n">key</span><span class="o">]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>users.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">email</span> <span class="s1">&#39;a@a.com&#39;</span>
-</span><span class='line'>    <span class="n">password</span> <span class="s1">&#39;a1234567&#39;</span>
-</span><span class='line'>    <span class="n">confirmed_at</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Here are some items should be take care.<br/>
-1. Use capybara to visit <em>sign_in</em> page and click it to sign in<br/>
-2. With <code>| name | yyy |</code>, you can pass a table into steps function. I use it to create Category.<br/>
-3. Use <code>page.driver.get api_category_path</code> to send GET request with authentication session(Because you have sign in)<br/>
-Run <em>cucumber</em> to test and get report.</p>
-
-<h2><a href="https://github.com/ernie/ransack">Ransack</a></h2>
-
-<p>Search your data in active record. I add the search function into <a href="https://github.com/weichienhung/rails101_groupme">rails101_groupme</a> project.
-The usage is quite simple. The groupme site has a search field in the navigation bar to search all posts.<br/>
-<img src="http://weichienhung.github.io/images/posts/20131013-groupme.png" width="500" height="500" title="groupme" alt="groupme">
-Add a method in application_controller.rb because we have a search field in nav bar and every controller need to render it.</p>
-
-<figure class='code'><figcaption><span>application_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="c1"># exec set_search before_filter</span>
-</span><span class='line'><span class="n">before_filter</span> <span class="ss">:set_search</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">set_search</span>
-</span><span class='line'>  <span class="vi">@q</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:q</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Add controller to handle search request.</p>
-
-<figure class='code'><figcaption><span>search_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SearchController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">search</span>
-</span><span class='line'>    <span class="vi">@posts</span> <span class="o">=</span> <span class="vi">@q</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="ss">distinct</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Add search path in route. Only accepts post here.</p>
-
-<figure class='code'><figcaption><span>routes.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="n">post</span> <span class="s1">&#39;search&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;search#search&#39;</span>
-</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Add search view. Ransack has <code>search_form_for</code> tag and it&#8217;s nice!</p>
-
-<figure class='code'><figcaption><span>search.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= search_form_for @q, :class =</span><span class="o">&gt;</span> <span class="s2">&quot;navbar-form navbar-left&quot;</span><span class="p">,</span> <span class="ss">url</span><span class="p">:</span> <span class="n">search_path</span><span class="p">,</span> <span class="ss">html</span><span class="p">:</span> <span class="p">{</span> <span class="nb">method</span><span class="p">:</span> <span class="ss">:post</span> <span class="p">}</span>  <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">  &lt;%= f.text_field :content_or_title_cont %&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>:content_or_title_cont</code> means we want to search content or title that matches search keyword.
-If you want to search title column only, you should use <code>:title_cont</code>. <code>_cont</code> is necessary and means column&#8217;s content.
-column name is the same with the active record you defined.</p>
-
-<h2><a href="http://yardoc.org/">Yard</a></h2>
-
-<p>Documentation is important. The Yard syntax is like Java and i like it.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># @author weichienhung</span>
-</span><span class='line'><span class="c1"># Get places data belong to the category.  </span>
-</span><span class='line'><span class="c1"># It uses _id_ from ApplicationController#params to query Place from Category.</span>
-</span><span class='line'><span class="c1"># @return [JSON] the Place json format.</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">show</span>
-</span><span class='line'>  <span class="k">begin</span>
-</span><span class='line'>    <span class="vi">@category</span> <span class="o">=</span> <span class="no">Category</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">respond_with</span> <span class="vi">@category</span><span class="o">.</span><span class="n">places</span>
-</span><span class='line'>  <span class="k">rescue</span>
-</span><span class='line'>    <span class="n">respond_with</span> <span class="o">[]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Yard supports markdown syntax in describe your method. <code>_id_</code> is the italic word in markdown.</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javascript | Practice makes perfect]]></title>
   <link href="http://weichienhung.github.io/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://weichienhung.github.io/"/>
-  <updated>2014-08-10T00:18:26+08:00</updated>
+  <updated>2014-10-13T22:58:40+08:00</updated>
   <id>http://weichienhung.github.io/</id>
   <author>
     <name><![CDATA[Weichien Hung]]></name>
@@ -12,6 +12,60 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[jsdc_2014]]></title>
+    <link href="http://weichienhung.github.io/blog/2014/10/13/jsdc-2014/"/>
+    <updated>2014-10-13T22:51:00+08:00</updated>
+    <id>http://weichienhung.github.io/blog/2014/10/13/jsdc-2014</id>
+    <content type="html"><![CDATA[<p>剛參加完JSDC 2014, 做筆紀</p>
+
+<h3><a href="http://browserify.org/">Browserify</a></h3>
+
+<p>將原本跑在nodejs的javascript code以及dependencies打包後產生可以跑在browser上面的code. 很酷的是主講者還自己做了minecraft的Taipei 101版本.<br/>
+主講者<a href="https://github.com/maxogden">Github link</a></p>
+
+<h3><a href="http://zeromq.org/">ZeroMQ</a></h3>
+
+<p>有兩個主題都跟ZeroMQ有關. 第一天的Casear簡單地介紹了在使用ZeroMQ遇到的一些問題,像是Security, Auth. 並且自己寫了一個ZeroMQ-SOA的module <a href="https://github.com/Casear/zmq-soa">zmq-soa</a><br/>
+第二天的主講者則是介紹了ZeroMQ訊息機制. PUSH/PULL, Pub/Sub. 以及在message queue滿了之後的MUTE機制. 該Block或Drop</p>
+
+<h3>HTML Accessibility</h3>
+
+<p>講者提到幾乎沒人注重的Accessibility並且用Mac safari裡的voice over功能演示去瀏覽有提供Accessibilty的網站時, 盲人也能夠透過語音導覽協助來使用網站. 作者web site <a href="https://yuehu.io/">閱乎</a></p>
+
+<h3>Functional programming in javascript</h3>
+
+<p>很硬. 聽不太懂. 有提到Haskell及Monad</p>
+
+<h3><a href="http://reactive-extensions.github.io/RxJS/">RxJS</a></h3>
+
+<p>主要是一個來解決非同步式問題的library. (Async is hard) 用裡面現成許多寫法的函數可以有效來處理非同步式問題.</p>
+
+<h3><a href="https://github.com/google/leveldb">leveldb</a></h3>
+
+<p>一種微型資料庫(micro database). 主要是由google開發. 方便在做一些小型project. 本身是key-value based所以也不會有什麼SQL support</p>
+
+<h3><a href="https://github.com/google/leveldb">KOA</a></h3>
+
+<p>一個架構在Express之上的nodejs web framework. 用ES6 generator的寫法來寫middleware並加進request flow裡面. 官網有example描述如何在不改動原本的程式碼之下log每一個request process time及增加response header</p>
+
+<h3>Teaching Git and GitHub with Node.js</h3>
+
+<p>主講者介紹她如何製作互動式教學教人使用Github. 用的工具是用<a href="http://nodeschool.io/">nodeschool</a>裡面製作課程的工具相同. 這是她的project <a href="https://github.com/jlord/git-it">Git-it</a></p>
+
+<h3>大型互聯網公司前端團隊的那些事兒</h3>
+
+<p>這個就跟技術沒有太多關係,主要是講管理一個團隊遇到的一些事情.</p>
+
+<h3>Node.js, p2p and MAD SCIENCE</h3>
+
+<p>主講者用javascript來實作p2p protocol並且還自己寫了幾種應用<br/>
+1. <a href="https://github.com/mafintosh/torrent-stream">torrent-stream</a> p2p stream data<br/>
+2. <a href="https://github.com/mafintosh/peerflix">peerflix</a> stream data to VLC<br/>
+3. <a href="https://github.com/mafintosh/torrent-mount">torrent-mount</a> mount a virtual file using p2p.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[js/css build optimize flow]]></title>

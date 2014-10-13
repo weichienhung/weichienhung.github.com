@@ -7,8 +7,7 @@
 	<meta name="author" content="Weichien Hung">
 
 	
-	<meta name="description" content="I see a post animated on media query today.
-It&#8217;s very interest to put CSS transition on media query changed. It&#8217;s a simple skill and i &hellip;">
+	<meta name="description" content="Past two weeks, i have studied some useful gems in rails. Here are the summary and tips. Cucumber Cucumber is the Behavior Driven Development(BDD). &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -91,6 +90,82 @@ It&#8217;s very interest to put CSS transition on media query changed. It&#8217;
 		
 	 -->
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/10/13/testing/">
+		
+			Testing,Documentation and Others</a>
+	</h2>
+	<div class="entry-content">
+		<p>Past two weeks, i have studied some useful gems in rails. Here are the summary and tips.</p>
+
+<h2><a href="https://github.com/cucumber/cucumber-rails">Cucumber</a></h2>
+
+<p>Cucumber is the Behavior Driven Development(BDD). Writing testing is the most important in software development.
+Without testing case it&#8217;s hard to refactor any code in the future.</p>
+
+<p>For instance: my site provide REST API with JSON and require devise login to use.
+How to test?<br/>
+Add to Gemfile. Suggest to use rspec and factory_gril gems together.</p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:test</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s2">&quot;rspec-rails&quot;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;cucumber-rails&#39;</span><span class="p">,</span> <span class="ss">:require</span> <span class="o">=&gt;</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s2">&quot;factory_girl_rails&quot;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;database_cleaner&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s2">&quot;rspec-rails&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Run <code>rails g cucumber:install</code> to initial features/ structure.</p>
+
+
+		
+		<a href="/blog/2013/10/13/testing/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-13T19:38:00+08:00" pubdate data-updated="true">Oct 13<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/rails/'>rails</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2013/10/13/testing/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -730,52 +805,6 @@ Besides, i also upgrade twitter bootstrap to 3.0.0.</p>
 </div>
 	
 	<div class="comments"><a href="/blog/2013/09/09/rails-and-heroku/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/09/03/first-ember-rails-project/">
-		
-			First Ember_rails Project</a>
-	</h2>
-	<div class="entry-content">
-		<p>Last time i said i want to make an ember-rails project(<a href="http://127.0.0.1:4000/blog/2013/08/25/rails-and-ember-study/">post</a>).
-Today I push my first Ember-Rails(food-ntpc) project to <a href="https://github.com/weichienhung/food-ntpc">github</a> and <a href="http://food-ntpc.herokuapp.com/">heroku</a>.
-It takes me more time to finish it because i am not familiar with coffee script. I also create a new <a href="http://weichienhung.github.io/blog/2013/09/01/coffee-script-memo/">post</a> for coffee script memo.
-During practicing i use Emberjs 1.0.0.rc7. But Emberjs 1.0.0 was released few days ago and i upgrade it to 1.0.0.</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-03T23:57:00+08:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/emberjs/'>emberjs</a>, <a class='category' href='/blog/categories/rails/'>rails</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/09/03/first-ember-rails-project/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
